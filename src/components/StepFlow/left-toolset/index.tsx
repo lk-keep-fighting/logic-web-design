@@ -23,30 +23,30 @@ function LeftTool(props: ILeftToolProps) {
         ></div>
       ),
     },
-    // {
-    //   key: 'stepflow',
-    //   label: <CodeOutlined style={{ fontSize: '20px', marginTop: 10 }} />,
-    //   children: (
-    //     <div style={{ margin: 0, height: '100vh' }}>
-    //       <Tooltip title="用于解析执行编排的逻辑。">
-    //         <h3>Stepflow DSL</h3>
-    //       </Tooltip>
-    //       <Editor
-    //         defaultLanguage="json"
-    //         // width={200}
-    //         options={{
-    //           lineNumbers: 'off',
-    //           lineDecorationsWidth: 0,
-    //           minimap: {
-    //             enabled: false,
-    //           },
-    //         }}
-    //         value={JSON.stringify(props.stepFlow)}
-    //         onChange={props.onConfigChange}
-    //       />
-    //     </div>
-    //   ),
-    // },
+    {
+      key: 'stepflow',
+      label: <CodeOutlined style={{ fontSize: '20px', marginTop: 10 }} />,
+      children: (
+        <div style={{ margin: 0, height: '100vh' }}>
+          <Tooltip title="用于解析执行编排的逻辑。">
+            <h3>Stepflow DSL</h3>
+          </Tooltip>
+          <Editor
+            defaultLanguage="json"
+            // width={200}
+            options={{
+              lineNumbers: 'off',
+              lineDecorationsWidth: 0,
+              minimap: {
+                enabled: false,
+              },
+            }}
+            value={JSON.stringify(props.stepFlow)}
+            onChange={props.onConfigChange}
+          />
+        </div>
+      ),
+    },
   ];
   return (
     <Tabs

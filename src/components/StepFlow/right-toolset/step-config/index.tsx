@@ -2,7 +2,6 @@ import { Cell } from '@antv/x6';
 import { useForm } from 'form-render';
 import React, { useContext, useEffect, useState } from 'react';
 import FormRender from '../../component/FormRender';
-import { ConfigSchemaProvider } from '../../BizEditor/settings/DefaultFormExt';
 
 class INodeEditorProps {
   editNode: Cell | undefined;
@@ -12,7 +11,7 @@ class INodeEditorProps {
 
 export default (props: INodeEditorProps) => {
   const form = useForm();
-  const formSchemaProvider = props.configSchemaProvider || ConfigSchemaProvider;
+  const formSchemaProvider = props.configSchemaProvider;
   const onFinish = (formData: any) => {
     props.editNode?.setAttrByPath('text/text', formData.name);
     const preConfig = props.editNode?.data.config;

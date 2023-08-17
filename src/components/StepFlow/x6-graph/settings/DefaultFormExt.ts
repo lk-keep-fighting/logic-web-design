@@ -107,264 +107,291 @@ export function ConfigSchemaProvider(tplOrType: string) {
             rows: 1,
           },
         },
-        parames: {
-          "title": "全局变量",
-          "description": "类型声明及默认值",
-          "type": "array",
-          "items": {
-            "column": 4,
-            "type": "object",
-            "widget": "collapse",
-            "properties": {
-              "type": {
-                "title": "类型",
-                "type": "string",
-                "props": {
-                  "options": [
-                    {
-                      "label": "文本",
-                      "value": "string"
-                    },
-                    {
-                      "label": "数值",
-                      "value": "num"
-                    },
-                    {
-                      "label": "是否",
-                      "value": "bool"
-                    },
-                    {
-                      "label": "日期",
-                      "value": "date"
-                    },
-                    {
-                      "label": "List",
-                      "value": "list"
-                    },
-                    {
-                      "label": "对象",
-                      "value": "object"
-                    }
-                  ],
-                  "placeholder": "请选择"
-                },
-                "defaultValue": "string",
-                "maxWidth": "100px",
-                "span": 8,
-                "widget": "select"
-              },
-              "typeParam": {
-                "title": "T参数",
-                "type": "string",
-                "props": {
-                  "options": [
-                    {
-                      "label": "文本",
-                      "value": "string"
-                    },
-                    {
-                      "label": "数值",
-                      "value": "num"
-                    },
-                    {
-                      "label": "是否",
-                      "value": "bool"
-                    },
-                    {
-                      "label": "日期",
-                      "value": "date"
-                    },
-                    {
-                      "label": "对象",
-                      "value": "object"
-                    }
-                  ],
-                  "placeholder": "请选择"
-                },
-                "defaultValue": "string",
-                "maxWidth": "100px",
-                "span": 8,
-                "hidden": "{{rootValue.type!='list'}}",
-                "widget": "select"
-              },
-              "name": {
-                "title": "变量名",
-                "type": "string",
-                "maxWidth": "80px",
-                "span": 8,
-                "widget": "input"
-              },
-              "format": {
-                "title": "格式化",
-                "type": "string",
-                "props": {
-                  "options": [
-                    {
-                      "label": "yyyy-MM-dd",
-                      "value": "yyyy-MM-dd"
-                    },
-                    {
-                      "label": "yy-MM-dd",
-                      "value": "yy-MM-dd"
-                    },
-                    {
-                      "label": "MM-dd",
-                      "value": "MM-dd"
-                    }
-                  ],
-                  "placeholder": "请选择"
-                },
-                "maxWidth": "150px",
-                "hidden": "{{rootValue.type!='date'}}",
-                "span": 8,
-                "widget": "select"
-              },
-              "default": {
-                "title": "默认值",
-                "type": "string",
-                "hidden": "{{rootValue.type==\"bool\"}}",
-                "maxWidth": "100px",
-                "span": 8,
-                "widget": "input"
-              },
-              "switch": {
-                "title": "是否",
-                "type": "boolean",
-                "props": {
-                  "checkedChildren": "true",
-                  "unCheckedChildren": "false"
-                },
-                "hidden": "{{rootValue.type!='bool'}}",
-                "span": 8,
-                "maxWidth": "340px",
-                "widget": "switch"
-              },
-              "fr-5719": {
-                "title": "对象定义",
-                "type": "string",
-                "hidden": "{{rootValue.type!='object'}}",
-                "span": 8,
-                "widget": "json",
-                "props":{
-                  "height": "100px"
-                }
-              }
-            }
+        parameter: {
+          title: '入参声明（Json）',
+          type: 'string',
+          widget: 'json',
+          props: {
+            height: 300,
           },
-          "widget": "cardList",
-          "labelCol": {
-            "span": 8
-          },
-          "wrapperCol": {
-            "span": 16
-          }
         },
-        returns: {
-          "title": "出参声明",
-          "description": "类型声明及默认值",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "title": "类型",
-                "type": "string",
-                "props": {
-                  "options": [
-                    {
-                      "label": "文本",
-                      "value": "string"
-                    },
-                    {
-                      "label": "数值",
-                      "value": "num"
-                    }
-                  ],
-                  "placeholder": "请选择"
-                },
-                "defaultValue": "string",
-                "maxWidth": "100px",
-                "widget": "select"
-              },
-              "name": {
-                "title": "变量名",
-                "type": "string",
-                "maxWidth": "80px",
-                "widget": "input"
-              },
-              "default": {
-                "title": "默认值",
-                "type": "string",
-                "maxWidth": "100px",
-                "widget": "input"
-              }
-            }
+        data: {
+          title: '全局变量声明（Json）',
+          type: 'string',
+          widget: 'json',
+          props: {
+            height: 300,
           },
-          "widget": "tableList"
         },
-        vars: {
-          "title": "全局变量声明",
-          "description": "类型声明及默认值",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "title": "类型",
-                "type": "string",
-                "props": {
-                  "options": [
-                    {
-                      "label": "文本",
-                      "value": "string"
-                    },
-                    {
-                      "label": "数值",
-                      "value": "num"
-                    }
-                  ],
-                  "placeholder": "请选择"
-                },
-                "defaultValue": "string",
-                "maxWidth": "100px",
-                "widget": "select"
-              },
-              "name": {
-                "title": "变量名",
-                "type": "string",
-                "maxWidth": "80px",
-                "widget": "input"
-              },
-              "default": {
-                "title": "默认值",
-                "type": "string",
-                "maxWidth": "100px",
-                "widget": "input"
-              }
-            }
-          },
-          "widget": "tableList"
-        },
-        // parameter: {
-        //   title: '入参声明（Json）',
-        //   type: 'string',
-        //   widget: 'json',
-        //   props: {
-        //     height: 300,
-        //     // defaultValue: JSON.stringify({ _input: {} }),
-        //   },
+      }
+    // case 'start':
+    //   return {
+    //     name: {
+    //       title: '名称',
+    //       type: 'string',
+    //       widget: 'textArea',
+    //       props: {
+    //         rows: 1,
+    //       },
+    //     },
+    //     parames: {
+    //       "title": "全局变量",
+    //       "description": "类型声明及默认值",
+    //       "type": "array",
+    //       "items": {
+    //         "column": 4,
+    //         "type": "object",
+    //         "widget": "collapse",
+    //         "properties": {
+    //           "type": {
+    //             "title": "类型",
+    //             "type": "string",
+    //             "props": {
+    //               "options": [
+    //                 {
+    //                   "label": "文本",
+    //                   "value": "string"
+    //                 },
+    //                 {
+    //                   "label": "数值",
+    //                   "value": "num"
+    //                 },
+    //                 {
+    //                   "label": "是否",
+    //                   "value": "bool"
+    //                 },
+    //                 {
+    //                   "label": "日期",
+    //                   "value": "date"
+    //                 },
+    //                 {
+    //                   "label": "List",
+    //                   "value": "list"
+    //                 },
+    //                 {
+    //                   "label": "对象",
+    //                   "value": "object"
+    //                 }
+    //               ],
+    //               "placeholder": "请选择"
+    //             },
+    //             "defaultValue": "string",
+    //             "maxWidth": "100px",
+    //             "span": 8,
+    //             "widget": "select"
+    //           },
+    //           "typeParam": {
+    //             "title": "T参数",
+    //             "type": "string",
+    //             "props": {
+    //               "options": [
+    //                 {
+    //                   "label": "文本",
+    //                   "value": "string"
+    //                 },
+    //                 {
+    //                   "label": "数值",
+    //                   "value": "num"
+    //                 },
+    //                 {
+    //                   "label": "是否",
+    //                   "value": "bool"
+    //                 },
+    //                 {
+    //                   "label": "日期",
+    //                   "value": "date"
+    //                 },
+    //                 {
+    //                   "label": "对象",
+    //                   "value": "object"
+    //                 }
+    //               ],
+    //               "placeholder": "请选择"
+    //             },
+    //             "defaultValue": "string",
+    //             "maxWidth": "100px",
+    //             "span": 8,
+    //             "hidden": "{{rootValue.type!='list'}}",
+    //             "widget": "select"
+    //           },
+    //           "name": {
+    //             "title": "变量名",
+    //             "type": "string",
+    //             "maxWidth": "80px",
+    //             "span": 8,
+    //             "widget": "input"
+    //           },
+    //           "format": {
+    //             "title": "格式化",
+    //             "type": "string",
+    //             "props": {
+    //               "options": [
+    //                 {
+    //                   "label": "yyyy-MM-dd",
+    //                   "value": "yyyy-MM-dd"
+    //                 },
+    //                 {
+    //                   "label": "yy-MM-dd",
+    //                   "value": "yy-MM-dd"
+    //                 },
+    //                 {
+    //                   "label": "MM-dd",
+    //                   "value": "MM-dd"
+    //                 }
+    //               ],
+    //               "placeholder": "请选择"
+    //             },
+    //             "maxWidth": "150px",
+    //             "hidden": "{{rootValue.type!='date'}}",
+    //             "span": 8,
+    //             "widget": "select"
+    //           },
+    //           "default": {
+    //             "title": "默认值",
+    //             "type": "string",
+    //             "hidden": "{{rootValue.type==\"bool\"}}",
+    //             "maxWidth": "100px",
+    //             "span": 8,
+    //             "widget": "input"
+    //           },
+    //           "switch": {
+    //             "title": "是否",
+    //             "type": "boolean",
+    //             "props": {
+    //               "checkedChildren": "true",
+    //               "unCheckedChildren": "false"
+    //             },
+    //             "hidden": "{{rootValue.type!='bool'}}",
+    //             "span": 8,
+    //             "maxWidth": "340px",
+    //             "widget": "switch"
+    //           },
+    //           "fr-5719": {
+    //             "title": "对象定义",
+    //             "type": "string",
+    //             "hidden": "{{rootValue.type!='object'}}",
+    //             "span": 8,
+    //             "widget": "json",
+    //             "props":{
+    //               "height": "100px"
+    //             }
+    //           }
+    //         }
+    //       },
+    //       "widget": "cardList",
+    //       "labelCol": {
+    //         "span": 8
+    //       },
+    //       "wrapperCol": {
+    //         "span": 16
+    //       }
+    //     },
+    //     returns: {
+    //       "title": "出参声明",
+    //       "description": "类型声明及默认值",
+    //       "type": "array",
+    //       "items": {
+    //         "type": "object",
+    //         "properties": {
+    //           "type": {
+    //             "title": "类型",
+    //             "type": "string",
+    //             "props": {
+    //               "options": [
+    //                 {
+    //                   "label": "文本",
+    //                   "value": "string"
+    //                 },
+    //                 {
+    //                   "label": "数值",
+    //                   "value": "num"
+    //                 }
+    //               ],
+    //               "placeholder": "请选择"
+    //             },
+    //             "defaultValue": "string",
+    //             "maxWidth": "100px",
+    //             "widget": "select"
+    //           },
+    //           "name": {
+    //             "title": "变量名",
+    //             "type": "string",
+    //             "maxWidth": "80px",
+    //             "widget": "input"
+    //           },
+    //           "default": {
+    //             "title": "默认值",
+    //             "type": "string",
+    //             "maxWidth": "100px",
+    //             "widget": "input"
+    //           }
+    //         }
+    //       },
+    //       "widget": "tableList"
+    //     },
+    //     vars: {
+    //       "title": "全局变量声明",
+    //       "description": "类型声明及默认值",
+    //       "type": "array",
+    //       "items": {
+    //         "type": "object",
+    //         "properties": {
+    //           "type": {
+    //             "title": "类型",
+    //             "type": "string",
+    //             "props": {
+    //               "options": [
+    //                 {
+    //                   "label": "文本",
+    //                   "value": "string"
+    //                 },
+    //                 {
+    //                   "label": "数值",
+    //                   "value": "num"
+    //                 }
+    //               ],
+    //               "placeholder": "请选择"
+    //             },
+    //             "defaultValue": "string",
+    //             "maxWidth": "100px",
+    //             "widget": "select"
+    //           },
+    //           "name": {
+    //             "title": "变量名",
+    //             "type": "string",
+    //             "maxWidth": "80px",
+    //             "widget": "input"
+    //           },
+    //           "default": {
+    //             "title": "默认值",
+    //             "type": "string",
+    //             "maxWidth": "100px",
+    //             "widget": "input"
+    //           }
+    //         }
+    //       },
+    //       "widget": "tableList"
+    //     },
+    //     // parameter: {
+    //     //   title: '入参声明（Json）',
+    //     //   type: 'string',
+    //     //   widget: 'json',
+    //     //   props: {
+    //     //     height: 300,
+    //     //     // defaultValue: JSON.stringify({ _input: {} }),
+    //     //   },
 
-        // },
-        // data: {
-        //   title: '全局变量声明（Json）',
-        //   type: 'string',
-        //   widget: 'json',
-        //   props: {
-        //     height: 300,
-        //     // defaultValue: JSON.stringify({ _input: {} }),
-        //   },
-        // },
-      };
+    //     // },
+    //     // data: {
+    //     //   title: '全局变量声明（Json）',
+    //     //   type: 'string',
+    //     //   widget: 'json',
+    //     //   props: {
+    //     //     height: 300,
+    //     //     // defaultValue: JSON.stringify({ _input: {} }),
+    //     //   },
+    //     // },
+    //   };
     case 'end':
       return {
         name: {

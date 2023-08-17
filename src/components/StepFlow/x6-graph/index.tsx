@@ -20,12 +20,14 @@ import { InitPanelData } from './settings/PanelSetting';
 import { RegistShape } from './settings/InitGraph';
 import { ports } from './settings/Consts';
 import { DagreLayout } from '@antv/layout';
+import { ConfigSchemaProvider } from './settings/DefaultFormExt';
+
 
 type EditorCtx = {
   stepFlow: StepFlow,
   jsProvider?: any,
-  flowVar?: Map<string, any>,
-  flowInput?: Map<string, any>,
+  flowVar?: Object,
+  flowInput?: Object,
 }
 export const EditorContext = React.createContext<EditorCtx>({
   stepFlow: { steps: [] }
@@ -488,6 +490,8 @@ export default class X6Graph extends React.Component<EditorProps> {
         data: {
           config: {
             type: 'start',
+            parameter: '{\r\n    \r\n}',
+            data: '{\r\n    \r\n}',
           },
         },
       })
@@ -542,10 +546,10 @@ export default class X6Graph extends React.Component<EditorProps> {
     let { nodes: newNodes = [] } = dagreLayout.layout({ nodes, edges });
     nodes.forEach((current) => {
       const newNode = newNodes.find((node) => node.id === current.id);
-      if (newNode.shape == 'circle' || newNode.shape == 'polygon')
-        current.position(newNode.x, newNode.y);
-      else
-        current.position(newNode.x - 25, newNode.y);
+      // if (newNode.shape == 'circle' || newNode.shape == 'polygon')
+      //   current.position(newNode.x, newNode.y);
+      // else
+      current.position(newNode.x - 25, newNode.y);
     });
   }
   refContainer = (container: HTMLDivElement) => {
@@ -749,7 +753,7 @@ export default class X6Graph extends React.Component<EditorProps> {
               editNode={editingNode}
               onSubmit={this.handleSubmit}
               logs={this.state.logs}
-              configSchemaProvider={this.props.configSchemaProvider}
+              configSchemaProvider={ConfigSchemaProvider}
             />
           </EditorContext.Provider>
         </Layout.Sider>
