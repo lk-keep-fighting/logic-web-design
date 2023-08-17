@@ -32,6 +32,7 @@ export const ports = {
                     },
                 },
             },
+            zIndex: 1,
         },
         bottom: {
             position: 'bottom',
@@ -76,6 +77,31 @@ export const ports = {
         },
         {
             group: 'left',
+        },
+    ],
+};
+export const portsOnRight = {
+    groups: {
+        right: {
+            position: 'right',
+            attrs: {
+                circle: {
+                    r: 4,
+                    magnet: true,
+                    stroke: '#5F95FF',
+                    strokeWidth: 1,
+                    fill: '#fff',
+                    style: {
+                        visibility: 'hidden',
+                    },
+                },
+            },
+            zIndex: 1,
+        },
+    },
+    items: [
+        {
+            group: 'right',
         },
     ],
 };

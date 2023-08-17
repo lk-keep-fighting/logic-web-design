@@ -91,39 +91,7 @@ export function InitPanelData(
       },
       ports,
       tools: ['node-editor'],
-      groups: ['def'],
-    },
-    {
-      shape: 'polygon',
-      width,
-      label: 'switch',
-      height,
-      attrs: {
-        body: {
-          refPoints: '0,10 10,0 20,10 10,20',
-          strokeWidth: 1,
-          stroke: '#5F95FF',
-          fill: '#EFF4FF',
-        },
-        text: {
-          // text: 'switch',
-          // fontSize: 12,
-          // fill: '#5F95FF',
-          refX: 0.5,
-          refY: '100%',
-          refY2: 4,
-          textAnchor: 'middle',
-          textVerticalAnchor: 'top',
-        },
-      },
-      data: {
-        config: {
-          type: 'switch',
-        },
-      },
-      ports,
-      tools: ['node-editor'],
-      groups: ['def'],
+      groups: ['biz'],
     },
     {
       shape: 'ExtSharp',
@@ -158,7 +126,7 @@ export function InitPanelData(
           'xlink:href': '/icons/CarbonSubflowLocal.svg',
         },
         text: {
-          text: '引用流程',
+          text: '复用逻辑',
         },
       },
       data: {
@@ -167,7 +135,7 @@ export function InitPanelData(
         },
       },
       tools: ['node-editor'],
-      groups: ['def'],
+      groups: ['biz'],
     },
     {
       shape: 'ExtSharp',
@@ -194,67 +162,143 @@ export function InitPanelData(
     },
     {
       shape: 'ExtSharp',
+      width,
+      label: 'switch',
+      height,
       attrs: {
-        text: {
-          text: '变量',
-        },
+        // body: {
+        //   refPoints: '0,10 10,0 20,10 10,20',
+        //   strokeWidth: 1,
+        //   stroke: '#5F95FF',
+        //   fill: '#EFF4FF',
+        // },
         image: {
-          'xlink:href': '/icons/text.svg',
-          width: 12,
-          x: 3,
-          y: 3,
+          'xlink:href': '/icons/switch.svg',
+          width: 45,
+          x: 2,
+          y: 2,
+        },
+        text: {
+          text: 'switch',
+          // fontSize: 12,
+          // fill: '#5F95FF',
+          refX: 0.5,
+          refY: '100%',
+          refY2: 4,
+          textAnchor: 'middle',
+          textVerticalAnchor: 'top',
         },
       },
       data: {
         config: {
-          type: 'var',
+          type: 'switch',
         },
       },
       ports,
-      groups: ['var'],
+      tools: ['node-editor'],
+      groups: ['ctrl'],
     },
     {
       shape: 'ExtSharp',
+      width,
+      height,
       attrs: {
-        text: {
-          text: '字符串',
-        },
+        // body: {
+        //   refPoints: '0,10 10,0 20,10 10,20',
+        //   strokeWidth: 1,
+        //   stroke: '#5F95FF',
+        //   fill: '#EFF4FF',
+        // },
         image: {
           'xlink:href': '/icons/text.svg',
-          width: 12,
-          x: 3,
-          y: 3,
+          width: 30,
+          x: 10,
+          y: 10
         },
-      },
-      data: {
-        config: {
-          type: 'string',
-        },
-      },
-      ports,
-      groups: ['var'],
-    },
-    {
-      shape: 'ExtSharp',
-      attrs: {
         text: {
-          text: '数字',
-        },
-        image: {
-          'xlink:href': '/icons/num.svg',
-          width: 12,
-          x: 3,
-          y: 3,
+          text: 'switch-case',
+          // fontSize: 12,
+          // fill: '#5F95FF',
+          refX: 0.5,
+          refY: '100%',
+          refY2: 4,
+          textAnchor: 'middle',
+          textVerticalAnchor: 'top',
         },
       },
       data: {
         config: {
-          type: 'num',
+          type: 'switch-case',
         },
       },
       ports,
-      groups: ['var'],
+      tools: ['node-editor'],
+      groups: ['ctrl'],
     },
+
+    // {
+    //   shape: 'ExtSharp',
+    //   attrs: {
+    //     text: {
+    //       text: '变量',
+    //     },
+    //     image: {
+    //       'xlink:href': '/icons/text.svg',
+    //       width: 12,
+    //       x: 3,
+    //       y: 3,
+    //     },
+    //   },
+    //   data: {
+    //     config: {
+    //       type: 'var',
+    //     },
+    //   },
+    //   ports,
+    //   groups: ['var'],
+    // },
+    // {
+    //   shape: 'ExtSharp',
+    //   attrs: {
+    //     text: {
+    //       text: '字符串',
+    //     },
+    //     image: {
+    //       'xlink:href': '/icons/text.svg',
+    //       width: 12,
+    //       x: 3,
+    //       y: 3,
+    //     },
+    //   },
+    //   data: {
+    //     config: {
+    //       type: 'string',
+    //     },
+    //   },
+    //   ports,
+    //   groups: ['var'],
+    // },
+    // {
+    //   shape: 'ExtSharp',
+    //   attrs: {
+    //     text: {
+    //       text: '数字',
+    //     },
+    //     image: {
+    //       'xlink:href': '/icons/num.svg',
+    //       width: 12,
+    //       x: 3,
+    //       y: 3,
+    //     },
+    //   },
+    //   data: {
+    //     config: {
+    //       type: 'num',
+    //     },
+    //   },
+    //   ports,
+    //   groups: ['var'],
+    // },
   ];
   if (customNodes && customNodes.length > 0)
     Array.prototype.push.apply(Nodes, customNodes);
@@ -264,14 +308,24 @@ export function InitPanelData(
       title: '全局节点',
       graphHeight: 90,
     },
+    // {
+    //   name: 'var',
+    //   title: '变量声明',
+    //   graphHeight: 180,
+    // },
     {
-      name: 'var',
-      title: '变量声明',
+      name: 'ctrl',
+      title: '逻辑控制',
+      graphHeight: 180,
+    },
+    {
+      name: 'biz',
+      title: '业务调用',
       graphHeight: 180,
     },
     {
       name: 'def',
-      title: '默认节点',
+      title: '其他',
       graphHeight: 270,
     },
   ];

@@ -92,7 +92,7 @@ export function ConfigSchemaProvider(tplOrType: string) {
           },
         },
         timeout: {
-          title: '执行超时时间(ms)',
+          title: '执行超时时长(ms)',
           defaultValue: 2000,
           type: 'number',
         },

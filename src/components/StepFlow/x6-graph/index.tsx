@@ -1,4 +1,4 @@
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { BarsOutlined, EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SaveOutlined, SettingOutlined } from '@ant-design/icons';
 import { Edge, EdgeView, Graph, Node, Shape } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
@@ -7,7 +7,7 @@ import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { Stencil } from '@antv/x6-plugin-stencil';
 import { loader } from '@monaco-editor/react';
-import { Button, Layout, Modal, message } from 'antd';
+import { Button, Dropdown, Layout, MenuProps, Modal, Space, message } from 'antd';
 import * as monaco from 'monaco-editor';
 import React from 'react';
 import { StepFlow } from '../core/definition/StepFlow';
@@ -17,18 +17,28 @@ import './index.css';
 import LeftTool from '../left-toolset';
 import RightToolset from '../right-toolset';
 import { InitPanelData } from './settings/PanelSetting';
-import { RegistShape } from './settings/InitGraph';
+import { DefaultGraph, RegistShape } from './settings/InitGraph';
 import { ports } from './settings/Consts';
 import { DagreLayout } from '@antv/layout';
 import { ConfigSchemaProvider } from './settings/DefaultFormExt';
+import DagreGraph from './instance/dagre-graph';
+import FlowSetting from './settings/flow-setting';
+import { dealGraphNodeWhenAddedFromPanel } from './helper/node-mapping/indext';
+import { autoDagreLayout } from './layout/dagreLayout';
 
 
 type EditorCtx = {
   stepFlow: StepFlow,
-  jsProvider?: any,
   flowVar?: Object,
   flowInput?: Object,
+  flowReturn?: Object,
 }
+const saveBtns = [
+  // { key: 'saveToBrowser', label: '缓存到浏览器' },
+  { key: 'loadFromBrowser', label: '从浏览器加载' },
+  // { key: 'saveToClipboard', label: '复制到剪贴板' }
+];
+
 export const EditorContext = React.createContext<EditorCtx>({
   stepFlow: { steps: [] }
 })
@@ -47,6 +57,7 @@ type StateType = {
   leftToolCollapsed: boolean;
   rightToolCollapsed: boolean;
   stepFlow: StepFlow;
+  openFlowSetting: boolean;
   editorCtx: EditorCtx
   flowRunner: FlowRunner;
   logs: any[];
@@ -96,7 +107,13 @@ export default class X6Graph extends React.Component<EditorProps> {
     editingEdge: undefined,
     leftToolCollapsed: false,
     rightToolCollapsed: true,
-    stepFlow: { steps: [] },
+    stepFlow: {
+      steps: [],
+      input: "{\r\t \r\n}",
+      var: "{\r\t \r\n}",
+      return: "{\r\t \r\n}",
+    },
+    openFlowSetting: false,
     flowRunner: new FlowRunner(),
     editorCtx: { stepFlow: { steps: [] } },
     logs: [],
@@ -145,7 +162,7 @@ export default class X6Graph extends React.Component<EditorProps> {
         connector: {
           name: 'rounded',
           args: {
-            radius: 8,
+            radius: 15,
           },
         },
         anchor: 'center',
@@ -207,7 +224,7 @@ export default class X6Graph extends React.Component<EditorProps> {
               //   },
               // },
             ],
-            zIndex: 50,
+            zIndex: 0
           });
         },
         validateConnection({ targetMagnet }) {
@@ -304,52 +321,7 @@ export default class X6Graph extends React.Component<EditorProps> {
       this.setState({ editingNode: node });
     });
     graph.on('node:added', ({ node, index, options }) => {
-      const data = node.getData();
-      console.log('node added', node, index, options);
-      console.log('node data', data);
-      if (node.shape == 'ExtSharp') {
-        switch (data.config.type) {
-          case 'string':
-            const strNode = graph.createNode({
-              shape: 'string',
-              position: node.position(),
-              width: 100,
-              height: 50,
-              ports,
-              data: node.data
-            })
-            graph.removeNode(node);
-            graph.addNode(strNode);
-            break;
-          case 'num':
-            const numNode = graph.createNode({
-              shape: 'num',
-              position: node.position(),
-              width: 100,
-              height: 50,
-              ports,
-              data: node.data
-            })
-            graph.removeNode(node);
-            graph.addNode(numNode);
-            break;
-          case 'assignment':
-            const assignmentNode = graph.createNode({
-              shape: 'assignment',
-              position: node.position(),
-              width: 220,
-              height: 50,
-              ports,
-              data: node.data
-            })
-            graph.removeNode(node);
-            graph.addNode(assignmentNode);
-            break;
-          default:
-            break;
-        }
-
-      }
+      dealGraphNodeWhenAddedFromPanel(graph, node);
     })
     graph.on('node:dblclick', ({ e, x, y, node, view }) => {
       // const newNode = graph.addNode({
@@ -417,9 +389,21 @@ export default class X6Graph extends React.Component<EditorProps> {
     graph.bindKey('backspace', () => {
       const cells = graph.getSelectedCells();
       if (cells.length) {
-        graph.removeCells(cells);
+        if (cells.find(i => {
+          if (i.data)
+            return ['start'].indexOf(i.data.config?.type) > -1;
+          else return false;
+        })) {
+          message.error('禁止删除开始节点！')
+        } else {
+          graph.removeCells(cells);
+        }
       }
     });
+    graph.on('blank:dblclick', ({ e, x, y }) => {
+      console.log('blank:dbclick', x, y);
+      this.autoLayout(graph)
+    })
 
     // zoom
     graph.bindKey(['ctrl+1', 'meta+1'], () => {
@@ -476,50 +460,7 @@ export default class X6Graph extends React.Component<EditorProps> {
       // };
 
       // graph.fromJSON(defGraph);
-      const startNode = graph.createNode({
-        shape: 'circle',
-        label: 'start',
-        width: 50,
-        height: 50,
-        attrs: {
-          body: {
-            // fill: '#d9d9d9',
-          },
-        },
-        ports,
-        data: {
-          config: {
-            type: 'start',
-            parameter: '{\r\n    \r\n}',
-            data: '{\r\n    \r\n}',
-          },
-        },
-      })
-      const endNode = graph.createNode({
-        shape: 'circle',
-        label: 'end',
-        width: 50,
-        height: 50,
-        attrs: {
-          body: {
-            fill: '#d9d9d9',
-          },
-        },
-        ports,
-        data: {
-          config: {
-            type: 'end',
-          },
-        },
-      })
-      const se = graph.createEdge({
-        source: startNode,
-        target: endNode,
-        sourcePort: startNode.ports.items.find(i => i.group == 'right')?.id,
-        targetPort: endNode.ports.items.find(i => i.group == 'left')?.id
-      })
-      graph.addNodes([startNode, endNode]);
-      graph.addEdge(se);
+      DefaultGraph(graph);
       this.autoLayout(graph)
       // graph.fromJSON(defGraph);
     }
@@ -530,27 +471,7 @@ export default class X6Graph extends React.Component<EditorProps> {
     return graph;
   };
   autoLayout = (graph: Graph) => {
-    const dagreLayout: DagreLayout = new DagreLayout({
-      type: 'dagre',
-      begin: [200, 100],
-      // ranker: 'longest-path', // 节点分层算法，可选：'tight-tree' 'longest-path' 'network-simplex'
-      rankdir: 'LR', // 图的延展方向，可选： 'TB' | 'BT' | 'LR' | 'RL'
-      ranksep: 20, // 图的各个层次之间的间距
-      nodesep: 10, // 同层各个节点之间的间距
-      nodeSize: 100, // 节点的大小，默认：20
-      // align: 'DL',// 节点对齐方式，可选：'UL' | 'UR' | 'DL' | 'DR' | undefined
-      controlPoints: true,
-    });
-    const nodes = graph.getNodes();
-    const edges = graph.getEdges();
-    let { nodes: newNodes = [] } = dagreLayout.layout({ nodes, edges });
-    nodes.forEach((current) => {
-      const newNode = newNodes.find((node) => node.id === current.id);
-      // if (newNode.shape == 'circle' || newNode.shape == 'polygon')
-      //   current.position(newNode.x, newNode.y);
-      // else
-      current.position(newNode.x - 25, newNode.y);
-    });
+    autoDagreLayout(graph);
   }
   refContainer = (container: HTMLDivElement) => {
     this.container = container;
@@ -560,22 +481,8 @@ export default class X6Graph extends React.Component<EditorProps> {
   };
   //处理表单提交
   handleSubmit = (v: any) => {
+    //自动保存整个配置文件
     this.saveAndConvertGraphToDsl();
-    let startStep = this.state.stepFlow?.steps.find(v => v.type == 'start');
-    if (startStep) {//如果存在开始节点读取全局变量
-      console.log('startStep', startStep);
-      this.setState(
-        {
-          editorCtx: {
-            ...this.state.editorCtx,
-            flowVar: JSON.parse(startStep.data),
-            flowInput: JSON.parse(startStep.parameter || ''),
-          },
-        }
-      );
-    }
-    console.log(v);
-    console.log('node-submit--', v,);
   };
   handleOnConfigChange = (v: string) => {
     try {
@@ -585,22 +492,66 @@ export default class X6Graph extends React.Component<EditorProps> {
       console.log(error);
     }
   };
+  onSaveMenuClick: MenuProps['onClick'] = (e) => {
+    switch (e.key) {
+      case 'saveToBrowser':
+        break;
+      case 'loadFromBrowser':
+        const localData = localStorage.getItem('step-flow-json');
+        if (localData) {
+          const flow: StepFlow = JSON.parse(localData);
+          this.state.stepFlow = flow;
+          this.state.graph?.fromJSON(flow.visualConfig);
+          this.saveAndConvertGraphToDsl();
+        } else {
+          message.info('浏览器无缓存数据');
+        }
+        break;
+      case 'saveToClipboard':
+
+        break;
+    }
+  };
   //保存到浏览器并转换dsl
   saveAndConvertGraphToDsl = () => {
     const data = this.state.graph?.toJSON();
-    localStorage.setItem('step-flow-data', JSON.stringify(data));
-    const flow = this.convertGraphToDsl(data);
-    this.state.flowRunner.send('save', JSON.stringify(flow));
-    this.state.stepFlow = flow || { steps: [] };
-    this.setState({ stepFlow: flow });
-    navigator.clipboard.writeText(JSON.stringify(flow));
-    this.autoLayout(this.state.graph)
+    const graphFlow = this.convertGraphToDsl(data);//根据图转换的flow，只包含steps值
+    const newFlow = { ...this.state.stepFlow, ...graphFlow };
+    const flowJson = JSON.stringify(newFlow);
+    this.setState({ stepFlow: newFlow });
+    localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
+    navigator.clipboard.writeText(flowJson);//复制到剪贴板
+    this.state.flowRunner.send('save', flowJson);//发送消息
+    this.autoLayout(this.state.graph)//自动布局
+  };
+  //保存参数配置
+  saveFlowSettingAndConvertGraphToDsl = (settingValues) => {
+    const newFlow = { ...this.state.stepFlow, ...settingValues };
+    const flowJson = JSON.stringify(newFlow);
+    console.log(settingValues)
+    console.log((typeof settingValues.var))
+    this.setState({
+      stepFlow: newFlow,
+      editorCtx: {
+        ...this.state.editorCtx,
+        flowVar: JSON.parse(settingValues.var),
+        flowInput: JSON.parse(settingValues.input),
+        flowReturn: JSON.parse(settingValues.return),
+      }
+    });
+    localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
+    navigator.clipboard.writeText(flowJson);//复制到剪贴板
+    this.state.flowRunner.send('save', flowJson);//发送消息
+    this.autoLayout(this.state.graph)//自动布局
   };
   convertGraphToDsl = (graphJson: any) => {
     const _flow = GraphToStepFlow(graphJson.cells);
     if (_flow) _flow.visualConfig = graphJson;
     return _flow;
   };
+  setFlowSetting = (open) => {
+    this.setState({ openFlowSetting: open })
+  }
   render() {
     const {
       editingNode,
@@ -609,70 +560,93 @@ export default class X6Graph extends React.Component<EditorProps> {
       stepFlow,
       editorCtx,
       graph,
+      openFlowSetting
     } = this.state;
     console.log('editorCtx', editorCtx);
     return (
-      <Layout style={{ height: '100vh', width: '100%' }}>
-        <Layout.Sider
-          theme="light"
-          collapsed={leftToolCollapsed}
-          collapsedWidth={0}
-          width={300}
-        >
-          <LeftTool
-            refStencil={this.refStencil}
-            graph={this.state.graph}
-            stepFlow={stepFlow}
-            onConfigChange={this.handleOnConfigChange}
-          />
-        </Layout.Sider>
-        <Layout style={{ height: '100%' }}>
-          <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>
-            <Button
-              type="text"
-              icon={
-                leftToolCollapsed ? (
-                  <MenuUnfoldOutlined />
-                ) : (
-                  <MenuFoldOutlined />
-                )
-              }
-              onClick={() => {
-                this.setState({ leftToolCollapsed: !leftToolCollapsed });
-              }}
-              style={{
-                fontSize: '16px',
-                width: 64,
-                height: 64,
-              }}
+      <EditorContext.Provider value={editorCtx}>
+        <Layout style={{ height: '100vh', width: '100%', margin: 0 }}>
+          <Layout.Sider
+            theme="light"
+            collapsed={leftToolCollapsed}
+            collapsedWidth={0}
+            width={300}
+          >
+            <LeftTool
+              refStencil={this.refStencil}
+              graph={this.state.graph}
+              stepFlow={stepFlow}
+              onConfigChange={this.handleOnConfigChange}
             />
-            <Button
-              type="primary"
-              onClick={() => {
-                this.saveAndConvertGraphToDsl();
-              }}
-              style={{}}
-            >
-              保存&转换
-            </Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                const localData = localStorage.getItem('step-flow-data');
-                if (localData) {
-                  this.state.graph?.fromJSON(JSON.parse(localData));
-                  this.saveAndConvertGraphToDsl();
-                } else {
-                  message.info('浏览器无缓存数据');
+          </Layout.Sider>
+          <Layout style={{ height: '100%' }}>
+            <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>
+              <Button
+                type="text"
+                icon={
+                  leftToolCollapsed ? (
+                    <MenuUnfoldOutlined />
+                  ) : (
+                    <MenuFoldOutlined />
+                  )
                 }
-              }}
-              style={{
-                marginLeft: '10px',
-              }}
-            >
-              从浏览器恢复
-            </Button>
-            <Button
+                onClick={() => {
+                  this.setState({ leftToolCollapsed: !leftToolCollapsed });
+                }}
+                style={{
+                  fontSize: '16px',
+                  width: 64,
+                  height: 64,
+                }}
+              />
+              <Space direction="horizontal">
+                <Dropdown.Button
+                  style={{ float: 'inline-start' }}
+                  menu={{
+                    items: saveBtns, onClick: this.onSaveMenuClick
+                  }}
+                  buttonsRender={(menu) => {
+                    return [
+                      <Button type='primary' icon={<SaveOutlined />}
+                        style={{ width: '100px' }}
+                        onClick={this.saveAndConvertGraphToDsl} >保存</Button>,
+                      <Button type='primary' icon={<EllipsisOutlined />} />
+                    ]
+                  }}
+                  onClick={this.saveAndConvertGraphToDsl}
+                >
+                  保存
+                </Dropdown.Button >
+                <FlowSetting open={openFlowSetting}
+                  values={{
+                    input: this.state.stepFlow.input,
+                    return: this.state.stepFlow.return,
+                    var: this.state.stepFlow.var,
+                  }}
+                  setOpen={this.setFlowSetting}
+                  onSubmit={this.saveFlowSettingAndConvertGraphToDsl}
+                >
+                  <Button
+                    onClick={() => this.setFlowSetting(true)}
+                    icon={<BarsOutlined />}
+                  >入出参</Button>
+                </FlowSetting>
+                {/* <Button
+                // type="primary"
+                onClick={() => {
+                  const localData = localStorage.getItem('step-flow-data');
+                  if (localData) {
+                    this.state.graph?.fromJSON(JSON.parse(localData));
+                    this.saveAndConvertGraphToDsl();
+                  } else {
+                    message.info('浏览器无缓存数据');
+                  }
+                }}
+              >
+                从浏览器恢复
+              </Button> */}
+              </Space >
+              {/* <Button
               type="default"
               onClick={() => {
                 if (this.state.stepFlow) {
@@ -690,8 +664,8 @@ export default class X6Graph extends React.Component<EditorProps> {
               }}
             >
               在浏览器运行
-            </Button>
-            {/* <Button
+            </Button> */}
+              {/* <Button
               type="default"
               onClick={() => {
                 this.setState({ logs: [] });
@@ -702,52 +676,54 @@ export default class X6Graph extends React.Component<EditorProps> {
             >
               清空日志
             </Button> */}
+
+              <Button
+                type="text"
+                icon={
+                  rightToolCollapsed ? (
+                    <MenuFoldOutlined />
+                  ) : (
+                    <MenuUnfoldOutlined />
+                  )
+                }
+                onClick={() => {
+                  this.setState({ rightToolCollapsed: !rightToolCollapsed });
+                }}
+                style={{
+                  float: 'right',
+                  right: '16px',
+                  fontSize: '16px',
+                  width: 64,
+                  height: 64,
+                }}
+              />
+
+            </Layout.Header>
+            <Layout.Content className="app-content" >
+              <DagreGraph
+                ref={this.refContainer}
+              />
+            </Layout.Content>
+          </Layout>
+          <Layout.Sider
+            theme="light"
+            collapsed={rightToolCollapsed}
+            collapsedWidth={0}
+            width={600} >
             <Button
               type="text"
-              icon={
-                rightToolCollapsed ? (
-                  <MenuFoldOutlined />
-                ) : (
-                  <MenuUnfoldOutlined />
-                )
-              }
               onClick={() => {
                 this.setState({ rightToolCollapsed: !rightToolCollapsed });
               }}
               style={{
                 float: 'right',
-                right: '16px',
                 fontSize: '16px',
                 width: 64,
                 height: 64,
               }}
-            />
-          </Layout.Header>
-          <Layout.Content
-            className="app-content"
-            ref={this.refContainer}
-          ></Layout.Content>
-        </Layout>
-        <Layout.Sider
-          theme="light"
-          collapsed={rightToolCollapsed}
-          collapsedWidth={0}
-          width={600} >
-          <Button
-            type="text"
-            onClick={() => {
-              this.setState({ rightToolCollapsed: !rightToolCollapsed });
-            }}
-            style={{
-              float: 'right',
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-            }}
-          >
-            x
-          </Button>
-          <EditorContext.Provider value={editorCtx}>
+            >
+              x
+            </Button>
             <RightToolset
               onClear={() => this.setState({ logs: [] })}
               editNode={editingNode}
@@ -755,9 +731,9 @@ export default class X6Graph extends React.Component<EditorProps> {
               logs={this.state.logs}
               configSchemaProvider={ConfigSchemaProvider}
             />
-          </EditorContext.Provider>
-        </Layout.Sider>
-      </Layout>
+          </Layout.Sider>
+        </Layout >
+      </EditorContext.Provider>
     );
   }
 }

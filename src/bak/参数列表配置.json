@@ -1,0 +1,149 @@
+{
+    "type": "object",
+    "properties": {
+      "fr-6z7g": {
+        "title": "全局变量",
+        "description": "类型声明及默认值",
+        "type": "array",
+        "items": {
+          "column": 4,
+          "type": "object",
+          "widget": "collapse",
+          "properties": {
+            "type": {
+              "title": "类型",
+              "type": "string",
+              "props": {
+                "options": [
+                  {
+                    "label": "文本",
+                    "value": "string"
+                  },
+                  {
+                    "label": "数值",
+                    "value": "num"
+                  },
+                  {
+                    "label": "是否",
+                    "value": "bool"
+                  },
+                  {
+                    "label": "日期",
+                    "value": "date"
+                  },
+                  {
+                    "label": "List",
+                    "value": "list"
+                  },
+                  {
+                    "label": "对象",
+                    "value": "object"
+                  }
+                ],
+                "placeholder": "请选择"
+              },
+              "defaultValue": "string",
+              "maxWidth": "100px",
+              "span": 6,
+              "widget": "select"
+            },
+            "typeParam": {
+              "title": "T参数",
+              "type": "string",
+              "props": {
+                "options": [
+                  {
+                    "label": "文本",
+                    "value": "string"
+                  },
+                  {
+                    "label": "数值",
+                    "value": "num"
+                  },
+                  {
+                    "label": "是否",
+                    "value": "bool"
+                  },
+                  {
+                    "label": "日期",
+                    "value": "date"
+                  },
+                  {
+                    "label": "对象",
+                    "value": "object"
+                  }
+                ],
+                "placeholder": "请选择"
+              },
+              "defaultValue": "string",
+              "maxWidth": "100px",
+              "span": 6,
+              "hidden": "{{rootValue.type!='list'}}",
+              "widget": "select"
+            },
+            "name": {
+              "title": "变量名",
+              "type": "string",
+              "maxWidth": "80px",
+              "span": 6,
+              "widget": "input"
+            },
+            "format": {
+              "title": "格式化",
+              "type": "string",
+              "props": {
+                "options": [
+                  {
+                    "label": "yyyy-MM-dd",
+                    "value": "yyyy-MM-dd"
+                  },
+                  {
+                    "label": "yy-MM-dd",
+                    "value": "yy-MM-dd"
+                  },
+                  {
+                    "label": "MM-dd",
+                    "value": "MM-dd"
+                  }
+                ],
+                "placeholder": "请选择"
+              },
+              "maxWidth": "150px",
+              "hidden": "{{rootValue.type!='date'}}",
+              "span": 6,
+              "widget": "select"
+            },
+            "default": {
+              "title": "默认值",
+              "type": "string",
+              "hidden": "{{rootValue.type==\"bool\"}}",
+              "maxWidth": "100px",
+              "span": 6,
+              "widget": "input"
+            },
+            "switch": {
+              "title": "是否",
+              "type": "boolean",
+              "props": {
+                "checkedChildren": "true",
+                "unCheckedChildren": "false"
+              },
+              "hidden": "{{rootValue.type!='bool'}}",
+              "span": 6,
+              "maxWidth": "340px",
+              "widget": "switch"
+            }
+          }
+        },
+        "widget": "cardList",
+        "labelCol": {
+          "span": 8
+        },
+        "wrapperCol": {
+          "span": 16
+        }
+      }
+    },
+    "displayType": "row",
+    "maxWidth": "340px"
+  }

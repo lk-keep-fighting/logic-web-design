@@ -12,6 +12,18 @@ export class StepFlow {
    */
   version?: string = '0.1';
   /**
+   * 入参
+   */
+  input?: object = {};
+  /**
+   * 返回参数
+   */
+  return?: object = {};
+  /**
+   * 全局变量
+   */
+  var?: object = {};
+  /**
    * api流程所有步骤配置，平铺无嵌套，通过nextStepId关联流转
    */
   steps: Array<Step> = [];

@@ -22,11 +22,16 @@ import { DagreLayout } from '@antv/layout'
 type EditorCtx = {
   stepFlow: StepFlow,
   jsProvider?: any,
+  // setNodeData: any,
   flowVar?: Map<string, any>,
   flowInput?: Map<string, any>,
 }
+// const setNodeData = (node: Node, data: any) => {
+//   node.setData(data)
+// }
 export const EditorContext = React.createContext<EditorCtx>({
-  stepFlow: { steps: [] }
+  stepFlow: { steps: [] },
+  // setNodeData: setNodeData,
 })
 
 // 控制连接桩显示/隐藏

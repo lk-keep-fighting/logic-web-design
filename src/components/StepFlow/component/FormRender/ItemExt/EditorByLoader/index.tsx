@@ -2,7 +2,7 @@ import { Editor, useMonaco } from '@monaco-editor/react';
 import { EditorContext } from '../../../../x6-graph/index';
 import { Button } from 'antd';
 import Modal from 'antd/es/modal/Modal';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { buildVarExtarLibByObj } from '../../../MonacoHelper';
 // import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
@@ -20,12 +20,16 @@ const EditorByLoader = (props: ICodeEditor) => {
   const monaco = useMonaco();
   useEffect(() => {
     const flowVar = editorCtx.flowVar;
-    const ctx = buildVarExtarLibByObj('_ctx', editorCtx.flowVar)
-    console.log('ctx lib', ctx)
+    const vars = buildVarExtarLibByObj('_var', editorCtx.flowVar)
+    console.log('var lib', vars)
     const input = buildVarExtarLibByObj('_input', editorCtx.flowInput)
     console.log('input lib', input)
-    monaco?.languages.typescript.javascriptDefaults.addExtraLib(ctx, 'ctx.ts');
+    const returnp = buildVarExtarLibByObj('_return', editorCtx.flowReturn)
+    console.log('return lib', returnp)
+
+    monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');
+    monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
     // editorCtx.jsProvider?.dispose();
     // if (monaco.languages.registerCompletionItemProvider == undefined || !monaco.languages.registerCompletionItemProvider['javascript']) {
     // 在组件渲染时注册自定义的提示项
@@ -112,7 +116,7 @@ const EditorByLoader = (props: ICodeEditor) => {
       // provider?.dispose();
     }
     // }
-  }, [editorCtx.flowInput, editorCtx.flowVar])
+  }, [editorCtx.flowInput, editorCtx.flowVar, editorCtx.flowReturn])
 
   const [full, setFull] = useState(false);
   return (
@@ -167,4 +171,4 @@ const EditorByLoader = (props: ICodeEditor) => {
     </div>
   );
 };
-export default EditorByLoader;
+export default React.memo(EditorByLoader);
