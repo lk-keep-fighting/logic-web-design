@@ -1,0 +1,40 @@
+{
+  "private": true,
+  "author": "lk <lkllyy@126.com>",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "^4.0.75",
+    "@ant-design/icons": "^5.0.1",
+    "@ant-design/pro-components": "^2.4.4",
+    "@antv/layout": "^0.3.23",
+    "@antv/x6": "^2.9.7",
+    "@antv/x6-plugin-clipboard": "^2.1.6",
+    "@antv/x6-plugin-dnd": "^2.0.5",
+    "@antv/x6-plugin-history": "^2.2.2",
+    "@antv/x6-plugin-keyboard": "^2.2.1",
+    "@antv/x6-plugin-selection": "^2.1.7",
+    "@antv/x6-plugin-snapline": "^2.1.7",
+    "@antv/x6-plugin-stencil": "^2.0.3",
+    "@antv/x6-react-shape": "^2.1.2",
+    "@babel/runtime": "^7.22.6",
+    "@monaco-editor/react": "^4.5.1",
+    "antd": "^5.4.0",
+    "axios": "^1.4.0",
+    "eventemitter3": "^5.0.1",
+    "form-render": "^2.1.19",
+    "monaco-editor": "^0.39.0",
+    "react-infinite-scroll-component": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "typescript": "^5.0.3",
+    "monaco-editor-webpack-plugin": "^7.1.0"
+  }
+}
