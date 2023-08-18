@@ -1,3 +1,4 @@
+import { Schema } from "form-render";
 import { StepTypeEnum } from "../../core/definition/StepFlow";
 
 const common = {
@@ -11,19 +12,27 @@ const common = {
   },
 };
 export function ConfigSchemaProvider(tplOrType: string) {
+  let schema: Schema = {
+    type: 'object',
+    properties: {},
+    column: 1
+  }
   switch (tplOrType) {
     case 'switch':
-      return {
+      schema.properties = {
         ...common,
         condition: {
           title: '条件表达式 ',
           type: 'string',
           widget: 'js',
+          props: {
+            height: 100,
+          },
         },
       };
       break;
     case 'switch-case':
-      return {
+      schema.properties = {
         ...common,
         case: {
           title: 'case值 ',
@@ -33,7 +42,7 @@ export function ConfigSchemaProvider(tplOrType: string) {
       };
       break;
     case 'js':
-      return {
+      schema.properties = {
         ...common,
         script: {
           title: 'js脚本 ',
@@ -44,9 +53,10 @@ export function ConfigSchemaProvider(tplOrType: string) {
           },
         },
       };
+
       break;
     case StepTypeEnum.errorHandler:
-      return {
+      schema.properties = {
         ...common,
         script: {
           title: '捕获异常时执行的js',
@@ -57,8 +67,9 @@ export function ConfigSchemaProvider(tplOrType: string) {
           },
         },
       };
+      break;
     case 'http':
-      return {
+      schema.properties = {
         ...common,
         system: {
           title: '系统名 ',
@@ -91,14 +102,6 @@ export function ConfigSchemaProvider(tplOrType: string) {
           type: 'string',
           widget: 'js',
           props: {
-            height: 100,
-          },
-        },
-        queryParams: {
-          title: 'url参数',
-          type: 'string',
-          widget: 'js',
-          props: {
             height: 200,
           },
         },
@@ -118,14 +121,24 @@ export function ConfigSchemaProvider(tplOrType: string) {
             height: 100,
           },
         },
+        queryParams: {
+          title: 'url参数',
+          type: 'string',
+          widget: 'js',
+          props: {
+            height: 100,
+          },
+        },
         timeout: {
           title: '执行超时时长(ms)',
           defaultValue: 2000,
           type: 'number',
         },
       };
+      schema.column = 2;
+      break;
     case 'start':
-      return {
+      schema.properties = {
         name: {
           title: '名称',
           type: 'string',
@@ -135,6 +148,7 @@ export function ConfigSchemaProvider(tplOrType: string) {
           },
         },
       }
+      break;
     // case 'start':
     //   return {
     //     name: {
@@ -404,7 +418,7 @@ export function ConfigSchemaProvider(tplOrType: string) {
     //     // },
     //   };
     case 'end':
-      return {
+      schema.properties = {
         name: {
           title: '名称',
           type: 'string',
@@ -414,8 +428,9 @@ export function ConfigSchemaProvider(tplOrType: string) {
           },
         },
       };
+      break;
     case 'wait':
-      return {
+      schema.properties = {
         name: {
           title: '名称',
           type: 'string',
@@ -430,8 +445,9 @@ export function ConfigSchemaProvider(tplOrType: string) {
           type: 'number',
         },
       };
+      break;
     case StepTypeEnum.process:
-      return {
+      schema.properties = {
         name: {
           title: '名称',
           type: 'string',
@@ -453,7 +469,9 @@ export function ConfigSchemaProvider(tplOrType: string) {
           },
         },
       };
+      break;
     default:
-      return common;
+      schema.properties = common;
   }
+  return schema;
 }
