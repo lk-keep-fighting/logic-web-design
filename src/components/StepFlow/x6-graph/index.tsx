@@ -1,4 +1,4 @@
-import { BarsOutlined, EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SaveOutlined, SettingOutlined } from '@ant-design/icons';
+import { BarsOutlined, EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, RocketOutlined, SaveOutlined, SettingOutlined } from '@ant-design/icons';
 import { Dom, Edge, EdgeView, Graph, Node, Shape } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
@@ -7,6 +7,7 @@ import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { Stencil } from '@antv/x6-plugin-stencil';
 import { Scroller } from '@antv/x6-plugin-scroller'
+import { Export } from '@antv/x6-plugin-export'
 import { loader } from '@monaco-editor/react';
 import { Button, Dropdown, Layout, MenuProps, Modal, Space, message } from 'antd';
 import * as monaco from 'monaco-editor';
@@ -37,6 +38,7 @@ type EditorCtx = {
 const saveBtns = [
   // { key: 'saveToBrowser', label: '缓存到浏览器' },
   { key: 'loadFromBrowser', label: '从浏览器加载' },
+  { key: 'saveToPng', label: '保存为图片' },
   // { key: 'saveToClipboard', label: '复制到剪贴板' }
 ];
 
@@ -295,7 +297,8 @@ export default class X6Graph extends React.Component<EditorProps> {
         enabled: true
       }))
       .use(new Keyboard())
-      .use(new Clipboard());
+      .use(new Clipboard())
+      .use(new Export());
 
     graph.on('edge:dblclick', ({ cell }) => {
       // this.setState({ openEdgeEditor: true, editingEdge: cell })
@@ -575,6 +578,10 @@ export default class X6Graph extends React.Component<EditorProps> {
       case 'saveToClipboard':
 
         break;
+      case 'saveToPng':
+        this.state.graph?.exportSVG(new Date().toLocaleDateString());
+        // this.state.graph?.exportPNG(new Date().toLocaleDateString(), { backgroundColor: '#F2F7FA', padding: 10, quality: 1 });
+        break;
     }
   };
   //保存到浏览器并转换dsl
@@ -700,20 +707,13 @@ export default class X6Graph extends React.Component<EditorProps> {
                     icon={<BarsOutlined />}
                   >入出参</Button>
                 </FlowSetting>
-                {/* <Button
-                // type="primary"
-                onClick={() => {
-                  const localData = localStorage.getItem('step-flow-data');
-                  if (localData) {
-                    this.state.graph?.fromJSON(JSON.parse(localData));
-                    this.saveAndConvertGraphToDsl();
-                  } else {
-                    message.info('浏览器无缓存数据');
-                  }
-                }}
-              >
-                从浏览器恢复
-              </Button> */}
+                <Button
+                  type='dashed'
+                  icon={<RocketOutlined />}
+                  onClick={() => {
+                    this.autoLayout(this.state.graph)
+                  }}
+                ></Button>
               </Space >
               {/* <Button
               type="default"
