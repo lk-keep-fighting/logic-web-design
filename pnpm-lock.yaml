@@ -9,6 +9,7 @@ specifiers:
   '@antv/x6-plugin-dnd': ^2.0.5
   '@antv/x6-plugin-history': ^2.2.2
   '@antv/x6-plugin-keyboard': ^2.2.1
+  '@antv/x6-plugin-scroller': ^2.0.10
   '@antv/x6-plugin-selection': ^2.1.7
   '@antv/x6-plugin-snapline': ^2.1.7
   '@antv/x6-plugin-stencil': ^2.0.3
@@ -36,6 +37,7 @@ dependencies:
   '@antv/x6-plugin-dnd': registry.npmjs.org/@antv/x6-plugin-dnd/2.0.6_@antv+x6@2.13.1
   '@antv/x6-plugin-history': registry.npmjs.org/@antv/x6-plugin-history/2.2.3_@antv+x6@2.13.1
   '@antv/x6-plugin-keyboard': registry.npmjs.org/@antv/x6-plugin-keyboard/2.2.1_@antv+x6@2.13.1
+  '@antv/x6-plugin-scroller': registry.npmjs.org/@antv/x6-plugin-scroller/2.0.10_@antv+x6@2.13.1
   '@antv/x6-plugin-selection': registry.npmjs.org/@antv/x6-plugin-selection/2.1.7_@antv+x6@2.13.1
   '@antv/x6-plugin-snapline': registry.npmjs.org/@antv/x6-plugin-snapline/2.1.7_@antv+x6@2.13.1
   '@antv/x6-plugin-stencil': registry.npmjs.org/@antv/x6-plugin-stencil/2.1.4_@antv+x6@2.13.1
@@ -563,6 +565,17 @@ packages:
     dependencies:
       '@antv/x6': registry.npmjs.org/@antv/x6/2.13.1
       mousetrap: registry.npmjs.org/mousetrap/1.6.5
+    dev: false
+
+  registry.npmjs.org/@antv/x6-plugin-scroller/2.0.10_@antv+x6@2.13.1:
+    resolution: {integrity: sha512-CrC5zCbtPe7LJEKK8ucLcDN+9lMtTJNApFmFObAiR/y2LO1QFCHz8GGLVeNOZaIEmJbR/Z/etpJkvc1LE7WhTg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@antv/x6-plugin-scroller/-/x6-plugin-scroller-2.0.10.tgz}
+    id: registry.npmjs.org/@antv/x6-plugin-scroller/2.0.10
+    name: '@antv/x6-plugin-scroller'
+    version: 2.0.10
+    peerDependencies:
+      '@antv/x6': ^2.x
+    dependencies:
+      '@antv/x6': registry.npmjs.org/@antv/x6/2.13.1
     dev: false
 
   registry.npmjs.org/@antv/x6-plugin-selection/2.1.7_@antv+x6@2.13.1:

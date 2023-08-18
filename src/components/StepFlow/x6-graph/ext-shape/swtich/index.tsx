@@ -11,10 +11,9 @@ export const SwitchNode = (props) => {
     const { stepFlow } = useContext(EditorContext);
     return (
         <div className={styles.customNode}>
-            {/* <Card style={{ width: 500 }}> */}
-
-                {/* <Input addonBefore={<SvgSwitch width={20} height={20}/>} className="input" value={props?.data} width={100} /> */}
-                <Input addonBefore='switch' className="input" value={node.data?.config.condition}
+            {/* <Input addonBefore={<SvgSwitch width={20} height={20}/>} className="input" value={props?.data} width={100} /> */}
+            {/* <Card> */}
+                < Input addonBefore='switch' className="input" value={node.data?.config.condition}
                     onChange={
                         (e) => {
                             const data = node.data;
@@ -38,6 +37,6 @@ export const SwitchNode = (props) => {
                 onChange={onChange}
             /> */}
 
-        </div>
+        </div >
     )
 }

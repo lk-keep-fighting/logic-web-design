@@ -4,7 +4,7 @@ import { StringNode } from "../ext-shape/string";
 import { NumNode } from "../ext-shape/num";
 import { SwitchCaseNode } from "../ext-shape/swtich-case";
 import { SwitchNode } from "../ext-shape/swtich";
-import { portsOnRight } from "./Consts";
+import { ports, portsOnRight, portsOnBottom } from "./Consts";
 import { SwitchDefaultNode } from "../ext-shape/swtich-default";
 
 export function RegistShape(customSharps: any[]) {
@@ -23,6 +23,7 @@ export function RegistShape(customSharps: any[]) {
     })
     register({
         shape: 'switch',
+        // effect: ['data'],
         component: SwitchNode,
     })
     register({
@@ -45,7 +46,7 @@ export function DefaultGraph(graph: Graph) {
                 // fill: '#d9d9d9',
             },
         },
-        ports: portsOnRight,
+        ports: portsOnBottom,
         data: {
             config: {
                 type: 'start'

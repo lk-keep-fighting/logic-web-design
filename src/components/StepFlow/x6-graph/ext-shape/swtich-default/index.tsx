@@ -6,7 +6,7 @@ export const SwitchDefaultNode = (props) => {
 
     return (
         <div className={styles.customNode}>
-            <div style={{ textAlign: 'center', fontSize: '20px' }}>default</div>
+            <div style={{ textAlign: 'center', fontSize: '15px' }}>default</div>
         </div>
     )
 }

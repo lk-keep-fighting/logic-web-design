@@ -1,11 +1,12 @@
 import { BarsOutlined, EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SaveOutlined, SettingOutlined } from '@ant-design/icons';
-import { Edge, EdgeView, Graph, Node, Shape } from '@antv/x6';
+import { Dom, Edge, EdgeView, Graph, Node, Shape } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
 import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { Stencil } from '@antv/x6-plugin-stencil';
+import { Scroller } from '@antv/x6-plugin-scroller'
 import { loader } from '@monaco-editor/react';
 import { Button, Dropdown, Layout, MenuProps, Modal, Space, message } from 'antd';
 import * as monaco from 'monaco-editor';
@@ -150,6 +151,21 @@ export default class X6Graph extends React.Component<EditorProps> {
   initGraph = (container?: HTMLDivElement) => {
     const graph = new Graph({
       container: container,
+      embedding: {
+        enabled: true,
+
+        // findParent({ node }) {
+        //   const bbox = node.getBBox()
+        //   return this.getNodes().filter((node) => {
+        //     const data = node.getData<{ parent: boolean }>()
+        //     if (data && data.parent) {
+        //       const targetBBox = node.getBBox()
+        //       return bbox.isIntersectWithRect(targetBBox)
+        //     }
+        //     return false
+        //   })
+        // },
+      },
       mousewheel: {
         enabled: true,
         // zoomAtMousePosition: true,
@@ -246,9 +262,9 @@ export default class X6Graph extends React.Component<EditorProps> {
         color: '#F2F7FA',
       },
       grid: true,
-      panning: {
-        enabled: true,
-      },
+      // panning: {
+      //   enabled: true,
+      // },
     });
     //对齐线
     graph
@@ -263,41 +279,53 @@ export default class X6Graph extends React.Component<EditorProps> {
         new History({
           enabled: true,
         }),
-      )
-      .use(new Keyboard())
-      .use(new Clipboard())
-      .use(
+      ).use(
         //框选
         new Selection({
           enabled: true,
+          multiple: true,
+          strict: true,
+          rubberband: true,
+          movable: true,
+          showNodeSelectionBox: true,
+          pointerEvents: "none"
         }),
-      );
+      )
+      .use(new Scroller({
+        enabled: true
+      }))
+      .use(new Keyboard())
+      .use(new Clipboard());
 
     graph.on('edge:dblclick', ({ cell }) => {
       // this.setState({ openEdgeEditor: true, editingEdge: cell })
     });
 
     graph.on('edge:mouseenter', ({ cell }) => {
-      // cell.addTools([
-      //     {
-      //         name: "source-arrowhead",
-      //         args: {
-      //             attrs: {
-      //                 fill: "red",
-      //                 visibility: "hidden"
-      //             },
-      //         },
-      //     },
-      //     {
-      //         name: "target-arrowhead",
-      //         args: {
-      //             attrs: {
-      //                 fill: "red",
-      //                 visibility: "hidden"
-      //             },
-      //         },
-      //     },
-      // ])
+      cell.addTools([
+        {
+          name: 'button-remove',
+          args: { distance: -40 },
+        },
+        // {
+        //     name: "source-arrowhead",
+        //     args: {
+        //         attrs: {
+        //             fill: "red",
+        //             visibility: "hidden"
+        //         },
+        //     },
+        // },
+        // {
+        //     name: "target-arrowhead",
+        //     args: {
+        //         attrs: {
+        //             fill: "red",
+        //             visibility: "hidden"
+        //         },
+        //     },
+        // },
+      ])
       // const ports = this.container?.querySelectorAll(
       //   '.x6-port-body',
       // ) as NodeListOf<SVGElement>;
@@ -305,19 +333,61 @@ export default class X6Graph extends React.Component<EditorProps> {
     });
 
     graph.on('edge:mouseleave', ({ cell }) => {
-      // cell.removeTools();
+      cell.removeTools();
       // const ports = this.container?.querySelectorAll(
       //   '.x6-port-body',
       // ) as NodeListOf<SVGElement>;
       // showPorts(ports, false);
     });
-    graph.on('node:mouseenter', () => {
+    // graph.on('node:embedding', ({ e, x, y, node, view, currentParent, candidateParent }) => {
+    //   console.log('embedding')
+    //   console.log(node.data)
+    //   console.log(currentParent?.data)
+    //   console.log(candidateParent?.data)
+    // })
+    graph.on('node:embedded', ({ e, x, y, node, view, previousParent, currentParent }) => {
+      console.log('embedded')
+      if (currentParent) {
+        const ne = graph.createEdge({
+          source: currentParent,
+          sourcePort: currentParent.ports.items.find(i => i.group == 'bottom')?.id,
+          target: node,
+          targetPort: node.ports.items.find(i => i.group == 'top')?.id,
+          zIndex: 0,
+        })
+        graph.addEdge(ne);
+        this.autoLayout(graph);
+      }
+    })
+    graph.on('node:mouseenter', ({ cell }) => {
+      if (cell.data?.config?.type != 'start') {
+        cell.addTools([
+          {
+            name: 'button-remove',
+            args: {
+              x: '100%',
+              y: 0,
+              offset: { x: -10, y: 10 },
+            },
+          },
+        ])
+      }
+
       const ports = this.container?.querySelectorAll(
         '.x6-port-body',
       ) as NodeListOf<SVGElement>;
       showPorts(ports, true);
     });
+
+    graph.on('node:mouseleave', ({ cell }) => {
+      cell.removeTools();
+      const ports = this.container?.querySelectorAll(
+        '.x6-port-body',
+      ) as NodeListOf<SVGElement>;
+      showPorts(ports, false);
+    });
     graph.on('node:click', ({ e, x, y, node, view }) => {
+      node.removeTools();
       this.setState({ editingNode: node });
     });
     graph.on('node:added', ({ node, index, options }) => {
@@ -332,15 +402,9 @@ export default class X6Graph extends React.Component<EditorProps> {
       //   source: node,
       //   target: newNode,
       // })
-      // this.setState({ rightToolCollapsed: false, editingNode: node })
+      this.setState({ rightToolCollapsed: false, editingNode: node })
     });
 
-    graph.on('node:mouseleave', () => {
-      const ports = this.container?.querySelectorAll(
-        '.x6-port-body',
-      ) as NodeListOf<SVGElement>;
-      showPorts(ports, false);
-    });
     // 绑定快捷键：复制粘贴
     graph.bindKey(['meta+c', 'ctrl+c'], () => {
       const cells = graph.getSelectedCells();
@@ -433,6 +497,7 @@ export default class X6Graph extends React.Component<EditorProps> {
       collapsable: true,
       stencilGraphWidth: 250,
       groups: groups,
+      layoutOptions: { rowHeight: 100 }
     });
     const groupedNodes: { [Key: string]: any[] } = {};
     this.state.panel.nodes.forEach((v) => {
@@ -518,7 +583,15 @@ export default class X6Graph extends React.Component<EditorProps> {
     const graphFlow = this.convertGraphToDsl(data);//根据图转换的flow，只包含steps值
     const newFlow = { ...this.state.stepFlow, ...graphFlow };
     const flowJson = JSON.stringify(newFlow);
-    this.setState({ stepFlow: newFlow });
+    this.setState({
+      stepFlow: newFlow,
+      editorCtx: {
+        ...this.state.editorCtx,
+        flowVar: JSON.parse(newFlow.var),
+        flowInput: JSON.parse(newFlow.input),
+        flowReturn: JSON.parse(newFlow.return),
+      }
+    });
     localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
     navigator.clipboard.writeText(flowJson);//复制到剪贴板
     this.state.flowRunner.send('save', flowJson);//发送消息
@@ -528,8 +601,6 @@ export default class X6Graph extends React.Component<EditorProps> {
   saveFlowSettingAndConvertGraphToDsl = (settingValues) => {
     const newFlow = { ...this.state.stepFlow, ...settingValues };
     const flowJson = JSON.stringify(newFlow);
-    console.log(settingValues)
-    console.log((typeof settingValues.var))
     this.setState({
       stepFlow: newFlow,
       editorCtx: {
@@ -619,9 +690,7 @@ export default class X6Graph extends React.Component<EditorProps> {
                 </Dropdown.Button >
                 <FlowSetting open={openFlowSetting}
                   values={{
-                    input: this.state.stepFlow.input,
-                    return: this.state.stepFlow.return,
-                    var: this.state.stepFlow.var,
+                    ...stepFlow
                   }}
                   setOpen={this.setFlowSetting}
                   onSubmit={this.saveFlowSettingAndConvertGraphToDsl}

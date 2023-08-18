@@ -18,6 +18,17 @@ export function ConfigSchemaProvider(tplOrType: string) {
         condition: {
           title: '条件表达式 ',
           type: 'string',
+          widget: 'js',
+        },
+      };
+      break;
+    case 'switch-case':
+      return {
+        ...common,
+        case: {
+          title: 'case值 ',
+          type: 'string',
+          extra: '值会转换为字符串进行匹配'
         },
       };
       break;
@@ -83,12 +94,28 @@ export function ConfigSchemaProvider(tplOrType: string) {
             height: 100,
           },
         },
-        parameter: {
-          title: '请求参数(body)',
+        queryParams: {
+          title: 'url参数',
           type: 'string',
           widget: 'js',
           props: {
             height: 200,
+          },
+        },
+        body: {
+          title: 'body请求参数',
+          type: 'string',
+          widget: 'js',
+          props: {
+            height: 200,
+          },
+        },
+        return: {
+          title: '返回值接收参数',
+          type: 'string',
+          widget: 'js',
+          props: {
+            height: 100,
           },
         },
         timeout: {
@@ -105,22 +132,6 @@ export function ConfigSchemaProvider(tplOrType: string) {
           widget: 'textArea',
           props: {
             rows: 1,
-          },
-        },
-        parameter: {
-          title: '入参声明（Json）',
-          type: 'string',
-          widget: 'json',
-          props: {
-            height: 300,
-          },
-        },
-        data: {
-          title: '全局变量声明（Json）',
-          type: 'string',
-          widget: 'json',
-          props: {
-            height: 300,
           },
         },
       }

@@ -15,8 +15,10 @@ export default (props: INodeEditorProps) => {
   const onFinish = (formData: any) => {
     props.editNode?.setAttrByPath('text/text', formData.name);
     const preConfig = props.editNode?.data.config;
-    if (props.editNode)
-      props.editNode.data.config = { ...preConfig, ...formData };
+    if (props.editNode) {
+      props.editNode.setData({ config: { ...preConfig, ...formData } })
+    }
+    // props.editNode.data.config = { ...preConfig, ...formData };
     console.log('submit---props.editNode.data.config');
     console.log(props.editNode?.data.config);
     props?.onSubmit();
@@ -43,7 +45,7 @@ export default (props: INodeEditorProps) => {
       form.resetFields();
       form.setValues(config);
     }
-  }, [props.editNode]);
+  }, [props.editNode,props.editNode?.data]);
   return (
     <FormRender
       form={form}

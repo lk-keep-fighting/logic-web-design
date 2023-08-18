@@ -13,7 +13,7 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: any): any =>
     if (['ExtSharp', 'polygon'].indexOf(node.shape) > -1) {
         switch (data.config.type) {
             case 'switch':
-                let width = 150;
+                let width = 200;
                 const switchNode = graph.createNode({
                     shape: 'switch',
                     position: pos,
@@ -25,7 +25,7 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: any): any =>
                 graph.removeNode(node);
                 const defCaseNode1 = graph.createNode({
                     shape: 'switch-case',
-                    position: { x: pos.x + width + 60, y: pos.y - 50 },
+                    position: { y: pos.y + 100, x: pos.x - width / 2 },
                     width: 120,
                     height: 50,
                     ports,
@@ -37,7 +37,7 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: any): any =>
                 })
                 const defCaseNode2 = graph.createNode({
                     shape: 'switch-default',
-                    position: { x: pos.x + width + 60, y: pos.y + 50 },
+                    position: { y: pos.y + 100, x: pos.x + width },
                     width: 120,
                     height: 50,
                     ports,
@@ -49,16 +49,16 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: any): any =>
                 })
                 const se1 = graph.createEdge({
                     source: switchNode,
-                    sourcePort: switchNode.ports.items.find(i => i.group == 'right')?.id,
+                    sourcePort: switchNode.ports.items.find(i => i.group == 'bottom')?.id,
                     target: defCaseNode1,
-                    targetPort: defCaseNode1.ports.items.find(i => i.group == 'left')?.id,
+                    targetPort: defCaseNode1.ports.items.find(i => i.group == 'top')?.id,
                     zIndex: 0
                 })
                 const se2 = graph.createEdge({
                     source: switchNode,
-                    sourcePort: switchNode.ports.items.find(i => i.group == 'right')?.id,
+                    sourcePort: switchNode.ports.items.find(i => i.group == 'bottom')?.id,
                     target: defCaseNode2,
-                    targetPort: defCaseNode2.ports.items.find(i => i.group == 'left')?.id,
+                    targetPort: defCaseNode2.ports.items.find(i => i.group == 'top')?.id,
                     zIndex: 0
                 })
                 graph.addNodes([switchNode, defCaseNode1, defCaseNode2]);
@@ -68,7 +68,7 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: any): any =>
                 const switchCaseNode = graph.createNode({
                     shape: 'switch-case',
                     position: node.position(),
-                    width: 100,
+                    width: 120,
                     height: 50,
                     ports,
                     data: node.data

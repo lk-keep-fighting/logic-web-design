@@ -72,6 +72,7 @@ export function InitPanelData(
     },
     {
       shape: 'ExtSharp',
+      label: 'http请求',
       attrs: {
         text: {
           text: 'http请求',
@@ -162,9 +163,9 @@ export function InitPanelData(
     },
     {
       shape: 'ExtSharp',
-      width,
-      label: 'switch',
+      width: 50,
       height,
+      label: 'switch',
       attrs: {
         // body: {
         //   refPoints: '0,10 10,0 20,10 10,20',
@@ -306,7 +307,7 @@ export function InitPanelData(
     {
       name: 'global',
       title: '全局节点',
-      graphHeight: 90,
+      graphHeight: 100,
     },
     // {
     //   name: 'var',
@@ -316,17 +317,17 @@ export function InitPanelData(
     {
       name: 'ctrl',
       title: '逻辑控制',
-      graphHeight: 180,
+      graphHeight: 120,
     },
     {
       name: 'biz',
       title: '业务调用',
-      graphHeight: 180,
+      graphHeight: 200,
     },
     {
       name: 'def',
       title: '其他',
-      graphHeight: 270,
+      graphHeight: 300,
     },
   ];
   if (customGroup && customGroup.length > 0)
