@@ -4,6 +4,8 @@ import { Button } from 'antd';
 import Modal from 'antd/es/modal/Modal';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { buildVarExtarLibByObj } from '../../../MonacoHelper';
+import './index.css'
+import { ArrowsAltOutlined } from '@ant-design/icons';
 // import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 class ICodeEditor {
@@ -40,14 +42,6 @@ const EditorByLoader = (props: ICodeEditor) => {
   const [full, setFull] = useState(false);
   return (
     <div style={{ width: '100%' }}>
-      <Button
-        size="small"
-        type="dashed"
-        style={{ float: 'right' }}
-        onClick={() => setFull(true)}
-      >
-        放大编辑
-      </Button>
       {full ? (
         <Modal
           title="js编辑器"
@@ -73,19 +67,30 @@ const EditorByLoader = (props: ICodeEditor) => {
           />
         </Modal>
       ) : (
-        <Editor
-          theme="vs-dark"
-          defaultValue={props.value}
-          defaultLanguage={props.language}
-          options={{
-            // lineNumbers: 'off',
-            minimap: {
-              enabled: false,
-            },
-          }}
-          height={500}
-          {...props}
-        />
+        <div>
+          <Editor
+            className='editorByLoader'
+            theme="vs-dark"
+            defaultValue={props.value}
+            defaultLanguage={props.language}
+            options={{
+              // lineNumbers: 'off',
+              minimap: {
+                enabled: false,
+              },
+            }}
+            height={500}
+            {...props}
+          />
+          <Button
+            size="small"
+            type="text"
+            icon={<ArrowsAltOutlined />}
+            style={{ position: 'absolute', top: 0, right: 0, margin: '10px', color: 'whitesmoke' }}
+            onClick={() => setFull(true)}
+          >
+          </Button>
+        </div>
       )}
     </div>
   );
