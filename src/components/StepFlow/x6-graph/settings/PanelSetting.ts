@@ -27,7 +27,20 @@ export function InitPanelData(
           ...commonAttrs.body,
           fill: '#d9d9d9',
         },
+        text: {
+          text: 'end',
+          // 'font-weight': 'bolder',
+        },
       },
+      markup: [
+        {
+          tagName: 'circle',
+          selector: 'body',
+        },
+        {
+          tagName: 'text',
+          selector: 'label',
+        }],
       ports,
       data: {
         config: {
@@ -39,28 +52,32 @@ export function InitPanelData(
     },
     {
       shape: 'ExtSharp',
+      width,
+      height,
       ports,
       attrs: {
         body: {
-          rx: 6,
-          ry: 6,
+          // rx: 6,
+          // ry: 6,
+          // fill: 'red',
           stroke: 'red',
-          strokeWidth: 1,
+          strokeWidth: 3,
         },
         // image: {
-        //     x: 4,
-        //     y: 4,
-        //     width: 16,
-        //     height: 16,
-        //     'xlink:href': '/icons/warning.svg'
+        //   x: 10,
+        //   y: 10,
+        //   width: 30,
+        //   height: 30,
+        //   'xlink:href': '/icons/warning.svg'
         // },
         text: {
-          x: 4,
-          text: '全局异常处理',
-          fontSize: 12,
-          fontWeight: 600,
-          textLength: '80',
-          lengthAdjust: 'spacing',
+          x: 5,
+          y: 0,
+          text: 'catch\n异常\n',
+          fontSize: 15,
+          // fontWeight: 500,
+          // textLength: '80',
+          // lengthAdjust: 'spacing',
         },
       },
       data: {
@@ -76,6 +93,7 @@ export function InitPanelData(
       attrs: {
         text: {
           text: 'http请求',
+          // fontSize: 14,
         },
         image: {
           'xlink:href': '/icons/http.svg',
@@ -91,7 +109,7 @@ export function InitPanelData(
         },
       },
       ports,
-      tools: ['node-editor'],
+      // tools: ['node-editor'],
       groups: ['biz'],
     },
     {
@@ -106,6 +124,7 @@ export function InitPanelData(
         },
         text: {
           text: 'js代码块',
+          fontSize: 14,
         },
       },
       data: {
@@ -113,7 +132,7 @@ export function InitPanelData(
           type: 'js',
         },
       },
-      tools: ['node-editor'],
+      // tools: ['node-editor'],
       groups: ['def'],
     },
     {
@@ -128,6 +147,7 @@ export function InitPanelData(
         },
         text: {
           text: '复用逻辑',
+          fontSize: 14,
         },
       },
       data: {
@@ -135,7 +155,7 @@ export function InitPanelData(
           type: 'process',
         },
       },
-      tools: ['node-editor'],
+      // tools: ['node-editor'],
       groups: ['biz'],
     },
     {
@@ -143,6 +163,7 @@ export function InitPanelData(
       attrs: {
         text: {
           text: '延时',
+          fontSize: 14,
         },
         image: {
           'xlink:href': '/icons/delay.svg',
@@ -158,7 +179,7 @@ export function InitPanelData(
         },
       },
       ports,
-      tools: ['node-editor'],
+      // tools: ['node-editor'],
       groups: ['def'],
     },
     {
@@ -176,12 +197,12 @@ export function InitPanelData(
         image: {
           'xlink:href': '/icons/switch.svg',
           width: 45,
-          x: 2,
+          x: 1,
           y: 2,
         },
         text: {
           text: 'switch',
-          // fontSize: 12,
+          fontSize: 14,
           // fill: '#5F95FF',
           refX: 0.5,
           refY: '100%',
@@ -196,7 +217,7 @@ export function InitPanelData(
         },
       },
       ports,
-      tools: ['node-editor'],
+      // tools: ['node-editor'],
       groups: ['ctrl'],
     },
     {
@@ -213,12 +234,12 @@ export function InitPanelData(
         image: {
           'xlink:href': '/icons/text.svg',
           width: 30,
-          x: 10,
+          x: 8,
           y: 10
         },
         text: {
           text: 'switch-case',
-          // fontSize: 12,
+          fontSize: 14,
           // fill: '#5F95FF',
           refX: 0.5,
           refY: '100%',
@@ -233,7 +254,7 @@ export function InitPanelData(
         },
       },
       ports,
-      tools: ['node-editor'],
+      // tools: ['node-editor'],
       groups: ['ctrl'],
     },
 
