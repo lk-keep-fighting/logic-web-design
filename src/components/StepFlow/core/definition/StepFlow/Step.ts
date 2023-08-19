@@ -8,22 +8,18 @@ export class Step {
   name?: string;
   describe?: string;
   type: StepTypeEnum = StepTypeEnum.js;
-  data: any; //声明的数据
-  url?: string;
-  method?: string;
-  headers?: object;
-  parameter?: string;
-  shareData?: Array<ShareDataConfig>;
+  return?: string;//节点值存储的变量
+  // shareData?: Array<ShareDataConfig>;
   // while结束节点
   endStepId?: string;
   nextStepId?: string;
   // 普通节点的超时时间，wait节点的等待时间
   timeout?: number;
-  // js
-  script?: string;
-  // branch、while
-  condition?: string;
   branches?: Array<Branch>;
+}
+export class SwitchStep extends Step {
+  type: StepTypeEnum = StepTypeEnum.switch;
+  condition?: string;
 }
 export class JsStep extends Step {
   script?: string;
@@ -31,8 +27,9 @@ export class JsStep extends Step {
 export class HttpStep extends Step {
   url?: string;
   method?: string;
-  headers?: object;
-  parameter?: string;
+  headers?: string;
+  query?: string;
+  body?: string;
   // @ApiProperty({ name: '请求适配器' })
   // reqAdaptor: string;
   // @ApiProperty({ name: '接收适配器' })

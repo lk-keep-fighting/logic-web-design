@@ -12,7 +12,7 @@ import * as monaco from 'monaco-editor';
 import React from 'react';
 import { StepFlow } from '../core/definition/StepFlow';
 import { FlowRunner } from '../runtime/index';
-import { GraphToStepFlow } from '../core/dsl-convert/index';
+import { GraphToStepFlow } from '../core/dsl/parser/step-flow-parser';
 import './editor.css';
 import LeftTool from '../left-toolset';
 import RightToolset from '../right-toolset';

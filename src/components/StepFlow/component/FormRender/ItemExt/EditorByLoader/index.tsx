@@ -22,11 +22,11 @@ const EditorByLoader = (props: ICodeEditor) => {
   useEffect(() => {
     const flowVar = editorCtx.flowVar;
     const vars = buildVarExtarLibByObj('_var', editorCtx.flowVar)
-    console.log('var lib', vars)
+    // console.log('var lib', vars)
     const input = buildVarExtarLibByObj('_input', editorCtx.flowInput)
-    console.log('input lib', input)
+    // console.log('input lib', input)
     const returnp = buildVarExtarLibByObj('_return', editorCtx.flowReturn)
-    console.log('return lib', returnp)
+    // console.log('return lib', returnp)
 
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');

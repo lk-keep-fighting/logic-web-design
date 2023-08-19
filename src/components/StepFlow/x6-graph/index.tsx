@@ -14,7 +14,7 @@ import * as monaco from 'monaco-editor';
 import React from 'react';
 import { StepFlow } from '../core/definition/StepFlow';
 import { FlowRunner } from '../runtime/index';
-import { GraphToStepFlow } from '../core/dsl-convert/index';
+import { GraphToStepFlow } from '../core/dsl/parser/step-flow-parser';
 import './index.css';
 import LeftTool from '../left-toolset';
 import RightToolset from '../right-toolset';
@@ -27,6 +27,7 @@ import DagreGraph from './instance/dagre-graph';
 import FlowSetting from './settings/flow-setting';
 import { dealGraphNodeWhenAddedFromPanel } from './helper/node-mapping/indext';
 import { autoDagreLayout } from './layout/dagreLayout';
+import { TypeAnnotationParser } from '../core/dsl/parser/type-annotation-parser';
 
 
 type EditorCtx = {
@@ -155,18 +156,6 @@ export default class X6Graph extends React.Component<EditorProps> {
       container: container,
       embedding: {
         enabled: true,
-
-        // findParent({ node }) {
-        //   const bbox = node.getBBox()
-        //   return this.getNodes().filter((node) => {
-        //     const data = node.getData<{ parent: boolean }>()
-        //     if (data && data.parent) {
-        //       const targetBBox = node.getBBox()
-        //       return bbox.isIntersectWithRect(targetBBox)
-        //     }
-        //     return false
-        //   })
-        // },
       },
       mousewheel: {
         enabled: true,
@@ -606,6 +595,13 @@ export default class X6Graph extends React.Component<EditorProps> {
   };
   //保存参数配置
   saveFlowSettingAndConvertGraphToDsl = (settingValues) => {
+    const input = JSON.parse(settingValues.input);
+    console.log('input')
+    console.log(input)
+    Object.keys(input).forEach((key) => {
+      console.log(TypeAnnotationParser.guessByValue(input[key]));
+    })
+    // TypeAnnotationParser.guessByValue(settingValues.return);
     const newFlow = { ...this.state.stepFlow, ...settingValues };
     const flowJson = JSON.stringify(newFlow);
     this.setState({

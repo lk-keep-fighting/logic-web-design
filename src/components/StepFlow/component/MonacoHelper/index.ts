@@ -34,8 +34,8 @@ const buildObjectStr = (obj: any) => {
 export const buildVarExtarLibByObj = (varName: string, obj?: Object) => {
     let str = '';
     if (obj) {
-        console.log('obj')
-        console.log(obj)
+        // console.log('obj')
+        // console.log(obj)
         Object.keys(obj).forEach((item: any) => {
             const value = obj[item];
             str += `${item}:`;
