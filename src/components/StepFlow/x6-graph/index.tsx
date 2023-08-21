@@ -1,5 +1,5 @@
 import { BarsOutlined, EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, RocketOutlined, SaveOutlined, SettingOutlined } from '@ant-design/icons';
-import { Dom, Edge, EdgeView, Graph, Node, Shape } from '@antv/x6';
+import { CellView, Dom, Edge, EdgeView, Graph, Node, Shape } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
@@ -35,6 +35,7 @@ type EditorCtx = {
   flowVar?: Object,
   flowInput?: Object,
   flowReturn?: Object,
+  flowEnv?: Object,
 }
 const saveBtns = [
   // { key: 'saveToBrowser', label: '缓存到浏览器' },
@@ -116,6 +117,7 @@ export default class X6Graph extends React.Component<EditorProps> {
       input: "{\r\t \r\n}",
       var: "{\r\t \r\n}",
       return: "{\r\t \r\n}",
+      env: "{\r\t \"host\":\"\"\r\n}",
     },
     openFlowSetting: false,
     flowRunner: new FlowRunner(),
@@ -143,6 +145,7 @@ export default class X6Graph extends React.Component<EditorProps> {
 
   componentDidMount() {
     this.initGraph(this.container);
+    this.updateFlowAndEditorCtx(this.state.stepFlow)
     //注册运行日志监听
     this.state.flowRunner.on('log', (msg) => {
       this.state.logs.push(msg);
@@ -156,6 +159,18 @@ export default class X6Graph extends React.Component<EditorProps> {
       container: container,
       embedding: {
         enabled: true,
+        validate: (args: {
+          child: Node,
+          parent: Node,
+          childView: CellView,
+          parentView: CellView,
+        }) => {
+          console.log('validate')
+          console.log(args)
+          //实现拖拽连接，设置自动顺序连接的节点
+          args.child.setData({ hoverNode: args.parent })
+          return false;
+        }
       },
       mousewheel: {
         enabled: true,
@@ -331,26 +346,31 @@ export default class X6Graph extends React.Component<EditorProps> {
       // ) as NodeListOf<SVGElement>;
       // showPorts(ports, false);
     });
-    // graph.on('node:embedding', ({ e, x, y, node, view, currentParent, candidateParent }) => {
-    //   console.log('embedding')
-    //   console.log(node.data)
-    //   console.log(currentParent?.data)
-    //   console.log(candidateParent?.data)
-    // })
-    graph.on('node:embedded', ({ e, x, y, node, view, previousParent, currentParent }) => {
-      console.log('embedded')
-      if (currentParent) {
+    graph.on('node:moved', ({ e, x, y, node, view }) => {
+      const linkNode = node.data?.hoverNode;
+      if (linkNode) {
         const ne = graph.createEdge({
-          source: currentParent,
-          sourcePort: currentParent.ports.items.find(i => i.group == 'bottom')?.id,
+          source: linkNode,
+          sourcePort: linkNode.ports.items.find(i => i.group == 'bottom')?.id,
           target: node,
           targetPort: node.ports.items.find(i => i.group == 'top')?.id,
           zIndex: 0,
         })
+        node.data.hoverNode = undefined;
         graph.addEdge(ne);
         this.autoLayout(graph);
       }
     })
+    // graph.on('node:embedding', ({ e, x, y, node, view, currentParent, candidateParent }) => {
+    //   console.log('embedding')
+    //   // node.setData({ candidateParent })
+    //   // console.log(node.data)
+    //   // console.log(currentParent?.data)
+    //   // console.log(candidateParent?.data)
+    // })
+    // graph.on('node:embedded', ({ e, x, y, node, view, previousParent, currentParent }) => {
+    //   // console.log('embedded')
+    // })
     graph.on('node:mouseenter', ({ cell }) => {
       if (cell.data?.config?.type != 'start') {
         cell.addTools([
@@ -508,18 +528,10 @@ export default class X6Graph extends React.Component<EditorProps> {
 
     if (this.props.config) {
       this.state.stepFlow = this.props.config;
-      // const layoutJson = gridLayout.layout(this.state.stepFlow.visualConfig);
-      // graph.fromJSON(layoutJson)
       graph.fromJSON(this.state.stepFlow.visualConfig);
     } else {
-      // const defGraph = {
-      //   "cells": [{ "position": { "y": 0 }, "size": { "width": 50, "height": 50 }, "attrs": { "text": { "fontSize": 12, "text": "start" } }, "visible": true, "shape": "circle", "id": "db9759b5-13af-4956-89e3-54ae3b233208", "data": { "config": { "type": "start", "parameter": "{\r\n    \r\n}", "data": "{\r\n    \r\n}" } }, "zIndex": 1, "ports": { "groups": { "top": { "position": "top", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } }, "right": { "position": "right", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } }, "bottom": { "position": "bottom", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } }, "left": { "position": "left", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } } }, "items": [{ "group": "top", "id": "2b2f4a95-8bf3-449f-aaaf-a75e911a329d" }, { "group": "right", "id": "e59eaf1f-e988-456a-9875-442d9b929090" }, { "group": "bottom", "id": "36a3968f-c25e-4a12-a28c-703a3ede1da7" }, { "group": "left", "id": "9f5a3a60-11dd-40db-bd70-14bbed03b28f" }] } }, { "position": { "x": 0, "y": 140 }, "size": { "width": 50, "height": 50 }, "attrs": { "text": { "text": "end" }, "body": { "fill": "#d9d9d9" } }, "visible": true, "shape": "circle", "id": "31409c72-b23b-48e8-bff8-92fb65b50c2a", "data": { "config": { "type": "end" } }, "zIndex": 2, "ports": { "groups": { "top": { "position": "top", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } }, "right": { "position": "right", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } }, "bottom": { "position": "bottom", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } }, "left": { "position": "left", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } } }, "items": [{ "group": "top", "id": "f6ed92b1-1ddb-490c-b0a5-5c06cceba5c8" }, { "group": "right", "id": "2a4c49f2-f5f3-4b23-bc59-0981a9b82a8f" }, { "group": "bottom", "id": "8e9f8edd-a0da-4706-9e91-57983af4928b" }, { "group": "left", "id": "f7a34ae9-c439-4c99-bec3-4dd7683161a8" }] } }, { "shape": "edge", "attrs": { "line": { "stroke": "#A2B1C3", "targetMarker": { "name": "block", "width": 12, "height": 8 } } }, "id": "5eb3abe3-9d9c-4ed5-8edd-2ff20dedd5b9", "zIndex": 50, "labels": [{ "position": { "distance": 120 }, "attrs": { "label": { "text": "+" } } }], "source": { "cell": "db9759b5-13af-4956-89e3-54ae3b233208", "port": "36a3968f-c25e-4a12-a28c-703a3ede1da7" }, "target": { "cell": "31409c72-b23b-48e8-bff8-92fb65b50c2a", "port": "f6ed92b1-1ddb-490c-b0a5-5c06cceba5c8" }, "tools": { "items": [{ "name": "edge-editor", "args": { "attrs": { "backgroundColor": "#fff" } } }] } }]
-      // };
-
-      // graph.fromJSON(defGraph);
       DefaultGraph(graph);
       this.autoLayout(graph)
-      // graph.fromJSON(defGraph);
     }
     // graph.centerContent();
 
@@ -573,12 +585,8 @@ export default class X6Graph extends React.Component<EditorProps> {
         break;
     }
   };
-  //保存到浏览器并转换dsl
-  saveAndConvertGraphToDsl = () => {
-    const data = this.state.graph?.toJSON();
-    const graphFlow = this.convertGraphToDsl(data);//根据图转换的flow，只包含steps值
-    const newFlow = { ...this.state.stepFlow, ...graphFlow };
-    const flowJson = JSON.stringify(newFlow);
+  updateFlowAndEditorCtx = (updatedFlowProps: StepFlow) => {
+    const newFlow = { ...this.state.stepFlow, ...updatedFlowProps };
     this.setState({
       stepFlow: newFlow,
       editorCtx: {
@@ -586,12 +594,23 @@ export default class X6Graph extends React.Component<EditorProps> {
         flowVar: JSON.parse(newFlow.var),
         flowInput: JSON.parse(newFlow.input),
         flowReturn: JSON.parse(newFlow.return),
+        flowEnv: JSON.parse(newFlow.env),
       }
     });
-    localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
-    navigator.clipboard.writeText(flowJson);//复制到剪贴板
-    this.state.flowRunner.send('save', flowJson);//发送消息
-    this.autoLayout(this.state.graph)//自动布局
+    return newFlow;
+  }
+  //保存到浏览器并转换dsl
+  saveAndConvertGraphToDsl = () => {
+    const data = this.state.graph?.toJSON();
+    const graphFlow = this.convertGraphToDsl(data);//根据图转换的flow，只包含steps值
+    if (graphFlow) {
+      const newFlow = this.updateFlowAndEditorCtx(graphFlow)
+      const flowJson = JSON.stringify(newFlow);
+      localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
+      navigator.clipboard.writeText(flowJson);//复制到剪贴板
+      this.state.flowRunner.send('save', flowJson);//发送消息
+      this.autoLayout(this.state.graph)//自动布局
+    }
   };
   //保存参数配置
   saveFlowSettingAndConvertGraphToDsl = (settingValues) => {
@@ -604,15 +623,7 @@ export default class X6Graph extends React.Component<EditorProps> {
     // TypeAnnotationParser.guessByValue(settingValues.return);
     const newFlow = { ...this.state.stepFlow, ...settingValues };
     const flowJson = JSON.stringify(newFlow);
-    this.setState({
-      stepFlow: newFlow,
-      editorCtx: {
-        ...this.state.editorCtx,
-        flowVar: JSON.parse(settingValues.var),
-        flowInput: JSON.parse(settingValues.input),
-        flowReturn: JSON.parse(settingValues.return),
-      }
-    });
+    this.updateFlowAndEditorCtx(settingValues)
     localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
     navigator.clipboard.writeText(flowJson);//复制到剪贴板
     this.state.flowRunner.send('save', flowJson);//发送消息

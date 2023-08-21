@@ -22,15 +22,14 @@ const EditorByLoader = (props: ICodeEditor) => {
   useEffect(() => {
     const flowVar = editorCtx.flowVar;
     const vars = buildVarExtarLibByObj('_var', editorCtx.flowVar)
-    // console.log('var lib', vars)
     const input = buildVarExtarLibByObj('_input', editorCtx.flowInput)
-    // console.log('input lib', input)
     const returnp = buildVarExtarLibByObj('_return', editorCtx.flowReturn)
-    // console.log('return lib', returnp)
+    const env = buildVarExtarLibByObj('_env', editorCtx.flowEnv)
 
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
+    monaco?.languages.typescript.javascriptDefaults.addExtraLib(env, 'env.ts');
     return () => {
       console.log('effect dispose')
       // @ts-ignore

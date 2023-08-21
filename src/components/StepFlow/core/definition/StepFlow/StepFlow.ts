@@ -20,9 +20,13 @@ export class StepFlow {
    */
   return?: object = {};
   /**
-   * 全局变量
+   * 局部变量
    */
   var?: object = {};
+  /**
+   * 环境配置
+   */
+  env?: object = {};
   /**
    * api流程所有步骤配置，平铺无嵌套，通过nextStepId关联流转
    */

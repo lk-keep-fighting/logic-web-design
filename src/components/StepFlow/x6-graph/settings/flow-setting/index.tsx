@@ -63,16 +63,25 @@ const FlowSetting = (props) => {
                             props: {
                                 height: 200,
                             },
-                            extra: '编辑器中可通过 _return. 获取'
+                            extra: '编辑器中可通过 _return. 获取并赋值'
                         },
                         var: {
-                            title: '全局变量json',
+                            title: '局部变量json',
                             type: 'string',
                             widget: 'json',
                             props: {
                                 height: 200,
                             },
                             extra: '编辑器中可通过 _var. 获取'
+                        },
+                        env: {
+                            title: '环境变量json',
+                            type: 'string',
+                            widget: 'json',
+                            props: {
+                                height: 200,
+                            },
+                            extra: '编辑器中可通过 _env. 获取'
                         },
                     },
                     // "displayType": "row",
