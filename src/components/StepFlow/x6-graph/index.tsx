@@ -39,8 +39,9 @@ type EditorCtx = {
 }
 const saveBtns = [
   // { key: 'saveToBrowser', label: '缓存到浏览器' },
-  { key: 'loadFromBrowser', label: '从浏览器加载' },
-  { key: 'saveToPng', label: '保存为图片' },
+  { key: 'saveToPng', label: '导出图片' },
+  { key: '-', label: '------------' },
+  { key: 'loadFromBrowser', label: '从浏览器恢复' },
   // { key: 'saveToClipboard', label: '复制到剪贴板' }
 ];
 
@@ -169,7 +170,7 @@ export default class X6Graph extends React.Component<EditorProps> {
           console.log(args)
           //实现拖拽连接，设置自动顺序连接的节点
           args.child.setData({ hoverNode: args.parent })
-          return false;
+          return true;
         }
       },
       mousewheel: {
@@ -580,7 +581,7 @@ export default class X6Graph extends React.Component<EditorProps> {
 
         break;
       case 'saveToPng':
-        this.state.graph?.exportSVG(new Date().toLocaleDateString());
+        this.state.graph?.exportPNG(new Date().toLocaleDateString());
         // this.state.graph?.exportPNG(new Date().toLocaleDateString(), { backgroundColor: '#F2F7FA', padding: 10, quality: 1 });
         break;
     }

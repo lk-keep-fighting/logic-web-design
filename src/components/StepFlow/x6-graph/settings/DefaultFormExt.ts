@@ -28,6 +28,7 @@ export function ConfigSchemaProvider(tplOrType: string) {
           props: {
             height: 100,
           },
+          extra: "直接填写表达式或变量名，如_input.outType"
         },
       };
       break;
@@ -51,6 +52,7 @@ export function ConfigSchemaProvider(tplOrType: string) {
           props: {
             height: 500,
           },
+          extra: 'js代码块，可用于简单的逻辑定制，变量赋值等'
         },
       };
 
@@ -79,10 +81,11 @@ export function ConfigSchemaProvider(tplOrType: string) {
         url: {
           title: '请求URL： ',
           type: 'string',
-          widget: 'textArea',
+          widget: 'js',
           props: {
-            rows: 1,
+            height: 50,
           },
+          extra: 'js代码块，需返回URL字符串'
         },
         method: {
           title: '请求类型：',
@@ -104,6 +107,7 @@ export function ConfigSchemaProvider(tplOrType: string) {
           props: {
             height: 200,
           },
+          extra: 'js代码块，需返回请求头对象'
         },
         body: {
           title: 'body请求参数',
@@ -112,14 +116,16 @@ export function ConfigSchemaProvider(tplOrType: string) {
           props: {
             height: 200,
           },
+          extra: 'js代码块，需返回body对象'
         },
         return: {
-          title: '返回值接收参数',
+          title: '将response.data赋值给哪个参数？',
           type: 'string',
           widget: 'js',
           props: {
             height: 100,
           },
+          extra: '输入局部变量的完整引用，如_var.repData'
         },
         queryParams: {
           title: 'url参数',
@@ -128,6 +134,7 @@ export function ConfigSchemaProvider(tplOrType: string) {
           props: {
             height: 100,
           },
+          extra: 'js代码块，需返回对象，会转换为键值对追加在url中'
         },
         timeout: {
           title: '执行超时时长(ms)',
@@ -463,10 +470,20 @@ export function ConfigSchemaProvider(tplOrType: string) {
         parameter: {
           title: '入参声明(json)',
           type: 'string',
-          widget: 'json',
+          widget: 'js',
           props: {
             height: 200,
           },
+          extra: 'js代码块，返回子流程的入参对象，作为子流程的_input传入'
+        },
+        return: {
+          title: '指定子流程的返回_return，赋值给哪个参数？',
+          type: 'string',
+          widget: 'js',
+          props: {
+            height: 100,
+          },
+          extra: '输入局部变量的完整引用，如_var.repData'
         },
       };
       break;

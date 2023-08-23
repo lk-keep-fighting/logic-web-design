@@ -20,7 +20,7 @@ const FlowSetting = (props) => {
     return <span>
         {props.children}
         <Modal open={props.open ?? false}
-            title='参数配置'
+            title='参数配置（通过json格式声明）'
             width={1000}
             onOk={() => {
                 const values = form.getValues()
@@ -48,7 +48,7 @@ const FlowSetting = (props) => {
                     "type": "object",
                     "properties": {
                         input: {
-                            title: '入参json',
+                            title: '入参声明',
                             type: 'string',
                             widget: 'json',
                             props: {
@@ -57,7 +57,7 @@ const FlowSetting = (props) => {
                             extra: '编辑器中可通过 _input. 获取'
                         },
                         return: {
-                            title: '返回参数json',
+                            title: '返回参数声明',
                             type: 'string',
                             widget: 'json',
                             props: {
@@ -66,7 +66,7 @@ const FlowSetting = (props) => {
                             extra: '编辑器中可通过 _return. 获取并赋值'
                         },
                         var: {
-                            title: '局部变量json',
+                            title: '局部变量声明',
                             type: 'string',
                             widget: 'json',
                             props: {
@@ -75,7 +75,7 @@ const FlowSetting = (props) => {
                             extra: '编辑器中可通过 _var. 获取'
                         },
                         env: {
-                            title: '环境变量json',
+                            title: '环境变量声明',
                             type: 'string',
                             widget: 'json',
                             props: {
