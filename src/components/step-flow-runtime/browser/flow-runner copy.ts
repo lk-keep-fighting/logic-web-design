@@ -1,10 +1,10 @@
 import { isAxiosError } from 'axios';
 import EventEmitter from 'eventemitter3';
-import { Step, StepFlow, StepTypeEnum } from '../../core/definition/StepFlow';
+import { Step, StepFlow, StepTypeEnum } from '../../step-flow-editor/core/definition/StepFlow';
 import Context from './context';
 import StepRuntime from './step-runners';
 import { getByJsTplString, runJsExpress } from './tool';
-import { ProcessStep } from '../../core/definition/StepFlow/Step';
+import { ProcessStep } from '../../step-flow-editor/core/definition/StepFlow/Step';
 
 const LIFECYCLE = new Set(['ctxCreated', 'enterNode', 'leaveNode']);
 const SHAPES = {

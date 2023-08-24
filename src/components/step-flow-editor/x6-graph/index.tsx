@@ -13,7 +13,6 @@ import { Button, Dropdown, Layout, MenuProps, Modal, Space, message } from 'antd
 import * as monaco from 'monaco-editor';
 import React from 'react';
 import { StepFlow } from '../core/definition/StepFlow';
-import { FlowRunner } from '../runtime/index';
 import { GraphToStepFlow } from '../core/dsl/parser/step-flow-parser';
 import './index.css';
 import LeftTool from '../left-toolset';
@@ -65,7 +64,7 @@ type StateType = {
   stepFlow: StepFlow;
   openFlowSetting: boolean;
   editorCtx: EditorCtx
-  flowRunner: FlowRunner;
+  // flowRunner: FlowRunner;
   logs: any[];
   panel: {
     nodes: any[];
@@ -81,7 +80,7 @@ interface EditorProps {
   showLeft?: boolean;
   showRight?: boolean;
   configSchemaProvider?: (type: string) => any;
-  readyCallback?: (graph: Graph, flowRunner: FlowRunner) => void;
+  // readyCallback?: (graph: Graph, flowRunner: FlowRunner) => void;
 }
 export default class X6Graph extends React.Component<EditorProps> {
   private container?: HTMLDivElement;
@@ -121,7 +120,7 @@ export default class X6Graph extends React.Component<EditorProps> {
       env: "{\r\t \"host\":\"\"\r\n}",
     },
     openFlowSetting: false,
-    flowRunner: new FlowRunner(),
+    // flowRunner: new FlowRunner(),
     editorCtx: { stepFlow: { steps: [] } },
     logs: [],
     panel: {
@@ -148,10 +147,10 @@ export default class X6Graph extends React.Component<EditorProps> {
     this.initGraph(this.container);
     this.updateFlowAndEditorCtx(this.state.stepFlow)
     //注册运行日志监听
-    this.state.flowRunner.on('log', (msg) => {
-      this.state.logs.push(msg);
-      this.setState({ logs: [...this.state.logs] });
-    });
+    // this.state.flowRunner.on('log', (msg) => {
+    //   this.state.logs.push(msg);
+    //   this.setState({ logs: [...this.state.logs] });
+    // });
     loader.config({ monaco });
   }
   //初始化画布以及事件配置
@@ -536,8 +535,8 @@ export default class X6Graph extends React.Component<EditorProps> {
     }
     // graph.centerContent();
 
-    if (this.props.readyCallback)
-      this.props.readyCallback(graph, this.state.flowRunner);
+    // if (this.props.readyCallback)
+    //   this.props.readyCallback(graph, this.state.flowRunner);
     return graph;
   };
   autoLayout = (graph: Graph) => {
@@ -609,7 +608,7 @@ export default class X6Graph extends React.Component<EditorProps> {
       const flowJson = JSON.stringify(newFlow);
       localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
       navigator.clipboard.writeText(flowJson);//复制到剪贴板
-      this.state.flowRunner.send('save', flowJson);//发送消息
+      // this.state.flowRunner.send('save', flowJson);//发送消息
       this.autoLayout(this.state.graph)//自动布局
     }
   };
@@ -627,7 +626,7 @@ export default class X6Graph extends React.Component<EditorProps> {
     this.updateFlowAndEditorCtx(settingValues)
     localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
     navigator.clipboard.writeText(flowJson);//复制到剪贴板
-    this.state.flowRunner.send('save', flowJson);//发送消息
+    // this.state.flowRunner.send('save', flowJson);//发送消息
     this.autoLayout(this.state.graph)//自动布局
   };
   convertGraphToDsl = (graphJson: any) => {

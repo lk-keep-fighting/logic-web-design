@@ -1,4 +1,4 @@
-import FormRender from "@/components/StepFlow/component/FormRender"
+import FormRender from "@/components/step-flow-editor/component/FormRender"
 import { Modal, Tabs, message } from "antd"
 import { useForm } from "form-render"
 import { useCallback, useEffect, useState } from "react";
