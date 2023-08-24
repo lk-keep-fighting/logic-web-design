@@ -1,5 +1,5 @@
 import { Schema } from "form-render";
-import { StepTypeEnum } from "../../core/definition/StepFlow";
+import { StepTypeEnum } from "../../../step-flow-core/types";
 
 const common = {
   name: {
@@ -486,6 +486,8 @@ export function ConfigSchemaProvider(tplOrType: string) {
           extra: '输入局部变量的完整引用，如_var.repData'
         },
       };
+      break;
+    case 'mqtt-client':
       break;
     default:
       schema.properties = common;

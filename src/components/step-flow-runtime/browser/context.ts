@@ -1,5 +1,5 @@
 import axios, { Axios } from 'axios';
-import { Step, StepFlow } from '../../step-flow-editor/core/definition/StepFlow';
+import { Step, StepFlow } from '../../step-flow-core/types';
 import FlowRunner from './flow-runner';
 /*
 上下文，包含入参变量_input、全局变量_data

@@ -3,7 +3,7 @@ import { Graph } from '@antv/x6';
 import Editor from '@monaco-editor/react';
 
 import { Tabs, TabsProps, Tooltip } from 'antd';
-import { StepFlow } from '../core/definition/StepFlow';
+import { StepFlow } from '../../step-flow-core/types';
 
 interface ILeftToolProps {
   graph?: Graph;

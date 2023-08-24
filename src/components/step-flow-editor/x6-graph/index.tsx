@@ -12,8 +12,8 @@ import { loader } from '@monaco-editor/react';
 import { Button, Dropdown, Layout, MenuProps, Modal, Space, message } from 'antd';
 import * as monaco from 'monaco-editor';
 import React from 'react';
-import { StepFlow } from '../core/definition/StepFlow';
-import { GraphToStepFlow } from '../core/dsl/parser/step-flow-parser';
+import { StepFlow } from '../../step-flow-core/types';
+import { GraphToStepFlow } from '@/components/step-flow-core/lasl/parser/step-flow-parser';
 import './index.css';
 import LeftTool from '../left-toolset';
 import RightToolset from '../right-toolset';
@@ -26,7 +26,7 @@ import DagreGraph from './instance/dagre-graph';
 import FlowSetting from './settings/flow-setting';
 import { dealGraphNodeWhenAddedFromPanel } from './helper/node-mapping/indext';
 import { autoDagreLayout } from './layout/dagreLayout';
-import { TypeAnnotationParser } from '../core/dsl/parser/type-annotation-parser';
+import { TypeAnnotationParser } from '../../step-flow-core/lasl/parser/type-annotation-parser';
 
 
 type EditorCtx = {
@@ -620,7 +620,6 @@ export default class X6Graph extends React.Component<EditorProps> {
     Object.keys(input).forEach((key) => {
       console.log(TypeAnnotationParser.guessByValue(input[key]));
     })
-    // TypeAnnotationParser.guessByValue(settingValues.return);
     const newFlow = { ...this.state.stepFlow, ...settingValues };
     const flowJson = JSON.stringify(newFlow);
     this.updateFlowAndEditorCtx(settingValues)

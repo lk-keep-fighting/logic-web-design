@@ -1,4 +1,4 @@
-import { StepTypeEnum } from '../../core/definition/StepFlow';
+import { StepTypeEnum } from '../../../step-flow-core/types';
 import { ports } from './Consts';
 import { DefaultShapeExt } from './DefaultSharpExt';
 export function InitPanelData(
@@ -111,6 +111,75 @@ export function InitPanelData(
       ports,
       // tools: ['node-editor'],
       groups: ['biz'],
+    },
+    {
+      shape: 'ExtSharp',
+      attrs: {
+        text: {
+          text: '建立客户端',
+          // fontSize: 14,
+        },
+        image: {
+          'xlink:href': '/icons/mqtt.png',
+          width: 36,
+          x: 2,
+          y: -8,
+        }
+      },
+      data: {
+        config: {
+          type: 'mqtt-client',
+        },
+      },
+      ports,
+      // tools: ['node-editor'],
+      groups: ['mqtt'],
+    },
+    {
+      shape: 'ExtSharp',
+      attrs: {
+        text: {
+          text: '订阅Topic',
+          // fontSize: 14,
+        },
+        image: {
+          'xlink:href': '/icons/mqtt.png',
+          width: 36,
+          x: 2,
+          y: -8,
+        }
+      },
+      data: {
+        config: {
+          type: 'mqtt-sub',
+        },
+      },
+      ports,
+      // tools: ['node-editor'],
+      groups: ['mqtt'],
+    },
+    {
+      shape: 'ExtSharp',
+      attrs: {
+        text: {
+          text: '发布Topic',
+          // fontSize: 14,
+        },
+        image: {
+          'xlink:href': '/icons/mqtt.png',
+          width: 36,
+          x: 2,
+          y: -8,
+        }
+      },
+      data: {
+        config: {
+          type: 'mqtt-pub',
+        },
+      },
+      ports,
+      // tools: ['node-editor'],
+      groups: ['mqtt'],
     },
     {
       shape: 'ExtSharp',
@@ -343,6 +412,11 @@ export function InitPanelData(
     {
       name: 'biz',
       title: '业务调用',
+      graphHeight: 200,
+    },
+    {
+      name: 'mqtt',
+      title: 'MQTT',
       graphHeight: 200,
     },
     {

@@ -23,6 +23,7 @@
     "@antv/x6-plugin-snapline": "^2.1.7",
     "@antv/x6-plugin-stencil": "^2.0.3",
     "@antv/x6-react-shape": "^2.1.2",
+    "@babel/core": "^7.22.10",
     "@babel/runtime": "^7.22.6",
     "@monaco-editor/react": "^4.5.1",
     "antd": "^5.4.0",
@@ -30,6 +31,7 @@
     "eventemitter3": "^5.0.1",
     "form-render": "^2.1.19",
     "monaco-editor": "^0.39.0",
+    "react": "18.1.0",
     "react-infinite-scroll-component": "^6.1.0",
     "umi": "^4.0.75"
   },
