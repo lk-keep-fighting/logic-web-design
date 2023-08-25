@@ -1,13 +1,14 @@
 import { Tabs, TabsProps } from 'antd';
 import LogInfo from './debug-info';
 import NodeData from './step-config';
+import { Schema } from 'form-render';
 
 interface IRightToolset {
   editNode: any;
   onSubmit: any;
   onClear: any;
   logs?: any[];
-  configSchemaProvider?: (type: string) => any;
+  configSchemaProvider?: (type: string) => Promise<Schema>;
 }
 function RightToolset(props: IRightToolset) {
   const items: TabsProps['items'] = [

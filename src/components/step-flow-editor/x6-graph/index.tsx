@@ -27,6 +27,7 @@ import FlowSetting from './settings/flow-setting';
 import { dealGraphNodeWhenAddedFromPanel } from './helper/node-mapping/indext';
 import { autoDagreLayout } from './layout/dagreLayout';
 import { TypeAnnotationParser } from '../../step-flow-core/lasl/parser/type-annotation-parser';
+import { Schema } from 'form-render';
 
 
 type EditorCtx = {
@@ -79,7 +80,7 @@ interface EditorProps {
   customNodes?: any[];
   showLeft?: boolean;
   showRight?: boolean;
-  configSchemaProvider?: (type: string) => any;
+  configSchemaProvider?: (type: string) => Promise<Schema>;
   // readyCallback?: (graph: Graph, flowRunner: FlowRunner) => void;
 }
 export default class X6Graph extends React.Component<EditorProps> {
@@ -580,7 +581,7 @@ export default class X6Graph extends React.Component<EditorProps> {
 
         break;
       case 'saveToPng':
-        this.state.graph?.exportPNG(new Date().toLocaleDateString());
+        this.state.graph?.exportPNG(new Date().toLocaleDateString(), { backgroundColor: '#F2F7FA', padding: 10, quality: 1 });
         // this.state.graph?.exportPNG(new Date().toLocaleDateString(), { backgroundColor: '#F2F7FA', padding: 10, quality: 1 });
         break;
     }
@@ -609,7 +610,7 @@ export default class X6Graph extends React.Component<EditorProps> {
       localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
       navigator.clipboard.writeText(flowJson);//复制到剪贴板
       // this.state.flowRunner.send('save', flowJson);//发送消息
-      this.autoLayout(this.state.graph)//自动布局
+      // this.autoLayout(this.state.graph)//自动布局
     }
   };
   //保存参数配置
@@ -626,7 +627,7 @@ export default class X6Graph extends React.Component<EditorProps> {
     localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
     navigator.clipboard.writeText(flowJson);//复制到剪贴板
     // this.state.flowRunner.send('save', flowJson);//发送消息
-    this.autoLayout(this.state.graph)//自动布局
+    // this.autoLayout(this.state.graph)//自动布局
   };
   convertGraphToDsl = (graphJson: any) => {
     const _flow = GraphToStepFlow(graphJson.cells);
@@ -804,7 +805,7 @@ export default class X6Graph extends React.Component<EditorProps> {
               editNode={editingNode}
               onSubmit={this.handleSubmit}
               logs={this.state.logs}
-              configSchemaProvider={ConfigSchemaProvider}
+              configSchemaProvider={this.props.configSchemaProvider ?? ConfigSchemaProvider}
             />
           </Layout.Sider>
         </Layout >

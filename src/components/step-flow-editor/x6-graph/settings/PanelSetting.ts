@@ -138,6 +138,15 @@ export function InitPanelData(
     {
       shape: 'ExtSharp',
       attrs: {
+        body: {
+          rx: 6,
+          ry: 6,
+          stroke: '#5F95FF',
+          strokeWidth: 3,
+          fill: 'rgba(95,149,255,0.05)',
+          refWidth: 1,
+          refHeight: 1,
+        },
         text: {
           text: '订阅Topic',
           // fontSize: 14,
