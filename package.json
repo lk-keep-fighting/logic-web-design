@@ -26,6 +26,7 @@
     "@babel/core": "^7.22.10",
     "@babel/runtime": "^7.22.6",
     "@monaco-editor/react": "^4.5.1",
+    "@xrenders/schema-builder": "1.0.0-alpha.5",
     "antd": "^5.4.0",
     "axios": "^1.4.0",
     "eventemitter3": "^5.0.1",
