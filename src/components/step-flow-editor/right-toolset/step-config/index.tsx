@@ -61,12 +61,12 @@ export default (props: INodeEditorProps) => {
           form.setValues(initConfig);
           return;
         }}
-        watch={{
-          '#': (allValues, changedValues) => { // '#': () => {} 等同于 onValuesChange
-            console.log('表单 allValues：', allValues);
-            console.log('表单 changedValues：', changedValues);
-          }
-        }}
+        // watch={{
+        //   '#': (allValues, changedValues) => { // '#': () => {} 等同于 onValuesChange
+        //     console.log('表单 allValues：', allValues);
+        //     console.log('表单 changedValues：', changedValues);
+        //   }
+        // }}
         footer
       // footer={() => <div><Button type='primary' onClick={form.submit()}>提交</Button></div>}
       />

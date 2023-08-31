@@ -9,15 +9,15 @@ import { ConceptEnum, StructureProperty } from "./index";
 export default interface TypeAnnotation extends LASLBase {
     concept: ConceptEnum.TypeAnnotation,
     typeKind: "primitive" | "reference" | "generic" | 'array' | "typeParam" | "function" | "union" | "anonymousStructure" | 'unknown', // 类型种类
-    typeNamespace: string,
+    typeNamespace?: string,
     typeName: string,
-    typeArguments: Array<TypeAnnotation>,
-    returnType: Array<TypeAnnotation>,
-    inferred: boolean,
-    properties: Array<StructureProperty>, //匿名数据结构属性
-    ruleMap: Object,
+    typeArguments?: Array<TypeAnnotation>,
+    returnType?: Array<TypeAnnotation>,
+    inferred?: boolean,
+    properties?: Array<StructureProperty>, //匿名数据结构属性
+    ruleMap?: Object,
     //------新增属性
-    defaultValue: any,
+    defaultValue?: any,
 }
 
 /**

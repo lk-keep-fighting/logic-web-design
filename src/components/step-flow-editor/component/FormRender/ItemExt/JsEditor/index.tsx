@@ -16,6 +16,9 @@ class IJsEditor {
 //         }} onChange={v => props?.onChange(v)} height={500} {...props} />
 // }
 const JsEditor = (props: IJsEditor) => {
-  return <EditorByLoader {...props} language="javascript" />;
+  return <EditorByLoader {...props}
+    language="javascript"
+    // language="typescript"
+  />;
 };
 export default JsEditor;

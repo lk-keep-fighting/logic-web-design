@@ -1,5 +1,5 @@
 import { Schema } from "form-render";
-import { StepTypeEnum } from "../../../step-flow-core/types";
+// import { StepTypeEnum } from "../../../step-flow-core/types";
 
 const common = {
   name: {
@@ -28,7 +28,7 @@ export function ConfigSchemaProvider(tplOrType: string) {
           props: {
             height: 100,
           },
-          extra: "直接填写表达式或变量名，如_input.outType"
+          extra: "直接填写表达式或变量名，如_par.outType"
         },
       };
       break;
@@ -57,19 +57,19 @@ export function ConfigSchemaProvider(tplOrType: string) {
       };
 
       break;
-    case StepTypeEnum.errorHandler:
-      schema.properties = {
-        ...common,
-        script: {
-          title: '捕获异常时执行的js',
-          type: 'string',
-          widget: 'js',
-          props: {
-            height: 500,
-          },
-        },
-      };
-      break;
+    // case StepTypeEnum.errorHandler:
+    //   schema.properties = {
+    //     ...common,
+    //     script: {
+    //       title: '捕获异常时执行的js',
+    //       type: 'string',
+    //       widget: 'js',
+    //       props: {
+    //         height: 500,
+    //       },
+    //     },
+    //   };
+    //   break;
     case 'http':
       schema.properties = {
         ...common,
@@ -410,7 +410,7 @@ export function ConfigSchemaProvider(tplOrType: string) {
     //     //   widget: 'json',
     //     //   props: {
     //     //     height: 300,
-    //     //     // defaultValue: JSON.stringify({ _input: {} }),
+    //     //     // defaultValue: JSON.stringify({ _par: {} }),
     //     //   },
 
     //     // },
@@ -420,7 +420,7 @@ export function ConfigSchemaProvider(tplOrType: string) {
     //     //   widget: 'json',
     //     //   props: {
     //     //     height: 300,
-    //     //     // defaultValue: JSON.stringify({ _input: {} }),
+    //     //     // defaultValue: JSON.stringify({ _par: {} }),
     //     //   },
     //     // },
     //   };
@@ -453,40 +453,40 @@ export function ConfigSchemaProvider(tplOrType: string) {
         },
       };
       break;
-    case StepTypeEnum.process:
-      schema.properties = {
-        name: {
-          title: '名称',
-          type: 'string',
-          widget: 'textArea',
-          props: {
-            rows: 1,
-          },
-        },
-        subProcessName: {
-          title: '子流程名称',
-          type: 'string',
-        },
-        parameter: {
-          title: '入参声明(json)',
-          type: 'string',
-          widget: 'js',
-          props: {
-            height: 200,
-          },
-          extra: 'js代码块，返回子流程的入参对象，作为子流程的_input传入'
-        },
-        return: {
-          title: '指定子流程的返回_return，赋值给哪个参数？',
-          type: 'string',
-          widget: 'js',
-          props: {
-            height: 100,
-          },
-          extra: '输入局部变量的完整引用，如_var.repData'
-        },
-      };
-      break;
+    // case StepTypeEnum.process:
+    //   schema.properties = {
+    //     name: {
+    //       title: '名称',
+    //       type: 'string',
+    //       widget: 'textArea',
+    //       props: {
+    //         rows: 1,
+    //       },
+    //     },
+    //     subProcessName: {
+    //       title: '子流程名称',
+    //       type: 'string',
+    //     },
+    //     parameter: {
+    //       title: '入参声明(json)',
+    //       type: 'string',
+    //       widget: 'js',
+    //       props: {
+    //         height: 200,
+    //       },
+    //       extra: 'js代码块，返回子流程的入参对象，作为子流程的_par传入'
+    //     },
+    //     return: {
+    //       title: '指定子流程的返回_ret，赋值给哪个参数？',
+    //       type: 'string',
+    //       widget: 'js',
+    //       props: {
+    //         height: 100,
+    //       },
+    //       extra: '输入局部变量的完整引用，如_var.repData'
+    //     },
+    //   };
+    //   break;
     case 'mqtt-client':
       break;
     default:

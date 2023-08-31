@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { buildVarExtarLibByObj } from '../../../MonacoHelper';
 import './index.css'
 import { ArrowsAltOutlined } from '@ant-design/icons';
+import { TypeAnnotationParser } from '@/components/step-flow-core/lasl/parser/type-annotation-parser';
 // import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 class ICodeEditor {
@@ -17,19 +18,24 @@ class ICodeEditor {
 }
 
 const EditorByLoader = (props: ICodeEditor) => {
-  const editorCtx = useContext(EditorContext);
   const monaco = useMonaco();
+
+  const editorCtx = useContext(EditorContext);
   useEffect(() => {
-    const flowVar = editorCtx.flowVar;
-    const vars = buildVarExtarLibByObj('_var', editorCtx.flowVar)
-    const input = buildVarExtarLibByObj('_input', editorCtx.flowInput)
-    const returnp = buildVarExtarLibByObj('_return', editorCtx.flowReturn)
-    const env = buildVarExtarLibByObj('_env', editorCtx.flowEnv)
+    const varsJson = TypeAnnotationParser.getJsonByParams(editorCtx.flowVar ?? [])
+    const vars = buildVarExtarLibByObj('_var', varsJson)
+    const inputJson = TypeAnnotationParser.getJsonByParams(editorCtx.flowInput ?? []);
+    const input = buildVarExtarLibByObj('_par', inputJson)
+    const returnJson = TypeAnnotationParser.getJsonByParams(editorCtx.flowReturn ?? []);
+    const returnp = buildVarExtarLibByObj('_ret', returnJson)
+    const envJson = TypeAnnotationParser.getJsonByParams(editorCtx.flowEnv ?? []);
+    const env = buildVarExtarLibByObj('_env', envJson)
 
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(env, 'env.ts');
+    monaco?.languages.typescript.javascriptDefaults.addExtraLib('let _lastRet:{}', 'lastRet.ts');
     return () => {
       console.log('effect dispose')
       // @ts-ignore

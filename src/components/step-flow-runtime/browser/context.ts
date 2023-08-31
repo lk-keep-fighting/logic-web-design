@@ -2,7 +2,7 @@ import axios, { Axios } from 'axios';
 import { Step, StepFlow } from '../../step-flow-core/types';
 import FlowRunner from './flow-runner';
 /*
-上下文，包含入参变量_input、全局变量_data
+上下文，包含入参变量_par、全局变量_data
 统一异常处理函数handleError(msg,isContinue?=false)
 */
 type IContextOptions = {

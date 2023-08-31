@@ -3,7 +3,9 @@ const MonacoPlugin = require('monaco-editor-webpack-plugin')
 export default defineConfig({
   routes: [
     { path: "/", component: "index" },
-    { path: "/editor", component: "flow-editor" },
+    { path: "/logics", component: "logic/list" },
+    { path: "/logic/:id", component: "logic-editor" },
+    { path: "/editor/:id", component: "logic-editor" },
     { path: "/form", component: "form-editor" },
   ],
   npmClient: 'pnpm',
@@ -15,15 +17,36 @@ export default defineConfig({
     }
   },
   headScripts: [{
-    src: 'https://unpkg.com/react@18/umd/react.development.js',
-    crossorigin: true
+    src: '/js/umd/react.development.js',
   },
   {
-    src: 'https://unpkg.com/react-dom@18/umd/react-dom.development.js',
-    crossorigin: true
+    src: '/js/umd/react-dom.development.js',
   }],
   externals: {
     "react": "React",
     "react-dom": "ReactDOM",
+  },
+  proxy: {
+    '/api/form': {
+      // 'target': 'http://192.168.44.70:5001',
+      'target': 'http://localhost:5000',
+      'changeOrigin': true,
+      // 'pathRewrite': { '^/api': '/api' },
+    },
+    '/api/runtime': {
+      'target': 'http://localhost:3000',
+      'changeOrigin': true,
+      // 'pathRewrite': { '^/api': '/api' },
+    },
+    // '/setting/biz/query': {
+    //   'target': 'http://192.168.44.70:5000/api/form/query/logic',
+    //   'changeOrigin': true,
+    //   // 'pathRewrite': { '^/api': '' },
+    // },
+    // '/setting/biz/add': {
+    //   'target': 'http://192.168.44.70:5000/api/form/add/logic',
+    //   'changeOrigin': true,
+    //   // 'pathRewrite': { '^/api': '' },
+    // }
   }
 });

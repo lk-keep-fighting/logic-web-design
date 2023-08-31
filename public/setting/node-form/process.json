@@ -20,10 +20,10 @@
         "props": {
           "height": 200
         },
-        "extra": "js代码块，返回子流程的入参对象，作为子流程的_input传入"
+        "extra": "js代码块，返回子流程的入参对象，作为子流程的_par传入"
       },
       "return": {
-        "title": "指定子流程的返回_return，赋值给哪个参数？",
+        "title": "指定子流程的返回_ret，赋值给哪个参数？",
         "type": "string",
         "widget": "js",
         "props": {

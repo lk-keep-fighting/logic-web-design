@@ -4,12 +4,12 @@ import Logic from './Logic'
 import LogicItem from './LogicItem'
 import Param from './Param'
 import Return from './Return'
-import Variable from './Variable'
+import IVariableMetaData from './Variable'
 export {
     Transactional,
-    Logic,
-    LogicItem,
-    Param,
-    Return,
-    Variable
+    Logic as Logic,
+    LogicItem as LogicItem,
+    Param as Param,
+    Return as Return,
+    IVariableMetaData as Variable
 }

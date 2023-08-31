@@ -1,13 +1,10 @@
 import { Cell, Edge, Graph, Node } from '@antv/x6';
 import { message } from 'antd';
-import { Step, StepFlow } from '../../definition/StepFlow';
-//将图数据转换为StepFlow，不包含图原始数据，图原始数据保存在visualConfig属性中，在外部处理
-export class StepFlowParser {
-  public static parseFromX6GraphCells(cells: Cell.Properties[]): StepFlow | undefined {
-    const stepFlow: StepFlow = {
-      version: '1.0',
-      steps: [],
-    };
+import { Logic, LogicItem } from '../meta-data';
+//将图数据转换为Logic，不包含图原始数据，图原始数据保存在visualConfig属性中，在外部处理
+export class LogicParser {
+  public static parseFromX6GraphCells(cells: Cell.Properties[]): Logic | undefined {
+    const logic: Logic = new Logic();
     const edges: Edge.Properties[] = [];
     const nodes: Node.Properties[] = [];
     const nodesDic: { [Key: string]: Node.Properties } = {};
@@ -29,17 +26,17 @@ export class StepFlowParser {
       message.error('未发现开始节点，请配置！');
       return undefined;
     }
-    buildStep(startNode, nodesDic, edges, stepFlow.steps);
-    return stepFlow;
+    buildLogicItem(startNode, nodesDic, edges, logic.items);
+    return logic;
 
   }
 }
 
-function buildStep(
+function buildLogicItem(
   curNode: Cell.Properties,
   nodesDic: { [Key: string]: Node.Properties },
   edges: Cell.Properties[],
-  steps: Step[],
+  items: LogicItem[],
 ) {
   const nodeConfig = curNode.data.config;
   const nodeType = nodeConfig.type;
@@ -55,43 +52,42 @@ function buildStep(
     }
   });
   const attr: any = curNode.attrs;
-  const step: Step = {
+  let item: LogicItem = new LogicItem(curNode.id ?? '', nodeType);
+  item = {
     ...nodeConfig,
     id: curNode.id,
     name: attr?.text?.text,
-    type: nodeType,
   };
-  if (steps.findIndex((s) => s.id === step.id) > -1) return; //已经解析
-  steps.push(step);
+  if (items.findIndex((s) => s.id === item.id) > -1) return; //已经解析
+  items.push(item);
   if (nextNodes.length === 0) return;
   switch (nodeType) {
     default:
-      if (nextNodes.length > 1 || step.type === 'switch') {
+      if (nextNodes.length > 1 || item.type === 'switch') {
         console.log(curNode.data?.config);
         console.log(nextNodes);
-        step.branches = [];
+        item.branches = [];
         nextNodes.forEach((n) => {
           console.log(n.data?.config);
-          step.branches?.push({
+          item.branches?.push({
             when: n.data?.config?.case,
-            nextStepId: n.id,
+            nextId: n.id,
           });
-      buildStep(nodesDic[n.id], nodesDic, edges, steps);
-  });
-} else {
-  step.nextStepId = nextNodes[0].id;
-  buildStep(nodesDic[nextNodes[0].id], nodesDic, edges, steps);
-}
-break;
+          buildLogicItem(nodesDic[n.id], nodesDic, edges, items);
+        });
+      } else {
+        item.nextId = nextNodes[0].id;
+        buildLogicItem(nodesDic[nextNodes[0].id], nodesDic, edges, items);
+      }
+      break;
   }
 }
 //将图数据转换为StepFlow，不包含图原始数据，图原始数据保存在visualConfig属性中，在外部处理
-export function GraphToStepFlow(
+export function GraphToLogic(
+  logicId: string,
   cells: Cell.Properties[],
-): StepFlow | undefined {
-  const stepFlow: StepFlow = {
-    steps: [],
-  };
+): Logic | undefined {
+  const logic: Logic = new Logic(logicId);
   const edges: Edge.Properties[] = [];
   const nodes: Node.Properties[] = [];
   const nodesDic: { [Key: string]: Node.Properties } = {};
@@ -113,6 +109,8 @@ export function GraphToStepFlow(
     message.error('未发现开始节点，请配置！');
     return undefined;
   }
-  buildStep(startNode, nodesDic, edges, stepFlow.steps);
-  return stepFlow;
+  buildLogicItem(startNode, nodesDic, edges, logic.items);
+  console.log('logic.items')
+  console.log(logic.items)
+  return logic;
 }

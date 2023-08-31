@@ -1,3 +1,4 @@
+import { TypeAnnotationParser } from "@/components/step-flow-core/lasl/parser/type-annotation-parser";
 import FormRender from "@/components/step-flow-editor/component/FormRender"
 import { Modal, Tabs, message } from "antd"
 import { useForm } from "form-render"
@@ -5,7 +6,13 @@ import { useCallback, useEffect, useState } from "react";
 const FlowSetting = (props) => {
     const form = useForm();
     useEffect(() => {
-        form.setValues(props.values)
+        const { params, variables, envs, returns } = props.values;
+        form.setValues({
+            params: JSON.stringify(TypeAnnotationParser.getJsonByParams(params)),
+            variables: JSON.stringify(TypeAnnotationParser.getJsonByParams(variables)),
+            returns: JSON.stringify(TypeAnnotationParser.getJsonByParams(returns)),
+            envs: JSON.stringify(TypeAnnotationParser.getJsonByParams(envs)),
+        })
     }, [props.values])
 
     const validateJsonString = useCallback((jsonString: string) => {
@@ -28,7 +35,7 @@ const FlowSetting = (props) => {
                 Object.keys(values).forEach(key => {
                     const item = values[key];
                     if (!validateJsonString(item)) {
-                        const field = key === 'input' ? '入参' : key === 'var' ? '全局变量' : '返回参数'
+                        const field = key === 'params' ? '入参' : key === 'variables' ? '局部变量' : key === 'returns' ? '返回参数' : '环境变量'
                         message.error(`${field}json格式错误`)
                         hasError = true;
                         return false;
@@ -47,25 +54,25 @@ const FlowSetting = (props) => {
                 schema={{
                     "type": "object",
                     "properties": {
-                        input: {
+                        params: {
                             title: '入参声明',
                             type: 'string',
                             widget: 'json',
                             props: {
                                 height: 200,
                             },
-                            extra: '编辑器中可通过 _input. 获取'
+                            extra: '编辑器中可通过 _par. 获取'
                         },
-                        return: {
+                        returns: {
                             title: '返回参数声明',
                             type: 'string',
                             widget: 'json',
                             props: {
                                 height: 200,
                             },
-                            extra: '编辑器中可通过 _return. 获取并赋值'
+                            extra: '编辑器中可通过 _ret. 获取并赋值'
                         },
-                        var: {
+                        variables: {
                             title: '局部变量声明',
                             type: 'string',
                             widget: 'json',
@@ -74,7 +81,7 @@ const FlowSetting = (props) => {
                             },
                             extra: '编辑器中可通过 _var. 获取'
                         },
-                        env: {
+                        envs: {
                             title: '环境变量声明',
                             type: 'string',
                             widget: 'json',

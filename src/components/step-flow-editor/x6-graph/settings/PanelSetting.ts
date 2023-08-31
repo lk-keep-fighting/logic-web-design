@@ -89,11 +89,11 @@ export function InitPanelData(
     },
     {
       shape: 'ExtSharp',
-      label: 'http请求',
+      // label: 'http请求',
       attrs: {
         text: {
           text: 'http请求',
-          // fontSize: 14,
+          fontSize: 14,
         },
         image: {
           'xlink:href': '/icons/http.svg',
@@ -211,7 +211,7 @@ export function InitPanelData(
         },
       },
       // tools: ['node-editor'],
-      groups: ['def'],
+      groups: ['biz'],
     },
     {
       shape: 'ExtSharp',
@@ -235,30 +235,6 @@ export function InitPanelData(
       },
       // tools: ['node-editor'],
       groups: ['biz'],
-    },
-    {
-      shape: 'ExtSharp',
-      attrs: {
-        text: {
-          text: '延时',
-          fontSize: 14,
-        },
-        image: {
-          'xlink:href': '/icons/delay.svg',
-          width: 12,
-          x: 3,
-          y: 3,
-        },
-      },
-      data: {
-        config: {
-          type: 'wait',
-          timeout: '2000',
-        },
-      },
-      ports,
-      // tools: ['node-editor'],
-      groups: ['def'],
     },
     {
       shape: 'ExtSharp',
@@ -335,7 +311,44 @@ export function InitPanelData(
       // tools: ['node-editor'],
       groups: ['ctrl'],
     },
-
+    {
+      shape: 'ExtSharp',
+      width,
+      height,
+      attrs: {
+        // body: {
+        //   refPoints: '0,10 10,0 20,10 10,20',
+        //   strokeWidth: 1,
+        //   stroke: '#5F95FF',
+        //   fill: '#EFF4FF',
+        // },
+        image: {
+          'xlink:href': '/icons/delay.svg',
+          width: 30,
+          x: 8,
+          y: 10
+        },
+        text: {
+          text: '延时',
+          fontSize: 14,
+          // fill: '#5F95FF',
+          refX: 0.5,
+          refY: '100%',
+          refY2: 4,
+          textAnchor: 'middle',
+          textVerticalAnchor: 'top',
+        },
+      },
+      data: {
+        config: {
+          type: 'wait',
+          timeout: '2000',
+        },
+      },
+      ports,
+      // tools: ['node-editor'],
+      groups: ['ctrl'],
+    },
     // {
     //   shape: 'ExtSharp',
     //   attrs: {
@@ -416,7 +429,7 @@ export function InitPanelData(
     {
       name: 'ctrl',
       title: '逻辑控制',
-      graphHeight: 120,
+      graphHeight: 200,
     },
     {
       name: 'biz',
@@ -428,11 +441,11 @@ export function InitPanelData(
       title: 'MQTT',
       graphHeight: 200,
     },
-    {
-      name: 'def',
-      title: '其他',
-      graphHeight: 300,
-    },
+    // {
+    //   name: 'def',
+    //   title: '其他',
+    //   graphHeight: 300,
+    // },
   ];
   if (customGroup && customGroup.length > 0)
     Array.prototype.push.apply(Groups, customGroup);

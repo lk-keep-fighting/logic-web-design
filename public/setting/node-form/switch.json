@@ -16,7 +16,7 @@
         "props": {
           "height": 100
         },
-        "extra": "直接填写表达式或变量名，如_input.outType"
+        "extra": "直接填写表达式或变量名，如_par.outType"
       }
     },
     "column": 1

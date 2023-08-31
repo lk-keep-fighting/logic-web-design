@@ -1,14 +1,13 @@
 import { AppstoreOutlined, CodeOutlined } from '@ant-design/icons';
 import { Graph } from '@antv/x6';
 import Editor from '@monaco-editor/react';
-
 import { Tabs, TabsProps, Tooltip } from 'antd';
-import { StepFlow } from '../../step-flow-core/types';
+import { Logic } from '@/components/step-flow-core/lasl/meta-data';
 
 interface ILeftToolProps {
   graph?: Graph;
   refStencil: any;
-  stepFlow?: StepFlow;
+  logic?: Logic;
   onConfigChange: any;
 }
 function LeftTool(props: ILeftToolProps) {
@@ -24,12 +23,12 @@ function LeftTool(props: ILeftToolProps) {
       ),
     },
     {
-      key: 'stepflow',
+      key: 'logic',
       label: <CodeOutlined style={{ fontSize: '20px', marginTop: 10 }} />,
       children: (
         <div style={{ margin: 0, height: '100vh' }}>
           <Tooltip title="用于解析执行编排的逻辑。">
-            <h3>Stepflow DSL</h3>
+            <h3>Logic DSL</h3>
           </Tooltip>
           <Editor
             defaultLanguage="json"
@@ -41,7 +40,7 @@ function LeftTool(props: ILeftToolProps) {
                 enabled: false,
               },
             }}
-            value={JSON.stringify(props.stepFlow)}
+            value={JSON.stringify(props.logic)}
             onChange={props.onConfigChange}
           />
         </div>

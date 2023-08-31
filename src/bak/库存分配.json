@@ -26,7 +26,7 @@
         },
         {
             "type": "switch",
-            "condition": "_input.rule",
+            "condition": "_par.rule",
             "id": "c3e667e1-27bf-4231-a4a9-9a2b3f0905d1",
             "branches": [
                 {
@@ -642,7 +642,7 @@
                 "data": {
                     "config": {
                         "type": "switch",
-                        "condition": "_input.rule"
+                        "condition": "_par.rule"
                     }
                 },
                 "zIndex": 4,

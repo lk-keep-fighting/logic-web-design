@@ -1,4 +1,5 @@
 import { ShareDataConfig, StepTypeEnum } from '.';
+import { Param, Return } from '../lasl/meta-data';
 
 /**
  * 单步骤节点配置
@@ -8,10 +9,20 @@ export class Step {
   name?: string;
   describe?: string;
   type: StepTypeEnum = StepTypeEnum.js;
-  return?: string;//节点值存储的变量
+  /**
+ * 入参
+ */
+  params?: Array<Param>;
+  /**
+   * 返回参数
+   */
+  returns?: Array<Return>;
+  afterReturnAdaptor?: string;//返回值适配器(data)=>data
+  returnAccept?: string;//节点值存储的变量
   // shareData?: Array<ShareDataConfig>;
   // while结束节点
   endStepId?: string;
+  condition?: string;
   nextStepId?: string;
   // 普通节点的超时时间，wait节点的等待时间
   timeout?: number;

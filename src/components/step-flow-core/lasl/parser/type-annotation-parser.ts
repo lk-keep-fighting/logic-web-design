@@ -1,4 +1,5 @@
-import { ConceptEnum, StructureProperty, TypeAnnotation } from "../meta-data";
+import { ConceptEnum, Param, Return, StructureProperty, TypeAnnotation, Variable } from "../meta-data";
+import EnvParam from "../meta-data/EnvParam";
 
 export class TypeAnnotationParser {
     /**
@@ -6,9 +7,10 @@ export class TypeAnnotationParser {
      * @param value 具体的js值
      * @returns 
      */
-    public static guessByValue(value: any): TypeAnnotation {
+    public static valueToTypeAnnotaion(value: any): TypeAnnotation {
         let typeAnno: TypeAnnotation = {
             concept: ConceptEnum.TypeAnnotation,
+            typeKind: 'primitive',
             typeName: 'string',
             defaultValue: value,
 
@@ -48,13 +50,11 @@ export class TypeAnnotationParser {
                         typeAnno.properties = [];
                         Object.keys(value).map(key => {
                             const propValue = value[key];
-                            const propTypeAnno = this.guessByValue(propValue);
-                            const prop: StructureProperty = {
-                                name: key,
-                                typeAnnotation: propTypeAnno,
-                                defaultValue: propValue
-                            }
-                            typeAnno.properties.push(prop)
+                            const propTypeAnno = this.valueToTypeAnnotaion(propValue);
+                            const prop: StructureProperty = new StructureProperty(key)
+                            prop.typeAnnotation = propTypeAnno;
+                            prop.defaultValue = propValue;
+                            typeAnno.properties?.push(prop)
                         })
                     }
                     break;
@@ -65,5 +65,98 @@ export class TypeAnnotationParser {
             }
         }
         return typeAnno;
+    }
+    public static typeAnnotaionToValue(t: TypeAnnotation): any {
+        let value: any;
+
+        switch (t.typeName) {
+            case 'array':
+                value = []
+                break;
+            case 'boolean':
+                value = t.defaultValue ? t.defaultValue == 'true' : false;
+                break;
+            case 'number':
+                value = parseFloat(t.defaultValue)
+                break;
+            case 'null':
+                value = null
+                break;
+            case 'date':
+                value = new Date(t.defaultValue)
+                break;
+            case 'regexp':
+                value = new RegExp(t.defaultValue);
+                break;
+            case 'object':
+                value = {};
+                t.properties?.forEach(p => {
+                    value[p.name] = this.typeAnnotaionToValue(p.typeAnnotation)
+                })
+                break;
+            case 'string':
+            case 'function':
+            default:
+                value = t.defaultValue;
+                break;
+        }
+        return value;
+    }
+
+    public static getParamArrayByJson(jsonObject: any): Array<Param> {
+        let params: Array<Param> = [];
+        if (jsonObject) {
+            Object.keys(jsonObject).forEach((key) => {
+                let p = new Param(key);
+                p.typeAnnotation = TypeAnnotationParser.valueToTypeAnnotaion(jsonObject[key]);
+                p.defaultValue = jsonObject[key];
+                params.push(p)
+            })
+        }
+        return params;
+    }
+    public static getReturnArrayByJson(jsonObject: any): Array<Return> {
+        let returns: Array<Return> = [];
+        if (jsonObject) {
+            Object.keys(jsonObject).forEach((key) => {
+                let p = new Return(key);
+                p.typeAnnotation = TypeAnnotationParser.valueToTypeAnnotaion(jsonObject[key]);
+                p.defaultValue = jsonObject[key];
+                returns.push(p)
+            })
+        }
+        return returns;
+    }
+    public static getVariableArrayByJson(jsonObject: any): Array<Variable> {
+        let vars: Array<Variable> = [];
+        if (jsonObject) {
+            Object.keys(jsonObject).forEach((key) => {
+                let p = new Variable(key);
+                p.typeAnnotation = TypeAnnotationParser.valueToTypeAnnotaion(jsonObject[key]);
+                p.defaultValue = jsonObject[key];
+                vars.push(p)
+            })
+        }
+        return vars;
+    }
+    public static getEnvsArrayByJson(jsonObject: any): Array<EnvParam> {
+        let envs: Array<EnvParam> = [];
+        if (jsonObject) {
+            Object.keys(jsonObject).forEach((key) => {
+                let p = new EnvParam(key);
+                p.typeAnnotation = TypeAnnotationParser.valueToTypeAnnotaion(jsonObject[key]);
+                p.defaultValue = jsonObject[key];
+                envs.push(p)
+            })
+        }
+        return envs;
+    }
+
+    public static getJsonByParams(params: Array<Param>): any {
+        let json: any = {};
+        params?.forEach((p) => {
+            json[p.name] = p.typeAnnotation ? this.typeAnnotaionToValue(p.typeAnnotation) : p.defaultValue;
+        })
+        return json;
     }
 }

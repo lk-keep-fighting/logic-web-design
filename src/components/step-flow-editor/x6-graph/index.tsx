@@ -13,7 +13,7 @@ import { Button, Dropdown, Layout, MenuProps, Modal, Space, message } from 'antd
 import * as monaco from 'monaco-editor';
 import React from 'react';
 import { StepFlow } from '../../step-flow-core/types';
-import { GraphToStepFlow } from '@/components/step-flow-core/lasl/parser/step-flow-parser';
+import { GraphToLogic } from '@/components/step-flow-core/lasl/parser/logic-parser';
 import './index.css';
 import LeftTool from '../left-toolset';
 import RightToolset from '../right-toolset';
@@ -28,14 +28,19 @@ import { dealGraphNodeWhenAddedFromPanel } from './helper/node-mapping/indext';
 import { autoDagreLayout } from './layout/dagreLayout';
 import { TypeAnnotationParser } from '../../step-flow-core/lasl/parser/type-annotation-parser';
 import { Schema } from 'form-render';
+import { Logic, Param, Return, Variable } from '@/components/step-flow-core/lasl/meta-data';
+import EnvParam from '@/components/step-flow-core/lasl/meta-data/EnvParam';
+import LogicItemRunner from '@/components/step-flow-core/runner/LogicItemRunner';
+import { LogicRunner } from '@/components/step-flow-core/runner/LogicRunner';
+import { runLogicOnServer } from '@/services/logicSvc';
 
 
 type EditorCtx = {
-  stepFlow: StepFlow,
-  flowVar?: Object,
-  flowInput?: Object,
-  flowReturn?: Object,
-  flowEnv?: Object,
+  logic: Logic,
+  flowVar?: Array<Variable>,
+  flowInput?: Array<Param>,
+  flowReturn?: Array<Return>,
+  flowEnv?: Array<EnvParam>,
 }
 const saveBtns = [
   // { key: 'saveToBrowser', label: '缓存到浏览器' },
@@ -46,7 +51,7 @@ const saveBtns = [
 ];
 
 export const EditorContext = React.createContext<EditorCtx>({
-  stepFlow: { steps: [] }
+  logic: new Logic()
 })
 
 // 控制连接桩显示/隐藏
@@ -62,7 +67,7 @@ type StateType = {
   graph?: Graph;
   leftToolCollapsed: boolean;
   rightToolCollapsed: boolean;
-  stepFlow: StepFlow;
+  logic: Logic;
   openFlowSetting: boolean;
   editorCtx: EditorCtx
   // flowRunner: FlowRunner;
@@ -74,13 +79,14 @@ type StateType = {
 };
 interface EditorProps {
   name?: string;
-  config?: StepFlow;
+  config?: Logic;
   customSharps?: any[];
   customGroups?: any[];
   customNodes?: any[];
   showLeft?: boolean;
   showRight?: boolean;
   configSchemaProvider?: (type: string) => Promise<Schema>;
+  onSave?: (logic: Logic) => void;
   // readyCallback?: (graph: Graph, flowRunner: FlowRunner) => void;
 }
 export default class X6Graph extends React.Component<EditorProps> {
@@ -113,16 +119,10 @@ export default class X6Graph extends React.Component<EditorProps> {
     editingEdge: undefined,
     leftToolCollapsed: false,
     rightToolCollapsed: true,
-    stepFlow: {
-      steps: [],
-      input: "{\r\t \r\n}",
-      var: "{\r\t \r\n}",
-      return: "{\r\t \r\n}",
-      env: "{\r\t \"host\":\"\"\r\n}",
-    },
+    logic: new Logic(),
     openFlowSetting: false,
     // flowRunner: new FlowRunner(),
-    editorCtx: { stepFlow: { steps: [] } },
+    editorCtx: { logic: new Logic() },
     logs: [],
     panel: {
       nodes: [],
@@ -137,16 +137,17 @@ export default class X6Graph extends React.Component<EditorProps> {
     prevState: Readonly<StateType>,
     snapshot?: any,
   ): void {
-    if (this.props.config && this.props.config != this.state.stepFlow) {
-      this.state.stepFlow = this.props.config;
-      this.state.graph?.fromJSON(this.state.stepFlow?.visualConfig);
+    if (this.props.config && this.props.config != this.state.logic) {
+      this.state.logic = this.props.config;
+      if (this.state.logic?.visualConfig)
+        this.state.graph?.fromJSON(this.state.logic?.visualConfig);
       this.setState({ editingNode: undefined });
     }
   }
 
   componentDidMount() {
     this.initGraph(this.container);
-    this.updateFlowAndEditorCtx(this.state.stepFlow)
+    this.updateLogicAndEditorCtx(this.state.logic)
     //注册运行日志监听
     // this.state.flowRunner.on('log', (msg) => {
     //   this.state.logs.push(msg);
@@ -528,8 +529,8 @@ export default class X6Graph extends React.Component<EditorProps> {
     this.stencilContainer?.appendChild(stencil.container);
 
     if (this.props.config) {
-      this.state.stepFlow = this.props.config;
-      graph.fromJSON(this.state.stepFlow.visualConfig);
+      this.state.logic = this.props.config;
+      graph.fromJSON(this.state.logic.visualConfig);
     } else {
       DefaultGraph(graph);
       this.autoLayout(graph)
@@ -567,10 +568,10 @@ export default class X6Graph extends React.Component<EditorProps> {
       case 'saveToBrowser':
         break;
       case 'loadFromBrowser':
-        const localData = localStorage.getItem('step-flow-json');
+        const localData = localStorage.getItem('logic-json');
         if (localData) {
-          const flow: StepFlow = JSON.parse(localData);
-          this.state.stepFlow = flow;
+          const flow: Logic = JSON.parse(localData);
+          this.state.logic = flow;
           this.state.graph?.fromJSON(flow.visualConfig);
           this.saveAndConvertGraphToDsl();
         } else {
@@ -586,55 +587,63 @@ export default class X6Graph extends React.Component<EditorProps> {
         break;
     }
   };
-  updateFlowAndEditorCtx = (updatedFlowProps: StepFlow) => {
-    const newFlow = { ...this.state.stepFlow, ...updatedFlowProps };
+  /**
+   * 增量更新逻辑配置
+   * @param updatedFlowProps 追加更新的属性
+   * @returns 
+   */
+  updateLogicAndEditorCtx = (updatedFlowProps: any) => {
+    const newLogic: Logic = { ...this.state.logic, ...updatedFlowProps };
     this.setState({
-      stepFlow: newFlow,
+      logic: newLogic,
       editorCtx: {
         ...this.state.editorCtx,
-        flowVar: JSON.parse(newFlow.var),
-        flowInput: JSON.parse(newFlow.input),
-        flowReturn: JSON.parse(newFlow.return),
-        flowEnv: JSON.parse(newFlow.env),
+        flowVar: newLogic.variables,//JSON.parse(newLogic.var),
+        flowInput: newLogic.params,//JSON.parse(newLogic.input),
+        flowReturn: newLogic.returns, //JSON.parse(newLogic.return),
+        flowEnv: newLogic.envs// JSON.parse(newLogic.env),
       }
     });
-    return newFlow;
+    return newLogic;
   }
   //保存到浏览器并转换dsl
   saveAndConvertGraphToDsl = () => {
     const data = this.state.graph?.toJSON();
-    const graphFlow = this.convertGraphToDsl(data);//根据图转换的flow，只包含steps值
-    if (graphFlow) {
-      const newFlow = this.updateFlowAndEditorCtx(graphFlow)
-      const flowJson = JSON.stringify(newFlow);
-      localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
-      navigator.clipboard.writeText(flowJson);//复制到剪贴板
+    const logicFromGraph = this.convertGraphToDsl(data);//根据图转换的flow，只包含steps值
+    if (logicFromGraph) {
+      const newLogic = this.updateLogicAndEditorCtx({ items: logicFromGraph.items, visualConfig: logicFromGraph.visualConfig })
+      if (this.props.config)
+        newLogic.id = this.props.config?.id
+      if (this.props.onSave) this.props.onSave(newLogic);//调用父级传入的回调保存配置
+      const logicJson = JSON.stringify(newLogic);
+      localStorage.setItem('logic-' + newLogic.name, logicJson);//缓存到浏览器
+      navigator.clipboard.writeText(logicJson);//复制到剪贴板
+
       // this.state.flowRunner.send('save', flowJson);//发送消息
       // this.autoLayout(this.state.graph)//自动布局
     }
   };
   //保存参数配置
-  saveFlowSettingAndConvertGraphToDsl = (settingValues) => {
-    const input = JSON.parse(settingValues.input);
-    console.log('input')
-    console.log(input)
-    Object.keys(input).forEach((key) => {
-      console.log(TypeAnnotationParser.guessByValue(input[key]));
-    })
-    const newFlow = { ...this.state.stepFlow, ...settingValues };
-    const flowJson = JSON.stringify(newFlow);
-    this.updateFlowAndEditorCtx(settingValues)
-    localStorage.setItem('step-flow-json', flowJson);//缓存到浏览器
-    navigator.clipboard.writeText(flowJson);//复制到剪贴板
+  saveFlowSettingAndConvertGraphToDsl = (settingValues: any) => {
+    console.log('saveFlowSettingAndConvertGraphToDsl', settingValues);
+    const params = TypeAnnotationParser.getParamArrayByJson(JSON.parse(settingValues.params ?? "{}"));
+    const returns = TypeAnnotationParser.getReturnArrayByJson(JSON.parse(settingValues.returns ?? "{}"));
+    const variables = TypeAnnotationParser.getVariableArrayByJson(JSON.parse(settingValues.variables ?? "{}"));
+    const envs = TypeAnnotationParser.getEnvsArrayByJson(JSON.parse(settingValues.envs ?? "{}"));
+
+    const newLogic = this.updateLogicAndEditorCtx({ params, returns, variables, envs })
+    const logicJson = JSON.stringify(newLogic);
+    localStorage.setItem('logic-json', logicJson);//缓存到浏览器
+    // navigator.clipboard.writeText(logicJson);//复制到剪贴板
     // this.state.flowRunner.send('save', flowJson);//发送消息
     // this.autoLayout(this.state.graph)//自动布局
   };
   convertGraphToDsl = (graphJson: any) => {
-    const _flow = GraphToStepFlow(graphJson.cells);
+    const _flow = GraphToLogic(this.props.config?.id, graphJson.cells);
     if (_flow) _flow.visualConfig = graphJson;
     return _flow;
   };
-  setFlowSetting = (open) => {
+  setFlowSetting = (open: boolean) => {
     this.setState({ openFlowSetting: open })
   }
   render() {
@@ -642,7 +651,7 @@ export default class X6Graph extends React.Component<EditorProps> {
       editingNode,
       leftToolCollapsed,
       rightToolCollapsed,
-      stepFlow,
+      logic,
       editorCtx,
       graph,
       openFlowSetting
@@ -660,7 +669,7 @@ export default class X6Graph extends React.Component<EditorProps> {
             <LeftTool
               refStencil={this.refStencil}
               graph={this.state.graph}
-              stepFlow={stepFlow}
+              logic={logic}
               onConfigChange={this.handleOnConfigChange}
             />
           </Layout.Sider>
@@ -702,9 +711,10 @@ export default class X6Graph extends React.Component<EditorProps> {
                 >
                   保存
                 </Dropdown.Button >
+
                 <FlowSetting open={openFlowSetting}
                   values={{
-                    ...stepFlow
+                    ...logic
                   }}
                   setOpen={this.setFlowSetting}
                   onSubmit={this.saveFlowSettingAndConvertGraphToDsl}
@@ -721,26 +731,47 @@ export default class X6Graph extends React.Component<EditorProps> {
                     this.autoLayout(this.state.graph)
                   }}
                 ></Button>
-              </Space >
-              {/* <Button
-              type="default"
-              onClick={() => {
-                if (this.state.stepFlow) {
-                  this.state.flowRunner.init(this.state.stepFlow);
-                  this.state.logs.push({
-                    data: new Date().toLocaleTimeString(),
-                  });
-                  this.state.flowRunner.invoke({}, (res: any) =>
-                    message.info('执行成功，返回值\n' + JSON.stringify(res)),
-                  );
-                }
-              }}
-              style={{
-                marginLeft: '10px',
-              }}
-            >
-              在浏览器运行
-            </Button> */}
+              </Space>
+              <Button
+                type="default"
+                onClick={() => {
+                  if (this.state.logic) {
+                    new LogicRunner(this.state.logic).run().then(res => {
+                      message.info('执行成功，返回值\n' + JSON.stringify(res))
+                    });
+                    this.state.logs.push({
+                      data: new Date().toLocaleTimeString(),
+                    });
+                  }
+                }}
+                style={{
+                  marginLeft: '10px',
+                }}
+              >
+                在浏览器运行
+              </Button>
+              <Button
+                type="default"
+                onClick={() => {
+                  if (this.state.logic) {
+                    console.log('this.state.logic');
+                    console.log(this.state.logic);
+                    runLogicOnServer(this.state.logic.id, {}).then(res => {
+                      message.info('执行成功，返回值\n' + JSON.stringify(res))
+                    }).catch(err => {
+                      message.error('执行失败，' + err)
+                    });
+                    this.state.logs.push({
+                      data: new Date().toLocaleTimeString(),
+                    });
+                  }
+                }}
+                style={{
+                  marginLeft: '10px',
+                }}
+              >
+                服务端运行
+              </Button>
               {/* <Button
               type="default"
               onClick={() => {

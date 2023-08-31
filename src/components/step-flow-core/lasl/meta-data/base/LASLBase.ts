@@ -1,4 +1,4 @@
-import { TypeAnnotation } from './TypeAnnotation';
+import TypeAnnotation from './TypeAnnotation';
 
 export default interface LASLBase {
     concept: string,//当前节点概念

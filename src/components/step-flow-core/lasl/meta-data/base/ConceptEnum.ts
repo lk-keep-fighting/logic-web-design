@@ -28,3 +28,20 @@ export enum ConceptEnum {
      */
     'LogicItem' = 'LogicItem',
 }
+export enum LogicItemTypeEnum {
+    'start' = 'start',
+    'end' = 'end',
+    'switch' = 'switch',
+    'switch-case' = 'switch-case',
+    'switch-def' = 'switch-def',
+    'mqtt-pub' = 'mqtt-pub',
+    'mqtt-sub' = 'mqtt-sub',
+    'mqtt-unsub' = 'mqtt-unsub',
+    'mqtt-client' = 'mqtt-client',
+    'mqtt-server' = 'mqtt-server',
+    'mqtt-broker' = 'mqtt-broker',
+    'http' = 'http',
+    'logic' = 'logic',
+    'js' = 'js',
+    'wait' = 'wait'
+}

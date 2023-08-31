@@ -1,4 +1,5 @@
 import { Step } from '.';
+import { Param, Return, Variable } from '../lasl/meta-data';
 /**
  * 一个流程完整的配置文件
  */
@@ -14,19 +15,19 @@ export class StepFlow {
   /**
    * 入参
    */
-  input?: object = {};
+  params?: Array<Param>;
   /**
    * 返回参数
    */
-  return?: object = {};
+  returns?: Array<Return>;
   /**
    * 局部变量
    */
-  var?: object = {};
+  variables?: Array<Variable>;
   /**
    * 环境配置
    */
-  env?: object = {};
+  env?: Array<Param>;
   /**
    * api流程所有步骤配置，平铺无嵌套，通过nextStepId关联流转
    */
