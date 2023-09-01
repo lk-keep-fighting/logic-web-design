@@ -71,8 +71,7 @@ export class LogicRunner {
         let ret = await new LogicItemRunner(item).run(ctx);
         ctx._lastRet = ret;
         if (item.returnAccept) {
-            functions['js'](ctx, `${item.returnAccept}=_lastRet}`)
-            // ctx._par[item.returnAccept] = ret;
+            functions['js'](ctx, `${item.returnAccept}=_lastRet`)
         }
         const nextItem = await this.findNextItem(item);
         if (nextItem) {
