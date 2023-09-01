@@ -28,13 +28,14 @@ export default defineConfig({
   },
   proxy: {
     '/api/form': {
-      // 'target': 'http://192.168.44.70:5001',
-      'target': 'http://localhost:5000',
+      'target': 'http://192.168.44.70:5001',
+      // 'target': 'http://localhost:5001',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/runtime': {
-      'target': 'http://localhost:3000',
+      'target': 'http://192.168.44.70:3001',
+      // 'target': 'http://localhost:3000',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },

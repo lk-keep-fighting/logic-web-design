@@ -21,14 +21,15 @@ const EditorByLoader = (props: ICodeEditor) => {
   const monaco = useMonaco();
 
   const editorCtx = useContext(EditorContext);
+  const { logic } = editorCtx;
   useEffect(() => {
-    const varsJson = TypeAnnotationParser.getJsonByParams(editorCtx.flowVar ?? [])
+    const varsJson = TypeAnnotationParser.getJsonByParams(logic.variables ?? [])
     const vars = buildVarExtarLibByObj('_var', varsJson)
-    const inputJson = TypeAnnotationParser.getJsonByParams(editorCtx.flowInput ?? []);
+    const inputJson = TypeAnnotationParser.getJsonByParams(logic.params ?? []);
     const input = buildVarExtarLibByObj('_par', inputJson)
-    const returnJson = TypeAnnotationParser.getJsonByParams(editorCtx.flowReturn ?? []);
+    const returnJson = TypeAnnotationParser.getJsonByParams(logic.returns ?? []);
     const returnp = buildVarExtarLibByObj('_ret', returnJson)
-    const envJson = TypeAnnotationParser.getJsonByParams(editorCtx.flowEnv ?? []);
+    const envJson = TypeAnnotationParser.getJsonByParams(logic.envs ?? []);
     const env = buildVarExtarLibByObj('_env', envJson)
 
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
@@ -42,7 +43,7 @@ const EditorByLoader = (props: ICodeEditor) => {
       monaco?.current?.dispose();
     }
     // }
-  }, [editorCtx.flowInput, editorCtx.flowVar, editorCtx.flowReturn])
+  }, [logic.params, logic.variables, logic.returns, logic.envs])
 
   const [full, setFull] = useState(false);
   return (

@@ -1,7 +1,7 @@
 import { Table } from "antd"
 import { Link } from "umi"
-import axios from "axios"
 import { useEffect, useState } from "react"
+import { queryLogics } from "@/services/logicSvc"
 
 const columns = [
     {
@@ -20,7 +20,7 @@ const columns = [
 export default function LogicList(props) {
     const [items, setItems] = useState([])
     useEffect(() => {
-        axios.post('/api/form/logic/query', {}).then(res => {
+        queryLogics().then(res => {
             setItems(res.data.result.items)
         })
     }, [])

@@ -1,5 +1,6 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import { X6Graph } from "@/components/step-flow-editor";
+import { getLogic } from "@/services/logicSvc";
 import { Spin, message } from "antd";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
@@ -22,8 +23,9 @@ const LogicEditor = () => {
         setConfig(logic)
         axios.put(`/api/form/logic/edit/${logic.id}`, { configJson: JSON.stringify(logic) }).then(res => {
             setLoading(false)
-            // setConfig(logic)
             message.success('保存成功')
+            console.log('save logic')
+            console.log(logic)
         }).catch(err => {
             setLoading(false)
             console.log('err')
@@ -33,14 +35,11 @@ const LogicEditor = () => {
     }, [])
     useEffect(() => {
         setLoading(true);
-        axios.post(`/api/form/logic/query`, { ids: [id] }).then(res => {
-            console.log('res.data')
-            const { data } = res;
-            const configJson = JSON.parse(data.result.items[0].configJson);
+        getLogic(id).then(res => {
+            const configJson = res;
             configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
             setConfig(configJson)
             setLoading(false);
-            console.log(res.data)
         }).catch(err => {
             setLoading(false);
             console.log('err')

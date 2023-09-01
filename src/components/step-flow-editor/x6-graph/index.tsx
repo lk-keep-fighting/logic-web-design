@@ -1,5 +1,5 @@
-import { BarsOutlined, EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, RocketOutlined, SaveOutlined, SettingOutlined } from '@ant-design/icons';
-import { CellView, Dom, Edge, EdgeView, Graph, Node, Shape } from '@antv/x6';
+import { EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, RocketOutlined, SaveOutlined, SettingOutlined } from '@ant-design/icons';
+import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
@@ -9,18 +9,15 @@ import { Stencil } from '@antv/x6-plugin-stencil';
 import { Scroller } from '@antv/x6-plugin-scroller'
 import { Export } from '@antv/x6-plugin-export'
 import { loader } from '@monaco-editor/react';
-import { Button, Dropdown, Layout, MenuProps, Modal, Space, message } from 'antd';
+import { Button, Dropdown, Layout, MenuProps, Space, message } from 'antd';
 import * as monaco from 'monaco-editor';
 import React from 'react';
-import { StepFlow } from '../../step-flow-core/types';
 import { GraphToLogic } from '@/components/step-flow-core/lasl/parser/logic-parser';
 import './index.css';
 import LeftTool from '../left-toolset';
 import RightToolset from '../right-toolset';
 import { InitPanelData } from './settings/PanelSetting';
 import { DefaultGraph, RegistShape } from './settings/InitGraph';
-import { ports } from './settings/Consts';
-import { DagreLayout } from '@antv/layout';
 import { ConfigSchemaProvider } from './settings/DefaultFormExt';
 import DagreGraph from './instance/dagre-graph';
 import FlowSetting from './settings/flow-setting';
@@ -30,17 +27,12 @@ import { TypeAnnotationParser } from '../../step-flow-core/lasl/parser/type-anno
 import { Schema } from 'form-render';
 import { Logic, Param, Return, Variable } from '@/components/step-flow-core/lasl/meta-data';
 import EnvParam from '@/components/step-flow-core/lasl/meta-data/EnvParam';
-import LogicItemRunner from '@/components/step-flow-core/runner/LogicItemRunner';
 import { LogicRunner } from '@/components/step-flow-core/runner/LogicRunner';
 import { runLogicOnServer } from '@/services/logicSvc';
 
 
 type EditorCtx = {
   logic: Logic,
-  flowVar?: Array<Variable>,
-  flowInput?: Array<Param>,
-  flowReturn?: Array<Return>,
-  flowEnv?: Array<EnvParam>,
 }
 const saveBtns = [
   // { key: 'saveToBrowser', label: '缓存到浏览器' },
@@ -51,7 +43,7 @@ const saveBtns = [
 ];
 
 export const EditorContext = React.createContext<EditorCtx>({
-  logic: new Logic()
+  logic: new Logic('')
 })
 
 // 控制连接桩显示/隐藏
@@ -67,14 +59,13 @@ type StateType = {
   graph?: Graph;
   leftToolCollapsed: boolean;
   rightToolCollapsed: boolean;
-  logic: Logic;
   openFlowSetting: boolean;
-  editorCtx: EditorCtx
+  editorCtx: EditorCtx;
   // flowRunner: FlowRunner;
   logs: any[];
   panel: {
-    nodes: any[];
-    groups: any[];
+    nodes: any[],
+    groups: any[],
   };
 };
 interface EditorProps {
@@ -89,7 +80,7 @@ interface EditorProps {
   onSave?: (logic: Logic) => void;
   // readyCallback?: (graph: Graph, flowRunner: FlowRunner) => void;
 }
-export default class X6Graph extends React.Component<EditorProps> {
+export default class X6Graph extends React.Component<EditorProps, StateType> {
   private container?: HTMLDivElement;
   private stencilContainer?: HTMLDivElement;
   constructor(props: EditorProps) {
@@ -101,7 +92,6 @@ export default class X6Graph extends React.Component<EditorProps> {
         props.customSharps,
       );
       RegistShape(Shapes);
-
       this.state.leftToolCollapsed = !(props.showLeft ?? true);
       this.state.rightToolCollapsed = !(props.showRight ?? false);
       this.state.panel.nodes = Nodes;
@@ -119,10 +109,9 @@ export default class X6Graph extends React.Component<EditorProps> {
     editingEdge: undefined,
     leftToolCollapsed: false,
     rightToolCollapsed: true,
-    logic: new Logic(),
     openFlowSetting: false,
     // flowRunner: new FlowRunner(),
-    editorCtx: { logic: new Logic() },
+    editorCtx: { logic: new Logic('1') },
     logs: [],
     panel: {
       nodes: [],
@@ -137,17 +126,17 @@ export default class X6Graph extends React.Component<EditorProps> {
     prevState: Readonly<StateType>,
     snapshot?: any,
   ): void {
-    if (this.props.config && this.props.config != this.state.logic) {
-      this.state.logic = this.props.config;
-      if (this.state.logic?.visualConfig)
-        this.state.graph?.fromJSON(this.state.logic?.visualConfig);
+    if (this.props.config && this.state.editorCtx.logic.id != this.props.config.id) {
+      this.state.editorCtx.logic = this.props.config;
+      if (this.state.editorCtx?.logic?.visualConfig)
+        this.state.graph?.fromJSON(this.state.editorCtx.logic?.visualConfig);
       this.setState({ editingNode: undefined });
     }
   }
 
   componentDidMount() {
     this.initGraph(this.container);
-    this.updateLogicAndEditorCtx(this.state.logic)
+    this.updateLogicAndEditorCtx(this.state.editorCtx?.logic)
     //注册运行日志监听
     // this.state.flowRunner.on('log', (msg) => {
     //   this.state.logs.push(msg);
@@ -167,8 +156,6 @@ export default class X6Graph extends React.Component<EditorProps> {
           childView: CellView,
           parentView: CellView,
         }) => {
-          console.log('validate')
-          console.log(args)
           //实现拖拽连接，设置自动顺序连接的节点
           args.child.setData({ hoverNode: args.parent })
           return true;
@@ -529,8 +516,8 @@ export default class X6Graph extends React.Component<EditorProps> {
     this.stencilContainer?.appendChild(stencil.container);
 
     if (this.props.config) {
-      this.state.logic = this.props.config;
-      graph.fromJSON(this.state.logic.visualConfig);
+      this.state.editorCtx.logic = this.props.config;
+      graph.fromJSON(this.state.editorCtx.logic.visualConfig);
     } else {
       DefaultGraph(graph);
       this.autoLayout(graph)
@@ -571,7 +558,7 @@ export default class X6Graph extends React.Component<EditorProps> {
         const localData = localStorage.getItem('logic-json');
         if (localData) {
           const flow: Logic = JSON.parse(localData);
-          this.state.logic = flow;
+          this.state.editorCtx.logic = flow;
           this.state.graph?.fromJSON(flow.visualConfig);
           this.saveAndConvertGraphToDsl();
         } else {
@@ -593,15 +580,15 @@ export default class X6Graph extends React.Component<EditorProps> {
    * @returns 
    */
   updateLogicAndEditorCtx = (updatedFlowProps: any) => {
-    const newLogic: Logic = { ...this.state.logic, ...updatedFlowProps };
+    let newLogic: Logic = { ...this.state.editorCtx.logic, ...updatedFlowProps };
     this.setState({
-      logic: newLogic,
       editorCtx: {
         ...this.state.editorCtx,
-        flowVar: newLogic.variables,//JSON.parse(newLogic.var),
-        flowInput: newLogic.params,//JSON.parse(newLogic.input),
-        flowReturn: newLogic.returns, //JSON.parse(newLogic.return),
-        flowEnv: newLogic.envs// JSON.parse(newLogic.env),
+        logic: newLogic,
+        // flowVar: newLogic.variables,//JSON.parse(newLogic.var),
+        // flowInput: newLogic.params,//JSON.parse(newLogic.input),
+        // flowReturn: newLogic.returns, //JSON.parse(newLogic.return),
+        // flowEnv: newLogic.envs// JSON.parse(newLogic.env),
       }
     });
     return newLogic;
@@ -618,14 +605,12 @@ export default class X6Graph extends React.Component<EditorProps> {
       const logicJson = JSON.stringify(newLogic);
       localStorage.setItem('logic-' + newLogic.name, logicJson);//缓存到浏览器
       navigator.clipboard.writeText(logicJson);//复制到剪贴板
-
       // this.state.flowRunner.send('save', flowJson);//发送消息
       // this.autoLayout(this.state.graph)//自动布局
     }
   };
   //保存参数配置
   saveFlowSettingAndConvertGraphToDsl = (settingValues: any) => {
-    console.log('saveFlowSettingAndConvertGraphToDsl', settingValues);
     const params = TypeAnnotationParser.getParamArrayByJson(JSON.parse(settingValues.params ?? "{}"));
     const returns = TypeAnnotationParser.getReturnArrayByJson(JSON.parse(settingValues.returns ?? "{}"));
     const variables = TypeAnnotationParser.getVariableArrayByJson(JSON.parse(settingValues.variables ?? "{}"));
@@ -633,7 +618,7 @@ export default class X6Graph extends React.Component<EditorProps> {
 
     const newLogic = this.updateLogicAndEditorCtx({ params, returns, variables, envs })
     const logicJson = JSON.stringify(newLogic);
-    localStorage.setItem('logic-json', logicJson);//缓存到浏览器
+    localStorage.setItem('logic-json-' + newLogic.id, logicJson);//缓存到浏览器
     // navigator.clipboard.writeText(logicJson);//复制到剪贴板
     // this.state.flowRunner.send('save', flowJson);//发送消息
     // this.autoLayout(this.state.graph)//自动布局
@@ -651,11 +636,11 @@ export default class X6Graph extends React.Component<EditorProps> {
       editingNode,
       leftToolCollapsed,
       rightToolCollapsed,
-      logic,
       editorCtx,
       graph,
       openFlowSetting
     } = this.state;
+    const { logic } = editorCtx;
     console.log('editorCtx', editorCtx);
     return (
       <EditorContext.Provider value={editorCtx}>
@@ -707,7 +692,7 @@ export default class X6Graph extends React.Component<EditorProps> {
                       <Button type='primary' icon={<EllipsisOutlined />} />
                     ]
                   }}
-                  onClick={this.saveAndConvertGraphToDsl}
+                // onClick={this.saveAndConvertGraphToDsl}
                 >
                   保存
                 </Dropdown.Button >
@@ -721,7 +706,7 @@ export default class X6Graph extends React.Component<EditorProps> {
                 >
                   <Button
                     onClick={() => this.setFlowSetting(true)}
-                    icon={<BarsOutlined />}
+                    icon={<SettingOutlined />}
                   >入出参</Button>
                 </FlowSetting>
                 <Button
@@ -735,8 +720,8 @@ export default class X6Graph extends React.Component<EditorProps> {
               <Button
                 type="default"
                 onClick={() => {
-                  if (this.state.logic) {
-                    new LogicRunner(this.state.logic).run().then(res => {
+                  if (logic) {
+                    new LogicRunner(logic).run().then(res => {
                       message.info('执行成功，返回值\n' + JSON.stringify(res))
                     });
                     this.state.logs.push({
@@ -753,11 +738,9 @@ export default class X6Graph extends React.Component<EditorProps> {
               <Button
                 type="default"
                 onClick={() => {
-                  if (this.state.logic) {
-                    console.log('this.state.logic');
-                    console.log(this.state.logic);
-                    runLogicOnServer(this.state.logic.id, {}).then(res => {
-                      message.info('执行成功，返回值\n' + JSON.stringify(res))
+                  if (logic) {
+                    runLogicOnServer(logic.id, {}).then(res => {
+                      message.info('执行成功，返回值\n' + JSON.stringify(res.data))
                     }).catch(err => {
                       message.error('执行失败，' + err)
                     });
