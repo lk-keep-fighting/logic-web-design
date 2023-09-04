@@ -9,7 +9,7 @@ import { Stencil } from '@antv/x6-plugin-stencil';
 import { Scroller } from '@antv/x6-plugin-scroller'
 import { Export } from '@antv/x6-plugin-export'
 import { loader } from '@monaco-editor/react';
-import { Button, Dropdown, Layout, MenuProps, Space, message } from 'antd';
+import { Button, Dropdown, Layout, MenuProps, Modal, Space, message } from 'antd';
 import * as monaco from 'monaco-editor';
 import React from 'react';
 import { GraphToLogic } from '@/components/step-flow-core/lasl/parser/logic-parser';
@@ -29,6 +29,10 @@ import { Logic, Param, Return, Variable } from '@/components/step-flow-core/lasl
 import EnvParam from '@/components/step-flow-core/lasl/meta-data/EnvParam';
 import { LogicRunner } from '@/components/step-flow-core/runner/LogicRunner';
 import { runLogicOnServer } from '@/services/logicSvc';
+import { ButtonProps } from 'antd/lib/button';
+import FormRender from '../component/FormRender';
+import { connectForm } from 'form-render/lib/type';
+import RunLogic from './settings/run-logic';
 
 
 type EditorCtx = {
@@ -37,7 +41,7 @@ type EditorCtx = {
 const saveBtns = [
   // { key: 'saveToBrowser', label: '缓存到浏览器' },
   { key: 'saveToPng', label: '导出图片' },
-  { key: '-', label: '------------' },
+  { key: '-', label: '-' },
   { key: 'loadFromBrowser', label: '从浏览器恢复' },
   // { key: 'saveToClipboard', label: '复制到剪贴板' }
 ];
@@ -60,6 +64,7 @@ type StateType = {
   leftToolCollapsed: boolean;
   rightToolCollapsed: boolean;
   openFlowSetting: boolean;
+  openRunLogic: boolean;
   editorCtx: EditorCtx;
   // flowRunner: FlowRunner;
   logs: any[];
@@ -76,6 +81,7 @@ interface EditorProps {
   customNodes?: any[];
   showLeft?: boolean;
   showRight?: boolean;
+  btns: ButtonProps[],
   configSchemaProvider?: (type: string) => Promise<Schema>;
   onSave?: (logic: Logic) => void;
   // readyCallback?: (graph: Graph, flowRunner: FlowRunner) => void;
@@ -110,6 +116,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
     leftToolCollapsed: false,
     rightToolCollapsed: true,
     openFlowSetting: false,
+    openRunLogic: false,
     // flowRunner: new FlowRunner(),
     editorCtx: { logic: new Logic('1') },
     logs: [],
@@ -638,7 +645,8 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
       rightToolCollapsed,
       editorCtx,
       graph,
-      openFlowSetting
+      openFlowSetting,
+      openRunLogic,
     } = this.state;
     const { logic } = editorCtx;
     console.log('editorCtx', editorCtx);
@@ -696,7 +704,6 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                 >
                   保存
                 </Dropdown.Button >
-
                 <FlowSetting open={openFlowSetting}
                   values={{
                     ...logic
@@ -717,7 +724,8 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                   }}
                 ></Button>
               </Space>
-              <Button
+              {this.props.btns?.map(b => <Button {...b} />)}
+              {/* <Button
                 type="default"
                 onClick={() => {
                   if (logic) {
@@ -734,27 +742,42 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                 }}
               >
                 在浏览器运行
-              </Button>
-              <Button
-                type="default"
-                onClick={() => {
+              </Button> */}
+              <RunLogic open={openRunLogic} setOpen={(open) => this.setState({ openRunLogic: open })}
+                onSubmit={(values) => {
+                  this.setState({ openRunLogic: false })
                   if (logic) {
-                    runLogicOnServer(logic.id, {}).then(res => {
+                    const { params } = values;
+                    runLogicOnServer(logic.id, JSON.parse(params)).then(res => {
                       message.info('执行成功，返回值\n' + JSON.stringify(res.data))
                     }).catch(err => {
-                      message.error('执行失败，' + err)
+                      const errInfo = err.response.data;
+                      Modal.error({
+                        title: '执行失败',
+                        content: <div>
+                          <h6>{errInfo.errMsg}</h6>
+                          {JSON.stringify(errInfo.err)}
+                        </div>,
+                      })
+                      // message.error('执行失败，' + err)
                     });
                     this.state.logs.push({
                       data: new Date().toLocaleTimeString(),
                     });
                   }
-                }}
-                style={{
-                  marginLeft: '10px',
-                }}
-              >
-                服务端运行
-              </Button>
+                }}>
+                <Button
+                  type="default"
+                  onClick={() => {
+                    this.setState({ openRunLogic: true })
+                  }}
+                  style={{
+                    marginLeft: '10px',
+                  }}
+                >
+                  服务端运行
+                </Button>
+              </RunLogic>
               {/* <Button
               type="default"
               onClick={() => {
