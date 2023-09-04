@@ -8,7 +8,9 @@ import { post } from "./http";
  * @returns 
  */
 export async function runLogicOnServer(id: string, params: any) {
-    return post(`/api/runtime/logic/run/${id}`, params)
+    return post(`/api/runtime/logic/run/${id}`,
+        params,
+        { headers: { 'Content-Type': 'application/json' } })
 }
 /**
  * 获取逻辑对象
@@ -21,6 +23,18 @@ export async function getLogic(id: string) {
         return JSON.parse(jsonStr);
     })
 }
+export async function addLogic(id?: string, name?: string): Promise<string> {
+    return axios.post(`/api/form/logic/add`, { id, name }).then(res => {
+        const newId = res.data.result;
+        return newId;
+    })
+}
+export async function deleteLogic(id?: string): Promise<Boolean> {
+    return axios.delete(`/api/form/logic/delete/${id}`).then(res => {
+        return res.data.result;
+    })
+}
+
 /**
  * 查询逻辑列表
  * @param page 页码
@@ -28,5 +42,5 @@ export async function getLogic(id: string) {
  * @returns 
  */
 export async function queryLogics(page: number = 1, pageSize: number = 10) {
-    return axios.post(`/api/form/logic/query}`, { page, pageSize }).then(res=>res.data.result)
+    return axios.post(`/api/form/logic/query`, { page, pageSize }).then(res => res.data)
 }

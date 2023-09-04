@@ -1,8 +1,10 @@
 import { defineConfig } from "umi";
 const MonacoPlugin = require('monaco-editor-webpack-plugin')
 export default defineConfig({
+  title: "业务编排",
+  favicons: ['/logo.png'],
   routes: [
-    { path: "/", component: "index" },
+    { path: "/", redirect: '/logics' },
     { path: "/logics", component: "logic/list" },
     { path: "/logic/:id", component: "logic-editor" },
     { path: "/editor/:id", component: "logic-editor" },
@@ -39,15 +41,5 @@ export default defineConfig({
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },
-    // '/setting/biz/query': {
-    //   'target': 'http://192.168.44.70:5000/api/form/query/logic',
-    //   'changeOrigin': true,
-    //   // 'pathRewrite': { '^/api': '' },
-    // },
-    // '/setting/biz/add': {
-    //   'target': 'http://192.168.44.70:5000/api/form/add/logic',
-    //   'changeOrigin': true,
-    //   // 'pathRewrite': { '^/api': '' },
-    // }
   }
 });
