@@ -3,18 +3,29 @@ import FormRender from "@/components/step-flow-editor/component/FormRender"
 import { Modal, Tabs, message } from "antd"
 import { useForm } from "form-render"
 import { useCallback, useEffect, useState } from "react";
-const FlowSetting = (props) => {
+type RunLogicProps = {
+    values: {
+        params: any,
+        // envs: any,
+    },
+    onSubmit: (values: any) => void,
+    open: boolean,
+    setOpen: (open: boolean) => void,
+    children: any
+}
+
+
+// 运行逻辑
+const RunLogic = (props: RunLogicProps) => {
     const form = useForm();
     useEffect(() => {
-        const { params, variables, envs, returns } = props.values;
+        const { params } = props.values;
         form.setValues({
             params: JSON.stringify(TypeAnnotationParser.getJsonByParams(params)),
-            variables: JSON.stringify(TypeAnnotationParser.getJsonByParams(variables)),
-            returns: JSON.stringify(TypeAnnotationParser.getJsonByParams(returns)),
-            envs: JSON.stringify(TypeAnnotationParser.getJsonByParams(envs)),
+            // returns: JSON.stringify(TypeAnnotationParser.getJsonByParams(returns)),
+            // envs: JSON.stringify(TypeAnnotationParser.getJsonByParams(envs)),
         })
     }, [props.values])
-
     const validateJsonString = useCallback((jsonString: string) => {
         try {
             JSON.parse(jsonString)
@@ -35,7 +46,7 @@ const FlowSetting = (props) => {
                 Object.keys(values).forEach(key => {
                     const item = values[key];
                     if (!validateJsonString(item)) {
-                        const field = key === 'params' ? '入参' : key === 'variables' ? '局部变量' : key === 'returns' ? '返回参数' : '环境变量'
+                        const field = key === 'params' ? '入参' : '环境变量'
                         message.error(`${field}json格式错误`)
                         hasError = true;
                         return false;
@@ -55,7 +66,7 @@ const FlowSetting = (props) => {
                     "type": "object",
                     "properties": {
                         params: {
-                            title: '入参声明',
+                            title: '入参',
                             type: 'string',
                             widget: 'json',
                             props: {
@@ -63,26 +74,8 @@ const FlowSetting = (props) => {
                             },
                             extra: '编辑器中可通过 _par. 获取'
                         },
-                        returns: {
-                            title: '返回参数声明',
-                            type: 'string',
-                            widget: 'json',
-                            props: {
-                                height: 200,
-                            },
-                            extra: '编辑器中可通过 _ret. 获取并赋值'
-                        },
-                        variables: {
-                            title: '局部变量声明',
-                            type: 'string',
-                            widget: 'json',
-                            props: {
-                                height: 200,
-                            },
-                            extra: '编辑器中可通过 _var. 获取'
-                        },
                         envs: {
-                            title: '环境变量声明',
+                            title: '环境变量',
                             type: 'string',
                             widget: 'json',
                             props: {
@@ -99,4 +92,4 @@ const FlowSetting = (props) => {
         </Modal>
     </span >
 }
-export default FlowSetting;
+export default RunLogic;

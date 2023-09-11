@@ -2,12 +2,40 @@ import { defineConfig } from "umi";
 const MonacoPlugin = require('monaco-editor-webpack-plugin')
 export default defineConfig({
   title: "业务编排",
+  // history: { type: 'hash' },
   favicons: ['/logo.png'],
+  esbuildMinifyIIFE: true,
   routes: [
-    { path: "/", redirect: '/logics' },
-    { path: "/logics", component: "logic/list" },
-    { path: "/logic/:id", component: "logic-editor" },
-    { path: "/editor/:id", component: "logic-editor" },
+    {
+      path: "/",
+      layout: 'index',
+      routes: [
+        {
+          path: "/assets",
+          routes: [
+            {
+              path: "/assets/api/list",
+              component: "assets/api/list",
+            },
+            {
+              path: "/assets/swagger/list",
+              component: "assets/swagger/list",
+            },
+            {
+              path: "/assets/logic/list", component: "logic/list",
+            },
+          ]
+        },
+
+      ]
+    },
+    {
+      path: "/assets/swagger/i/:id/ui",
+      layout: false,
+      component: "assets/swagger/ui",
+    },
+    { path: "/assets/logic/i/:id/edit", layout: false, component: "logic-editor" },
+    { path: "/editor/:id", layout: false, component: "logic-editor" },
     { path: "/form", component: "form-editor" },
   ],
   npmClient: 'pnpm',
@@ -29,6 +57,12 @@ export default defineConfig({
     "react-dom": "ReactDOM",
   },
   proxy: {
+    '/file': {
+      'target': 'http://192.168.44.70:5001',
+      // 'target': 'http://localhost:5001',
+      'changeOrigin': true,
+      'pathRewrite': { '^/file': '/' },
+    },
     '/api/form': {
       'target': 'http://192.168.44.70:5001',
       // 'target': 'http://localhost:5001',
@@ -36,10 +70,11 @@ export default defineConfig({
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/runtime': {
-      'target': 'http://192.168.44.70:3001',
+      'target': 'http://localhost:4052',
       // 'target': 'http://localhost:3000',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },
-  }
+  },
+
 });

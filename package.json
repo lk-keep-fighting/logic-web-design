@@ -2,7 +2,7 @@
   "private": true,
   "author": "lk <lkllyy@126.com>",
   "scripts": {
-    "dev": "umi dev",
+    "dev": "PORT=4051 umi dev",
     "build": "umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",
@@ -35,11 +35,13 @@
     "mqtt": "^5.0.3",
     "react": "18.1.0",
     "react-infinite-scroll-component": "^6.1.0",
+    "swagger-ui-react": "^5.5.0",
     "umi": "^4.0.75"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
+    "@umijs/plugins": "^4.0.80",
     "monaco-editor-webpack-plugin": "^7.1.0",
     "typescript": "^5.0.3"
   }

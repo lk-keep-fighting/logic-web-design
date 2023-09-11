@@ -20,7 +20,7 @@ import { InitPanelData } from './settings/PanelSetting';
 import { DefaultGraph, RegistShape } from './settings/InitGraph';
 import { ConfigSchemaProvider } from './settings/DefaultFormExt';
 import DagreGraph from './instance/dagre-graph';
-import FlowSetting from './settings/flow-setting';
+import ParamSetting from '../component/param-setting';
 import { dealGraphNodeWhenAddedFromPanel } from './helper/node-mapping/indext';
 import { autoDagreLayout } from './layout/dagreLayout';
 import { TypeAnnotationParser } from '../../step-flow-core/lasl/parser/type-annotation-parser';
@@ -32,7 +32,7 @@ import { runLogicOnServer } from '@/services/logicSvc';
 import { ButtonProps } from 'antd/lib/button';
 import FormRender from '../component/FormRender';
 import { connectForm } from 'form-render/lib/type';
-import RunLogic from './settings/run-logic';
+import RunLogic from '../component/run-logic';
 
 
 type EditorCtx = {
@@ -704,7 +704,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                 >
                   保存
                 </Dropdown.Button >
-                <FlowSetting open={openFlowSetting}
+                <ParamSetting open={openFlowSetting}
                   values={{
                     ...logic
                   }}
@@ -715,7 +715,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                     onClick={() => this.setFlowSetting(true)}
                     icon={<SettingOutlined />}
                   >入出参</Button>
-                </FlowSetting>
+                </ParamSetting>
                 <Button
                   type='dashed'
                   icon={<RocketOutlined />}
@@ -743,7 +743,9 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
               >
                 在浏览器运行
               </Button> */}
-              <RunLogic open={openRunLogic} setOpen={(open) => this.setState({ openRunLogic: open })}
+              <RunLogic open={openRunLogic}
+                setOpen={(open) => this.setState({ openRunLogic: open })}
+                values={{ params: logic?.params }}
                 onSubmit={(values) => {
                   this.setState({ openRunLogic: false })
                   if (logic) {
