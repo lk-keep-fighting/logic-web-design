@@ -13,6 +13,9 @@ function getItem(
   icon?: React.ReactNode,
   children?: MenuItem[],
 ): MenuItem {
+  if (key?.toString().length > 1)
+    label = <Link to={key.toString()}>{label}</Link>
+  else key = label?.toString();
   return {
     key,
     icon,
@@ -22,10 +25,12 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem('业务编排', '1', <FileAddOutlined />, [
-    getItem('新建', '3'),
-    getItem('列表', '4'),
+  getItem('原子业务资产', '', <FileAddOutlined />, [
+    getItem('API清单', '/assets/api/list'),
+    getItem('微服务Swagger', '/assets/swagger/list')
   ]),
+  getItem('业务编排', '/assets/logic/list', <FileAddOutlined />),
+  // getItem('swagger', '/assets/swagger/list', <FileAddOutlined />),
 ];
 export default function DefaultLayout() {
   const [collapsed, setCollapsed] = useState(false);
@@ -34,17 +39,17 @@ export default function DefaultLayout() {
   } = theme.useToken();
   return (
     <div className={styles.navs}>
-      {/* <Layout style={{ minHeight: '100vh' }}>
+      <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
         </Sider>
         <Layout>
-          <Content style={{ margin: '0 16px' }}> */}
+          <Content style={{ margin: '0 16px' }}>
             <Outlet />
-          {/* </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}></Footer>
         </Layout>
-      </Layout> */}
+      </Layout>
     </div>
   );
 }
