@@ -34,8 +34,8 @@ export async function getLogic(id: string) {
         return JSON.parse(jsonStr);
     })
 }
-export async function addLogic(id?: string, name?: string): Promise<string> {
-    return axios.post(`/api/form/logic/add`, { id, name }).then(res => {
+export async function addLogic(data: any): Promise<string> {
+    return axios.post(`/api/form/logic/add`, data).then(res => {
         const newId = res.data.result;
         return newId;
     })

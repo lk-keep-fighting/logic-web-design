@@ -2,7 +2,7 @@ import { Button, Card, Layout, Modal, Space, Table, message } from "antd"
 import { Link } from "umi"
 import { useCallback, useEffect, useState } from "react"
 import { addLogic, deleteLogic, queryLogics } from "@/services/logicSvc"
-import { CloseOutlined, DeleteOutlined, EditFilled, EditOutlined, FileAddOutlined, PlusOutlined } from "@ant-design/icons"
+import { CloseOutlined, CopyOutlined, DeleteOutlined, EditFilled, EditOutlined, FileAddOutlined, PlusOutlined } from "@ant-design/icons"
 import FormRender from "@/components/step-flow-editor/component/FormRender"
 import { useForm } from "form-render"
 
@@ -53,6 +53,21 @@ export default function LogicList(props) {
             dataIndex: 'name',
         },
         {
+            key: 'module',
+            title: '模块名',
+            width: '200px',
+            dataIndex: 'module',
+        },
+        {
+            key: 'path',
+            title: 'path',
+            dataIndex: 'id',
+            render: (_, record) => <span>{`/logic/v1/run-api/${record.id}`}<Button icon={<CopyOutlined />} type='text'
+                onClick={() => {
+                    navigator.clipboard.writeText(`/logic/v1/run-api/${record.id}`);
+                }}></Button></span>
+        },
+        {
             key: 'id',
             title: 'ID',
             dataIndex: 'id',
@@ -87,6 +102,11 @@ export default function LogicList(props) {
                                 "type": "string",
                                 "widget": "input"
                             },
+                            "module": {
+                                "title": "模块名",
+                                "type": "string",
+                                "widget": "input"
+                            },
                             "name": {
                                 "title": "业务名称",
                                 "type": "string",
@@ -98,7 +118,7 @@ export default function LogicList(props) {
                         const formData = form.getValues();
                         setLoading(true)
                         setOpenAdd(false);
-                        const newId = await addLogic(formData.id, formData.name)
+                        const newId = await addLogic(formData)
                         setLoading(false)
                         query()
                     }}>保存</Button>}
