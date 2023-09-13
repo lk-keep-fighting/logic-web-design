@@ -40,11 +40,11 @@ export default defineConfig({
   ],
   npmClient: 'pnpm',
   chainWebpack: (memo, args) => {
-    if (args.env == 'development') {
-      memo.plugin('monaco-plugin').use(MonacoPlugin, [{
-        languages: ['json', 'typescript', 'javascript']
-      }])
-    }
+    // if (args.env == 'development') {
+    memo.plugin('monaco-plugin').use(MonacoPlugin, [{
+      languages: ['json', 'typescript', 'javascript']
+    }])
+    // }
   },
   headScripts: [{
     src: '/js/umd/react.development.js',
