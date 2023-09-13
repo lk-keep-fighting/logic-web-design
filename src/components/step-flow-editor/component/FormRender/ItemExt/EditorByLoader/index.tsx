@@ -37,6 +37,7 @@ const EditorByLoader = (props: ICodeEditor) => {
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
     monaco?.languages.typescript.javascriptDefaults.addExtraLib(env, 'env.ts');
     monaco?.languages.typescript.javascriptDefaults.addExtraLib('let _lastRet:{}', 'lastRet.ts');
+
     return () => {
       console.log('effect dispose')
       // @ts-ignore
@@ -79,6 +80,10 @@ const EditorByLoader = (props: ICodeEditor) => {
             theme="vs-dark"
             defaultValue={props.value}
             defaultLanguage={props.language}
+            onMount={(editorIns) => {
+              editorIns.getAction('editor.action.formatDocument')?.run();//自动格式化代码
+              editorIns.setValue(editorIns.getValue());
+            }}
             options={{
               // lineNumbers: 'off',
               minimap: {
