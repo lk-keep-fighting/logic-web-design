@@ -1,6 +1,8 @@
 {
   "private": true,
   "author": "lk <lkllyy@126.com>",
+  "name": "xuanwu-logic-web-design",
+  "version": "0.1",
   "scripts": {
     "dev": "PORT=4051 umi dev",
     "build": "umi build",
