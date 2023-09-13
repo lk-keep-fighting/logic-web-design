@@ -748,22 +748,22 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                   if (logic) {
                     const { params } = values;
                     runLogicOnServerLikeApi(logic.id, JSON.parse(params)).then(res => {
-                      if (res.data.success) {
+                      if (res.data.code == 0) {
                         message.info('执行成功，返回值\n' + JSON.stringify(res.data.data))
                       } else {
                         message.info('业务执行失败，返回值\n' + JSON.stringify(res.data.data))
                       }
                     }).catch(err => {
-                      const errInfo = err.response.data;
+                      const res = err.response.data;
                       Modal.error({
                         title: '执行失败',
                         width: '900px',
                         content: <div>
                           <Row>
                             <Col>
-                              <h6>{errInfo.errMsg}</h6>
-                              {JSON.stringify(errInfo.err)}
-                              <CodeEditor language='json' value={JSON.stringify(errInfo.debug)} width={800} />
+                              <h6>{res.message}</h6>
+                              {JSON.stringify(res.err)}
+                              <CodeEditor language='json' value={JSON.stringify(res.debug)} width={800} />
                             </Col>
                           </Row>
                         </div>,

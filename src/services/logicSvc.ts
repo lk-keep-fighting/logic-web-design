@@ -8,7 +8,7 @@ import { post } from "./http";
  * @returns 
  */
 export async function runLogicOnServerLikeFn(id: string, params: any) {
-    return post(`/api/runtime/logic/run-like-fn/${id}`,
+    return post(`/api/runtime/logic/v1/run-fn/${id}`,
         params,
         { headers: { 'Content-Type': 'application/json' } })
 }
@@ -19,7 +19,7 @@ export async function runLogicOnServerLikeFn(id: string, params: any) {
  * @returns 
  */
 export async function runLogicOnServerLikeApi(id: string, params: any) {
-    return post(`/api/runtime/logic/run-like-api/${id}`,
+    return post(`/api/runtime/logic/v1/run-api/${id}`,
         params,
         { headers: { 'Content-Type': 'application/json' } })
 }
