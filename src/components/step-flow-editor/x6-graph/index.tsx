@@ -608,7 +608,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
       if (this.props.onSave) this.props.onSave(newLogic);//调用父级传入的回调保存配置
       const logicJson = JSON.stringify(newLogic);
       localStorage.setItem('logic-' + newLogic.name, logicJson);//缓存到浏览器
-      navigator.clipboard.writeText(logicJson);//复制到剪贴板
+      // navigator.clipboard.writeText(logicJson);//复制到剪贴板
       // this.state.flowRunner.send('save', flowJson);//发送消息
       // this.autoLayout(this.state.graph)//自动布局
     }
