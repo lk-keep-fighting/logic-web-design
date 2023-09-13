@@ -2,13 +2,24 @@ import axios from "axios";
 import { post } from "./http";
 
 /**
- * 在服务端运行逻辑
+ * 在服务端像函数一样运行，入参、出参
  * @param id 执行的逻辑编号
  * @param params 逻辑入参
  * @returns 
  */
-export async function runLogicOnServer(id: string, params: any) {
-    return post(`/api/runtime/logic/run/${id}`,
+export async function runLogicOnServerLikeFn(id: string, params: any) {
+    return post(`/api/runtime/logic/run-like-fn/${id}`,
+        params,
+        { headers: { 'Content-Type': 'application/json' } })
+}
+/**
+ * 像api一样运行，返回包裹在data中，通过success判断状态
+ * @param id 执行的逻辑编号
+ * @param params 逻辑入参
+ * @returns 
+ */
+export async function runLogicOnServerLikeApi(id: string, params: any) {
+    return post(`/api/runtime/logic/run-like-api/${id}`,
         params,
         { headers: { 'Content-Type': 'application/json' } })
 }

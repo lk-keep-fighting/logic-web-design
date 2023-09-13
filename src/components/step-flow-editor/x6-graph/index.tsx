@@ -9,7 +9,7 @@ import { Stencil } from '@antv/x6-plugin-stencil';
 import { Scroller } from '@antv/x6-plugin-scroller'
 import { Export } from '@antv/x6-plugin-export'
 import { loader } from '@monaco-editor/react';
-import { Button, Dropdown, Layout, MenuProps, Modal, Space, message } from 'antd';
+import { Button, Col, Dropdown, Layout, MenuProps, Modal, Row, Space, message } from 'antd';
 import * as monaco from 'monaco-editor';
 import React from 'react';
 import { GraphToLogic } from '@/components/step-flow-core/lasl/parser/logic-parser';
@@ -25,14 +25,11 @@ import { dealGraphNodeWhenAddedFromPanel } from './helper/node-mapping/indext';
 import { autoDagreLayout } from './layout/dagreLayout';
 import { TypeAnnotationParser } from '../../step-flow-core/lasl/parser/type-annotation-parser';
 import { Schema } from 'form-render';
-import { Logic, Param, Return, Variable } from '@/components/step-flow-core/lasl/meta-data';
-import EnvParam from '@/components/step-flow-core/lasl/meta-data/EnvParam';
-import { LogicRunner } from '@/components/step-flow-core/runner/LogicRunner';
-import { runLogicOnServer } from '@/services/logicSvc';
+import { Logic } from '@/components/step-flow-core/lasl/meta-data';
 import { ButtonProps } from 'antd/lib/button';
-import FormRender from '../component/FormRender';
-import { connectForm } from 'form-render/lib/type';
 import RunLogic from '../component/run-logic';
+import { runLogicOnServerLikeApi } from '@/services/logicSvc';
+import CodeEditor from '../component/CodeEditor';
 
 
 type EditorCtx = {
@@ -750,18 +747,27 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                   this.setState({ openRunLogic: false })
                   if (logic) {
                     const { params } = values;
-                    runLogicOnServer(logic.id, JSON.parse(params)).then(res => {
-                      message.info('执行成功，返回值\n' + JSON.stringify(res.data))
+                    runLogicOnServerLikeApi(logic.id, JSON.parse(params)).then(res => {
+                      if (res.data.success) {
+                        message.info('执行成功，返回值\n' + JSON.stringify(res.data.data))
+                      } else {
+                        message.info('业务执行失败，返回值\n' + JSON.stringify(res.data.data))
+                      }
                     }).catch(err => {
                       const errInfo = err.response.data;
                       Modal.error({
                         title: '执行失败',
+                        width: '900px',
                         content: <div>
-                          <h6>{errInfo.errMsg}</h6>
-                          {JSON.stringify(errInfo.err)}
+                          <Row>
+                            <Col>
+                              <h6>{errInfo.errMsg}</h6>
+                              {JSON.stringify(errInfo.err)}
+                              <CodeEditor language='json' value={JSON.stringify(errInfo.debug)} width={800} />
+                            </Col>
+                          </Row>
                         </div>,
                       })
-                      // message.error('执行失败，' + err)
                     });
                     this.state.logs.push({
                       data: new Date().toLocaleTimeString(),
