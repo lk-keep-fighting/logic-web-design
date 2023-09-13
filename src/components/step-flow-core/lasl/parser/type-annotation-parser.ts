@@ -71,7 +71,7 @@ export class TypeAnnotationParser {
 
         switch (t.typeName) {
             case 'array':
-                value = []
+                value = t.defaultValue ?? [];
                 break;
             case 'boolean':
                 value = t.defaultValue ? t.defaultValue == 'true' : false;
