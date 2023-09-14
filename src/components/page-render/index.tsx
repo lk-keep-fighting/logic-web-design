@@ -28,7 +28,6 @@ axios.interceptors.response.use(response => {
         // 数据正常，进行的逻辑功能
         const rep = error.response;
         console.log('--data有返回值，判定为业务异常，继续返回response,适配status=500！');
-        error.response.data.status = 500;
         if (error.response.data.error?.code == 0) error.response.data.error.code = 500
         console.log(rep);
         // 对响应错误做点什么

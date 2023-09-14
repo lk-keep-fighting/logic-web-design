@@ -1,9 +1,10 @@
-import { Link, Outlet } from 'umi';
+import { Link, Outlet, history } from 'umi';
 import styles from './index.less';
 import { ProLayout } from '@ant-design/pro-components';
 import { Layout, Menu, MenuProps, theme } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FileAddOutlined } from '@ant-design/icons';
+import { initApp } from '@/services/appSvr';
 const { Content, Header, Sider, Footer } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -32,8 +33,14 @@ const items: MenuItem[] = [
   getItem('业务编排', '/assets/logic/list', <FileAddOutlined />),
   // getItem('swagger', '/assets/swagger/list', <FileAddOutlined />),
 ];
-export default function DefaultLayout() {
+export default function DefaultLayout(props) {
   const [collapsed, setCollapsed] = useState(false);
+  const [meuns, setMenus] = useState<MenuProps[]>([])
+  useEffect(() => {
+    initApp().then(res => {
+      setMenus(res.menus)
+    })
+  }, [])
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -41,7 +48,9 @@ export default function DefaultLayout() {
     <div className={styles.navs}>
       <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={meuns} onClick={(m) => {
+            history.push(`/page/amis/${m.key}`)
+          }} />
         </Sider>
         <Layout>
           <Content style={{ margin: '0 16px' }}>
