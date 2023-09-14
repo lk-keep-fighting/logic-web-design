@@ -1,0 +1,42 @@
+{
+    "id": "xuanwu-factory",
+    "title": "玄武工厂",
+    "menus": [
+        {
+            "key": "home",
+            "name": "首页"
+        },
+        {
+            "key": "backend",
+            "name": "后端资产",
+            "children": [
+                {
+                    "key": "micro-service",
+                    "name": "微服务组件"
+                },
+                {
+                    "key": "meta-api",
+                    "name": "原子服务"
+                },
+                {
+                    "key": "logic-api",
+                    "name": "逻辑编排服务"
+                }
+            ]
+        },
+        {
+            "key": "dev",
+            "name": "设备集成测试",
+            "children": [
+                {
+                    "key": "use-case",
+                    "name": "测试套件"
+                },
+                {
+                    "key": "use-case-record",
+                    "name": "测试记录"
+                }
+            ]
+        }
+    ]
+}

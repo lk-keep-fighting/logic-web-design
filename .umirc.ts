@@ -30,6 +30,10 @@ export default defineConfig({
       ]
     },
     {
+      path: "/lc/page",
+      component: "render",
+    },
+    {
       path: "/assets/swagger/i/:id/ui",
       layout: false,
       component: "assets/swagger/ui",
@@ -70,8 +74,8 @@ export default defineConfig({
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/runtime': {
-      'target': 'http://localhost:4052',
-      // 'target': 'http://192.168.154.51:4052',
+      // 'target': 'http://localhost:4052',
+      'target': 'http://192.168.154.51:4052',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },
