@@ -3,40 +3,8 @@
     "title": "玄武工厂",
     "menus": [
         {
-            "key": "home",
-            "label": "首页"
-        },
-        {
-            "key": "backend",
-            "label": "后端资产",
-            "children": [
-                {
-                    "key": "micro-service",
-                    "label": "微服务组件"
-                },
-                {
-                    "key": "meta-api",
-                    "label": "原子服务"
-                },
-                {
-                    "key": "logic-api",
-                    "label": "逻辑编排服务"
-                }
-            ]
-        },
-        {
-            "key": "dev",
-            "label": "设备集成测试",
-            "children": [
-                {
-                    "key": "use-case",
-                    "label": "测试套件"
-                },
-                {
-                    "key": "use-case-record",
-                    "label": "测试记录"
-                }
-            ]
+            "key": "logic-api",
+            "label": "逻辑编排服务"
         }
     ]
 }

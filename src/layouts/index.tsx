@@ -1,9 +1,9 @@
-import { Link, Outlet, history } from 'umi';
+import { Link, Outlet, history, useParams } from 'umi';
 import styles from './index.less';
 import { ProLayout } from '@ant-design/pro-components';
-import { Layout, Menu, MenuProps, theme } from 'antd';
+import { Affix, Button, Layout, Menu, MenuProps, Space, Typography, theme } from 'antd';
 import { useEffect, useState } from 'react';
-import { FileAddOutlined } from '@ant-design/icons';
+import { EditOutlined, FileAddOutlined } from '@ant-design/icons';
 import { initApp } from '@/services/appSvr';
 const { Content, Header, Sider, Footer } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -36,9 +36,13 @@ const items: MenuItem[] = [
 export default function DefaultLayout(props) {
   const [collapsed, setCollapsed] = useState(false);
   const [meuns, setMenus] = useState<MenuProps[]>([])
+  const { pageId } = useParams('');
+  const [title, setTitle] = useState('x');
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
   useEffect(() => {
     initApp().then(res => {
-      setMenus(res.menus)
+      setMenus(res.menus);
+      setTitle(res.title);
     })
   }, [])
   const {
@@ -53,10 +57,14 @@ export default function DefaultLayout(props) {
           }} />
         </Sider>
         <Layout>
-          <Content style={{ margin: '0 16px' }}>
+          {/* <Header style={{ backgroundColor: 'white', height: '50px' }}><Space><Button icon={<EditOutlined />}></Button></Space></Header> */}
+          <Content style={{ margin: '10px 16px' }} ref={setContainer}>
             <Outlet />
+            <Affix offsetBottom={2} target={() => container} style={{ position: 'absolute', right: 16 }}>
+              <Link to={`/set/page/amis/${pageId}`} target='_blank' >{<EditOutlined />}</Link>
+            </Affix>
           </Content>
-          <Footer style={{ textAlign: 'center' }}></Footer>
+          {/* <Footer style={{ textAlign: 'center' }}></Footer> */}
         </Layout>
       </Layout>
     </div>

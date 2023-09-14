@@ -30,6 +30,8 @@
     "@monaco-editor/react": "^4.5.1",
     "@xrenders/schema-builder": "1.0.0-alpha.5",
     "amis": "^3.4.0",
+    "amis-editor": "^5.5.0",
+    "amis-editor-core": "^5.5.0",
     "amis-ui": "^3.4.0",
     "antd": "^5.4.0",
     "axios": "^1.4.0",

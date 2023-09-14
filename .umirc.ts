@@ -30,8 +30,13 @@ export default defineConfig({
       ]
     },
     {
-      path: "/lc/page",
+      path: "/page/amis/:pageId",
       component: "render",
+    },
+    {
+      path: "/set/page/amis/:pageId",
+      layout: false,
+      component: "render/editor",
     },
     {
       path: "/assets/swagger/i/:id/ui",
@@ -74,8 +79,9 @@ export default defineConfig({
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/runtime': {
-      // 'target': 'http://localhost:4052',
-      'target': 'http://192.168.154.51:4052',
+      'target': 'http://localhost:4052',
+      // 'target': 'http://192.168.154.51:4052',
+      // 'target': 'http://192.168.44.87:4052',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },
