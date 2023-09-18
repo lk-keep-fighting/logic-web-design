@@ -9,6 +9,7 @@ import copy from 'copy-to-clipboard';
 import { BulbOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { getPageJson } from '@/services/pageSvr';
+import 'amis-editor-core/lib/style.css';
 axios.interceptors.response.use(response => {
     console.log('axios config')
     console.log(response)
