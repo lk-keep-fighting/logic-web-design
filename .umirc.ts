@@ -86,8 +86,8 @@ export default defineConfig({
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/ide': {
-      'target': 'http://localhost:4052',
-      // 'target': 'http://192.168.154.51:4052',
+      // 'target': 'http://localhost:4052',
+      'target': 'http://192.168.154.51:4052',
       // 'target': 'http://192.168.44.87:4052',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },

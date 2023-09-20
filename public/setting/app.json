@@ -4,7 +4,15 @@
     "menus": [
         {
             "key": "logic-api",
-            "label": "逻辑编排服务"
+            "label": "逻辑编排"
+        },
+        {
+            "key": "logic-pub-record",
+            "label": "发布记录"
+        },
+        {
+            "key": "logic-logs",
+            "label": "运行日志"
         }
     ]
 }
