@@ -7,6 +7,10 @@
             "label": "逻辑编排"
         },
         {
+            "key": "logic-instance",
+            "label": "逻辑实例"
+        },
+        {
             "key": "logic-pub-record",
             "label": "发布记录"
         },
