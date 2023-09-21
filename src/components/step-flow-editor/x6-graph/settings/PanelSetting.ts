@@ -19,6 +19,40 @@ export function InitPanelData(
   const Nodes: any[] = [
     {
       shape: 'circle',
+      // label: 'wait-for-continue',
+      width,
+      height,
+      attrs: {
+        body: {
+          ...commonAttrs.body,
+          // fill: '#d9d9d9',
+          fill: 'white',
+        },
+        text: {
+          text: '交互点',
+          // 'font-weight': 'bolder',
+        },
+      },
+      markup: [
+        {
+          tagName: 'circle',
+          selector: 'body',
+        },
+        {
+          tagName: 'text',
+          selector: 'label',
+        }],
+      ports,
+      data: {
+        config: {
+          type: 'wait-for-continue',
+        },
+      },
+      // tools: ['node-editor'],
+      groups: ['global'],
+    },
+    {
+      shape: 'circle',
       label: 'end',
       width,
       height,
@@ -419,7 +453,7 @@ export function InitPanelData(
     {
       name: 'global',
       title: '全局节点',
-      graphHeight: 100,
+      graphHeight: 200,
     },
     // {
     //   name: 'var',
