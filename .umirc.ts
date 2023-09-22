@@ -73,8 +73,8 @@ export default defineConfig({
       'pathRewrite': { '^/file': '/' },
     },
     '/api/form': {
-      'target': 'http://192.168.44.70:5001',
-      // 'target': 'http://localhost:5001',
+      // 'target': 'http://192.168.44.70:5001',
+      'target': 'http://localhost:5000',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },
