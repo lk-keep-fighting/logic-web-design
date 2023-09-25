@@ -1,11 +1,11 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
-import { X6Graph } from "@/components/step-flow-editor";
-import { getLogic } from "@/services/logicSvc";
-import { Spin, message } from "antd";
+import { DebugLogic } from "@/components/step-flow-editor";
+import { getLogic, getLogicInstanceWithBizId, getLogicLogsWithBizId } from "@/services/logicSvc";
+import { PlayCircleFilled, PlayCircleTwoTone } from "@ant-design/icons";
+import { Button, Spin, message } from "antd";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "umi";
-import dayjs, { Dayjs } from 'dayjs';
+import { useParams, useSearchParams } from "umi";
 
 const formProvider = async (type: string) => {
     const res = await axios.get(`/setting/node-form/${type}.json`);
@@ -13,16 +13,18 @@ const formProvider = async (type: string) => {
     return res.data;
 }
 
-
-const LogicEditor = () => {
+const LogicDebug = () => {
     const { id } = useParams();
     const [config, setConfig] = useState<Logic>();
     const [loading, setLoading] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [debugLogs, setDebugLogs] = useState([])
+    const [nextId, setNextId] = useState('');
     const handleSave = useCallback((logic: Logic) => {
         logic.id = id;
         setLoading(true);
         setConfig(logic)
-        axios.put(`/api/form/logic/edit/${logic.id}`, { version: logic.version, configJson: JSON.stringify(logic) }).then(res => {
+        axios.put(`/api/form/logic/edit/${logic.id}`, { configJson: JSON.stringify(logic) }).then(res => {
             setLoading(false)
             message.success('保存成功')
             console.log('save logic')
@@ -46,18 +48,31 @@ const LogicEditor = () => {
             console.log('err')
             console.log(err)
         })
+        getLogicInstanceWithBizId(id, searchParams.get('bizId')).then(res => {
+            if (res) {
+                setNextId(res.nextId);
+            }
+        })
+        getLogicLogsWithBizId(id, searchParams.get('bizId')).then(res => {
+            if (res) {
+                setDebugLogs(res)
+            }
+        })
     }, [])
     return (
         <div>
             <Spin spinning={loading}>
-                <X6Graph
+                <DebugLogic
+                    btns={[
+                    ]}
+                    nextId={nextId}
                     config={config}
-                    onSave={handleSave}
                     configSchemaProvider={formProvider}
+                    debugLogs={debugLogs}
                 />
             </Spin>
         </div>
     );
 };
 
-export default LogicEditor;
+export default LogicDebug;

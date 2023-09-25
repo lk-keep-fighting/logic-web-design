@@ -1,4 +1,4 @@
-import { EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, RocketOutlined, SaveOutlined, SettingOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleOutlined, PlayCircleTwoTone, PlaySquareOutlined, RocketOutlined, SaveOutlined, SettingOutlined, SettingTwoTone } from '@ant-design/icons';
 import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
@@ -30,6 +30,7 @@ import { ButtonProps } from 'antd/lib/button';
 import RunLogic from '../component/run-logic';
 import { runLogicOnServerLikeApi } from '@/services/logicSvc';
 import CodeEditor from '../component/CodeEditor';
+import dayjs from 'dayjs';
 
 
 type EditorCtx = {
@@ -38,8 +39,8 @@ type EditorCtx = {
 const saveBtns = [
   // { key: 'saveToBrowser', label: '缓存到浏览器' },
   { key: 'saveToPng', label: '导出图片' },
-  { key: '-', label: '-' },
-  { key: 'loadFromBrowser', label: '从浏览器恢复' },
+  // { key: '-', label: '-' },
+  // { key: 'loadFromBrowser', label: '从浏览器恢复' },
   // { key: 'saveToClipboard', label: '复制到剪贴板' }
 ];
 
@@ -585,6 +586,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
    */
   updateLogicAndEditorCtx = (updatedFlowProps: any) => {
     let newLogic: Logic = { ...this.state.editorCtx.logic, ...updatedFlowProps };
+    newLogic.version = dayjs(Date.now()).format('YYYYMMDDHHmmss')
     this.setState({
       editorCtx: {
         ...this.state.editorCtx,
@@ -692,7 +694,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                   buttonsRender={(menu) => {
                     return [
                       <Button type='primary' icon={<SaveOutlined />}
-                        style={{ width: '100px' }}
+                        // style={{ width: '100px' }}
                         onClick={this.saveAndConvertGraphToDsl} >保存</Button>,
                       <Button type='primary' icon={<EllipsisOutlined />} />
                     ]
@@ -710,19 +712,18 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                 >
                   <Button
                     onClick={() => this.setFlowSetting(true)}
-                    icon={<SettingOutlined />}
-                  >入出参</Button>
+                    icon={<SettingTwoTone />}
+                  >配置参数</Button>
                 </ParamSetting>
-                <Button
+                {/* <Button
                   type='dashed'
                   icon={<RocketOutlined />}
                   onClick={() => {
                     this.autoLayout(this.state.graph)
                   }}
-                ></Button>
-              </Space>
-              {this.props.btns?.map(b => <Button {...b} />)}
-              {/* <Button
+                ></Button> */}
+                {this.props.btns?.map(b => <Button {...b} />)}
+                {/* <Button
                 type="default"
                 onClick={() => {
                   if (logic) {
@@ -740,52 +741,53 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
               >
                 在浏览器运行
               </Button> */}
-              <RunLogic open={openRunLogic}
-                setOpen={(open) => this.setState({ openRunLogic: open })}
-                values={{ params: logic?.params }}
-                onSubmit={(values) => {
-                  this.setState({ openRunLogic: false })
-                  if (logic) {
-                    const { params } = values;
-                    runLogicOnServerLikeApi(logic.id, JSON.parse(params)).then(res => {
-                      if (res.data.code == 0) {
-                        message.info('执行成功，返回值\n' + JSON.stringify(res.data.data))
-                      } else {
-                        message.info('业务执行失败，返回值\n' + JSON.stringify(res.data.data))
-                      }
-                    }).catch(err => {
-                      const res = err.response.data;
-                      Modal.error({
-                        title: '执行失败',
-                        width: '900px',
-                        content: <div>
-                          <Row>
-                            <Col>
-                              <h6>{res.message}</h6>
-                              {JSON.stringify(res.err)}
-                              <CodeEditor language='json' value={JSON.stringify(res.debug)} width={800} />
-                            </Col>
-                          </Row>
-                        </div>,
-                      })
-                    });
-                    this.state.logs.push({
-                      data: new Date().toLocaleTimeString(),
-                    });
-                  }
-                }}>
-                <Button
-                  type="default"
-                  onClick={() => {
-                    this.setState({ openRunLogic: true })
-                  }}
-                  style={{
-                    marginLeft: '10px',
-                  }}
-                >
-                  服务端运行
-                </Button>
-              </RunLogic>
+                <RunLogic open={openRunLogic}
+                  setOpen={(open) => this.setState({ openRunLogic: open })}
+                  values={{ params: logic?.params }}
+                  onSubmit={(values) => {
+                    this.setState({ openRunLogic: false })
+                    if (logic) {
+                      const { params } = values;
+                      runLogicOnServerLikeApi(logic.id, JSON.parse(params)).then(res => {
+                        if (res.data.code == 0) {
+                          message.info('执行成功，返回值\n' + JSON.stringify(res.data.data))
+                        } else {
+                          message.info('业务执行失败，返回值\n' + JSON.stringify(res.data.data))
+                        }
+                      }).catch(err => {
+                        const res = err.response.data;
+                        Modal.error({
+                          title: '执行失败',
+                          width: '900px',
+                          content: <div>
+                            <Row>
+                              <Col>
+                                <h6>{res.message}</h6>
+                                {JSON.stringify(res.err)}
+                                <CodeEditor language='json' value={JSON.stringify(res.debug)} width={800} />
+                              </Col>
+                            </Row>
+                          </div>,
+                        })
+                      });
+                      this.state.logs.push({
+                        data: new Date().toLocaleTimeString(),
+                      });
+                    }
+                  }}>
+                  <Button
+                    type="default"
+                    onClick={() => {
+                      this.setState({ openRunLogic: true })
+                    }}
+                    icon={<PlayCircleTwoTone />}
+                  >
+                    调试
+                  </Button>
+                </RunLogic>
+                <span>当前版本:{logic.version}</span>
+              </Space>
+
               {/* <Button
               type="default"
               onClick={() => {

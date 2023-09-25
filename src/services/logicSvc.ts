@@ -34,6 +34,51 @@ export async function getLogic(id: string) {
         return JSON.parse(jsonStr);
     })
 }
+/**
+ * 通过业务标识与逻辑编号找到逻辑实例
+ * @param id 
+ * @returns 
+ */
+export async function getLogicInstanceWithBizId(logicId: string, bizId?: string) {
+    return axios.post(`/api/form/logic_instance/query`, {
+        filters: [
+            { dataIndex: 'logicId', values: [logicId], type: 'and' },
+            { dataIndex: 'bizId', values: [bizId], type: 'and' }
+        ]
+    }).then(res => {
+        const ins = res.data.result.items[0];
+        return ins;
+    })
+}
+/**
+ * 通过业务标识与逻辑编号找到逻辑实例
+ * @param id 
+ * @returns 
+ */
+export async function getLogicLogsWithBizId(logicId: string, bizId?: string) {
+    return axios.post(`/api/form/logic_runntime_logs/query`, {
+        filters: [
+            { dataIndex: 'logicId', values: [logicId], type: 'and' },
+            { dataIndex: 'bizId', values: [bizId], type: 'and' }
+        ],
+        orderBy: [
+            {
+                "dataIndex": "serverTime",
+            }
+        ]
+    }).then(res => {
+        const logs = res.data.result.items;
+        if (logs) {
+            logs.map(v => {
+                if (v.debug)
+                    v.debug = JSON.parse(v.debug);
+            })
+        }
+        return logs;
+    })
+}
+
+
 export async function addLogic(data: any): Promise<string> {
     return axios.post(`/api/form/logic/add`, data).then(res => {
         const newId = res.data.result;

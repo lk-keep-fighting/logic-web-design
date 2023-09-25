@@ -44,6 +44,7 @@ export default defineConfig({
       component: "assets/swagger/ui",
     },
     { path: "/assets/logic/i/:id/edit", layout: false, component: "logic-editor" },
+    { path: "/assets/logic/i/:id/debug", layout: false, component: "logic-debug" },
     { path: "/editor/:id", layout: false, component: "logic-editor" },
     { path: "/form", component: "form-editor" },
   ],
@@ -73,8 +74,8 @@ export default defineConfig({
       'pathRewrite': { '^/file': '/' },
     },
     '/api/form': {
-      'target': 'http://192.168.44.70:5001',
-      // 'target': 'http://localhost:5000',
+      // 'target': 'http://192.168.44.70:5001',
+      'target': 'http://localhost:5000',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },

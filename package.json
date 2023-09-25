@@ -36,6 +36,7 @@
     "antd": "^5.4.0",
     "axios": "^1.4.0",
     "copy-to-clipboard": "^3.3.3",
+    "dayjs": "^1.11.10",
     "eventemitter3": "^5.0.1",
     "form-render": "^2.1.19",
     "monaco-editor": "^0.39.0",

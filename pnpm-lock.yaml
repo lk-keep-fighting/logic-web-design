@@ -29,6 +29,7 @@ specifiers:
   antd: ^5.4.0
   axios: ^1.4.0
   copy-to-clipboard: ^3.3.3
+  dayjs: ^1.11.10
   eventemitter3: ^5.0.1
   form-render: ^2.1.19
   monaco-editor: ^0.39.0
@@ -66,6 +67,7 @@ dependencies:
   antd: registry.npmjs.org/antd/5.8.3_kecuaklozzhhglfl7r4jsllhv4
   axios: registry.npmjs.org/axios/1.4.0
   copy-to-clipboard: registry.npmjs.org/copy-to-clipboard/3.3.3
+  dayjs: 1.11.10
   eventemitter3: registry.npmjs.org/eventemitter3/5.0.1
   form-render: registry.npmjs.org/form-render/2.2.13_tjuinp55vuxu4gdz7dbgjnjike
   monaco-editor: registry.npmjs.org/monaco-editor/0.39.0
@@ -2707,6 +2709,9 @@ packages:
       lodash: 4.17.21
     dev: false
 
+  /dayjs/1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
+
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -3751,7 +3756,7 @@ packages:
       react-native:
         optional: true
     dependencies:
-      mobx: 4.15.7
+      mobx: registry.npmjs.org/mobx/4.15.7
       react: registry.npmjs.org/react/18.1.0
       react-dom: 16.14.0_react@18.1.0
     dev: false
@@ -5216,7 +5221,7 @@ packages:
       '@chenshuai2144/sketch-color': registry.npmjs.org/@chenshuai2144/sketch-color/1.0.9_react@18.1.0
       antd: registry.npmjs.org/antd/5.8.3_kecuaklozzhhglfl7r4jsllhv4
       classnames: registry.npmjs.org/classnames/2.3.2
-      dayjs: registry.npmjs.org/dayjs/1.11.9
+      dayjs: 1.11.10
       lodash.tonumber: registry.npmjs.org/lodash.tonumber/4.0.3
       omit.js: registry.npmjs.org/omit.js/2.0.2
       rc-util: registry.npmjs.org/rc-util/5.36.0_kecuaklozzhhglfl7r4jsllhv4
@@ -5305,7 +5310,7 @@ packages:
       '@babel/runtime': 7.22.10
       antd: registry.npmjs.org/antd/5.8.3_kecuaklozzhhglfl7r4jsllhv4
       classnames: registry.npmjs.org/classnames/2.3.2
-      dayjs: registry.npmjs.org/dayjs/1.11.9
+      dayjs: 1.11.10
       rc-resize-observer: registry.npmjs.org/rc-resize-observer/1.3.1_kecuaklozzhhglfl7r4jsllhv4
       rc-util: registry.npmjs.org/rc-util/4.21.1
       react: registry.npmjs.org/react/18.1.0
@@ -5372,7 +5377,7 @@ packages:
       '@dnd-kit/utilities': registry.npmjs.org/@dnd-kit/utilities/3.2.1_react@18.1.0
       antd: registry.npmjs.org/antd/5.8.3_kecuaklozzhhglfl7r4jsllhv4
       classnames: registry.npmjs.org/classnames/2.3.2
-      dayjs: registry.npmjs.org/dayjs/1.11.9
+      dayjs: 1.11.10
       omit.js: registry.npmjs.org/omit.js/2.0.2
       rc-field-form: 1.36.2_kecuaklozzhhglfl7r4jsllhv4
       rc-resize-observer: registry.npmjs.org/rc-resize-observer/1.3.1_kecuaklozzhhglfl7r4jsllhv4
@@ -5398,7 +5403,7 @@ packages:
       '@babel/runtime': 7.22.10
       antd: registry.npmjs.org/antd/5.8.3_kecuaklozzhhglfl7r4jsllhv4
       classnames: registry.npmjs.org/classnames/2.3.2
-      dayjs: registry.npmjs.org/dayjs/1.11.9
+      dayjs: 1.11.10
       lodash.merge: registry.npmjs.org/lodash.merge/4.6.2
       rc-util: registry.npmjs.org/rc-util/5.36.0_kecuaklozzhhglfl7r4jsllhv4
       react: registry.npmjs.org/react/18.1.0
@@ -9384,10 +9389,10 @@ packages:
       '@tanstack/react-query-devtools': registry.npmjs.org/@tanstack/react-query-devtools/4.35.0_yc7w5lvs4tmbzten3vnmttwkoe
       '@umijs/bundler-utils': registry.npmjs.org/@umijs/bundler-utils/4.0.80
       '@umijs/valtio': registry.npmjs.org/@umijs/valtio/1.0.3_react@18.1.0
-      antd-dayjs-webpack-plugin: registry.npmjs.org/antd-dayjs-webpack-plugin/1.0.6_dayjs@1.11.9
+      antd-dayjs-webpack-plugin: registry.npmjs.org/antd-dayjs-webpack-plugin/1.0.6_dayjs@1.11.10
       axios: registry.npmjs.org/axios/0.27.2
       babel-plugin-import: registry.npmjs.org/babel-plugin-import/1.13.8
-      dayjs: registry.npmjs.org/dayjs/1.11.9
+      dayjs: 1.11.10
       dva-core: registry.npmjs.org/dva-core/2.0.4_redux@3.7.2
       dva-immer: registry.npmjs.org/dva-immer/1.0.1_dva@2.5.0-beta.2
       dva-loading: registry.npmjs.org/dva-loading/3.0.24_dva-core@2.0.4
@@ -9705,7 +9710,7 @@ packages:
     dependencies:
       '@types/js-cookie': registry.npmjs.org/@types/js-cookie/2.2.7
       ahooks-v3-count: registry.npmjs.org/ahooks-v3-count/1.0.0
-      dayjs: registry.npmjs.org/dayjs/1.11.9
+      dayjs: 1.11.10
       intersection-observer: registry.npmjs.org/intersection-observer/0.12.2
       js-cookie: registry.npmjs.org/js-cookie/2.2.1
       lodash: 4.17.21
@@ -9881,7 +9886,7 @@ packages:
       color-convert: registry.npmjs.org/color-convert/2.0.1
     dev: false
 
-  registry.npmjs.org/antd-dayjs-webpack-plugin/1.0.6_dayjs@1.11.9:
+  registry.npmjs.org/antd-dayjs-webpack-plugin/1.0.6_dayjs@1.11.10:
     resolution: {integrity: sha512-UlK3BfA0iE2c5+Zz/Bd2iPAkT6cICtrKG4/swSik5MZweBHtgmu1aUQCHvICdiv39EAShdZy/edfP6mlkS/xXg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/antd-dayjs-webpack-plugin/-/antd-dayjs-webpack-plugin-1.0.6.tgz}
     id: registry.npmjs.org/antd-dayjs-webpack-plugin/1.0.6
     name: antd-dayjs-webpack-plugin
@@ -9889,7 +9894,7 @@ packages:
     peerDependencies:
       dayjs: '*'
     dependencies:
-      dayjs: registry.npmjs.org/dayjs/1.11.9
+      dayjs: 1.11.10
     dev: true
 
   registry.npmjs.org/antd/5.8.3_kecuaklozzhhglfl7r4jsllhv4:
@@ -9913,7 +9918,7 @@ packages:
       '@rc-component/trigger': registry.npmjs.org/@rc-component/trigger/1.15.4_kecuaklozzhhglfl7r4jsllhv4
       classnames: registry.npmjs.org/classnames/2.3.2
       copy-to-clipboard: registry.npmjs.org/copy-to-clipboard/3.3.3
-      dayjs: registry.npmjs.org/dayjs/1.11.9
+      dayjs: 1.11.10
       qrcode.react: registry.npmjs.org/qrcode.react/3.1.0_react@18.1.0
       rc-cascader: registry.npmjs.org/rc-cascader/3.14.1_kecuaklozzhhglfl7r4jsllhv4
       rc-checkbox: registry.npmjs.org/rc-checkbox/3.1.0_kecuaklozzhhglfl7r4jsllhv4
@@ -9930,7 +9935,7 @@ packages:
       rc-motion: registry.npmjs.org/rc-motion/2.7.3_kecuaklozzhhglfl7r4jsllhv4
       rc-notification: registry.npmjs.org/rc-notification/5.0.5_kecuaklozzhhglfl7r4jsllhv4
       rc-pagination: registry.npmjs.org/rc-pagination/3.5.0_kecuaklozzhhglfl7r4jsllhv4
-      rc-picker: registry.npmjs.org/rc-picker/3.13.0_rutt5wkfqbjekck6bmlg4q745i
+      rc-picker: registry.npmjs.org/rc-picker/3.13.0_uj7n3e326m3twq64xrjuivvjna
       rc-progress: registry.npmjs.org/rc-progress/3.4.2_kecuaklozzhhglfl7r4jsllhv4
       rc-rate: registry.npmjs.org/rc-rate/2.12.0_kecuaklozzhhglfl7r4jsllhv4
       rc-resize-observer: registry.npmjs.org/rc-resize-observer/1.3.1_kecuaklozzhhglfl7r4jsllhv4
@@ -11499,11 +11504,6 @@ packages:
     engines: {node: '>= 12'}
     dev: false
 
-  registry.npmjs.org/dayjs/1.11.9:
-    resolution: {integrity: sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/dayjs/-/dayjs-1.11.9.tgz}
-    name: dayjs
-    version: 1.11.9
-
   registry.npmjs.org/debug/3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/debug/-/debug-3.2.7.tgz}
     name: debug
@@ -12348,7 +12348,7 @@ packages:
     engines: {node: '>=8.3.0'}
     dependencies:
       archiver: registry.npmjs.org/archiver/5.3.2
-      dayjs: registry.npmjs.org/dayjs/1.11.9
+      dayjs: 1.11.10
       fast-csv: registry.npmjs.org/fast-csv/4.3.6
       jszip: registry.npmjs.org/jszip/3.10.1
       readable-stream: registry.npmjs.org/readable-stream/3.6.2
@@ -12644,7 +12644,7 @@ packages:
       async-validator: registry.npmjs.org/async-validator/3.5.2
       classnames: registry.npmjs.org/classnames/2.3.2
       color: registry.npmjs.org/color/3.2.1
-      dayjs: registry.npmjs.org/dayjs/1.11.9
+      dayjs: 1.11.10
       lodash-es: registry.npmjs.org/lodash-es/4.17.21
       rc-color-picker: registry.npmjs.org/rc-color-picker/1.2.6_kecuaklozzhhglfl7r4jsllhv4
       react: registry.npmjs.org/react/18.1.0
@@ -16538,7 +16538,7 @@ packages:
       react: registry.npmjs.org/react/18.1.0
       react-dom: 16.14.0_react@18.1.0
 
-  registry.npmjs.org/rc-picker/3.13.0_rutt5wkfqbjekck6bmlg4q745i:
+  registry.npmjs.org/rc-picker/3.13.0_uj7n3e326m3twq64xrjuivvjna:
     resolution: {integrity: sha512-hJ+1lGkemnvsW+t+PjH9OAehHlj7wdD0G75T1HZj0IeZTqBE/5mmuf8E8MHYATNBqW409lAfk8GwjYm1WVMopg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/rc-picker/-/rc-picker-3.13.0.tgz}
     id: registry.npmjs.org/rc-picker/3.13.0
     name: rc-picker
@@ -16564,7 +16564,7 @@ packages:
       '@babel/runtime': 7.22.10
       '@rc-component/trigger': registry.npmjs.org/@rc-component/trigger/1.15.4_kecuaklozzhhglfl7r4jsllhv4
       classnames: registry.npmjs.org/classnames/2.3.2
-      dayjs: registry.npmjs.org/dayjs/1.11.9
+      dayjs: 1.11.10
       rc-util: registry.npmjs.org/rc-util/5.36.0_kecuaklozzhhglfl7r4jsllhv4
       react: registry.npmjs.org/react/18.1.0
       react-dom: 16.14.0_react@18.1.0

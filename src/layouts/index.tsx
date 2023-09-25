@@ -25,14 +25,6 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuItem[] = [
-  getItem('原子业务资产', '', <FileAddOutlined />, [
-    getItem('API清单', '/assets/api/list'),
-    getItem('微服务Swagger', '/assets/swagger/list')
-  ]),
-  getItem('业务编排', '/assets/logic/list', <FileAddOutlined />),
-  // getItem('swagger', '/assets/swagger/list', <FileAddOutlined />),
-];
 export default function DefaultLayout(props) {
   const [collapsed, setCollapsed] = useState(false);
   const [meuns, setMenus] = useState<MenuProps[]>([])
@@ -51,13 +43,27 @@ export default function DefaultLayout(props) {
   return (
     <div className={styles.navs}>
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={meuns} onClick={(m) => {
-            history.push(`/page/amis/${m.key}`)
-          }} />
-        </Sider>
+        {/* <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}> */}
+        <Header title='业务编排工具' style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1,
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+        }}>
+          <img
+            style={{ marginRight: '20px', width: '60x', height: '60px' }}
+            src='/logo.png' />
+          <div style={{ color: 'ButtonFace', fontSize: '18px', fontFamily: '黑体', fontWeight: 'bolder' }}>{title}</div>
+          <Menu mode="horizontal" theme="dark" defaultSelectedKeys={['1']} items={meuns}
+            style={{ marginLeft: '100px', color: 'whitesmoke', fontSize: '16px', fontFamily: '黑体' }}
+            onClick={(m) => {
+              history.push(`/page/amis/${m.key}`)
+            }} />
+          {/* </Sider> */}
+        </Header>
         <Layout>
-          {/* <Header style={{ backgroundColor: 'white', height: '50px' }}><Space><Button icon={<EditOutlined />}></Button></Space></Header> */}
           <Content style={{ margin: '10px 16px' }} ref={setContainer}>
             <Outlet />
             <Affix offsetBottom={2} target={() => container} style={{ position: 'absolute', right: 16 }}>

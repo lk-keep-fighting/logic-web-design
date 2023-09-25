@@ -107,7 +107,7 @@ export function InitPanelData(
         text: {
           x: 5,
           y: 0,
-          text: 'catch\n异常\n',
+          text: '异常\n处理',
           fontSize: 15,
           // fontWeight: 500,
           // textLength: '80',
@@ -146,84 +146,84 @@ export function InitPanelData(
       // tools: ['node-editor'],
       groups: ['biz'],
     },
-    {
-      shape: 'ExtSharp',
-      attrs: {
-        text: {
-          text: '建立客户端',
-          // fontSize: 14,
-        },
-        image: {
-          'xlink:href': '/icons/mqtt.png',
-          width: 36,
-          x: 2,
-          y: -8,
-        }
-      },
-      data: {
-        config: {
-          type: 'mqtt-client',
-        },
-      },
-      ports,
-      // tools: ['node-editor'],
-      groups: ['mqtt'],
-    },
-    {
-      shape: 'ExtSharp',
-      attrs: {
-        body: {
-          rx: 6,
-          ry: 6,
-          stroke: '#5F95FF',
-          strokeWidth: 3,
-          fill: 'rgba(95,149,255,0.05)',
-          refWidth: 1,
-          refHeight: 1,
-        },
-        text: {
-          text: '订阅Topic',
-          // fontSize: 14,
-        },
-        image: {
-          'xlink:href': '/icons/mqtt.png',
-          width: 36,
-          x: 2,
-          y: -8,
-        }
-      },
-      data: {
-        config: {
-          type: 'mqtt-sub',
-        },
-      },
-      ports,
-      // tools: ['node-editor'],
-      groups: ['mqtt'],
-    },
-    {
-      shape: 'ExtSharp',
-      attrs: {
-        text: {
-          text: '发布Topic',
-          // fontSize: 14,
-        },
-        image: {
-          'xlink:href': '/icons/mqtt.png',
-          width: 36,
-          x: 2,
-          y: -8,
-        }
-      },
-      data: {
-        config: {
-          type: 'mqtt-pub',
-        },
-      },
-      ports,
-      // tools: ['node-editor'],
-      groups: ['mqtt'],
-    },
+    // {
+    //   shape: 'ExtSharp',
+    //   attrs: {
+    //     text: {
+    //       text: '建立客户端',
+    //       // fontSize: 14,
+    //     },
+    //     image: {
+    //       'xlink:href': '/icons/mqtt.png',
+    //       width: 36,
+    //       x: 2,
+    //       y: -8,
+    //     }
+    //   },
+    //   data: {
+    //     config: {
+    //       type: 'mqtt-client',
+    //     },
+    //   },
+    //   ports,
+    //   // tools: ['node-editor'],
+    //   groups: ['mqtt'],
+    // },
+    // {
+    //   shape: 'ExtSharp',
+    //   attrs: {
+    //     body: {
+    //       rx: 6,
+    //       ry: 6,
+    //       stroke: '#5F95FF',
+    //       strokeWidth: 3,
+    //       fill: 'rgba(95,149,255,0.05)',
+    //       refWidth: 1,
+    //       refHeight: 1,
+    //     },
+    //     text: {
+    //       text: '订阅Topic',
+    //       // fontSize: 14,
+    //     },
+    //     image: {
+    //       'xlink:href': '/icons/mqtt.png',
+    //       width: 36,
+    //       x: 2,
+    //       y: -8,
+    //     }
+    //   },
+    //   data: {
+    //     config: {
+    //       type: 'mqtt-sub',
+    //     },
+    //   },
+    //   ports,
+    //   // tools: ['node-editor'],
+    //   groups: ['mqtt'],
+    // },
+    // {
+    //   shape: 'ExtSharp',
+    //   attrs: {
+    //     text: {
+    //       text: '发布Topic',
+    //       // fontSize: 14,
+    //     },
+    //     image: {
+    //       'xlink:href': '/icons/mqtt.png',
+    //       width: 36,
+    //       x: 2,
+    //       y: -8,
+    //     }
+    //   },
+    //   data: {
+    //     config: {
+    //       type: 'mqtt-pub',
+    //     },
+    //   },
+    //   ports,
+    //   // tools: ['node-editor'],
+    //   groups: ['mqtt'],
+    // },
     {
       shape: 'ExtSharp',
       ports,
@@ -326,7 +326,7 @@ export function InitPanelData(
           y: 10
         },
         text: {
-          text: 'switch-case',
+          text: 'case',
           fontSize: 14,
           // fill: '#5F95FF',
           refX: 0.5,
@@ -453,7 +453,7 @@ export function InitPanelData(
     {
       name: 'global',
       title: '全局节点',
-      graphHeight: 200,
+      graphHeight: 220,
     },
     // {
     //   name: 'var',
@@ -463,18 +463,18 @@ export function InitPanelData(
     {
       name: 'ctrl',
       title: '逻辑控制',
-      graphHeight: 200,
+      graphHeight: 220,
     },
     {
       name: 'biz',
       title: '业务调用',
-      graphHeight: 200,
+      graphHeight: 220,
     },
-    {
-      name: 'mqtt',
-      title: 'MQTT',
-      graphHeight: 200,
-    },
+    // {
+    //   name: 'mqtt',
+    //   title: 'MQTT',
+    //   graphHeight: 200,
+    // },
     // {
     //   name: 'def',
     //   title: '其他',

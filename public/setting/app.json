@@ -1,6 +1,6 @@
 {
     "id": "xuanwu-factory",
-    "title": "玄武工厂",
+    "title": "业务编排系统",
     "menus": [
         {
             "key": "logic-api",
@@ -8,15 +8,15 @@
         },
         {
             "key": "logic-instance",
-            "label": "逻辑实例"
-        },
-        {
-            "key": "logic-pub-record",
-            "label": "发布记录"
+            "label": "运行实例"
         },
         {
             "key": "logic-logs",
             "label": "运行日志"
+        },
+        {
+            "key": "logic-pub-record",
+            "label": "发布记录"
         }
     ]
 }
