@@ -64,6 +64,24 @@ const LogicDebug = () => {
             <Spin spinning={loading}>
                 <DebugLogic
                     btns={[
+                        <Button onClick={() => {
+                            getLogicInstanceWithBizId(id, searchParams.get('bizId')).then(res => {
+                                if (res) {
+                                    setNextId(res.nextId);
+                                }
+                            })
+                        }}>
+                            刷新状态
+                        </Button>,
+                        <Button onClick={() => {
+                            getLogicLogsWithBizId(id, searchParams.get('bizId')).then(res => {
+                                if (res) {
+                                    setDebugLogs(res)
+                                }
+                            })
+                        }}>
+                            刷新日志
+                        </Button>
                     ]}
                     nextId={nextId}
                     config={config}

@@ -1,4 +1,4 @@
-import { MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone } from '@ant-design/icons';
+import { CheckCircleTwoTone, FrownOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, SmileOutlined } from '@ant-design/icons';
 import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
@@ -20,6 +20,7 @@ import { autoDagreLayout } from '@/components/step-flow-editor/x6-graph/layout/d
 import { Schema } from 'form-render';
 import { Logic, LogicItem } from '@/components/step-flow-core/lasl/meta-data';
 import { ButtonProps } from 'antd/lib/button';
+import NodeData from '@/components/step-flow-editor/right-toolset/step-config';
 
 type EditorCtx = {
   logic: Logic,
@@ -76,6 +77,7 @@ const DebugLog = (props: DebugProps) => {
   const [curItemLog, setCurItemLog] = useState<ItemLog>()
   const [curLogIndex, setCurLogIndex] = useState(0)
   const [curItemLogIndex, setCurItemLogIndex] = useState(0)
+  const [selectedNode, setSelectedNode] = useState<Node>();
   const refContainer = useRef();
   useEffect(() => {
     console.log('play curItemLog', curItemLog)
@@ -86,6 +88,7 @@ const DebugLog = (props: DebugProps) => {
   }, [props.nextId])
   useEffect(() => {
     graph?.getNodes().find(n => n.id == props.nextId)?.attr('body/fill', 'red')
+    loader.config({ monaco });
   }, [graph])
   useEffect(() => {
     if (props.config) {
@@ -232,6 +235,7 @@ const DebugLog = (props: DebugProps) => {
     graph.on('node:mouseleave', () => {
     });
     graph.on('node:click', ({ node }) => {
+      setSelectedNode(node)
     });
     graph.on('node:added', () => {
     })
@@ -271,10 +275,12 @@ const DebugLog = (props: DebugProps) => {
       <List
         itemLayout="horizontal"
         dataSource={props.debugLogs}
+        style={{ height: '100%', overflow: 'scroll' }}
         renderItem={(item, index) => (
           <List.Item>
             <List.Item.Meta
-              title={item.success + ':' + item.serverTime}
+              title={<span>{item.success ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}
+                {item.serverTime}</span>}
               description={item.message}
             />
           </List.Item>
@@ -359,13 +365,12 @@ const DebugLog = (props: DebugProps) => {
       >
         x
       </Button>
-      {/* <RightToolset
-      onClear={() => this.setState({ logs: [] })}
-      editNode={editingNode}
-      onSubmit={() => { }}
-      logs={this.state.logs}
-      configSchemaProvider={this.props.configSchemaProvider ?? ConfigSchemaProvider}
-    /> */}
+      <div style={{ padding: 5 }}>
+        <NodeData
+          editNode={selectedNode}
+          configSchemaProvider={props.configSchemaProvider}
+        />
+      </div>
     </Layout.Sider>
   </Layout >
 }

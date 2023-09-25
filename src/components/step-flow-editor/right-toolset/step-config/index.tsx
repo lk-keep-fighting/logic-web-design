@@ -67,7 +67,7 @@ export default (props: INodeEditorProps) => {
         //     console.log('表单 changedValues：', changedValues);
         //   }
         // }}
-        footer
+        footer={props.onSubmit ? true : false}
       // footer={() => <div><Button type='primary' onClick={form.submit()}>提交</Button></div>}
       />
       {/* <Button onClick={() => {

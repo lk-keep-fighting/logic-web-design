@@ -1,4 +1,4 @@
-import { EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleOutlined, PlayCircleTwoTone, PlaySquareOutlined, RocketOutlined, SaveOutlined, SettingOutlined, SettingTwoTone } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleOutlined, PlayCircleTwoTone, PlaySquareOutlined, RocketOutlined, SaveOutlined, SettingOutlined, SettingTwoTone } from '@ant-design/icons';
 import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
@@ -9,7 +9,7 @@ import { Stencil } from '@antv/x6-plugin-stencil';
 import { Scroller } from '@antv/x6-plugin-scroller'
 import { Export } from '@antv/x6-plugin-export'
 import { loader } from '@monaco-editor/react';
-import { Button, Col, Dropdown, Layout, MenuProps, Modal, Row, Space, message } from 'antd';
+import { Button, Col, Dropdown, Layout, MenuProps, Modal, Row, Space, Switch, message } from 'antd';
 import * as monaco from 'monaco-editor';
 import React from 'react';
 import { GraphToLogic } from '@/components/step-flow-core/lasl/parser/logic-parser';
@@ -58,6 +58,7 @@ type StateType = {
   editingNode?: Node;
   openEdgeEditor: boolean;
   editingEdge?: Edge;
+  embeddingEnable: boolean;
   graph?: Graph;
   leftToolCollapsed: boolean;
   rightToolCollapsed: boolean;
@@ -110,6 +111,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
   state: StateType = {
     editingNode: undefined,
     openEdgeEditor: false,
+    embeddingEnable: true,
     editingEdge: undefined,
     leftToolCollapsed: false,
     rightToolCollapsed: true,
@@ -154,7 +156,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
     const graph = new Graph({
       container: container,
       embedding: {
-        enabled: true,
+        enabled: this.state.embeddingEnable,
         validate: (args: {
           child: Node,
           parent: Node,
@@ -342,7 +344,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
     });
     graph.on('node:moved', ({ e, x, y, node, view }) => {
       const linkNode = node.data?.hoverNode;
-      if (linkNode) {
+      if (this.state.embeddingEnable && linkNode) {
         const ne = graph.createEdge({
           source: linkNode,
           sourcePort: linkNode.ports.items.find(i => i.group == 'bottom')?.id,
@@ -643,6 +645,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
       leftToolCollapsed,
       rightToolCollapsed,
       editorCtx,
+      embeddingEnable,
       graph,
       openFlowSetting,
       openRunLogic,
@@ -723,24 +726,6 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                   }}
                 ></Button> */}
                 {this.props.btns?.map(b => <Button {...b} />)}
-                {/* <Button
-                type="default"
-                onClick={() => {
-                  if (logic) {
-                    new LogicRunner(logic).run().then(res => {
-                      message.info('执行成功，返回值\n' + JSON.stringify(res))
-                    });
-                    this.state.logs.push({
-                      data: new Date().toLocaleTimeString(),
-                    });
-                  }
-                }}
-                style={{
-                  marginLeft: '10px',
-                }}
-              >
-                在浏览器运行
-              </Button> */}
                 <RunLogic open={openRunLogic}
                   setOpen={(open) => this.setState({ openRunLogic: open })}
                   values={{ params: logic?.params }}
@@ -799,27 +784,41 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
             >
               清空日志
             </Button> */}
+              <Space style={{
+                float: 'right',
+                right: '16px',
+              }}>
+                <span>
+                  拖拽连线
+                  <Switch
+                    checked={embeddingEnable}
+                    onChange={(v) => {
+                      this.setState({ embeddingEnable: v })
+                    }}
+                    checkedChildren={<CheckOutlined />}
+                    unCheckedChildren={<CloseOutlined />}
+                  />
+                </span>
+                <Button
+                  type="text"
+                  icon={
+                    rightToolCollapsed ? (
+                      <MenuFoldOutlined />
+                    ) : (
+                      <MenuUnfoldOutlined />
+                    )
+                  }
+                  onClick={() => {
+                    this.setState({ rightToolCollapsed: !rightToolCollapsed });
+                  }}
+                  style={{
+                    fontSize: '16px',
+                    width: 64,
+                    height: 64,
+                  }}
+                />
+              </Space>
 
-              <Button
-                type="text"
-                icon={
-                  rightToolCollapsed ? (
-                    <MenuFoldOutlined />
-                  ) : (
-                    <MenuUnfoldOutlined />
-                  )
-                }
-                onClick={() => {
-                  this.setState({ rightToolCollapsed: !rightToolCollapsed });
-                }}
-                style={{
-                  float: 'right',
-                  right: '16px',
-                  fontSize: '16px',
-                  width: 64,
-                  height: 64,
-                }}
-              />
 
             </Layout.Header>
             <Layout.Content className="app-content" >

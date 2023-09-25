@@ -22,7 +22,7 @@ const LogicEditor = () => {
         logic.id = id;
         setLoading(true);
         setConfig(logic)
-        axios.put(`/api/form/logic/edit/${logic.id}`, { version: logic.version, configJson: JSON.stringify(logic) }).then(res => {
+        axios.put(`/api/form/logic/edit/${logic.id}`, { version: logic.version, configJson: JSON.stringify(logic), updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss') }).then(res => {
             setLoading(false)
             message.success('保存成功')
             console.log('save logic')
