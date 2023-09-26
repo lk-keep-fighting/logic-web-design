@@ -1,8 +1,8 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import { DebugLogic } from "@/components/step-flow-editor";
 import { getLogic, getLogicInstanceWithBizId, getLogicLogsWithBizId } from "@/services/logicSvc";
-import { PlayCircleFilled, PlayCircleTwoTone } from "@ant-design/icons";
-import { Button, Spin, message } from "antd";
+import { CheckCircleTwoTone, FrownOutlined, PlayCircleFilled, PlayCircleTwoTone, ProfileOutlined, SyncOutlined } from "@ant-design/icons";
+import { Button, Divider, Spin, message } from "antd";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "umi";
@@ -12,6 +12,15 @@ const formProvider = async (type: string) => {
     console.log(res.data);
     return res.data;
 }
+const logFormProvider = async (type: string) => {
+    const res = await axios.get(`/setting/node-log/${type}.json`).catch(err => err);
+    console.log(res.data);
+    if (res.data)
+        return res.data;
+    else {
+        return (await axios.get(`/setting/node-log/_def.json`)).data;
+    }
+}
 
 const LogicDebug = () => {
     const { id } = useParams();
@@ -19,7 +28,7 @@ const LogicDebug = () => {
     const [loading, setLoading] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
     const [debugLogs, setDebugLogs] = useState([])
-    const [nextId, setNextId] = useState('');
+    const [logicIns, setLogicIns] = useState();
     const handleSave = useCallback((logic: Logic) => {
         logic.id = id;
         setLoading(true);
@@ -50,7 +59,7 @@ const LogicDebug = () => {
         })
         getLogicInstanceWithBizId(id, searchParams.get('bizId')).then(res => {
             if (res) {
-                setNextId(res.nextId);
+                setLogicIns(res);
             }
         })
         getLogicLogsWithBizId(id, searchParams.get('bizId')).then(res => {
@@ -64,13 +73,17 @@ const LogicDebug = () => {
             <Spin spinning={loading}>
                 <DebugLogic
                     btns={[
+                        <span>是否完成：{logicIns?.isOver ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}<Divider type='vertical' /></span>,
                         <Button onClick={() => {
                             getLogicInstanceWithBizId(id, searchParams.get('bizId')).then(res => {
                                 if (res) {
-                                    setNextId(res.nextId);
+                                    setLogicIns(res);
+                                    console.log('logicIns')
+                                    console.log(logicIns)
                                 }
                             })
                         }}>
+                            <SyncOutlined />
                             刷新状态
                         </Button>,
                         <Button onClick={() => {
@@ -80,12 +93,14 @@ const LogicDebug = () => {
                                 }
                             })
                         }}>
+                            <ProfileOutlined />
                             刷新日志
                         </Button>
                     ]}
-                    nextId={nextId}
+                    nextId={logicIns?.nextId}
                     config={config}
                     configSchemaProvider={formProvider}
+                    itemLogSchemaProvider={logFormProvider}
                     debugLogs={debugLogs}
                 />
             </Spin>

@@ -9,7 +9,7 @@ import { Stencil } from '@antv/x6-plugin-stencil';
 import { Scroller } from '@antv/x6-plugin-scroller'
 import { Export } from '@antv/x6-plugin-export'
 import { loader } from '@monaco-editor/react';
-import { Button, Layout, List, Space } from 'antd';
+import { Button, Layout, List, Space, Tabs, TabsProps } from 'antd';
 import * as monaco from 'monaco-editor';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import './index.css';
@@ -21,6 +21,9 @@ import { Schema } from 'form-render';
 import { Logic, LogicItem } from '@/components/step-flow-core/lasl/meta-data';
 import { ButtonProps } from 'antd/lib/button';
 import NodeData from '@/components/step-flow-editor/right-toolset/step-config';
+import FormRender from '@/components/step-flow-editor/component/FormRender';
+import { useForm } from 'form-render';
+import { JsonView } from 'amis';
 
 type EditorCtx = {
   logic: Logic,
@@ -67,6 +70,7 @@ interface DebugProps {
   btns?: ReactNode[],
   debugLogs?: Log[],
   configSchemaProvider?: (type: string) => Promise<Schema>;
+  itemLogSchemaProvider?: (type: string) => Promise<Schema>;
 }
 
 const DebugLog = (props: DebugProps) => {
@@ -75,20 +79,34 @@ const DebugLog = (props: DebugProps) => {
   const [leftToolCollapsed, setLeftToolCollapsed] = useState(true)
   const [rightToolCollapsed, setRightToolCollapsed] = useState(true)
   const [curItemLog, setCurItemLog] = useState<ItemLog>()
-  const [curLogIndex, setCurLogIndex] = useState(0)
+  // const [curItemLogSchema, setCurItemLogSchema] = useState<Schema>({})
+  const [curLog, setCurLog] = useState()
   const [curItemLogIndex, setCurItemLogIndex] = useState(0)
+  const [centerNode, setCenterNode] = useState<Node>();
   const [selectedNode, setSelectedNode] = useState<Node>();
   const refContainer = useRef();
+  const onNodeClick = ({ node }) => {
+    setSelectedNode(node)
+    const itemLog = curLog?.debug.itemLogs.find(i => {
+      return i.config.id == node.id
+    });
+    setCurItemLog(itemLog)
+  }
+  useEffect(() => {
+    if (centerNode)
+      graph?.centerCell(centerNode);
+  }, [centerNode, graph])
   useEffect(() => {
     console.log('play curItemLog', curItemLog)
     // graph?.getNodes().find(n => n.id == curItemLog?.config?.id)?.attr('body/fill', 'green')
   }, [curItemLog])
   useEffect(() => {
-    graph?.getNodes().find(n => n.id == props.nextId)?.attr('body/fill', 'red')
+    const node = graph?.getNodes().find(n => n.id == props.nextId);
+    node?.attr('body/fill', 'red');
+    setCenterNode(node)
   }, [props.nextId])
   useEffect(() => {
     graph?.getNodes().find(n => n.id == props.nextId)?.attr('body/fill', 'red')
-    loader.config({ monaco });
   }, [graph])
   useEffect(() => {
     if (props.config) {
@@ -234,9 +252,7 @@ const DebugLog = (props: DebugProps) => {
 
     graph.on('node:mouseleave', () => {
     });
-    graph.on('node:click', ({ node }) => {
-      setSelectedNode(node)
-    });
+    // graph.on('node:click', onNodeClick);
     graph.on('node:added', () => {
     })
     graph.on('node:dblclick', ({ node }) => {
@@ -245,26 +261,44 @@ const DebugLog = (props: DebugProps) => {
 
     graph.on('blank:dblclick', ({ x, y }) => {
     })
-    console.log('logic')
-    console.log(logic)
     graph.fromJSON(logic.visualConfig);
     autoDagreLayout(graph);
     setGraph(graph);
   }, [logic])
+
+  useEffect(() => {
+    graph?.off('node:click', onNodeClick)
+    graph?.on('node:click', onNodeClick)
+  }, [curLog])
   const replayLogs = () => {
-    console.log('curItemLogIndex,', curItemLogIndex)
-    if (props.debugLogs) {
-      setCurItemLog(props.debugLogs[curLogIndex].debug.itemLogs[curItemLogIndex]);
-      if (curItemLogIndex == props.debugLogs[curLogIndex].debug.itemLogs.length - 1 && curLogIndex < props.debugLogs.length - 1) {
-        setCurItemLogIndex(0);
-        setCurLogIndex(curLogIndex + 1);
-      }
-      if (curItemLogIndex < props.debugLogs[curLogIndex].debug.itemLogs.length) {
-        console.log('curItemLogIndex,', curItemLogIndex)
-        setCurItemLogIndex(curItemLogIndex + 1);
-      }
-    }
+    // console.log('curItemLogIndex,', curItemLogIndex)
+    // if (props.debugLogs) {
+    //   setCurItemLog(props.debugLogs[curLogIndex].debug.itemLogs[curItemLogIndex]);
+    //   if (curItemLogIndex == props.debugLogs[curLogIndex].debug.itemLogs.length - 1 && curLogIndex < props.debugLogs.length - 1) {
+    //     setCurItemLogIndex(0);
+    //     setCurLogIndex(curLogIndex + 1);
+    //   }
+    //   if (curItemLogIndex < props.debugLogs[curLogIndex].debug.itemLogs.length) {
+    //     console.log('curItemLogIndex,', curItemLogIndex)
+    //     setCurItemLogIndex(curItemLogIndex + 1);
+    //   }
+    // }
   }
+  const tabItems: TabsProps['items'] = [
+    {
+      key: '1',
+      label: '日志',
+      children: <JsonView src={curItemLog} />
+    },
+    {
+      key: '2',
+      label: '节点配置',
+      children: <NodeData
+        editNode={selectedNode}
+        configSchemaProvider={props.configSchemaProvider}
+      />
+    }
+  ]
   return <Layout style={{ height: '100vh', width: '100%', margin: 0 }}>
     <Layout.Sider
       theme="light"
@@ -277,9 +311,26 @@ const DebugLog = (props: DebugProps) => {
         dataSource={props.debugLogs}
         style={{ height: '100%', overflow: 'scroll' }}
         renderItem={(item, index) => (
-          <List.Item>
+          <List.Item onClick={() => {
+            console.log('click list log')
+            console.log(item)
+            setCurLog(item);
+            console.log(curLog);
+            graph?.fromJSON(logic?.visualConfig);
+            autoDagreLayout(graph);
+            let lastNode: Node;
+            item.debug.itemLogs.forEach(i => {
+              const node = graph?.getNodes().find(n => n.id == i.config.id);
+              if (node) {
+                node.attr('body/fill', '#52c41a')
+                lastNode = node;
+              }
+            })
+            graph?.centerCell(lastNode);
+          }}>
             <List.Item.Meta
               title={<span>{item.success ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}
+                {item.debug?.itemLogs[0].config.name}:
                 {item.serverTime}</span>}
               description={item.message}
             />
@@ -308,11 +359,11 @@ const DebugLog = (props: DebugProps) => {
           }}
         />
         <Space direction="horizontal">
-          <Button icon={<PlayCircleTwoTone />} onClick={() => {
+          {/* <Button icon={<PlayCircleTwoTone />} onClick={() => {
             setInterval(() => {
               replayLogs();
             }, 1000)
-          }}></Button>
+          }}></Button> */}
           {props.btns?.map(b => b)}
           {/* <Button onClick={() => {
             // this.state.graph?.getNodes()[2].attr('body/fill', 'red');
@@ -350,6 +401,7 @@ const DebugLog = (props: DebugProps) => {
       theme="light"
       collapsed={rightToolCollapsed}
       collapsedWidth={0}
+      title='ddd'
       width={600} >
       <Button
         type="text"
@@ -365,346 +417,8 @@ const DebugLog = (props: DebugProps) => {
       >
         x
       </Button>
-      <div style={{ padding: 5 }}>
-        <NodeData
-          editNode={selectedNode}
-          configSchemaProvider={props.configSchemaProvider}
-        />
-      </div>
+      <Tabs items={tabItems} defaultActiveKey="1" />
     </Layout.Sider>
   </Layout >
 }
 export default DebugLog;
-// class DebugLoigc extends React.Component<DebugProps, StateType> {
-//   private container?: HTMLDivElement;
-//   constructor(props: DebugProps) {
-//     super(props);
-//     try {
-//       const { Shapes } = InitPanelData(
-//         props.customNodes,
-//         props.customGroups,
-//         props.customSharps,
-//       );
-//       RegistShape(Shapes);
-
-//     } catch (error) {
-//       console.error('注册节点出错：');
-//       console.error(error);
-//     }
-//   }
-//   state: StateType = {
-//     editingNode: undefined,
-//     openEdgeEditor: false,
-//     editingEdge: undefined,
-//     leftToolCollapsed: true,
-//     rightToolCollapsed: true,
-//     openFlowSetting: false,
-//     openRunLogic: false,
-//     // flowRunner: new FlowRunner(),
-//     editorCtx: { logic: new Logic('1') },
-//     logs: [],
-//     panel: {
-//       nodes: [],
-//       groups: [],
-//     },
-//   };
-//   handleEdgeSubmit = (v: any) => {
-//     this.state.editingEdge?.setLabels(v);
-//   };
-//   componentDidUpdate(
-//     prevProps: Readonly<DebugProps>,
-//     prevState: Readonly<StateType>,
-//     snapshot?: any,
-//   ): void {
-//     if (this.props.config && this.state.editorCtx.logic.id != this.props.config.id) {
-//       this.state.editorCtx.logic = this.props.config;
-//       if (this.state.editorCtx?.logic?.visualConfig)
-//         this.state.graph?.fromJSON(this.state.editorCtx.logic?.visualConfig);
-//       this.setState({ editingNode: undefined });
-//     }
-//   }
-
-//   componentDidMount() {
-//     this.initGraph(this.container);
-//     //注册运行日志监听
-//     // this.state.flowRunner.on('log', (msg) => {
-//     //   this.state.logs.push(msg);
-//     //   this.setState({ logs: [...this.state.logs] });
-//     // });
-//     loader.config({ monaco });
-//   }
-//   //初始化画布以及事件配置
-//   initGraph = (container?: HTMLDivElement) => {
-//     const graph = new Graph({
-//       container: container,
-//       embedding: {
-//         enabled: true,
-//         validate: (args: {
-//           child: Node,
-//           parent: Node,
-//           childView: CellView,
-//           parentView: CellView,
-//         }) => {
-//           //实现拖拽连接，设置自动顺序连接的节点
-//           args.child.setData({ hoverNode: args.parent })
-//           return true;
-//         }
-//       },
-//       mousewheel: {
-//         enabled: true,
-//         // zoomAtMousePosition: true,
-//         modifiers: 'ctrl',
-//         minScale: 0.5,
-//         maxScale: 3,
-//       },
-//       connecting: {
-//         router: 'manhattan',
-//         connector: {
-//           name: 'rounded',
-//           args: {
-//             radius: 15,
-//           },
-//         },
-//         anchor: 'center',
-//         connectionPoint: 'anchor',
-//         allowBlank: false,
-//         allowMulti: true,
-//         snap: {
-//           radius: 20,
-//         },
-//         createEdge() {
-//           return new Shape.Edge({
-//             tools: [
-//               {
-//                 name: 'edge-editor',
-//                 args: {
-//                   attrs: {
-//                     backgroundColor: '#fff',
-//                   },
-//                 },
-//               },
-//             ],
-//             zIndex: 0
-//           });
-//         },
-//         validateConnection({ targetMagnet }) {
-//           return !!targetMagnet;
-//         },
-//       },
-//       highlighting: {
-//         magnetAdsorbed: {
-//           name: 'stroke',
-//           args: {
-//             attrs: {
-//               fill: '#5F95FF',
-//               stroke: '#5F95FF',
-//             },
-//           },
-//         },
-//       },
-//       background: {
-//         color: '#F2F7FA',
-//       },
-//       grid: true,
-//       // panning: {
-//       //   enabled: true,
-//       // },
-//     });
-//     //对齐线
-//     graph
-//       .use(
-//         new Snapline({
-//           enabled: true,
-//           sharp: true,
-//         }),
-//       )
-//       .use(
-//         //撤销重做
-//         new History({
-//           enabled: true,
-//         }),
-//       ).use(
-//         //框选
-//         new Selection({
-//           enabled: true,
-//           multiple: true,
-//           strict: true,
-//           rubberband: true,
-//           movable: true,
-//           showNodeSelectionBox: true,
-//           pointerEvents: "none"
-//         }),
-//       )
-//       .use(new Scroller({
-//         enabled: true
-//       }))
-//       .use(new Keyboard())
-//       .use(new Clipboard())
-//       .use(new Export());
-
-//     graph.on('edge:dblclick', () => {
-//     });
-
-//     graph.on('edge:mouseenter', () => {
-//     });
-
-//     graph.on('edge:mouseleave', () => {
-//     });
-//     graph.on('node:moved', () => {
-
-//     })
-//     graph.on('node:mouseenter', () => {
-//     });
-
-//     graph.on('node:mouseleave', () => {
-//     });
-//     graph.on('node:click', ({ node }) => {
-//       this.setState({ editingNode: node });
-//     });
-//     graph.on('node:added', () => {
-//     })
-//     graph.on('node:dblclick', ({ node }) => {
-//       this.setState({ rightToolCollapsed: false, editingNode: node })
-//     });
-
-//     graph.on('blank:dblclick', ({ x, y }) => {
-//       console.log('blank:dbclick', x, y);
-//       this.autoLayout(graph)
-//     })
-
-//     // zoom
-//     graph.bindKey(['ctrl+1', 'meta+1'], () => {
-//       const zoom = graph.zoom();
-//       if (zoom < 1.5) {
-//         graph.zoom(0.1);
-//       }
-//     });
-//     graph.bindKey(['ctrl+2', 'meta+2'], () => {
-//       const zoom = graph.zoom();
-//       if (zoom > 0.5) {
-//         graph.zoom(-0.1);
-//       }
-//     });
-//     this.state.graph = graph;
-
-//     if (this.props.config) {
-//       this.state.editorCtx.logic = this.props.config;
-//       graph.fromJSON(this.state.editorCtx.logic.visualConfig);
-//     } else {
-//       DefaultGraph(graph);
-//       this.autoLayout(graph)
-//     }
-//     return graph;
-//   };
-//   autoLayout = (graph: Graph) => {
-//     autoDagreLayout(graph);
-//   }
-//   refContainer = (container: HTMLDivElement) => {
-//     this.container = container;
-//   };
-
-//   setFlowSetting = (open: boolean) => {
-//     this.setState({ openFlowSetting: open })
-//   }
-//   render() {
-//     const {
-//       leftToolCollapsed,
-//       rightToolCollapsed,
-//       editorCtx,
-//     } = this.state;
-//     return (
-//       <EditorContext.Provider value={editorCtx}>
-//         <Layout style={{ height: '100vh', width: '100%', margin: 0 }}>
-//           <Layout.Sider
-//             theme="light"
-//             collapsed={leftToolCollapsed}
-//             collapsedWidth={0}
-//             width={300}
-//           >
-//           </Layout.Sider>
-//           <Layout style={{ height: '100%' }}>
-//             <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>
-//               <Button
-//                 type="text"
-//                 icon={
-//                   leftToolCollapsed ? (
-//                     <MenuUnfoldOutlined />
-//                   ) : (
-//                     <MenuFoldOutlined />
-//                   )
-//                 }
-//                 onClick={() => {
-//                   this.setState({ leftToolCollapsed: !leftToolCollapsed });
-//                 }}
-//                 style={{
-//                   fontSize: '16px',
-//                   width: 64,
-//                   height: 64,
-//                 }}
-//               />
-//               <Space direction="horizontal">
-//                 <Button onClick={() => {
-//                   this.state.graph?.getNodes()[2].attr('body/fill', 'red');
-//                 }}></Button>
-//               </Space>
-//               {this.props.btns?.map(b => <Button {...b} />)}
-//               <Button
-//                 type="text"
-//                 icon={
-//                   rightToolCollapsed ? (
-//                     <MenuFoldOutlined />
-//                   ) : (
-//                     <MenuUnfoldOutlined />
-//                   )
-//                 }
-//                 onClick={() => {
-//                   this.setState({ rightToolCollapsed: !rightToolCollapsed });
-//                 }}
-//                 style={{
-//                   float: 'right',
-//                   right: '16px',
-//                   fontSize: '16px',
-//                   width: 64,
-//                   height: 64,
-//                 }}
-//               />
-
-//             </Layout.Header>
-//             <Layout.Content className="app-content" >
-//               <DagreGraph
-//                 ref={this.refContainer}
-//               />
-//             </Layout.Content>
-//           </Layout>
-//           <Layout.Sider
-//             theme="light"
-//             collapsed={rightToolCollapsed}
-//             collapsedWidth={0}
-//             width={600} >
-//             <Button
-//               type="text"
-//               onClick={() => {
-//                 this.setState({ rightToolCollapsed: !rightToolCollapsed });
-//               }}
-//               style={{
-//                 float: 'right',
-//                 fontSize: '16px',
-//                 width: 64,
-//                 height: 64,
-//               }}
-//             >
-//               x
-//             </Button>
-//             {/* <RightToolset
-//               onClear={() => this.setState({ logs: [] })}
-//               editNode={editingNode}
-//               onSubmit={() => { }}
-//               logs={this.state.logs}
-//               configSchemaProvider={this.props.configSchemaProvider ?? ConfigSchemaProvider}
-//             /> */}
-//           </Layout.Sider>
-//         </Layout >
-//       </EditorContext.Provider>
-//     );
-//   }
-// }
