@@ -86,7 +86,7 @@
     },
     "timeout": {
       "title": "执行超时时长(ms)",
-      "defaultValue": 2000,
+      "defaultValue": 5000,
       "type": "number"
     }
   },
