@@ -401,6 +401,7 @@ const DebugLog = (props: DebugProps) => {
       theme="light"
       collapsed={rightToolCollapsed}
       collapsedWidth={0}
+      style={{ overflow: 'scroll' }}
       title='ddd'
       width={600} >
       <Button
