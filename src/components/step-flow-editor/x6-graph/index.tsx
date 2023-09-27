@@ -111,7 +111,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
   state: StateType = {
     editingNode: undefined,
     openEdgeEditor: false,
-    embeddingEnable: true,
+    embeddingEnable: false,
     editingEdge: undefined,
     leftToolCollapsed: false,
     rightToolCollapsed: true,
