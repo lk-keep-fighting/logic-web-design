@@ -35,6 +35,23 @@ export async function getLogic(id: string) {
     })
 }
 /**
+ * 通过逻辑编号与版本号获取逻辑配置
+ * @param id 编号
+ * @param version 版本号
+ * @returns 
+ */
+export async function getLogicJsonByBak(id: string, version: string) {
+    return axios.post(`/api/form/logic_bak/query`, {
+        filters: [
+            { dataIndex: 'id', values: [id], type: 'and' },
+            { dataIndex: 'version', values: [version], type: 'and' }
+        ]
+    }).then(res => {
+        const jsonStr = res.data.result.items[0].configJson;
+        return JSON.parse(jsonStr);
+    })
+}
+/**
  * 通过业务标识与逻辑编号找到逻辑实例
  * @param id 
  * @returns 

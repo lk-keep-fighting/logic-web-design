@@ -1,6 +1,6 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import { DebugLogic } from "@/components/step-flow-editor";
-import { getLogic, getLogicInstanceWithBizId, getLogicLogsWithBizId } from "@/services/logicSvc";
+import { getLogic, getLogicInstanceWithBizId, getLogicJsonByBak, getLogicLogsWithBizId } from "@/services/logicSvc";
 import { CheckCircleTwoTone, FrownOutlined, PlayCircleFilled, PlayCircleTwoTone, ProfileOutlined, SyncOutlined } from "@ant-design/icons";
 import { Button, Divider, Spin, message } from "antd";
 import axios from "axios";
@@ -47,19 +47,30 @@ const LogicDebug = () => {
     }, [])
     useEffect(() => {
         setLoading(true);
-        getLogic(id).then(res => {
-            const configJson = res;
-            configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
-            setConfig(configJson)
-            setLoading(false);
-        }).catch(err => {
-            setLoading(false);
-            console.log('err')
-            console.log(err)
-        })
+        // getLogic(id).then(res => {
+        //     const configJson = res;
+        //     configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
+        //     setConfig(configJson)
+        //     setLoading(false);
+        // }).catch(err => {
+        //     setLoading(false);
+        //     console.log('err')
+        //     console.log(err)
+        // })
         getLogicInstanceWithBizId(id, searchParams.get('bizId')).then(res => {
             if (res) {
                 setLogicIns(res);
+                setLoading(true);
+                getLogicJsonByBak(id, res.version).then(res => {
+                    const configJson = res;
+                    configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
+                    setConfig(configJson)
+                    setLoading(false);
+                }).catch(err => {
+                    setLoading(false);
+                    console.log('err')
+                    console.log(err)
+                })
             }
         })
         getLogicLogsWithBizId(id, searchParams.get('bizId')).then(res => {
@@ -95,7 +106,8 @@ const LogicDebug = () => {
                         }}>
                             <ProfileOutlined />
                             刷新日志
-                        </Button>
+                        </Button>,
+                        <span style={{ color: 'red' }}>逻辑版本：{logicIns?.version}</span>
                     ]}
                     nextId={logicIns?.nextId}
                     config={config}
