@@ -19,7 +19,7 @@ export async function runLogicOnServerLikeFn(id: string, params: any) {
  * @returns 
  */
 export async function runLogicOnServerLikeApi(id: string, params: any) {
-    return post(`/api/runtime/logic/v1/run-api/${id}`,
+    return post(`/api/runtime/logic/v1/run-api/${id}?debug=true`,
         params,
         { headers: { 'Content-Type': 'application/json' } })
 }

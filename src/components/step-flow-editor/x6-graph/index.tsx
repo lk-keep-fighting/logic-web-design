@@ -31,6 +31,8 @@ import RunLogic from '../component/run-logic';
 import { runLogicOnServerLikeApi } from '@/services/logicSvc';
 import CodeEditor from '../component/CodeEditor';
 import dayjs from 'dayjs';
+import { InputJSONSchema, JSONSchemaEditor } from 'amis-ui';
+import { JsonView } from 'amis';
 
 
 type EditorCtx = {
@@ -735,21 +737,67 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                       const { params } = values;
                       runLogicOnServerLikeApi(logic.id, JSON.parse(params)).then(res => {
                         if (res.data.code == 0) {
-                          message.info('执行成功，返回值\n' + JSON.stringify(res.data.data))
+                          Modal.success({
+                            title: '执行成功',
+                            width: '1000px',
+                            closable: true,
+                            content: <div>
+                              <Row>
+                                <Col>
+                                  <Row>
+                                    <Col span={24}>
+                                      <h4>{res.data.msg}</h4>
+                                      <JsonView src={res.data ?? {}} collapsed={1} />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </Row>
+                            </div>,
+                          })
                         } else {
-                          message.info('业务执行失败，返回值\n' + JSON.stringify(res.data.data))
+                          Modal.error({
+                            title: <span>{res.data.msg}</span>,
+                            width: '1000px',
+                            closable: true,
+                            content: <div>
+                              <Row>
+                                <Col>
+                                  <Row>
+                                    <Col span={12}>
+                                      <h4>错误详细:</h4>
+                                      <JsonView src={res.data.error ?? {}} collapsed={1} />
+                                      {/* {JSON.stringify(res.error)} */}
+                                    </Col>
+                                    <Col span={12}>
+                                      <h4>返回数据:</h4>
+                                      <CodeEditor language='json' value={JSON.stringify(res.data)} width={500} />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </Row>
+                            </div>,
+                          })
                         }
                       }).catch(err => {
                         const res = err.response.data;
                         Modal.error({
-                          title: '执行失败',
-                          width: '900px',
+                          title: <span>{res.msg}</span>,
+                          width: '1000px',
+                          closable: true,
                           content: <div>
                             <Row>
                               <Col>
-                                <h6>{res.message}</h6>
-                                {JSON.stringify(res.err)}
-                                <CodeEditor language='json' value={JSON.stringify(res.debug)} width={800} />
+                                <Row>
+                                  <Col span={12}>
+                                    <h4>错误详细:</h4>
+                                    <JsonView src={res.error} collapsed={1} />
+                                    {/* {JSON.stringify(res.error)} */}
+                                  </Col>
+                                  <Col span={12}>
+                                    <h4>返回数据:</h4>
+                                    <CodeEditor language='json' value={JSON.stringify(res.data)} width={500} />
+                                  </Col>
+                                </Row>
                               </Col>
                             </Row>
                           </div>,
@@ -855,7 +903,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
             />
           </Layout.Sider>
         </Layout >
-      </EditorContext.Provider>
+      </EditorContext.Provider >
     );
   }
 }
