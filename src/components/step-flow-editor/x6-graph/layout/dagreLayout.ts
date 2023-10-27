@@ -7,7 +7,7 @@ import { Graph } from "@antv/x6";
 export const autoDagreLayout = (graph: Graph) => {
     const dagreLayout: DagreLayout = new DagreLayout({
         type: 'dagre',
-        begin: [500, 100],
+        begin: [400, 100],
         // ranker: 'network-simplex', // 节点分层算法，可选：'tight-tree' 'longest-path' 'network-simplex'
         rankdir: 'TB', // 图的延展方向，可选： 'TB' | 'BT' | 'LR' | 'RL'
         ranksep: 20, // 图的各个层次之间的间距

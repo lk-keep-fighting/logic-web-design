@@ -7,7 +7,7 @@ import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { Scroller } from '@antv/x6-plugin-scroller'
 import { Export } from '@antv/x6-plugin-export'
-import { Button, Layout, List, Space, Tabs, TabsProps } from 'antd';
+import { Button, Layout, List, Space, Tabs, TabsProps, Timeline, TimelineItemProps } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import './index.css';
 import { InitPanelData } from '@/components/step-flow-editor/x6-graph/settings/PanelSetting';
@@ -51,11 +51,11 @@ interface Log {
   success: boolean
   serverTime: string
   message: string
-  debug: {
-    itemLogs: ItemLog[],
-    paramsJson: object
-    success: boolean
-  }
+  // debug: {
+  itemLogs: ItemLog[],
+  paramsJson: object
+  // success: boolean
+  // }
 }
 interface DebugProps {
   name?: string;
@@ -70,7 +70,7 @@ interface DebugProps {
 const DebugLog = (props: DebugProps) => {
   const [graph, setGraph] = useState<Graph>();
   const [logic, setLogic] = useState<Logic>();
-  const [leftToolCollapsed, setLeftToolCollapsed] = useState(true)
+  const [leftToolCollapsed, setLeftToolCollapsed] = useState(false)
   const [rightToolCollapsed, setRightToolCollapsed] = useState(true)
   const [curItemLog, setCurItemLog] = useState<ItemLog>()
   // const [curItemLogSchema, setCurItemLogSchema] = useState<Schema>({})
@@ -78,6 +78,7 @@ const DebugLog = (props: DebugProps) => {
   const [curItemLogIndex, setCurItemLogIndex] = useState(0)
   const [centerNode, setCenterNode] = useState<Node>();
   const [selectedNode, setSelectedNode] = useState<Node>();
+  const [timeLineItems, setTimeLineItems] = useState<TimelineItemProps[]>();
   const refContainer = useRef();
   const onNodeClick = ({ node }) => {
     setSelectedNode(node)
@@ -112,6 +113,36 @@ const DebugLog = (props: DebugProps) => {
     if (props.debugLogs?.length > 0) {
       setInterval(replayLogs, 2000);
     }
+    const items: TimelineItemProps[] = [];
+    setTimeLineItems(items);
+    if (props)
+      props.debugLogs?.forEach(v => {
+        items.push({
+          children: <><span style={{ cursor: 'pointer' }} onClick={() => {
+            setCurLog(v);
+            console.log(v);
+            graph?.fromJSON(logic?.visualConfig);
+            // graph?.fitToContent();
+            let lastNode: Node;
+            v.itemLogs.forEach(i => {
+              const node = graph?.getNodes().find(n => n.id == i.config.id);
+              if (node) {
+                node.attr('body/fill', '#52c41a')
+                lastNode = node;
+              }
+            })
+            // graph?.centerPoint(lastNode?.x, lastNode?.y);
+            // graph?.centerCell(lastNode, { padding: { left: 0 } });
+            graph?.centerCell(lastNode);
+            setCurItemLog({});
+            setSelectedNode({});
+            // autoDagreLayout(graph);
+          }} ><p>{v.itemLogs[0]?.config.name}</p>
+            <p>{v.serverTime}</p>
+            <p>{v.message}</p></span></>,
+          color: v.success ? 'green' : 'red'
+        })
+      })
   }, [curItemLogIndex, props.debugLogs])
   useEffect(() => {
     if (!logic) return;
@@ -263,6 +294,8 @@ const DebugLog = (props: DebugProps) => {
   useEffect(() => {
     graph?.off('node:click', onNodeClick)
     graph?.on('node:click', onNodeClick)
+
+
   }, [curLog])
   const replayLogs = () => {
     // console.log('curItemLogIndex,', curItemLogIndex)
@@ -293,25 +326,29 @@ const DebugLog = (props: DebugProps) => {
       />
     }
   ]
-  return <Layout style={{ height: '100vh', width: '100%', margin: 0 }}>
+  return <Layout style={{ margin: 0, height: '100vh' }}>
     <Layout.Sider
       theme="light"
       collapsed={leftToolCollapsed}
       collapsedWidth={0}
       width={300}
+      style={{ padding: 5 }}
     >
-      <List
+      <h3>交互请求记录</h3>
+      <Timeline
+        // pending={true}
+        items={timeLineItems}
+      />
+      {/* <List
         itemLayout="horizontal"
         dataSource={props.debugLogs}
         style={{ height: '100%', overflow: 'scroll' }}
         renderItem={(item, index) => (
           <List.Item onClick={() => {
-            console.log('click list log')
-            console.log(item)
             setCurLog(item);
-            console.log(curLog);
+            console.log(item);
             graph?.fromJSON(logic?.visualConfig);
-            autoDagreLayout(graph);
+            // graph?.fitToContent();
             let lastNode: Node;
             item.itemLogs.forEach(i => {
               const node = graph?.getNodes().find(n => n.id == i.config.id);
@@ -320,19 +357,26 @@ const DebugLog = (props: DebugProps) => {
                 lastNode = node;
               }
             })
+            // graph?.centerPoint(lastNode?.x, lastNode?.y);
+            // graph?.centerCell(lastNode, { padding: { left: 0 } });
             graph?.centerCell(lastNode);
+            setCurItemLog({});
+            setSelectedNode({});
+            // autoDagreLayout(graph);
           }}>
             <List.Item.Meta
               title={<span>{item.success ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}
                 {item?.itemLogs[0].config?.name}:
                 {item.serverTime}</span>}
               description={item.message}
+              style={{ backgroundColor: item.id == curItemLog?.id ? 'red' : 'white' }}
+
             />
           </List.Item>
         )}
-      />
+      /> */}
     </Layout.Sider>
-    <Layout style={{ height: '100%' }}>
+    <Layout style={{}}>
       <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>
         <Button
           type="text"
@@ -397,7 +441,7 @@ const DebugLog = (props: DebugProps) => {
       collapsedWidth={0}
       style={{ overflow: 'scroll' }}
       title='ddd'
-      width={600} >
+      width={500} >
       <Button
         type="text"
         onClick={() => {

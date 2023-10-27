@@ -1,6 +1,6 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import { DebugLogic } from "@/components/step-flow-editor";
-import { getLogic, getLogicInstanceWithBizId, getLogicJsonByBak, getLogicLogsWithBizId } from "@/services/logicSvc";
+import { getLogic, getLogicInstanceWithBizId, getLogicInstanceWithId, getLogicJsonByBak, getLogicLogsByLogicIns } from "@/services/logicSvc";
 import { CheckCircleTwoTone, FrownOutlined, PlayCircleFilled, PlayCircleTwoTone, ProfileOutlined, SyncOutlined } from "@ant-design/icons";
 import { Button, Divider, Spin, message } from "antd";
 import axios from "axios";
@@ -29,56 +29,34 @@ const LogicDebug = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [debugLogs, setDebugLogs] = useState([])
     const [logicIns, setLogicIns] = useState();
-    const handleSave = useCallback((logic: Logic) => {
-        logic.id = id;
-        setLoading(true);
-        setConfig(logic)
-        axios.put(`/api/form/logic/edit/${logic.id}`, { configJson: JSON.stringify(logic) }).then(res => {
-            setLoading(false)
-            message.success('保存成功')
-            console.log('save logic')
-            console.log(logic)
-        }).catch(err => {
-            setLoading(false)
-            console.log('err')
-            console.log(err)
-            message.error('保存失败')
-        })
-    }, [])
     useEffect(() => {
         setLoading(true);
-        // getLogic(id).then(res => {
-        //     const configJson = res;
-        //     configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
-        //     setConfig(configJson)
-        //     setLoading(false);
-        // }).catch(err => {
-        //     setLoading(false);
-        //     console.log('err')
-        //     console.log(err)
-        // })
-        getLogicInstanceWithBizId(id, searchParams.get('bizId')).then(res => {
-            if (res) {
-                setLogicIns(res);
-                setLoading(true);
-                getLogicJsonByBak(id, res.version).then(res => {
-                    const configJson = res;
-                    configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
-                    setConfig(configJson)
-                    setLoading(false);
-                }).catch(err => {
-                    setLoading(false);
-                    console.log('err')
-                    console.log(err)
-                })
-            }
-        })
-        getLogicLogsWithBizId(id, searchParams.get('bizId')).then(res => {
-            if (res) {
-                setDebugLogs(res)
-            }
-        })
-    }, [])
+        if (id)
+            getLogicInstanceWithId(id).then(res => {
+                if (res) {
+                    setLogicIns(res);
+                    setLoading(true);
+                    getLogicJsonByBak(res.logicId, res.version).then(res => {
+                        const configJson = res;
+                        configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
+                        setConfig(configJson)
+                        setLoading(false);
+                    }).catch(err => {
+                        setLoading(false);
+                        console.log('err')
+                        console.log(err)
+                    })
+                }
+            })
+    }, [id])
+    useEffect(() => {
+        if (logicIns)
+            getLogicLogsByLogicIns(logicIns).then(res => {
+                if (res) {
+                    setDebugLogs(res)
+                }
+            })
+    }, [logicIns])
     return (
         <div>
             <Spin spinning={loading}>
@@ -86,11 +64,9 @@ const LogicDebug = () => {
                     btns={[
                         <span>是否完成：{logicIns?.isOver ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}<Divider type='vertical' /></span>,
                         <Button onClick={() => {
-                            getLogicInstanceWithBizId(id, searchParams.get('bizId')).then(res => {
+                            getLogicInstanceWithId(id).then(res => {
                                 if (res) {
                                     setLogicIns(res);
-                                    console.log('logicIns')
-                                    console.log(logicIns)
                                 }
                             })
                         }}>
@@ -98,7 +74,7 @@ const LogicDebug = () => {
                             刷新状态
                         </Button>,
                         <Button onClick={() => {
-                            getLogicLogsWithBizId(id, searchParams.get('bizId')).then(res => {
+                            getLogicLogsByLogicIns(logicIns).then(res => {
                                 if (res) {
                                     setDebugLogs(res)
                                 }

@@ -73,16 +73,22 @@ export async function getLogicInstanceWithBizId(logicId: string, bizId?: string)
         return ins;
     })
 }
+export async function getLogicInstanceWithId(id: string) {
+    return axios.get(`/api/form/logic_instance/get/${id}`).then(res => {
+        const ins = res.data.result;
+        return ins;
+    })
+}
 /**
  * 通过业务标识与逻辑编号找到逻辑实例
  * @param id 
  * @returns 
  */
-export async function getLogicLogsWithBizId(logicId: string, bizId?: string) {
+export async function getLogicLogsByLogicIns(logicIns: any) {
     return axios.post(`/api/form/logic_log/query`, {
         filters: [
-            { dataIndex: 'logicId', values: [logicId], type: 'and' },
-            { dataIndex: 'bizId', values: [bizId], type: 'and' }
+            { dataIndex: 'logicId', values: [logicIns.ogicId], type: 'and' },
+            { dataIndex: 'bizId', values: [logicIns.bizId], type: 'and' }
         ],
         orderBy: [
             {

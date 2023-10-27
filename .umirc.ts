@@ -44,7 +44,7 @@ export default defineConfig({
       component: "assets/swagger/ui",
     },
     { path: "/assets/logic/i/:id/edit", layout: false, component: "logic-editor" },
-    { path: "/assets/logic/i/:id/debug", layout: false, component: "logic-debug" },
+    { path: "/debug/logic/instance/:id", layout: false, component: "logic-debug" },
     { path: "/editor/:id", layout: false, component: "logic-editor" },
     { path: "/form", component: "form-editor" },
   ],
