@@ -734,8 +734,8 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                   onSubmit={(values) => {
                     this.setState({ openRunLogic: false })
                     if (logic) {
-                      const { params } = values;
-                      runLogicOnServerLikeApi(logic.id, JSON.parse(params)).then(res => {
+                      const { params, bizId } = values;
+                      runLogicOnServerLikeApi(logic.id, JSON.parse(params), bizId).then(res => {
                         if (res.data.code == 0) {
                           Modal.success({
                             title: '执行成功',

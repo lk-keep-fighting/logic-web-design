@@ -83,6 +83,13 @@ const RunLogic = (props: RunLogicProps) => {
                             },
                             extra: '编辑器中可通过 _env. 获取'
                         },
+                        bizId: {
+                            title: '业务标识',
+                            type: 'string',
+                            props: {
+                            },
+                            extra: '根据业务标识跟踪逻辑实例'
+                        },
                     },
                     // "displayType": "row",
                     "column": 2,

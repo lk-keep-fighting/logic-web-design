@@ -18,8 +18,14 @@ export async function runLogicOnServerLikeFn(id: string, params: any) {
  * @param params 逻辑入参
  * @returns 
  */
-export async function runLogicOnServerLikeApi(id: string, params: any) {
-    return post(`/api/runtime/logic/v1/run-api/${id}?debug=true`,
+export async function runLogicOnServerLikeApi(id: string, params: any, bizId: string) {
+    let url;
+    if (bizId) {
+        url = `/api/runtime/logic/v1/runBiz/${id}/${bizId}?debug=true`;
+    } else {
+        url = `/api/runtime/logic/v1/run-api/${id}?debug=true`;
+    }
+    return post(url,
         params,
         { headers: { 'Content-Type': 'application/json' } })
 }
@@ -73,7 +79,7 @@ export async function getLogicInstanceWithBizId(logicId: string, bizId?: string)
  * @returns 
  */
 export async function getLogicLogsWithBizId(logicId: string, bizId?: string) {
-    return axios.post(`/api/form/logic_runntime_logs/query`, {
+    return axios.post(`/api/form/logic_log/query`, {
         filters: [
             { dataIndex: 'logicId', values: [logicId], type: 'and' },
             { dataIndex: 'bizId', values: [bizId], type: 'and' }
@@ -87,8 +93,8 @@ export async function getLogicLogsWithBizId(logicId: string, bizId?: string) {
         const logs = res.data.result.items;
         if (logs) {
             logs.map(v => {
-                if (v.debug)
-                    v.debug = JSON.parse(v.debug);
+                if (v.itemLogs)
+                    v.itemLogs = JSON.parse(v.itemLogs);
             })
         }
         return logs;

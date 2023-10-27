@@ -1,28 +1,22 @@
-import { CheckCircleTwoTone, FrownOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, SmileOutlined } from '@ant-design/icons';
+import { CheckCircleTwoTone, FrownOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
 import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
-import { Stencil } from '@antv/x6-plugin-stencil';
 import { Scroller } from '@antv/x6-plugin-scroller'
 import { Export } from '@antv/x6-plugin-export'
-import { loader } from '@monaco-editor/react';
 import { Button, Layout, List, Space, Tabs, TabsProps } from 'antd';
-import * as monaco from 'monaco-editor';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import './index.css';
 import { InitPanelData } from '@/components/step-flow-editor/x6-graph/settings/PanelSetting';
-import { DefaultGraph, RegistShape } from '@/components/step-flow-editor/x6-graph/settings/InitGraph';
+import { RegistShape } from '@/components/step-flow-editor/x6-graph/settings/InitGraph';
 import DagreGraph from '@/components/step-flow-editor/x6-graph/instance/dagre-graph';
 import { autoDagreLayout } from '@/components/step-flow-editor/x6-graph/layout/dagreLayout';
 import { Schema } from 'form-render';
 import { Logic, LogicItem } from '@/components/step-flow-core/lasl/meta-data';
-import { ButtonProps } from 'antd/lib/button';
 import NodeData from '@/components/step-flow-editor/right-toolset/step-config';
-import FormRender from '@/components/step-flow-editor/component/FormRender';
-import { useForm } from 'form-render';
 import { JsonView } from 'amis';
 
 type EditorCtx = {
@@ -87,7 +81,7 @@ const DebugLog = (props: DebugProps) => {
   const refContainer = useRef();
   const onNodeClick = ({ node }) => {
     setSelectedNode(node)
-    const itemLog = curLog?.debug.itemLogs.find(i => {
+    const itemLog = curLog?.itemLogs.find(i => {
       return i.config.id == node.id
     });
     setCurItemLog(itemLog)
@@ -319,7 +313,7 @@ const DebugLog = (props: DebugProps) => {
             graph?.fromJSON(logic?.visualConfig);
             autoDagreLayout(graph);
             let lastNode: Node;
-            item.debug.itemLogs.forEach(i => {
+            item.itemLogs.forEach(i => {
               const node = graph?.getNodes().find(n => n.id == i.config.id);
               if (node) {
                 node.attr('body/fill', '#52c41a')
@@ -330,7 +324,7 @@ const DebugLog = (props: DebugProps) => {
           }}>
             <List.Item.Meta
               title={<span>{item.success ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}
-                {item.debug?.itemLogs[0].config.name}:
+                {item?.itemLogs[0].config?.name}:
                 {item.serverTime}</span>}
               description={item.message}
             />
