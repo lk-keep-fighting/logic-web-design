@@ -43,7 +43,7 @@ const saveBtns = [
   { key: 'saveToPng', label: '导出图片' },
   // { key: '-', label: '-' },
   // { key: 'loadFromBrowser', label: '从浏览器恢复' },
-  // { key: 'saveToClipboard', label: '复制到剪贴板' }
+  { key: 'saveToClipboard', label: '复制到剪贴板' }
 ];
 
 export const EditorContext = React.createContext<EditorCtx>({
@@ -575,7 +575,11 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
         }
         break;
       case 'saveToClipboard':
-
+        try {
+          navigator.clipboard.writeText(JSON.stringify(this.state.editorCtx.logic));//复制到剪贴板
+        } catch (error) {
+          console.error(error)
+        }
         break;
       case 'saveToPng':
         this.state.graph?.exportPNG(new Date().toLocaleDateString(), { backgroundColor: '#F2F7FA', padding: 10, quality: 1 });
