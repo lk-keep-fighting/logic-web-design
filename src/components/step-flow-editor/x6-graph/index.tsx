@@ -31,7 +31,6 @@ import RunLogic from '../component/run-logic';
 import { runLogicOnServerLikeApi } from '@/services/logicSvc';
 import CodeEditor from '../component/CodeEditor';
 import dayjs from 'dayjs';
-import { InputJSONSchema, JSONSchemaEditor } from 'amis-ui';
 import { JsonView } from 'amis';
 
 

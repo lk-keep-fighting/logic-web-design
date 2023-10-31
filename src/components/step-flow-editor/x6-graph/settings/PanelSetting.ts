@@ -84,43 +84,43 @@ export function InitPanelData(
       // tools: ['node-editor'],
       groups: ['global'],
     },
-    {
-      shape: 'ExtSharp',
-      width,
-      height,
-      ports,
-      attrs: {
-        body: {
-          // rx: 6,
-          // ry: 6,
-          // fill: 'red',
-          stroke: 'red',
-          strokeWidth: 3,
-        },
-        // image: {
-        //   x: 10,
-        //   y: 10,
-        //   width: 30,
-        //   height: 30,
-        //   'xlink:href': '/icons/warning.svg'
-        // },
-        text: {
-          x: 5,
-          y: 0,
-          text: '异常\n处理',
-          fontSize: 15,
-          // fontWeight: 500,
-          // textLength: '80',
-          // lengthAdjust: 'spacing',
-        },
-      },
-      data: {
-        config: {
-          type: StepTypeEnum.errorHandler,
-        },
-      },
-      groups: ['global'],
-    },
+    // {
+    //   shape: 'ExtSharp',
+    //   width,
+    //   height,
+    //   ports,
+    //   attrs: {
+    //     body: {
+    //       // rx: 6,
+    //       // ry: 6,
+    //       // fill: 'red',
+    //       stroke: 'red',
+    //       strokeWidth: 3,
+    //     },
+    //     // image: {
+    //     //   x: 10,
+    //     //   y: 10,
+    //     //   width: 30,
+    //     //   height: 30,
+    //     //   'xlink:href': '/icons/warning.svg'
+    //     // },
+    //     text: {
+    //       x: 5,
+    //       y: 0,
+    //       text: '异常\n处理',
+    //       fontSize: 15,
+    //       // fontWeight: 500,
+    //       // textLength: '80',
+    //       // lengthAdjust: 'spacing',
+    //     },
+    //   },
+    //   data: {
+    //     config: {
+    //       type: StepTypeEnum.errorHandler,
+    //     },
+    //   },
+    //   groups: ['global'],
+    // },
     {
       shape: 'ExtSharp',
       // label: 'http请求',
@@ -345,44 +345,44 @@ export function InitPanelData(
       // tools: ['node-editor'],
       groups: ['ctrl'],
     },
-    {
-      shape: 'ExtSharp',
-      width,
-      height,
-      attrs: {
-        // body: {
-        //   refPoints: '0,10 10,0 20,10 10,20',
-        //   strokeWidth: 1,
-        //   stroke: '#5F95FF',
-        //   fill: '#EFF4FF',
-        // },
-        image: {
-          'xlink:href': '/icons/delay.svg',
-          width: 30,
-          x: 8,
-          y: 10
-        },
-        text: {
-          text: '延时',
-          fontSize: 14,
-          // fill: '#5F95FF',
-          refX: 0.5,
-          refY: '100%',
-          refY2: 4,
-          textAnchor: 'middle',
-          textVerticalAnchor: 'top',
-        },
-      },
-      data: {
-        config: {
-          type: 'wait',
-          timeout: '2000',
-        },
-      },
-      ports,
-      // tools: ['node-editor'],
-      groups: ['ctrl'],
-    },
+    // {
+    //   shape: 'ExtSharp',
+    //   width,
+    //   height,
+    //   attrs: {
+    //     // body: {
+    //     //   refPoints: '0,10 10,0 20,10 10,20',
+    //     //   strokeWidth: 1,
+    //     //   stroke: '#5F95FF',
+    //     //   fill: '#EFF4FF',
+    //     // },
+    //     image: {
+    //       'xlink:href': '/icons/delay.svg',
+    //       width: 30,
+    //       x: 8,
+    //       y: 10
+    //     },
+    //     text: {
+    //       text: '延时',
+    //       fontSize: 14,
+    //       // fill: '#5F95FF',
+    //       refX: 0.5,
+    //       refY: '100%',
+    //       refY2: 4,
+    //       textAnchor: 'middle',
+    //       textVerticalAnchor: 'top',
+    //     },
+    //   },
+    //   data: {
+    //     config: {
+    //       type: 'wait',
+    //       timeout: '2000',
+    //     },
+    //   },
+    //   ports,
+    //   // tools: ['node-editor'],
+    //   groups: ['ctrl'],
+    // },
     // {
     //   shape: 'ExtSharp',
     //   attrs: {
@@ -453,7 +453,7 @@ export function InitPanelData(
     {
       name: 'global',
       title: '全局节点',
-      graphHeight: 220,
+      graphHeight: 110,
     },
     // {
     //   name: 'var',
@@ -463,7 +463,7 @@ export function InitPanelData(
     {
       name: 'ctrl',
       title: '逻辑控制',
-      graphHeight: 220,
+      graphHeight: 110,
     },
     {
       name: 'biz',
