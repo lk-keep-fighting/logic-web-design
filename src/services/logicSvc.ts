@@ -34,12 +34,12 @@ export async function runLogicOnServerLikeApi(id: string, params: any, bizId: st
  * @param id 逻辑编号
  * @returns 
  */
-export async function getLogic(id: string) {
-    return axios.get(`/api/form/logic/get/${id}`).then(res => {
-        const jsonStr = res.data.result.configJson;
-        return JSON.parse(jsonStr);
-    })
-}
+// export async function getLogic(id: string) {
+//     return axios.get(`/api/form/logic/get/${id}`).then(res => {
+//         const jsonStr = res.data.result.configJson;
+//         return JSON.parse(jsonStr);
+//     })
+// }
 // export async function getLogic(id: string) {
 //     return axios.post(`/api/form/logic/query`, { ids: [id] }).then(res => {
 //         const jsonStr = res.data.result.items[0].configJson;

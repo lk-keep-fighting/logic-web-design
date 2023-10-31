@@ -6,6 +6,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "umi";
 import dayjs, { Dayjs } from 'dayjs';
+import { getLogicConfig, saveLogic } from "@/services/ideSvc";
 
 const formProvider = async (type: string) => {
     const res = await axios.get(`/setting/node-form/${type}.json`);
@@ -22,7 +23,7 @@ const LogicEditor = () => {
         logic.id = id;
         setLoading(true);
         setConfig(logic)
-        axios.put(`/api/form/logic/edit/${logic.id}`, { version: logic.version, configJson: JSON.stringify(logic), updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss') }).then(res => {
+        saveLogic(logic.id, logic.version, JSON.stringify(logic)).then(res => {
             setLoading(false)
             message.success('保存成功')
             console.log('save logic')
@@ -36,7 +37,7 @@ const LogicEditor = () => {
     }, [])
     useEffect(() => {
         setLoading(true);
-        getLogic(id).then(res => {
+        getLogicConfig(id).then(res => {
             const configJson = res;
             configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
             setConfig(configJson)
