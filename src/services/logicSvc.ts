@@ -21,7 +21,7 @@ export async function runLogicOnServerLikeFn(id: string, params: any) {
 export async function runLogicOnServerLikeApi(id: string, params: any, bizId: string) {
     let url;
     if (bizId) {
-        url = `/api/runtime/logic/v1/runBiz/${id}/${bizId}?debug=true`;
+        url = `/api/runtime/logic/v1/run-biz/${id}/${bizId}?debug=true`;
     } else {
         url = `/api/runtime/logic/v1/run-api/${id}?debug=true`;
     }
