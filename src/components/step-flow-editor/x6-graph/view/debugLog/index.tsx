@@ -114,7 +114,6 @@ const DebugLog = (props: DebugProps) => {
       setInterval(replayLogs, 2000);
     }
     const items: TimelineItemProps[] = [];
-    setTimeLineItems(items);
     if (props)
       props.debugLogs?.forEach(v => {
         items.push({
@@ -143,6 +142,7 @@ const DebugLog = (props: DebugProps) => {
           color: v.success ? 'green' : 'red'
         })
       })
+    setTimeLineItems(items);
   }, [curItemLogIndex, props.debugLogs])
   useEffect(() => {
     if (!logic) return;
@@ -294,7 +294,6 @@ const DebugLog = (props: DebugProps) => {
   useEffect(() => {
     graph?.off('node:click', onNodeClick)
     graph?.on('node:click', onNodeClick)
-
 
   }, [curLog])
   const replayLogs = () => {
