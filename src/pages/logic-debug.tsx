@@ -1,6 +1,7 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import { DebugLogic } from "@/components/step-flow-editor";
-import { getLogic, getLogicInstanceWithBizId, getLogicInstanceWithId, getLogicJsonByBak, getLogicLogsByLogicIns } from "@/services/logicSvc";
+import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicJsonByBak } from "@/services/ideSvc";
+import { } from "@/services/logicSvc";
 import { CheckCircleTwoTone, FrownOutlined, PlayCircleFilled, PlayCircleTwoTone, ProfileOutlined, SyncOutlined } from "@ant-design/icons";
 import { Button, Divider, Spin, message } from "antd";
 import axios from "axios";
@@ -32,7 +33,7 @@ const LogicDebug = () => {
     useEffect(() => {
         setLoading(true);
         if (id)
-            getLogicInstanceWithId(id).then(res => {
+            getLogicInstanceById(id).then(res => {
                 if (res) {
                     setLogicIns(res);
                     setLoading(true);
@@ -64,7 +65,7 @@ const LogicDebug = () => {
                     btns={[
                         <span>是否完成：{logicIns?.isOver ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}<Divider type='vertical' /></span>,
                         <Button onClick={() => {
-                            getLogicInstanceWithId(id).then(res => {
+                            getLogicInstanceById(id).then(res => {
                                 if (res) {
                                     setLogicIns(res);
                                 }

@@ -46,23 +46,23 @@ export async function runLogicOnServerLikeApi(id: string, params: any, bizId: st
 //         return JSON.parse(jsonStr);
 //     })
 // }
-/**
- * 通过逻辑编号与版本号获取逻辑配置
- * @param id 编号
- * @param version 版本号
- * @returns 
- */
-export async function getLogicJsonByBak(id: string, version: string) {
-    return axios.post(`/api/form/logic_bak/query`, {
-        filters: [
-            { dataIndex: 'id', values: [id], type: 'and' },
-            { dataIndex: 'version', values: [version], type: 'and' }
-        ]
-    }).then(res => {
-        const jsonStr = res.data.result.items[0].configJson;
-        return JSON.parse(jsonStr);
-    })
-}
+// /**
+//  * 通过逻辑编号与版本号获取逻辑配置
+//  * @param id 编号
+//  * @param version 版本号
+//  * @returns 
+//  */
+// export async function getLogicJsonByBak(id: string, version: string) {
+//     return axios.post(`/api/form/logic_bak/query`, {
+//         filters: [
+//             { dataIndex: 'id', values: [id], type: 'and' },
+//             { dataIndex: 'version', values: [version], type: 'and' }
+//         ]
+//     }).then(res => {
+//         const jsonStr = res.data.result.items[0].configJson;
+//         return JSON.parse(jsonStr);
+//     })
+// }
 /**
  * 通过业务标识与逻辑编号找到逻辑实例
  * @param id 
@@ -80,38 +80,38 @@ export async function getLogicInstanceWithBizId(logicId: string, bizId?: string)
     })
 }
 export async function getLogicInstanceWithId(id: string) {
-    return axios.get(`/api/form/logic_instance/get/${id}`).then(res => {
-        const ins = res.data.result;
+    return axios.get(`/api/ide/logic-instance/${id}`).then(res => {
+        const ins = res.data.data;
         return ins;
     })
 }
-/**
- * 通过业务标识与逻辑编号找到逻辑实例
- * @param id 
- * @returns 
- */
-export async function getLogicLogsByLogicIns(logicIns: any) {
-    return axios.post(`/api/form/logic_log/query`, {
-        filters: [
-            { dataIndex: 'logicId', values: [logicIns.ogicId], type: 'and' },
-            { dataIndex: 'bizId', values: [logicIns.bizId], type: 'and' }
-        ],
-        orderBy: [
-            {
-                "dataIndex": "serverTime",
-            }
-        ]
-    }).then(res => {
-        const logs = res.data.result.items;
-        if (logs) {
-            logs.map(v => {
-                if (v.itemLogs)
-                    v.itemLogs = JSON.parse(v.itemLogs);
-            })
-        }
-        return logs;
-    })
-}
+// /**
+//  * 通过业务标识与逻辑编号找到逻辑实例
+//  * @param id 
+//  * @returns 
+//  */
+// export async function getLogicLogsByLogicIns(logicIns: any) {
+//     return axios.post(`/api/form/logic_log/query`, {
+//         filters: [
+//             { dataIndex: 'logicId', values: [logicIns.ogicId], type: 'and' },
+//             { dataIndex: 'bizId', values: [logicIns.bizId], type: 'and' }
+//         ],
+//         orderBy: [
+//             {
+//                 "dataIndex": "serverTime",
+//             }
+//         ]
+//     }).then(res => {
+//         const logs = res.data.result.items;
+//         if (logs) {
+//             logs.map(v => {
+//                 if (v.itemLogs)
+//                     v.itemLogs = JSON.parse(v.itemLogs);
+//             })
+//         }
+//         return logs;
+//     })
+// }
 
 
 export async function addLogic(data: any): Promise<string> {
