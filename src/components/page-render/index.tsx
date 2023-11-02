@@ -10,7 +10,7 @@ interface IPageRenderProps {
 axios.interceptors.response.use(response => {
     console.log('axios response')
     console.log(response)
-    if (response.data) {
+    if (response && response.data) {
         console.log('--请求未报错，适配status=0');
         if (!response.data.error) response.data.error = { code: 0 };//修复amis会自动取error.code作为status
         response.data.status = 0;
@@ -24,7 +24,7 @@ axios.interceptors.response.use(response => {
 }, error => {
     console.log('捕捉axios error')
     console.log(error);
-    if (error.response.data) {
+    if (error.response && error.response.data) {
         // 数据正常，进行的逻辑功能
         const rep = error.response;
         console.log('--data有返回值，判定为业务异常，继续返回response,适配status=500！');
