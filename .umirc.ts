@@ -2,7 +2,7 @@ import { defineConfig } from "umi";
 const MonacoPlugin = require('monaco-editor-webpack-plugin')
 export default defineConfig({
   title: "业务编排",
-  // history: { type: 'hash' },
+  history: { type: 'hash' },
   favicons: ['/logo.png'],
   esbuildMinifyIIFE: true,
   routes: [
@@ -80,16 +80,17 @@ export default defineConfig({
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/runtime': {
+      'target': 'http://localhost:8080',
       // 'target': 'http://localhost:4052',
       // 'target': 'http://localhost:8080',
-      'target': 'http://192.168.154.51:4054',
+      // 'target': 'http://192.168.154.51:4054',
       // 'target': 'http://192.168.44.87:4052',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/ide': {
-      // 'target': 'http://localhost:4052',
-      'target': 'http://192.168.154.51:4052',
+      'target': 'http://localhost:8080',
+      // 'target': 'http://192.168.154.51:4052',
       // 'target': 'http://192.168.44.87:4052',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api/ide': '/ide/api' },
