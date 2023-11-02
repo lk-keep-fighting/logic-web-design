@@ -9,6 +9,9 @@ import copy from 'copy-to-clipboard';
 import { BulbOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { getPageJson } from '@/services/pageSvr';
+import 'amis/lib/themes/cxd.css';
+import 'amis/lib/helper.css';
+import 'amis/sdk/iconfont.css';
 import 'amis-editor-core/lib/style.css';
 axios.interceptors.response.use(response => {
     console.log('axios config')
@@ -49,7 +52,7 @@ const PageEditor: React.FC = (props) => {
     const [AIGCJson, setAIGCJson] = useState('');
     const { Text } = Typography;
     return (
-        <div className={styles.container}>
+        <div className={styles.editorContainer}>
             <Space style={{ margin: '5px', float: 'right' }}>
                 <Button key={0} onClick={() => setShowAssistant(true)}>小助手</Button>
                 <Button key={1} onClick={() => setPreview(!preview)}>{preview ? '编辑' : '预览'}</Button>
