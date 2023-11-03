@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 type RunLogicProps = {
     values: {
         params: any,
-        // envs: any,
+        envs: any,
     },
     onSubmit: (values: any) => void,
     open: boolean,
@@ -19,11 +19,11 @@ type RunLogicProps = {
 const RunLogic = (props: RunLogicProps) => {
     const form = useForm();
     useEffect(() => {
-        const { params } = props.values;
+        const { params, envs } = props.values;
         form.setValues({
             params: JSON.stringify(TypeAnnotationParser.getJsonByParams(params)),
             // returns: JSON.stringify(TypeAnnotationParser.getJsonByParams(returns)),
-            // envs: JSON.stringify(TypeAnnotationParser.getJsonByParams(envs)),
+            envs: JSON.stringify(TypeAnnotationParser.getJsonByParams(envs)),
         })
     }, [props.values])
     const validateJsonString = useCallback((jsonString: string) => {
@@ -45,7 +45,7 @@ const RunLogic = (props: RunLogicProps) => {
                 let hasError = false;
                 Object.keys(values).forEach(key => {
                     const item = values[key];
-                    if (!validateJsonString(item)) {
+                    if (['params', 'envs'].indexOf(key) > -1 && !validateJsonString(item)) {
                         const field = key === 'params' ? '入参' : '环境变量'
                         message.error(`${field}json格式错误`)
                         hasError = true;
