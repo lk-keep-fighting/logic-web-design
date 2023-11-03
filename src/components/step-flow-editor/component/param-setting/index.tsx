@@ -63,15 +63,15 @@ const ParamSetting = (props) => {
                             },
                             extra: '编辑器中可通过 _par. 获取'
                         },
-                        returns: {
-                            title: '返回参数声明',
-                            type: 'string',
-                            widget: 'json',
-                            props: {
-                                height: 200,
-                            },
-                            extra: '编辑器中可通过 _ret. 获取并赋值'
-                        },
+                        // returns: {
+                        //     title: '返回参数声明',
+                        //     type: 'string',
+                        //     widget: 'json',
+                        //     props: {
+                        //         height: 200,
+                        //     },
+                        //     extra: '编辑器中可通过 _ret. 获取并赋值'
+                        // },
                         variables: {
                             title: '局部变量声明',
                             type: 'string',
