@@ -10,10 +10,13 @@ interface IPageRenderProps {
 axios.interceptors.response.use(response => {
     console.log('axios response')
     console.log(response)
+    debugger
     if (response && response.data) {
         console.log('--请求未报错，适配status=0');
         if (!response.data.error) response.data.error = { code: 0 };//修复amis会自动取error.code作为status
         response.data.status = 0;
+        //适配表格数据源
+        if (response.data.data && response.data.data.records) response.data.data.items = response.data.data.records;
         return response
     } else {
         // 数据为空
