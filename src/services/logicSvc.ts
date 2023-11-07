@@ -18,7 +18,7 @@ export async function runLogicOnServerLikeFn(id: string, params: any) {
  * @param params 逻辑入参
  * @returns 
  */
-export async function runLogicOnServerLikeApi(id: string, params: any, bizId: string) {
+export async function runLogicOnServerLikeApi(id: string, params: any, bizId: string, headers?: any) {
     let url;
     if (bizId) {
         url = `/api/runtime/logic/v1/run-biz/${id}/${bizId}?debug=true`;
@@ -27,7 +27,7 @@ export async function runLogicOnServerLikeApi(id: string, params: any, bizId: st
     }
     return post(url,
         params,
-        { headers: { 'Content-Type': 'application/json' } })
+        { headers: { 'Content-Type': 'application/json', ...headers } })
 }
 /**
  * 获取逻辑对象

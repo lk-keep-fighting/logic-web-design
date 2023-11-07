@@ -6,7 +6,6 @@ import { useCallback, useEffect, useState } from "react";
 type RunLogicProps = {
     values: {
         params: any,
-        envs: any,
     },
     onSubmit: (values: any) => void,
     open: boolean,
@@ -19,11 +18,10 @@ type RunLogicProps = {
 const RunLogic = (props: RunLogicProps) => {
     const form = useForm();
     useEffect(() => {
-        const { params, envs } = props.values;
+        const { params } = props.values;
         form.setValues({
             params: JSON.stringify(TypeAnnotationParser.getJsonByParams(params)),
             // returns: JSON.stringify(TypeAnnotationParser.getJsonByParams(returns)),
-            envs: JSON.stringify(TypeAnnotationParser.getJsonByParams(envs)),
         })
     }, [props.values])
     const validateJsonString = useCallback((jsonString: string) => {
@@ -45,8 +43,8 @@ const RunLogic = (props: RunLogicProps) => {
                 let hasError = false;
                 Object.keys(values).forEach(key => {
                     const item = values[key];
-                    if (['params', 'envs'].indexOf(key) > -1 && !validateJsonString(item)) {
-                        const field = key === 'params' ? '入参' : '环境变量'
+                    if (['params', 'headers'].indexOf(key) > -1 && !validateJsonString(item)) {
+                        const field = key === 'params' ? '入参' : '请求头'
                         message.error(`${field}json格式错误`)
                         hasError = true;
                         return false;
@@ -74,14 +72,15 @@ const RunLogic = (props: RunLogicProps) => {
                             },
                             extra: '编辑器中可通过 _par. 获取'
                         },
-                        envs: {
-                            title: '环境变量',
+                        headers: {
+                            title: '请求头(headers)',
                             type: 'string',
                             widget: 'json',
+                            default: '{}',
                             props: {
                                 height: 200,
                             },
-                            extra: '编辑器中可通过 _env. 获取'
+                            extra: '可定义请求头，如权限'
                         },
                         bizId: {
                             title: '业务标识',
