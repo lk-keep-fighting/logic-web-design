@@ -264,7 +264,7 @@ export function InitPanelData(
       },
       data: {
         config: {
-          type: 'process',
+          type: 'sub-logic',
         },
       },
       // tools: ['node-editor'],
