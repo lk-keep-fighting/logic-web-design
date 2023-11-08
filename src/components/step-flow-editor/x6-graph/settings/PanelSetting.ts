@@ -345,44 +345,44 @@ export function InitPanelData(
       // tools: ['node-editor'],
       groups: ['ctrl'],
     },
-    // {
-    //   shape: 'ExtSharp',
-    //   width,
-    //   height,
-    //   attrs: {
-    //     // body: {
-    //     //   refPoints: '0,10 10,0 20,10 10,20',
-    //     //   strokeWidth: 1,
-    //     //   stroke: '#5F95FF',
-    //     //   fill: '#EFF4FF',
-    //     // },
-    //     image: {
-    //       'xlink:href': '/icons/delay.svg',
-    //       width: 30,
-    //       x: 8,
-    //       y: 10
-    //     },
-    //     text: {
-    //       text: '延时',
-    //       fontSize: 14,
-    //       // fill: '#5F95FF',
-    //       refX: 0.5,
-    //       refY: '100%',
-    //       refY2: 4,
-    //       textAnchor: 'middle',
-    //       textVerticalAnchor: 'top',
-    //     },
-    //   },
-    //   data: {
-    //     config: {
-    //       type: 'wait',
-    //       timeout: '2000',
-    //     },
-    //   },
-    //   ports,
-    //   // tools: ['node-editor'],
-    //   groups: ['ctrl'],
-    // },
+    {
+      shape: 'ExtSharp',
+      width,
+      height,
+      attrs: {
+        // body: {
+        //   refPoints: '0,10 10,0 20,10 10,20',
+        //   strokeWidth: 1,
+        //   stroke: '#5F95FF',
+        //   fill: '#EFF4FF',
+        // },
+        image: {
+          'xlink:href': '/icons/delay.svg',
+          width: 30,
+          x: 8,
+          y: 10
+        },
+        text: {
+          text: '等待',
+          fontSize: 14,
+          // fill: '#5F95FF',
+          refX: 0.5,
+          refY: '100%',
+          refY2: 4,
+          textAnchor: 'middle',
+          textVerticalAnchor: 'top',
+        },
+      },
+      data: {
+        config: {
+          type: 'wait',
+          timeout: '2000',
+        },
+      },
+      ports,
+      // tools: ['node-editor'],
+      groups: ['ctrl'],
+    },
     // {
     //   shape: 'ExtSharp',
     //   attrs: {
@@ -463,7 +463,7 @@ export function InitPanelData(
     {
       name: 'ctrl',
       title: '逻辑控制',
-      graphHeight: 110,
+      graphHeight: 220,
     },
     {
       name: 'biz',
