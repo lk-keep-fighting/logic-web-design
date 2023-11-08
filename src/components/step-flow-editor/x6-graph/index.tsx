@@ -839,7 +839,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                 float: 'right',
                 right: '16px',
               }}>
-                <span>
+                {/* <span>
                   拖拽连线
                   <Switch
                     checked={embeddingEnable}
@@ -849,7 +849,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}
                   />
-                </span>
+                </span> */}
                 <Button
                   type="text"
                   icon={

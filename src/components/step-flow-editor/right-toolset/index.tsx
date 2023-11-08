@@ -25,15 +25,15 @@ function RightToolset(props: IRightToolset) {
         </div>
       ),
     },
-    {
-      key: '2',
-      label: '运行日志',
-      children: (
-        <div style={{ padding: 5 }}>
-          <LogInfo data={props.logs} onClear={props.onClear} />
-        </div>
-      ),
-    },
+    // {
+    //   key: '2',
+    //   label: '运行日志',
+    //   children: (
+    //     <div style={{ padding: 5 }}>
+    //       <LogInfo data={props.logs} onClear={props.onClear} />
+    //     </div>
+    //   ),
+    // },
   ];
   return (
     <Tabs
