@@ -43,7 +43,18 @@ export default defineConfig({
       layout: false,
       component: "assets/swagger/ui",
     },
-    { path: "/assets/logic/i/:id/edit", layout: false, component: "logic-editor" },
+    {
+      path: "/assets/logic",
+      layout: false,
+      routes: [{
+        path: "/assets/logic/i/:id/edit",
+        component: "logic-editor",
+      },
+      {
+        path: "/assets/logic/i/:id/view/:version",
+        component: "logic-viewer"
+      }],
+    },
     { path: "/debug/logic/instance/:id", layout: false, component: "logic-debug" },
     { path: "/editor/:id", layout: false, component: "logic-editor" },
     { path: "/form", component: "form-editor" },
@@ -80,17 +91,18 @@ export default defineConfig({
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/runtime': {
-      'target': 'http://localhost:8080',
+      // 'target': 'http://localhost:18080',
       // 'target': 'http://localhost:4052',
       // 'target': 'http://localhost:8080',
-      // 'target': 'http://192.168.154.51:4054',
+      'target': 'http://192.168.154.51:4054',
       // 'target': 'http://192.168.44.87:4052',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/ide': {
-      'target': 'http://localhost:8080',
-      // 'target': 'http://192.168.154.51:4052',
+      // 'target': 'http://localhost:18080',
+      // 'target': 'http://localhost:4052',
+      'target': 'http://192.168.154.51:4054',
       // 'target': 'http://192.168.44.87:4052',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api/ide': '/ide/api' },

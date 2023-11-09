@@ -64,25 +64,34 @@ const LogicDebug = () => {
                     btns={[
                         <span>是否完成：{logicIns?.isOver ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}<Divider type='vertical' /></span>,
                         <Button onClick={() => {
-                            getLogicInstanceById(id).then(res => {
-                                if (res) {
-                                    setLogicIns(res);
+                            setLoading(true)
+                            getLogicInstanceById(id).then(insRes => {
+                                if (insRes) {
+                                    setLogicIns(insRes);
+                                    getLogicLogsByLogicIns(insRes).then(logsRes => {
+                                        if (logsRes) {
+                                            setDebugLogs(logsRes)
+                                        }
+                                        setLoading(false)
+                                    })
                                 }
+                                setLoading(false);
                             })
+
                         }}>
                             <SyncOutlined />
-                            刷新状态
+                            刷新
                         </Button>,
-                        <Button onClick={() => {
-                            getLogicLogsByLogicIns(logicIns).then(res => {
-                                if (res) {
-                                    setDebugLogs(res)
-                                }
-                            })
-                        }}>
-                            <ProfileOutlined />
-                            刷新日志
-                        </Button>,
+                        // <Button onClick={() => {
+                        //     getLogicLogsByLogicIns(logicIns).then(res => {
+                        //         if (res) {
+                        //             setDebugLogs(res)
+                        //         }
+                        //     })
+                        // }}>
+                        //     <ProfileOutlined />
+                        //     刷新日志
+                        // </Button>,
                         // <span >实例逻辑名称：{config?.name}</span>,
                         <span style={{ color: 'red' }}>执行版本：{logicIns?.version}</span>
                     ]}

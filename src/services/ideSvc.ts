@@ -62,7 +62,26 @@ export async function getLogicJsonByBak(id: string, version: string) {
         ]
     }).then(res => {
         const jsonStr = res.data.data.records[0].configJson;
-        const json=JSON.parse(jsonStr);
+        const json = JSON.parse(jsonStr);
         return json
+    })
+}
+/**
+ * 通过逻辑编号与版本号获取逻辑配置
+ * @param id 编号
+ * @param version 版本号
+ * @returns 
+ */
+export async function getLogicByBak(id: string, version: string) {
+    return axios.post(`/api/ide/logic-baks`, {
+        filters: [
+            { dataIndex: 'id', values: [id], type: 'and' },
+            { dataIndex: 'version', values: [version], type: 'and' }
+        ]
+    }).then(res => {
+        let logic = res.data.data.records[0];
+        const jsonStr = logic.configJson;
+        logic.configJson = JSON.parse(jsonStr);
+        return logic
     })
 }

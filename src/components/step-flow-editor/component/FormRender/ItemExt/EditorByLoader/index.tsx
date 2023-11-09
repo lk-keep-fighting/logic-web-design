@@ -23,28 +23,29 @@ const EditorByLoader = (props: ICodeEditor) => {
   const editorCtx = useContext(EditorContext);
   const { logic } = editorCtx;
   useEffect(() => {
-    const varsJson = TypeAnnotationParser.getJsonByParams(logic.variables ?? [])
-    const vars = buildVarExtarLibByObj('_var', varsJson)
-    const inputJson = TypeAnnotationParser.getJsonByParams(logic.params ?? []);
-    const input = buildVarExtarLibByObj('_par', inputJson)
-    const returnJson = TypeAnnotationParser.getJsonByParams(logic.returns ?? []);
-    const returnp = buildVarExtarLibByObj('_ret', returnJson)
-    const envJson = TypeAnnotationParser.getJsonByParams(logic.envs ?? []);
-    const env = buildVarExtarLibByObj('_env', envJson)
+    if (logic) {
+      const varsJson = TypeAnnotationParser.getJsonByParams(logic.variables ?? [])
+      const vars = buildVarExtarLibByObj('_var', varsJson)
+      const inputJson = TypeAnnotationParser.getJsonByParams(logic.params ?? []);
+      const input = buildVarExtarLibByObj('_par', inputJson)
+      const returnJson = TypeAnnotationParser.getJsonByParams(logic.returns ?? []);
+      const returnp = buildVarExtarLibByObj('_ret', returnJson)
+      const envJson = TypeAnnotationParser.getJsonByParams(logic.envs ?? []);
+      const env = buildVarExtarLibByObj('_env', envJson)
 
-    monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
-    monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');
-    monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
-    monaco?.languages.typescript.javascriptDefaults.addExtraLib(env, 'env.ts');
-    monaco?.languages.typescript.javascriptDefaults.addExtraLib('let _lastRet:{}', 'lastRet.ts');
-
+      monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
+      monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');
+      monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
+      monaco?.languages.typescript.javascriptDefaults.addExtraLib(env, 'env.ts');
+      monaco?.languages.typescript.javascriptDefaults.addExtraLib('let _lastRet:{}', 'lastRet.ts');
+    }
     return () => {
       console.log('effect dispose')
       // @ts-ignore
       monaco?.current?.dispose();
     }
     // }
-  }, [logic.params, logic.variables, logic.returns, logic.envs])
+  }, [logic?.params, logic?.variables, logic?.returns, logic?.envs])
 
   const [full, setFull] = useState(false);
   return (

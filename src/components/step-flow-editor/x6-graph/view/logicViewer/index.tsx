@@ -6,7 +6,6 @@ import { Keyboard } from '@antv/x6-plugin-keyboard';
 import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { Scroller } from '@antv/x6-plugin-scroller'
-import { Export } from '@antv/x6-plugin-export'
 import { Button, Layout, List, Space, Tabs, TabsProps, Timeline, TimelineItemProps } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import './index.css';
@@ -19,83 +18,27 @@ import { Logic, LogicItem } from '@/components/step-flow-core/lasl/meta-data';
 import NodeData from '@/components/step-flow-editor/right-toolset/step-config';
 import { JsonView } from 'amis';
 
-type EditorCtx = {
-  logic: Logic,
-}
-export const EditorContext = React.createContext<EditorCtx>({
-  logic: new Logic('')
-})
-
-// 控制连接桩显示/隐藏
-type StateType = {
-  editingNode?: Node;
-  openEdgeEditor: boolean;
-  editingEdge?: Edge;
-  graph?: Graph;
-  leftToolCollapsed: boolean;
-  rightToolCollapsed: boolean;
-  openFlowSetting: boolean;
-  openRunLogic: boolean;
-  editorCtx: EditorCtx;
-  // flowRunner: FlowRunner;
-  logs: any[];
-  panel: {
-    nodes: any[],
-    groups: any[],
-  };
-};
-interface ItemLog {
-  name: string, paramsJson: object, config: LogicItem
-}
-interface Log {
-  success: boolean
-  serverTime: string
-  message: string
-  itemLogs: ItemLog[],
-  paramsJson: object
-  version: string,
-  // success: boolean
-  // }
-}
-interface DebugProps {
-  name?: string;
+interface LogicViewerProps {
   config?: Logic;
   nextId?: string,
   btns?: ReactNode[],
-  logicIns: any,
-  debugLogs?: Log[],
   configSchemaProvider?: (type: string) => Promise<Schema>;
   itemLogSchemaProvider?: (type: string) => Promise<Schema>;
 }
 
-const DebugLog = (props: DebugProps) => {
+const LogicViewer = (props: LogicViewerProps) => {
   const [graph, setGraph] = useState<Graph>();
   const [logic, setLogic] = useState<Logic>();
   const [leftToolCollapsed, setLeftToolCollapsed] = useState(false)
   const [rightToolCollapsed, setRightToolCollapsed] = useState(true)
-  const [curItemLog, setCurItemLog] = useState<ItemLog>()
-  // const [curItemLogSchema, setCurItemLogSchema] = useState<Schema>({})
-  const [curLog, setCurLog] = useState()
-  // const [curItemLogIndex, setCurItemLogIndex] = useState(0)
   const [centerNode, setCenterNode] = useState<Node>();
   const [selectedNode, setSelectedNode] = useState<Node>();
-  const [timeLineItems, setTimeLineItems] = useState<TimelineItemProps[]>();
   const refContainer = useRef();
-  const onNodeClick = ({ node }) => {
-    setSelectedNode(node)
-    const itemLog = curLog?.itemLogs.find(i => {
-      return i.config.id == node.id
-    });
-    setCurItemLog(itemLog)
-  }
+
   useEffect(() => {
     if (centerNode)
       graph?.centerCell(centerNode);
   }, [centerNode, graph])
-  useEffect(() => {
-    console.log('play curItemLog', curItemLog)
-    // graph?.getNodes().find(n => n.id == curItemLog?.config?.id)?.attr('body/fill', 'green')
-  }, [curItemLog])
   useEffect(() => {
     const node = graph?.getNodes().find(n => n.id == props.nextId);
     node?.attr('body/fill', 'red');
@@ -109,43 +52,7 @@ const DebugLog = (props: DebugProps) => {
       setLogic(props.config)
     }
   }, [props.config])
-  useEffect(() => {
-    console.log('props.debugLogs', props.debugLogs)
-    if (props.debugLogs?.length > 0) {
-      setInterval(replayLogs, 2000);
-    }
-    const items: TimelineItemProps[] = [];
-    if (props)
-      props.debugLogs?.forEach(v => {
-        items.push({
-          children: <><span style={{ cursor: 'pointer', fontWeight: v.id == curLog?.id ? 'bolder' : 'normal', color: v.id == curLog?.id ? '#52c41a' : 'black' }} onClick={() => {
-            setCurLog(v);
-            console.log(v);
-            graph?.fromJSON(logic?.visualConfig);
-            // graph?.fitToContent();
-            let lastNode: Node;
-            v.itemLogs.forEach(i => {
-              const node = graph?.getNodes().find(n => n.id == i.config.id);
-              if (node) {
-                node.attr('body/fill', '#52c41a')
-                lastNode = node;
-              }
-            })
-            // graph?.centerPoint(lastNode?.x, lastNode?.y);
-            // graph?.centerCell(lastNode, { padding: { left: 0 } });
-            graph?.centerCell(lastNode);
-            setCurItemLog({});
-            setSelectedNode({});
-            // autoDagreLayout(graph);
-          }} ><p>{v.itemLogs[0]?.config.name}</p>
-            {props.logicIns?.version == v.version ? <p></p> : <p style={{ color: 'red' }}>版本变更:{v.version}</p>}
-            <p>{v.serverTime}</p>
-            <p>{v.message}</p></span></>,
-          color: v.success ? 'green' : 'red'
-        })
-      })
-    setTimeLineItems(items);
-  }, [props.debugLogs, props.logicIns, graph, curLog])
+
   useEffect(() => {
     if (!logic) return;
     try {
@@ -277,13 +184,14 @@ const DebugLog = (props: DebugProps) => {
 
     graph.on('node:mouseleave', () => {
     });
-    // graph.on('node:click', onNodeClick);
     graph.on('node:added', () => {
     })
     graph.on('node:dblclick', ({ node }) => {
       setRightToolCollapsed(false)
     });
-
+    graph?.on('node:click', ({ node }) => {
+      setSelectedNode(node);
+    });
     graph.on('blank:dblclick', ({ x, y }) => {
     })
     graph.fromJSON(logic.visualConfig);
@@ -291,31 +199,7 @@ const DebugLog = (props: DebugProps) => {
     setGraph(graph);
   }, [logic])
 
-  useEffect(() => {
-    graph?.off('node:click', onNodeClick)
-    graph?.on('node:click', onNodeClick)
-
-  }, [curLog])
-  const replayLogs = () => {
-    // console.log('curItemLogIndex,', curItemLogIndex)
-    // if (props.debugLogs) {
-    //   setCurItemLog(props.debugLogs[curLogIndex].debug.itemLogs[curItemLogIndex]);
-    //   if (curItemLogIndex == props.debugLogs[curLogIndex].debug.itemLogs.length - 1 && curLogIndex < props.debugLogs.length - 1) {
-    //     setCurItemLogIndex(0);
-    //     setCurLogIndex(curLogIndex + 1);
-    //   }
-    //   if (curItemLogIndex < props.debugLogs[curLogIndex].debug.itemLogs.length) {
-    //     console.log('curItemLogIndex,', curItemLogIndex)
-    //     setCurItemLogIndex(curItemLogIndex + 1);
-    //   }
-    // }
-  }
   const tabItems: TabsProps['items'] = [
-    {
-      key: '1',
-      label: '日志',
-      children: <JsonView src={curItemLog} />
-    },
     {
       key: '2',
       label: '节点配置',
@@ -326,85 +210,10 @@ const DebugLog = (props: DebugProps) => {
     }
   ]
   return <Layout style={{ margin: 0, height: '100vh' }}>
-    <Layout.Sider
-      theme="light"
-      collapsed={leftToolCollapsed}
-      collapsedWidth={0}
-      width={300}
-      style={{ padding: 5 }}
-    >
-      <h3>最近请求</h3>
-      <Timeline
-        // pending={true}
-        items={timeLineItems}
-      />
-      {/* <List
-        itemLayout="horizontal"
-        dataSource={props.debugLogs}
-        style={{ height: '100%', overflow: 'scroll' }}
-        renderItem={(item, index) => (
-          <List.Item onClick={() => {
-            setCurLog(item);
-            console.log(item);
-            graph?.fromJSON(logic?.visualConfig);
-            // graph?.fitToContent();
-            let lastNode: Node;
-            item.itemLogs.forEach(i => {
-              const node = graph?.getNodes().find(n => n.id == i.config.id);
-              if (node) {
-                node.attr('body/fill', '#52c41a')
-                lastNode = node;
-              }
-            })
-            // graph?.centerPoint(lastNode?.x, lastNode?.y);
-            // graph?.centerCell(lastNode, { padding: { left: 0 } });
-            graph?.centerCell(lastNode);
-            setCurItemLog({});
-            setSelectedNode({});
-            // autoDagreLayout(graph);
-          }}>
-            <List.Item.Meta
-              title={<span>{item.success ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}
-                {item?.itemLogs[0].config?.name}:
-                {item.serverTime}</span>}
-              description={item.message}
-              style={{ backgroundColor: item.id == curItemLog?.id ? 'red' : 'white' }}
-
-            />
-          </List.Item>
-        )}
-      /> */}
-    </Layout.Sider>
     <Layout style={{}}>
       <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>
-        <Button
-          type="text"
-          icon={
-            leftToolCollapsed ? (
-              <MenuUnfoldOutlined />
-            ) : (
-              <MenuFoldOutlined />
-            )
-          }
-          onClick={() => {
-            setLeftToolCollapsed(!leftToolCollapsed);
-          }}
-          style={{
-            fontSize: '16px',
-            width: 64,
-            height: 64,
-          }}
-        />
         <Space direction="horizontal">
-          {/* <Button icon={<PlayCircleTwoTone />} onClick={() => {
-            setInterval(() => {
-              replayLogs();
-            }, 1000)
-          }}></Button> */}
           {props.btns?.map(b => b)}
-          {/* <Button onClick={() => {
-            // this.state.graph?.getNodes()[2].attr('body/fill', 'red');
-          }}></Button> */}
         </Space>
         <Button
           type="text"
@@ -426,7 +235,6 @@ const DebugLog = (props: DebugProps) => {
             height: 64,
           }}
         />
-
       </Layout.Header>
       <Layout.Content className="app-content" >
         <DagreGraph
@@ -459,4 +267,4 @@ const DebugLog = (props: DebugProps) => {
     </Layout.Sider>
   </Layout >
 }
-export default DebugLog;
+export default LogicViewer;
