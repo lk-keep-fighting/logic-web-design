@@ -51,9 +51,9 @@ interface Log {
   success: boolean
   serverTime: string
   message: string
-  // debug: {
   itemLogs: ItemLog[],
   paramsJson: object
+  version: string,
   // success: boolean
   // }
 }
@@ -62,6 +62,7 @@ interface DebugProps {
   config?: Logic;
   nextId?: string,
   btns?: ReactNode[],
+  logicIns: any,
   debugLogs?: Log[],
   configSchemaProvider?: (type: string) => Promise<Schema>;
   itemLogSchemaProvider?: (type: string) => Promise<Schema>;
@@ -137,13 +138,14 @@ const DebugLog = (props: DebugProps) => {
             setSelectedNode({});
             // autoDagreLayout(graph);
           }} ><p>{v.itemLogs[0]?.config.name}</p>
+            {props.logicIns?.version == v.version ? <p></p> : <p style={{ color: 'red' }}>版本变更:{v.version}</p>}
             <p>{v.serverTime}</p>
             <p>{v.message}</p></span></>,
           color: v.success ? 'green' : 'red'
         })
       })
     setTimeLineItems(items);
-  }, [curItemLogIndex, props.debugLogs])
+  }, [curItemLogIndex, props.debugLogs, props.logicIns, graph])
   useEffect(() => {
     if (!logic) return;
     try {
@@ -333,7 +335,7 @@ const DebugLog = (props: DebugProps) => {
       width={300}
       style={{ padding: 5 }}
     >
-      <h3>交互请求记录</h3>
+      <h3>最近请求</h3>
       <Timeline
         // pending={true}
         items={timeLineItems}

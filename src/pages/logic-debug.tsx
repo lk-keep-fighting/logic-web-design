@@ -27,7 +27,6 @@ const LogicDebug = () => {
     const { id } = useParams();
     const [config, setConfig] = useState<Logic>();
     const [loading, setLoading] = useState(false);
-    const [searchParams, setSearchParams] = useSearchParams();
     const [debugLogs, setDebugLogs] = useState([])
     const [logicIns, setLogicIns] = useState();
     useEffect(() => {
@@ -84,10 +83,12 @@ const LogicDebug = () => {
                             <ProfileOutlined />
                             刷新日志
                         </Button>,
-                        <span style={{ color: 'red' }}>逻辑版本：{logicIns?.version}</span>
+                        // <span >实例逻辑名称：{config?.name}</span>,
+                        <span style={{ color: 'red' }}>执行版本：{logicIns?.version}</span>
                     ]}
                     nextId={logicIns?.nextId}
                     config={config}
+                    logicIns={logicIns}
                     configSchemaProvider={formProvider}
                     itemLogSchemaProvider={logFormProvider}
                     debugLogs={debugLogs}
