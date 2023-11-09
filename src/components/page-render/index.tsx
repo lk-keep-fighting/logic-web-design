@@ -10,7 +10,6 @@ interface IPageRenderProps {
 axios.interceptors.response.use(response => {
     console.log('axios response')
     console.log(response)
-    debugger
     if (response && response.data) {
         console.log('--请求未报错，适配status=0');
         if (!response.data.error) response.data.error = { code: 0 };//修复amis会自动取error.code作为status
@@ -112,23 +111,29 @@ class PageRender extends React.Component<IPageRenderProps, any> {
                                 copy(content);
                                 toast.success('内容已复制到粘贴板');
                             },
-                            theme
+                            theme,
 
                             // 后面这些接口可以不用实现
 
                             // 默认是地址跳转
-                            // jumpTo: (
-                            //   location: string /*目标地址*/,
-                            //   action: any /* action对象*/
-                            // ) => {
-                            //   // 用来实现页面跳转, actionType:link、url 都会进来。
-                            // },
+                            jumpTo: (
+                                location: string /*目标地址*/,
+                                action: any /* action对象*/
+                            ) => {
+                                debugger
+                                if (action.blank == true) {
+                                    window.open(window.location.origin + window.location.pathname + '#' + location, '_blank');
+                                } else
+                                    window.location.hash = location;
+                                // 用来实现页面跳转, actionType:link、url 都会进来。
+                            },
 
                             // updateLocation: (
-                            //   location: string /*目标地址*/,
-                            //   replace: boolean /*是replace，还是push？*/
+                            //     location: any /*目标地址*/,
+                            //     replace?: boolean /*是replace，还是push？*/
                             // ) => {
-                            //   // 地址替换，跟 jumpTo 类似
+                            //     debugger
+                            //     // 地址替换，跟 jumpTo 类似
                             // },
 
                             // isCurrentUrl: (

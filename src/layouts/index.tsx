@@ -1,6 +1,5 @@
 import { Link, Outlet, history, useParams } from 'umi';
 import styles from './index.less';
-import { ProLayout } from '@ant-design/pro-components';
 import { Affix, Button, Layout, Menu, MenuProps, Space, Typography, theme } from 'antd';
 import { useEffect, useState } from 'react';
 import { EditOutlined, FileAddOutlined } from '@ant-design/icons';

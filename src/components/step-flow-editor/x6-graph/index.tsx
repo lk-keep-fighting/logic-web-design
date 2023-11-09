@@ -675,25 +675,25 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
           </Layout.Sider>
           <Layout style={{ height: '100%' }}>
             <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>
-              <Button
-                type="text"
-                icon={
-                  leftToolCollapsed ? (
-                    <MenuUnfoldOutlined />
-                  ) : (
-                    <MenuFoldOutlined />
-                  )
-                }
-                onClick={() => {
-                  this.setState({ leftToolCollapsed: !leftToolCollapsed });
-                }}
-                style={{
-                  fontSize: '16px',
-                  width: 64,
-                  height: 64,
-                }}
-              />
               <Space direction="horizontal">
+                <Button
+                  type="text"
+                  icon={
+                    leftToolCollapsed ? (
+                      <MenuUnfoldOutlined />
+                    ) : (
+                      <MenuFoldOutlined />
+                    )
+                  }
+                  onClick={() => {
+                    this.setState({ leftToolCollapsed: !leftToolCollapsed });
+                  }}
+                  style={{
+                    fontSize: '16px',
+                    width: 64,
+                    height: 64,
+                  }}
+                />
                 <Dropdown.Button
                   style={{ float: 'inline-start' }}
                   menu={{
