@@ -1,5 +1,4 @@
 import { Tabs, TabsProps } from 'antd';
-import LogInfo from './debug-info';
 import NodeData from './step-config';
 import { Schema } from 'form-render';
 

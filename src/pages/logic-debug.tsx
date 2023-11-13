@@ -2,11 +2,13 @@ import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import { DebugLogic } from "@/components/step-flow-editor";
 import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicJsonByBak } from "@/services/ideSvc";
 import { } from "@/services/logicSvc";
-import { CheckCircleTwoTone, FrownOutlined, PlayCircleFilled, PlayCircleTwoTone, ProfileOutlined, SyncOutlined } from "@ant-design/icons";
-import { Button, Divider, Spin, message } from "antd";
+import { CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/icons";
+import { Button, Divider, Spin } from "antd";
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
-import { useParams, useSearchParams } from "umi";
+import { useEffect, useState } from "react";
+// import * as monaco from 'monaco-editor';
+// import { loader } from '@monaco-editor/react';
+import { useParams } from "umi";
 
 const formProvider = async (type: string) => {
     const res = await axios.get(`/setting/node-form/${type}.json`);
@@ -29,6 +31,9 @@ const LogicDebug = () => {
     const [loading, setLoading] = useState(false);
     const [debugLogs, setDebugLogs] = useState([])
     const [logicIns, setLogicIns] = useState();
+    // useEffect(() => {
+    //     loader.config({ monaco });
+    // }, [])
     useEffect(() => {
         setLoading(true);
         if (id)

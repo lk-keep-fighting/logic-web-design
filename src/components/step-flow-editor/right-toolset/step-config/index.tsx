@@ -1,8 +1,7 @@
 import { Cell } from '@antv/x6';
 import { Schema, useForm } from 'form-render';
-import React, { useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import FormRender from '../../component/FormRender';
-import { Button } from 'antd';
 
 interface INodeEditorProps {
   editNode: Cell | undefined;

@@ -1,4 +1,4 @@
-import { CheckOutlined, CloseOutlined, EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleOutlined, PlayCircleTwoTone, PlaySquareOutlined, RocketOutlined, SaveOutlined, SettingOutlined, SettingTwoTone } from '@ant-design/icons';
+import { EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, SaveOutlined, SettingTwoTone } from '@ant-design/icons';
 import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
@@ -8,9 +8,9 @@ import { Snapline } from '@antv/x6-plugin-snapline';
 import { Stencil } from '@antv/x6-plugin-stencil';
 import { Scroller } from '@antv/x6-plugin-scroller'
 import { Export } from '@antv/x6-plugin-export'
-import { loader } from '@monaco-editor/react';
-import { Button, Col, Dropdown, Layout, MenuProps, Modal, Row, Space, Switch, message } from 'antd';
-import * as monaco from 'monaco-editor';
+// import { loader } from '@monaco-editor/react';
+import { Button, Col, Dropdown, Layout, MenuProps, Modal, Row, Space, message } from 'antd';
+// import * as monaco from 'monaco-editor';
 import React from 'react';
 import { GraphToLogic } from '@/components/step-flow-core/lasl/parser/logic-parser';
 import './index.css';
@@ -150,7 +150,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
     //   this.state.logs.push(msg);
     //   this.setState({ logs: [...this.state.logs] });
     // });
-    loader.config({ monaco });
+    // loader.config({ monaco });
   }
   //初始化画布以及事件配置
   initGraph = (container?: HTMLDivElement) => {

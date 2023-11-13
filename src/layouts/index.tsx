@@ -52,7 +52,7 @@ export default function DefaultLayout(props) {
           alignItems: 'center',
         }}>
           <img
-            style={{ marginRight: '20px', width: '60x', height: '60px' }}
+            style={{ marginRight: '20px', width: '30px', height: '30px' }}
             src='/logo.png' />
           <div style={{ color: 'ButtonFace', fontSize: '18px', fontFamily: '黑体', fontWeight: 'bolder' }}>{title}</div>
           <Menu mode="horizontal" theme="dark" defaultSelectedKeys={['1']} items={meuns}
