@@ -89,6 +89,13 @@ const RunLogic = (props: RunLogicProps) => {
                             },
                             extra: '根据业务标识跟踪逻辑实例'
                         },
+                        bizStartCode: {
+                            title: '指定执行交互点',
+                            type: 'string',
+                            props: {
+                            },
+                            extra: '若当前流程待执行交互点与指定交互点不一致则报错'
+                        },
                     },
                     // "displayType": "row",
                     "column": 2,

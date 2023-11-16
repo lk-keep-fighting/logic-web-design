@@ -18,10 +18,11 @@ export async function runLogicOnServerLikeFn(id: string, params: any) {
  * @param params 逻辑入参
  * @returns 
  */
-export async function runLogicOnServerLikeApi(id: string, params: any, bizId: string, headers?: any) {
+export async function runLogicOnServerLikeApi(id: string, params: any, bizId: string, bizStartCode: string, headers?: any) {
     let url;
     if (bizId) {
-        url = `/api/runtime/logic/v1/run-biz/${id}/${bizId}?debug=true`;
+        if (bizStartCode) url = `/api/runtime/logic/v1/biz/${id}/${bizStartCode}/${bizId}?debug=true`;
+        else url = `/api/runtime/logic/v1/run-biz/${id}/${bizId}?debug=true`;
     } else {
         url = `/api/runtime/logic/v1/run-api/${id}?debug=true`;
     }

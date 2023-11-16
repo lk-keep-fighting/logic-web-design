@@ -737,8 +737,8 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                   onSubmit={(values) => {
                     this.setState({ openRunLogic: false })
                     if (logic) {
-                      const { params, bizId, headers } = values;
-                      runLogicOnServerLikeApi(logic.id, JSON.parse(params), bizId, JSON.parse(headers)).then(res => {
+                      const { params, bizId, headers, bizStartCode } = values;
+                      runLogicOnServerLikeApi(logic.id, JSON.parse(params), bizId, bizStartCode, JSON.parse(headers)).then(res => {
                         if (res.data.code == 0) {
                           Modal.success({
                             title: '执行成功',
@@ -760,7 +760,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                         } else {
                           Modal.error({
                             title: <span>{res.data.msg}</span>,
-                            width: '1000px',
+                            width: '1200px',
                             closable: true,
                             content: <div>
                               <Row>
@@ -785,7 +785,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                         const res = err.response.data;
                         Modal.error({
                           title: <span>{res.msg}</span>,
-                          width: '1000px',
+                          width: '1200px',
                           closable: true,
                           content: <div>
                             <Row>
