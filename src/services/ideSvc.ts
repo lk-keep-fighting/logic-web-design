@@ -29,12 +29,14 @@ export async function getLogicInstanceById(id: string) {
 export async function getLogicLogsByLogicIns(logicIns: any) {
     return axios.post(`/api/ide/logic-logs`, {
         filters: [
-            { dataIndex: 'logicId', values: [logicIns.logicId], type: 'and' },
-            { dataIndex: 'bizId', values: [logicIns.bizId], type: 'and' }
+            { dataIndex: 'logicId', values: [logicIns.logicId], type: '=' },
+            { dataIndex: 'bizId', values: [logicIns.bizId], type: '=' }
         ],
+        pageSize: 1000,
         orderBy: [
             {
                 "dataIndex": "serverTime",
+                "desc": true
             }
         ]
     }).then(res => {
@@ -57,8 +59,8 @@ export async function getLogicLogsByLogicIns(logicIns: any) {
 export async function getLogicJsonByBak(id: string, version: string) {
     return axios.post(`/api/ide/logic-baks`, {
         filters: [
-            { dataIndex: 'id', values: [id], type: 'and' },
-            { dataIndex: 'version', values: [version], type: 'and' }
+            { dataIndex: 'id', values: [id], type: '=' },
+            { dataIndex: 'version', values: [version], type: '=' }
         ]
     }).then(res => {
         const jsonStr = res.data.data.records[0].configJson;
@@ -75,8 +77,8 @@ export async function getLogicJsonByBak(id: string, version: string) {
 export async function getLogicByBak(id: string, version: string) {
     return axios.post(`/api/ide/logic-baks`, {
         filters: [
-            { dataIndex: 'id', values: [id], type: 'and' },
-            { dataIndex: 'version', values: [version], type: 'and' }
+            { dataIndex: 'id', values: [id], type: '=' },
+            { dataIndex: 'version', values: [version], type: '=' }
         ]
     }).then(res => {
         let logic = res.data.data.records[0];

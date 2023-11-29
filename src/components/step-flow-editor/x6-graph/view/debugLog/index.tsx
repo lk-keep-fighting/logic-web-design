@@ -1,4 +1,4 @@
-import { CheckCircleTwoTone, FrownOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { ApartmentOutlined, CheckCircleTwoTone, FrownOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
@@ -7,7 +7,7 @@ import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { Scroller } from '@antv/x6-plugin-scroller'
 import { Export } from '@antv/x6-plugin-export'
-import { Button, Layout, List, Space, Tabs, TabsProps, Timeline, TimelineItemProps } from 'antd';
+import { Button, Divider, Layout, List, Space, Tabs, TabsProps, Timeline, TimelineItemProps, Typography } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import './index.css';
 import { InitPanelData } from '@/components/step-flow-editor/x6-graph/settings/PanelSetting';
@@ -18,6 +18,7 @@ import { Schema } from 'form-render';
 import { Logic, LogicItem } from '@/components/step-flow-core/lasl/meta-data';
 import NodeData from '@/components/step-flow-editor/right-toolset/step-config';
 import { JsonView } from 'amis';
+import Paragraph from 'antd/es/skeleton/Paragraph';
 
 type EditorCtx = {
   logic: Logic,
@@ -138,7 +139,15 @@ const DebugLog = (props: DebugProps) => {
             setSelectedNode({});
             // autoDagreLayout(graph);
           }} ><p>{v.itemLogs[0]?.config.name}</p>
-            {props.logicIns?.version == v.version ? <p></p> : <p style={{ color: 'red' }}>版本变更:{v.version}</p>}
+            {props.logicIns?.version == v.version ? <p></p> : <p>
+              <Space>
+                <Typography.Paragraph style={{ color: 'red' }}>版本号:</Typography.Paragraph>
+                <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'], text: v.version }} >{v.version}
+                  <Typography.Link style={{ margin: '5px' }} href={`#/assets/logic/i/${v.logicId}/view/${v.version}`} target="_blank"><ApartmentOutlined /></Typography.Link>
+                </Typography.Paragraph>
+              </Space>
+            </p>}
+            <p>业务标识：{v.bizId}</p>
             <p>{v.serverTime}</p>
             <p>{v.message}</p></span></>,
           color: v.success ? 'green' : 'red'
@@ -328,56 +337,29 @@ const DebugLog = (props: DebugProps) => {
   return <Layout style={{ margin: 0, height: '100vh' }}>
     <Layout.Sider
       theme="light"
-      collapsed={leftToolCollapsed}
+      // collapsed={leftToolCollapsed}
       collapsedWidth={0}
       width={300}
-      style={{ padding: 5 }}
+      style={{
+        padding: 5,
+        overflow: 'auto',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        bottom: 0,
+      }}
     >
-      <h3>最近请求</h3>
+      <Divider>最近请求</Divider>
       <Timeline
+        style={{ height: '100%' }}
         // pending={true}
         items={timeLineItems}
       />
-      {/* <List
-        itemLayout="horizontal"
-        dataSource={props.debugLogs}
-        style={{ height: '100%', overflow: 'scroll' }}
-        renderItem={(item, index) => (
-          <List.Item onClick={() => {
-            setCurLog(item);
-            console.log(item);
-            graph?.fromJSON(logic?.visualConfig);
-            // graph?.fitToContent();
-            let lastNode: Node;
-            item.itemLogs.forEach(i => {
-              const node = graph?.getNodes().find(n => n.id == i.config.id);
-              if (node) {
-                node.attr('body/fill', '#52c41a')
-                lastNode = node;
-              }
-            })
-            // graph?.centerPoint(lastNode?.x, lastNode?.y);
-            // graph?.centerCell(lastNode, { padding: { left: 0 } });
-            graph?.centerCell(lastNode);
-            setCurItemLog({});
-            setSelectedNode({});
-            // autoDagreLayout(graph);
-          }}>
-            <List.Item.Meta
-              title={<span>{item.success ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}
-                {item?.itemLogs[0].config?.name}:
-                {item.serverTime}</span>}
-              description={item.message}
-              style={{ backgroundColor: item.id == curItemLog?.id ? 'red' : 'white' }}
-
-            />
-          </List.Item>
-        )}
-      /> */}
     </Layout.Sider>
-    <Layout style={{}}>
+    <Layout style={{ marginLeft: 300 }}>
       <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>
-        <Button
+        {/* <Button
           type="text"
           icon={
             leftToolCollapsed ? (
@@ -394,8 +376,9 @@ const DebugLog = (props: DebugProps) => {
             width: 64,
             height: 64,
           }}
-        />
-        <Space direction="horizontal">
+        /> */}
+        <Space direction="horizontal" style={{}}>
+          <Divider type='vertical' />
           {/* <Button icon={<PlayCircleTwoTone />} onClick={() => {
             setInterval(() => {
               replayLogs();

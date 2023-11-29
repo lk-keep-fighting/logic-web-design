@@ -3,7 +3,7 @@ import { DebugLogic } from "@/components/step-flow-editor";
 import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicJsonByBak } from "@/services/ideSvc";
 import { } from "@/services/logicSvc";
 import { CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/icons";
-import { Button, Divider, Spin } from "antd";
+import { Button, Divider, Space, Spin, Typography } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 // import * as monaco from 'monaco-editor';
@@ -67,7 +67,6 @@ const LogicDebug = () => {
             <Spin spinning={loading}>
                 <DebugLogic
                     btns={[
-                        <span>是否完成：{logicIns?.isOver ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}<Divider type='vertical' /></span>,
                         <Button onClick={() => {
                             setLoading(true)
                             getLogicInstanceById(id).then(insRes => {
@@ -85,8 +84,11 @@ const LogicDebug = () => {
 
                         }}>
                             <SyncOutlined />
-                            刷新
+                            刷新请求
                         </Button>,
+                        <Divider type='vertical' />,
+                        <span>是否完成：{logicIns?.isOver ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}</span>,
+                        <Divider type='vertical' />,
                         // <Button onClick={() => {
                         //     getLogicLogsByLogicIns(logicIns).then(res => {
                         //         if (res) {
@@ -98,7 +100,9 @@ const LogicDebug = () => {
                         //     刷新日志
                         // </Button>,
                         // <span >实例逻辑名称：{config?.name}</span>,
-                        <span style={{ color: 'red' }}>执行版本：{logicIns?.version}</span>
+                        <Space>
+                            <Typography.Paragraph style={{ color: 'red' }}>执行版本:</Typography.Paragraph>
+                            <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'] }} >{logicIns?.version}</Typography.Paragraph></Space>
                     ]}
                     nextId={logicIns?.nextId}
                     config={config}
