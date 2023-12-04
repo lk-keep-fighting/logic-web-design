@@ -341,24 +341,29 @@ const DebugLog = (props: DebugProps) => {
       collapsedWidth={0}
       width={300}
       style={{
-        padding: 5,
         overflow: 'auto',
         height: '100vh',
         position: 'fixed',
         left: 0,
         top: 0,
         bottom: 0,
+        // padding: '5px',
+        // backgroundColor: 'WhiteSmoke',
+        borderRight: '0.5px solid'
       }}
     >
       <Divider>最近请求</Divider>
       <Timeline
-        style={{ height: '100%' }}
+        style={{
+          height: '100%'
+
+        }}
         // pending={true}
         items={timeLineItems}
       />
     </Layout.Sider>
     <Layout style={{ marginLeft: 300 }}>
-      <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>
+      <Layout.Header style={{ backgroundColor: 'white', padding: 0 }}>
         {/* <Button
           type="text"
           icon={
