@@ -18,14 +18,22 @@ export async function runLogicOnServerLikeFn(id: string, params: any) {
  * @param params 逻辑入参
  * @returns 
  */
-export async function runLogicOnServerLikeApi(id: string, params: any, bizId: string, bizStartCode: string, headers?: any) {
-    let url;
-    if (bizId) {
-        if (bizStartCode) url = `/api/runtime/logic/v1/biz/${id}/${bizStartCode}/${bizId}?debug=true`;
-        else url = `/api/runtime/logic/v1/run-biz/${id}/${bizId}?debug=true`;
-    } else {
-        url = `/api/runtime/logic/v1/run-api/${id}?debug=true`;
+export async function runLogicOnServer(id: string, params: any, bizId: string, bizStartCode: string, model: string, headers?: any) {
+    let url = '';
+    switch (model) {
+        case "bizStepByStep":
+            url = `/api/runtime/logic/v1/step-by-step/${id}/${bizId}?debug=true`;
+            break;
+        default:
+            if (bizId) {
+                if (bizStartCode) url = `/api/runtime/logic/v1/biz/${id}/${bizStartCode}/${bizId}?debug=true`;
+                else url = `/api/runtime/logic/v1/run-biz/${id}/${bizId}?debug=true`;
+            } else {
+                url = `/api/runtime/logic/v1/run-api/${id}?debug=true`;
+            }
+            break;
     }
+
     return post(url,
         params,
         { headers: { 'Content-Type': 'application/json', ...headers } })

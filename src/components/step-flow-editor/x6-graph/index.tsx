@@ -28,7 +28,7 @@ import { Schema } from 'form-render';
 import { Logic } from '@/components/step-flow-core/lasl/meta-data';
 import { ButtonProps } from 'antd/lib/button';
 import RunLogic from '../component/run-logic';
-import { runLogicOnServerLikeApi } from '@/services/logicSvc';
+import { runLogicOnServer } from '@/services/logicSvc';
 import CodeEditor from '../component/CodeEditor';
 import dayjs from 'dayjs';
 import { JsonView } from 'amis';
@@ -734,11 +734,11 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                 <RunLogic open={openRunLogic}
                   setOpen={(open) => this.setState({ openRunLogic: open })}
                   values={{ params: logic?.params }}
-                  onSubmit={(values) => {
+                  onSubmit={(values, model) => {
                     this.setState({ openRunLogic: false })
                     if (logic) {
                       const { params, bizId, headers, bizStartCode } = values;
-                      runLogicOnServerLikeApi(logic.id, JSON.parse(params), bizId, bizStartCode, JSON.parse(headers)).then(res => {
+                      runLogicOnServer(logic.id, JSON.parse(params), bizId, bizStartCode, model, JSON.parse(headers)).then(res => {
                         if (res.data.code == 0) {
                           Modal.success({
                             title: '执行成功',

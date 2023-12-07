@@ -1,13 +1,13 @@
 import { TypeAnnotationParser } from "@/components/step-flow-core/lasl/parser/type-annotation-parser";
 import FormRender from "@/components/step-flow-editor/component/FormRender"
-import { Modal, Tabs, message } from "antd"
+import { Button, Modal, Tabs, message } from "antd"
 import { useForm } from "form-render"
 import { useCallback, useEffect, useState } from "react";
 type RunLogicProps = {
     values: {
         params: any,
     },
-    onSubmit: (values: any) => void,
+    onSubmit: (values: any, model: string) => void,
     open: boolean,
     setOpen: (open: boolean) => void,
     children: any
@@ -32,30 +32,41 @@ const RunLogic = (props: RunLogicProps) => {
             return false;
         }
     }, []);
+    function handleSubmit(model: string) {
+        const values = form.getValues()
+        let hasError = false;
+        Object.keys(values).forEach(key => {
+            const item = values[key];
+            if (['params', 'headers'].indexOf(key) > -1 && !validateJsonString(item)) {
+                const field = key === 'params' ? '入参' : '请求头'
+                message.error(`${field}json格式错误`)
+                hasError = true;
+                return false;
+            }
+        });
+        if (!hasError) {
+            if (props?.onSubmit)
+                props.onSubmit(values, model)
+            props?.setOpen(false)
+        }
+    }
 
     return <span>
         {props.children}
         <Modal open={props.open ?? false}
             title='参数配置（通过json格式声明）'
             width={1000}
-            onOk={() => {
-                const values = form.getValues()
-                let hasError = false;
-                Object.keys(values).forEach(key => {
-                    const item = values[key];
-                    if (['params', 'headers'].indexOf(key) > -1 && !validateJsonString(item)) {
-                        const field = key === 'params' ? '入参' : '请求头'
-                        message.error(`${field}json格式错误`)
-                        hasError = true;
-                        return false;
-                    }
-                });
-                if (!hasError) {
-                    if (props?.onSubmit)
-                        props.onSubmit(values)
-                    props?.setOpen(false)
-                }
-            }}
+            footer={
+                <>
+                    <Button type='primary' onClick={() => {
+                        handleSubmit('');
+                    }}>运行</Button>
+                    <Button type='primary' onClick={() => {
+                        handleSubmit('bizStepByStep');
+                    }}>bizStep模式</Button>
+                    <Button onClick={() => props?.setOpen(false)}>取消</Button>
+                </>
+            }
             onCancel={() => props?.setOpen(false)}
         >
             <FormRender
