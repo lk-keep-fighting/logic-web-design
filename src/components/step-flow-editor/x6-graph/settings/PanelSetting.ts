@@ -255,6 +255,29 @@ export function InitPanelData(
           width: 15,
           x: 2,
           y: 2,
+          'xlink:href': '/icons/code.svg',
+        },
+        text: {
+          text: 'java代码块',
+          fontSize: 14,
+        },
+      },
+      data: {
+        config: {
+          type: 'java',
+        },
+      },
+      // tools: ['node-editor'],
+      groups: ['biz'],
+    },
+    {
+      shape: 'ExtSharp',
+      ports,
+      attrs: {
+        image: {
+          width: 15,
+          x: 2,
+          y: 2,
           'xlink:href': '/icons/CarbonSubflowLocal.svg',
         },
         text: {
