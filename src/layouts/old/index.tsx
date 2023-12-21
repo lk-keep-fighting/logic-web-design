@@ -31,10 +31,12 @@ export default function DefaultLayout(props) {
   const [title, setTitle] = useState('x');
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   useEffect(() => {
-    new AppSvc().getAppJson(appId).then(res => {
-      setMenus(res.menus);
-      setTitle(res.title);
-    })
+    if (appId) {
+      new AppSvc().initApp().then(res => {
+        setMenus(res.menus);
+        setTitle(res.title);
+      })
+    }
   }, [appId])
   const {
     token: { colorBgContainer },
@@ -54,14 +56,11 @@ export default function DefaultLayout(props) {
           <img
             style={{ marginRight: '20px', width: '30px', height: '30px' }}
             src='/logo.png' />
-          <div style={{ color: 'ButtonFace', fontSize: '18px', fontFamily: '黑体', fontWeight: 'bolder', cursor: 'pointer' }} onClick={() => {
-            history.push(`/`)
-          }}>{title}</div>
+          <div style={{ color: 'ButtonFace', fontSize: '18px', fontFamily: '黑体', fontWeight: 'bolder' }}>{title}</div>
           <Menu mode="horizontal" theme="dark" defaultSelectedKeys={['1']} items={meuns}
             style={{ marginLeft: '100px', color: 'whitesmoke', fontSize: '16px', fontFamily: '黑体' }}
             onClick={(m) => {
-              debugger;
-              history.push(`/app/${appId}/${m.key}`)
+              history.push(`/page/amis/${m.key}`)
             }} />
           {/* </Sider> */}
         </Header>

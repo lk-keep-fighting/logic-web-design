@@ -7,8 +7,9 @@ import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
 import { getPageJson } from "@/services/schemeSvc";
 import { useParams } from "umi";
+import PageRenderById from "@/components/page-render/render-by-page-id";
 
-const Render = () => {
+const Render = (props) => {
     const [config, setConfig] = useState<Schema>({ type: 'page' });
     const { pageId } = useParams()
     useEffect(() => {
@@ -17,6 +18,7 @@ const Render = () => {
                 setConfig(res)
             })
     }, [pageId])
-    return <PageRender config={config} />
+    // return <PageRenderById config={config} />
+    return <PageRenderById pageId={pageId} data={props} />
 }
 export default Render;

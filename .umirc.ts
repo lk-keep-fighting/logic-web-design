@@ -6,28 +6,41 @@ export default defineConfig({
   favicons: ['/logo.png'],
   esbuildMinifyIIFE: true,
   routes: [
+    // {
+    //   path: "/",
+    //   layout: 'index',
+    //   routes: [
+    //     {
+    //       path: "/assets",
+    //       routes: [
+    //         {
+    //           path: "/assets/api/list",
+    //           component: "assets/api/list",
+    //         },
+    //         {
+    //           path: "/assets/swagger/list",
+    //           component: "assets/swagger/list",
+    //         },
+    //         {
+    //           path: "/assets/logic/list", component: "logic/list",
+    //         },
+    //       ]
+    //     },
+
+    //   ]
+    // },
     {
       path: "/",
+      layout: false,
+      component: 'main'
+    },
+    {
+      path: "/app/:appId",
       layout: 'index',
-      routes: [
-        {
-          path: "/assets",
-          routes: [
-            {
-              path: "/assets/api/list",
-              component: "assets/api/list",
-            },
-            {
-              path: "/assets/swagger/list",
-              component: "assets/swagger/list",
-            },
-            {
-              path: "/assets/logic/list", component: "logic/list",
-            },
-          ]
-        },
-
-      ]
+    },
+    {
+      path: "/app/:appId/:pageId",
+      component: "render",
     },
     {
       path: "/page/amis/:pageId",
@@ -96,17 +109,17 @@ export default defineConfig({
     },
     '/api/runtime': {
       // 'target': 'http://localhost:18080',
-      'target': 'http://localhost:4052',
+      // 'target': 'http://localhost:4052',
       // 'target': 'http://localhost:8080',
-      // 'target': 'http://192.168.154.51:4054',
+      'target': 'http://192.168.154.51:4054',
       // 'target': 'http://192.168.44.87:4052',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/ide': {
       // 'target': 'http://localhost:18080',
-      'target': 'http://localhost:4052',
-      // 'target': 'http://192.168.154.51:4054',
+      // 'target': 'http://localhost:4052',
+      'target': 'http://192.168.154.51:4054',
       // 'target': 'http://192.168.44.87:4052',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api/ide': '/ide/api' },

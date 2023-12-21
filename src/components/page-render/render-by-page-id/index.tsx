@@ -48,9 +48,11 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
     const theme = 'cxd';
     const locale = 'zh-CN';
     useEffect(() => {
-        getPageJson(props.pageId).then(data => {
-            setPageScheme(data);
-        })
+        if (props.pageId) {
+            getPageJson(props.pageId).then(data => {
+                setPageScheme(data);
+            })
+        }
     }, [props.pageId])
     // 请勿使用 React.StrictMode，目前还不支持
     return (
