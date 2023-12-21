@@ -1,5 +1,6 @@
+import FormRender from "@/components/form-render";
+import FormRenderById from "@/components/form-render/render-by-form-id";
 import { TypeAnnotationParser } from "@/components/step-flow-core/lasl/parser/type-annotation-parser";
-import FormRender from "@/components/step-flow-editor/component/FormRender"
 import { Button, Modal, Tabs, message } from "antd"
 import { useForm } from "form-render"
 import { useCallback, useEffect, useState } from "react";
@@ -32,8 +33,7 @@ const RunLogic = (props: RunLogicProps) => {
             return false;
         }
     }, []);
-    function handleSubmit(model: string) {
-        const values = form.getValues()
+    function handleSubmit(values) {
         let hasError = false;
         Object.keys(values).forEach(key => {
             const item = values[key];
@@ -46,7 +46,7 @@ const RunLogic = (props: RunLogicProps) => {
         });
         if (!hasError) {
             if (props?.onSubmit)
-                props.onSubmit(values, model)
+                props.onSubmit(values, values.debugType)
             props?.setOpen(false)
         }
     }
@@ -56,63 +56,21 @@ const RunLogic = (props: RunLogicProps) => {
         <Modal open={props.open ?? false}
             title='参数配置（通过json格式声明）'
             width={1000}
-            footer={
-                <>
-                    <Button type='primary' onClick={() => {
-                        handleSubmit('');
-                    }}>运行</Button>
-                    <Button type='primary' onClick={() => {
-                        handleSubmit('bizStepByStep');
-                    }}>bizStep模式</Button>
-                    <Button onClick={() => props?.setOpen(false)}>取消</Button>
-                </>
-            }
+            // footer={
+            //     <>
+            //         <Button type='primary' onClick={() => {
+            //             handleSubmit('');
+            //         }}>运行</Button>
+            //         <Button type='primary' onClick={() => {
+            //             handleSubmit('bizStepByStep');
+            //         }}>bizStep模式</Button>
+            //         <Button onClick={() => props?.setOpen(false)}>取消</Button>
+            //     </>
+            // }
+            footer={false}
             onCancel={() => props?.setOpen(false)}
         >
-            <FormRender
-                form={form}
-                schema={{
-                    "type": "object",
-                    "properties": {
-                        params: {
-                            title: '入参',
-                            type: 'string',
-                            widget: 'json',
-                            props: {
-                                height: 200,
-                            },
-                            extra: '编辑器中可通过 _par. 获取'
-                        },
-                        headers: {
-                            title: '请求头(headers)',
-                            type: 'string',
-                            widget: 'json',
-                            default: '{}',
-                            props: {
-                                height: 200,
-                            },
-                            extra: '可定义请求头，如权限'
-                        },
-                        bizId: {
-                            title: '业务标识',
-                            type: 'string',
-                            props: {
-                            },
-                            extra: '根据业务标识跟踪逻辑实例'
-                        },
-                        bizStartCode: {
-                            title: '指定执行交互点',
-                            type: 'string',
-                            props: {
-                            },
-                            extra: '若当前流程待执行交互点与指定交互点不一致则报错'
-                        },
-                    },
-                    // "displayType": "row",
-                    "column": 2,
-                    // "maxWidth": "340px"
-                }}
-            />
+            <FormRenderById formId="logic-debug-input" onSubmit={handleSubmit} />
         </Modal>
     </span >
 }

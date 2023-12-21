@@ -3,6 +3,9 @@ import { Graph } from '@antv/x6';
 import Editor from '@monaco-editor/react';
 import { Tabs, TabsProps, Tooltip } from 'antd';
 import { Logic } from '@/components/step-flow-core/lasl/meta-data';
+import { InputJSONSchema } from 'amis-ui';
+import { useContext } from 'react';
+import { EditorContext } from '../x6-graph';
 
 interface ILeftToolProps {
   graph?: Graph;
@@ -10,7 +13,10 @@ interface ILeftToolProps {
   logic?: Logic;
   onConfigChange: any;
 }
+
 function LeftTool(props: ILeftToolProps) {
+  // const editorCtx = useContext(EditorContext);
+  // const { logic } = editorCtx;
   const items: TabsProps['items'] = [
     {
       key: 'sharps-panel',
@@ -40,6 +46,7 @@ function LeftTool(props: ILeftToolProps) {
                 enabled: false,
               },
             }}
+
             value={JSON.stringify(props.logic)}
             onChange={props.onConfigChange}
           />

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
-import { getPageJson } from "@/services/pageSvr";
+import { getPageJson } from "@/services/schemeSvc";
 import { useParams } from "umi";
 
 const Render = () => {

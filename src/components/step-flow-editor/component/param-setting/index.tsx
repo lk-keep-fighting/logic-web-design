@@ -1,13 +1,12 @@
+import FormRenderById from "@/components/form-render/render-by-form-id";
 import { TypeAnnotationParser } from "@/components/step-flow-core/lasl/parser/type-annotation-parser";
-import FormRender from "@/components/step-flow-editor/component/FormRender"
 import { Modal, Tabs, message } from "antd"
-import { useForm } from "form-render"
 import { useCallback, useEffect, useState } from "react";
 const ParamSetting = (props) => {
-    const form = useForm();
+    const [formData, setFormData] = useState({})
     useEffect(() => {
         const { params, variables, envs, returns } = props.values;
-        form.setValues({
+        setFormData({
             params: JSON.stringify(TypeAnnotationParser.getJsonByParams(params)),
             variables: JSON.stringify(TypeAnnotationParser.getJsonByParams(variables)),
             returns: JSON.stringify(TypeAnnotationParser.getJsonByParams(returns)),
@@ -29,8 +28,12 @@ const ParamSetting = (props) => {
         <Modal open={props.open ?? false}
             title='参数配置（通过json格式声明）'
             width={1000}
-            onOk={() => {
-                const values = form.getValues()
+            footer={false}
+            onCancel={() => props?.setOpen(false)}
+        >
+            <FormRenderById formId="logic-setting" values={formData} onSubmit={(values) => {
+                console.log('提交参数')
+                console.log(values)
                 let hasError = false;
                 Object.keys(values).forEach(key => {
                     const item = values[key];
@@ -46,56 +49,7 @@ const ParamSetting = (props) => {
                         props.onSubmit(values)
                     props?.setOpen(false)
                 }
-            }}
-            onCancel={() => props?.setOpen(false)}
-        >
-            <FormRender
-                form={form}
-                schema={{
-                    "type": "object",
-                    "properties": {
-                        params: {
-                            title: '入参声明',
-                            type: 'string',
-                            widget: 'json',
-                            props: {
-                                height: 200,
-                            },
-                            extra: '编辑器中可通过 _par. 获取'
-                        },
-                        // returns: {
-                        //     title: '返回参数声明',
-                        //     type: 'string',
-                        //     widget: 'json',
-                        //     props: {
-                        //         height: 200,
-                        //     },
-                        //     extra: '编辑器中可通过 _ret. 获取并赋值'
-                        // },
-                        variables: {
-                            title: '局部变量声明',
-                            type: 'string',
-                            widget: 'json',
-                            props: {
-                                height: 200,
-                            },
-                            extra: '编辑器中可通过 _var. 获取'
-                        },
-                        envs: {
-                            title: '环境变量声明',
-                            type: 'string',
-                            widget: 'json',
-                            props: {
-                                height: 200,
-                            },
-                            extra: '编辑器中可通过 _env. 获取'
-                        },
-                    },
-                    // "displayType": "row",
-                    "column": 2,
-                    // "maxWidth": "340px"
-                }}
-            />
+            }} />
         </Modal>
     </span >
 }

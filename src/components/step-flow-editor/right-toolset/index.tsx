@@ -1,5 +1,6 @@
-import { Tabs, TabsProps } from 'antd';
-import NodeData from './step-config';
+import { Button, Tabs, TabsProps } from 'antd';
+// import NodeData from './step-config';
+import NodeData from './node-config';
 import { Schema } from 'form-render';
 
 interface IRightToolset {
@@ -7,6 +8,7 @@ interface IRightToolset {
   onSubmit: any;
   onClear: any;
   logs?: any[];
+  isCollapsed: boolean,
   configSchemaProvider?: (type: string) => Promise<Schema>;
 }
 function RightToolset(props: IRightToolset) {
@@ -19,7 +21,7 @@ function RightToolset(props: IRightToolset) {
           <NodeData
             editNode={props.editNode}
             onSubmit={props.onSubmit}
-            configSchemaProvider={props.configSchemaProvider}
+          // configSchemaProvider={props.configSchemaProvider}
           />
         </div>
       ),
@@ -35,10 +37,22 @@ function RightToolset(props: IRightToolset) {
     // },
   ];
   return (
-    <Tabs
-      style={{ margin: 0, height: '95vh', overflowY: 'scroll' }}
-      items={items}
-    ></Tabs>
+    <div style={{ margin: 0, height: '95vh', overflowY: 'scroll' }}>
+      <NodeData
+        logic={props.logic}
+        editNode={props.editNode}
+        onSubmit={props.onSubmit} />
+      {props?.isCollapsed ? '' : <Button
+        type="text"
+        style={{ position: 'absolute', top: 10, right: 15, fontSize: 20, textAlign: 'center' }}
+        onClick={() => {
+          props?.onClose();
+        }}
+      >
+        x
+      </Button>}
+
+    </div>
   );
 }
 

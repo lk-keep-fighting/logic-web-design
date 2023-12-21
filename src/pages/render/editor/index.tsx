@@ -8,7 +8,7 @@ import { Editor, InputJSONSchema, JSONSchemaEditor, toast } from 'amis-ui'
 import copy from 'copy-to-clipboard';
 import { BulbOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { getPageJson } from '@/services/pageSvr';
+import { getPageJson, getSchemeJson } from '@/services/schemeSvc';
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
@@ -39,12 +39,13 @@ axios.interceptors.response.use(response => {
 const PageEditor: React.FC = (props) => {
     let theme = 'cxd';
     let locale = 'zh-CN';
-    const match = useMatch('/set/page/amis/:id');
-    const { pageId } = useParams();
+    const { render, id } = useParams();
     const [jsonSchema, setJsonSchema] = useState({})
     useEffect(() => {
-        getPageJson(pageId).then(res => setJsonSchema(res));
-    }, [pageId])
+        console.log('Editor')
+        console.log(render)
+        getSchemeJson(render, id).then(res => setJsonSchema(res));
+    }, [id])
     const [preview, setPreview] = useState(false);
     const [showAssistant, setShowAssistant] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -54,7 +55,7 @@ const PageEditor: React.FC = (props) => {
     return (
         <div className={styles.editorContainer}>
             <Space style={{ margin: '5px', float: 'right' }}>
-                <Button key={0} onClick={() => setShowAssistant(true)}>小助手</Button>
+                {/* <Button key={0} onClick={() => setShowAssistant(true)}>小助手</Button> */}
                 <Button key={1} onClick={() => setPreview(!preview)}>{preview ? '编辑' : '预览'}</Button>
                 <Button key={2} type='primary' onClick={e => { copy(JSON.stringify(jsonSchema)) }}>复制配置</Button>
             </Space>

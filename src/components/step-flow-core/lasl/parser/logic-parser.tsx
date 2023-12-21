@@ -114,3 +114,58 @@ export function GraphToLogic(
   console.log(logic.items)
   return logic;
 }
+
+//未完成
+export function LogicToGraph(logic: Logic): Cell.Properties[] {
+  const cells: Cell.Properties[] = [];
+
+  // Create nodes
+  logic.items.forEach((item) => {
+    const node: Node.Properties = {
+      id: item.id,
+      shape: item.type, // Adjust the shape based on your node representation
+      // position: { x: 0, y: 0 }, // Set the appropriate position
+      size: { width: 80, height: 40 }, // Set the appropriate size
+      data: {
+        config: item // Customize as needed
+      },
+      attrs: {
+        text: { text: item.name },
+      },
+    };
+
+    cells.push(node);
+
+    // If the node has branches, create edges
+    if (item.branches && item.branches.length > 0) {
+      item.branches.forEach((branch) => {
+        const edge: Edge.Properties = {
+          shape: 'edge', // Adjust the shape based on your edge representation
+          source: { cell: item.id },
+          target: { cell: branch.nextId },
+          labels: [
+            {
+              position: 0.5,
+              attrs: {
+                label: { text: branch.when },
+              },
+            },
+          ],
+        };
+
+        cells.push(edge);
+      });
+    } else if (item.nextId) {
+      // If the node has a single next node, create an edge
+      const edge: Edge.Properties = {
+        shape: 'edge', // Adjust the shape based on your edge representation
+        source: { cell: item.id },
+        target: { cell: item.nextId },
+      };
+
+      cells.push(edge);
+    }
+  });
+
+  return cells;
+}

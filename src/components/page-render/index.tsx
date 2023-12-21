@@ -2,10 +2,15 @@
 import * as React from 'react';
 import axios from 'axios';
 import copy from 'copy-to-clipboard';
-import { Schema, render as renderAmis } from 'amis';
+import { Renderer, Schema, render as renderAmis } from 'amis';
 import { ToastComponent, AlertComponent, alert, confirm, toast } from 'amis-ui';
+import './custom/form-item-js';
+import 'amis/lib/themes/cxd.css';
+import 'amis/lib/helper.css';
+import 'amis/sdk/iconfont.css';
 interface IPageRenderProps {
     config: Schema
+    data?: any
 }
 axios.interceptors.response.use(response => {
     console.log('axios response')
@@ -58,6 +63,7 @@ class PageRender extends React.Component<IPageRenderProps, any> {
                     renderAmis(
                         this.props?.config,
                         {
+                            data: this.props?.data
                             // props...
                             // locale: 'en-US' // 请参考「多语言」的文档
                             // scopeRef: (ref: any) => (amisScoped = ref)  // 功能和前面 SDK 的 amisScoped 一样

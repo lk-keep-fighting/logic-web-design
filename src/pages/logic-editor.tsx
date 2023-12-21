@@ -6,12 +6,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "umi";
 import { getLogicConfig, saveLogic } from "@/services/ideSvc";
 
-const formProvider = async (type: string) => {
-    const res = await axios.get(`/setting/node-form/${type}.json`);
-    console.log(res.data);
-    return res.data;
-}
-
 
 const LogicEditor = () => {
     const { id } = useParams();
@@ -52,7 +46,6 @@ const LogicEditor = () => {
                 <X6Graph
                     config={config}
                     onSave={handleSave}
-                    configSchemaProvider={formProvider}
                 />
             </Spin>
         </div>

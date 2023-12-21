@@ -32,6 +32,9 @@ import { runLogicOnServer } from '@/services/logicSvc';
 import CodeEditor from '../component/CodeEditor';
 import dayjs from 'dayjs';
 import { JsonView } from 'amis';
+import { Transform } from '@antv/x6-plugin-transform';
+import FormRenderById from '@/components/form-render/render-by-form-id';
+import PageRenderById from '@/components/page-render/render-by-page-id';
 
 
 type EditorCtx = {
@@ -145,12 +148,6 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
   componentDidMount() {
     this.initGraph(this.container);
     this.updateLogicAndEditorCtx(this.state.editorCtx?.logic)
-    //注册运行日志监听
-    // this.state.flowRunner.on('log', (msg) => {
-    //   this.state.logs.push(msg);
-    //   this.setState({ logs: [...this.state.logs] });
-    // });
-    // loader.config({ monaco });
   }
   //初始化画布以及事件配置
   initGraph = (container?: HTMLDivElement) => {
@@ -250,17 +247,17 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
           return !!targetMagnet;
         },
       },
-      highlighting: {
-        magnetAdsorbed: {
-          name: 'stroke',
-          args: {
-            attrs: {
-              fill: '#5F95FF',
-              stroke: '#5F95FF',
-            },
-          },
-        },
-      },
+      // highlighting: {
+      //   magnetAdsorbed: {
+      //     name: 'stroke',
+      //     args: {
+      //       attrs: {
+      //         fill: '#5F95FF',
+      //         stroke: '#5F95FF',
+      //       },
+      //     },
+      //   },
+      // },
       background: {
         color: '#F2F7FA',
       },
@@ -299,7 +296,20 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
       }))
       .use(new Keyboard())
       .use(new Clipboard())
-      .use(new Export());
+      .use(new Export())
+      .use(new Transform({
+        resizing: {
+          enabled: true,
+          minWidth: 50,
+          maxWidth: 200,
+          minHeight: 50,
+          maxHeight: 50,
+          orthogonal: false,
+          restrict: false,
+          preserveAspectRatio: false,
+        },
+      }),);
+
 
     graph.on('edge:dblclick', ({ cell }) => {
       // this.setState({ openEdgeEditor: true, editingEdge: cell })
@@ -530,10 +540,6 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
       DefaultGraph(graph);
       this.autoLayout(graph)
     }
-    // graph.centerContent();
-
-    // if (this.props.readyCallback)
-    //   this.props.readyCallback(graph, this.state.flowRunner);
     return graph;
   };
   autoLayout = (graph: Graph) => {
@@ -745,7 +751,8 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                             width: '1000px',
                             closable: true,
                             content: <div>
-                              <Row>
+                              <PageRenderById pageId='debug-info' data={res.data} />
+                              {/* <Row>
                                 <Col>
                                   <Row>
                                     <Col span={24}>
@@ -754,7 +761,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                                     </Col>
                                   </Row>
                                 </Col>
-                              </Row>
+                              </Row> */}
                             </div>,
                           })
                         } else {
@@ -763,13 +770,13 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                             width: '1200px',
                             closable: true,
                             content: <div>
-                              <Row>
+                              <PageRenderById pageId='debug-info' data={res.data} />
+                              {/* <Row>
                                 <Col>
                                   <Row>
                                     <Col span={12}>
                                       <h4>错误详细:</h4>
                                       <JsonView src={res.data.error ?? {}} collapsed={1} />
-                                      {/* {JSON.stringify(res.error)} */}
                                     </Col>
                                     <Col span={12}>
                                       <h4>返回数据:</h4>
@@ -777,7 +784,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                                     </Col>
                                   </Row>
                                 </Col>
-                              </Row>
+                              </Row> */}
                             </div>,
                           })
                         }
@@ -823,18 +830,6 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                 </RunLogic>
                 <span>当前版本:{logic.version}</span>
               </Space>
-
-              {/* <Button
-              type="default"
-              onClick={() => {
-                this.setState({ logs: [] });
-              }}
-              style={{
-                marginLeft: '10px',
-              }}
-            >
-              清空日志
-            </Button> */}
               <Space style={{
                 float: 'right',
                 right: '16px',
@@ -850,7 +845,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                     unCheckedChildren={<CloseOutlined />}
                   />
                 </span> */}
-                <Button
+                {/* <Button
                   type="text"
                   icon={
                     rightToolCollapsed ? (
@@ -867,10 +862,8 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                     width: 64,
                     height: 64,
                   }}
-                />
+                /> */}
               </Space>
-
-
             </Layout.Header>
             <Layout.Content className="app-content" >
               <DagreGraph
@@ -883,26 +876,15 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
             collapsed={rightToolCollapsed}
             collapsedWidth={0}
             width={600} >
-            <Button
-              type="text"
-              onClick={() => {
-                this.setState({ rightToolCollapsed: !rightToolCollapsed });
-              }}
-              style={{
-                float: 'right',
-                fontSize: '16px',
-                width: 64,
-                height: 64,
-              }}
-            >
-              x
-            </Button>
             <RightToolset
+              logic={logic}
               onClear={() => this.setState({ logs: [] })}
               editNode={editingNode}
               onSubmit={this.handleSubmit}
               logs={this.state.logs}
-              configSchemaProvider={this.props.configSchemaProvider ?? ConfigSchemaProvider}
+              onClose={() => { this.setState({ rightToolCollapsed: true }); }}
+              isCollapsed={rightToolCollapsed}
+            // configSchemaProvider={this.props.configSchemaProvider ?? ConfigSchemaProvider}
             />
           </Layout.Sider>
         </Layout >

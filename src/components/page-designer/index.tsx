@@ -1,6 +1,7 @@
 
 import * as React from 'react';
 import { Editor } from 'amis-editor';
+import '../page-render/custom/form-item-js';
 // import 'amis/lib/themes/cxd.css';
 // import 'amis/lib/helper.css';
 // import 'amis/sdk/iconfont.css';
@@ -23,6 +24,7 @@ class PageDesinger extends React.Component<IPageDesingerProps, any> {
                 isMobile={isMobile}
                 preview={preview}
                 onChange={onChange}
+                showCustomRenderersPanel
             />
         );
     }
