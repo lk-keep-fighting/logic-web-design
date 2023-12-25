@@ -8,6 +8,7 @@ import { getPageJson } from '@/services/schemeSvc';
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
+import { TokenUtil } from '@/utils/tokenUtil';
 interface IPageRenderByIdProps {
     pageId: string
     data: any
@@ -94,7 +95,8 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
                             }
 
                             config.headers = headers || {};
-
+                            if (!config.headers['Authorization'])
+                            config.headers['Authorization'] = "Bearer " + TokenUtil.getTokenFormLocal()
                             if (method !== 'post' && method !== 'put' && method !== 'patch') {
                                 if (data) {
                                     config.params = data;

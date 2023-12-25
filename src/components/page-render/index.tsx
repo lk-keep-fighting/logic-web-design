@@ -8,6 +8,7 @@ import './custom/form-item-js';
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
+import { TokenUtil } from '@/utils/tokenUtil';
 interface IPageRenderProps {
     config: Schema
     data?: any
@@ -89,7 +90,8 @@ class PageRender extends React.Component<IPageRenderProps, any> {
                                 }
 
                                 config.headers = headers || {};
-
+                                if (!config.headers['Authorization'])
+                                    config.headers['Authorization'] = "Bearer " + TokenUtil.getTokenFormLocal()
                                 if (method !== 'post' && method !== 'put' && method !== 'patch') {
                                     if (data) {
                                         config.params = data;

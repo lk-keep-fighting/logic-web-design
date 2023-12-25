@@ -10,6 +10,7 @@ import { EditorContext } from '../step-flow-editor/x6-graph';
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
+import { TokenUtil } from '@/utils/tokenUtil';
 interface IFormRenderProps {
     config: any
     values?: any
@@ -137,7 +138,8 @@ const FormRender = (props: IFormRenderProps) => {
                             }
 
                             config.headers = headers || {};
-
+                            if (!config.headers['Authorization'])
+                            config.headers['Authorization'] = "Bearer " + TokenUtil.getTokenFormLocal()
                             if (method !== 'post' && method !== 'put' && method !== 'patch') {
                                 if (data) {
                                     config.params = data;
