@@ -3,16 +3,8 @@
     "title": "工艺编排",
     "menus": [
         {
-            "key": "logic-api",
-            "label": "逻辑编排"
-        },
-        {
-            "key": "logic-instance",
-            "label": "运行实例"
-        },
-        {
-            "key": "logic-logs",
-            "label": "运行日志"
+            "key": "process-logic-api",
+            "label": "工艺逻辑编排"
         },
         {
             "key": "versions",
