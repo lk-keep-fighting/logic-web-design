@@ -235,7 +235,7 @@ export function InitPanelData(
           'xlink:href': '/icons/code.svg',
         },
         text: {
-          text: 'js代码块',
+          text: 'js脚本',
           fontSize: 14,
         },
       },
@@ -258,7 +258,7 @@ export function InitPanelData(
           'xlink:href': '/icons/code.svg',
         },
         text: {
-          text: 'java代码块',
+          text: 'java方法',
           fontSize: 14,
         },
       },

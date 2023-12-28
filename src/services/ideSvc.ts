@@ -35,7 +35,7 @@ export async function getLogicLogsByLogicIns(logicIns: any) {
         pageSize: 1000,
         orderBy: [
             {
-                "dataIndex": "serverTime",
+                "dataIndex": "id",
                 "desc": true
             }
         ]

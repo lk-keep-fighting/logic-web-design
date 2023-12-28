@@ -21,16 +21,15 @@ export async function runLogicOnServerLikeFn(id: string, params: any) {
 export async function runLogicOnServer(id: string, params: any, bizId: string, bizStartCode: string, model: string, headers?: any) {
     let url = '';
     switch (model) {
-        case "bizStepByStep":
-            url = `/api/runtime/logic/v1/step-by-step/${id}/${bizId}?debug=true`;
+        // case "bizStepByStep":
+        //     url = `/api/runtime/logic/v1/step-by-step/${id}/${bizId}?debug=true`;
+        //     break;
+        case "biz":
+            if (bizStartCode) url = `/api/runtime/logic/v1/biz/${id}/${bizStartCode}/${bizId}?debug=true`;
+            else url = `/api/runtime/logic/v1/run-biz/${id}/${bizId}?debug=true`;
             break;
         default:
-            if (bizId) {
-                if (bizStartCode) url = `/api/runtime/logic/v1/biz/${id}/${bizStartCode}/${bizId}?debug=true`;
-                else url = `/api/runtime/logic/v1/run-biz/${id}/${bizId}?debug=true`;
-            } else {
-                url = `/api/runtime/logic/v1/run-api/${id}?debug=true`;
-            }
+            url = `/api/runtime/logic/v1/run-api/${id}?debug=true`;
             break;
     }
 
