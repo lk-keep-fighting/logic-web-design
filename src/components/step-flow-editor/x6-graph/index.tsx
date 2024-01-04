@@ -636,8 +636,12 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
     const envs = TypeAnnotationParser.getEnvsArrayByJson(JSON.parse(settingValues.envs ?? "{}"));
 
     const newLogic = this.updateLogicAndEditorCtx({ params, returns, variables, envs })
+    if (this.props.config)
+      newLogic.id = this.props.config?.id
+    if (this.props.onSave) this.props.onSave(newLogic);//调用父级传入的回调保存配置
     const logicJson = JSON.stringify(newLogic);
     localStorage.setItem('logic-json-' + newLogic.id, logicJson);//缓存到浏览器
+    // this.saveAndConvertGraphToDsl();
     // navigator.clipboard.writeText(logicJson);//复制到剪贴板
     // this.state.flowRunner.send('save', flowJson);//发送消息
     // this.autoLayout(this.state.graph)//自动布局
