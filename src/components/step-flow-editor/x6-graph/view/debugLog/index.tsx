@@ -352,7 +352,7 @@ const DebugLog = (props: DebugProps) => {
         borderRight: '0.5px solid'
       }}
     >
-      <Divider>最近请求</Divider>
+      <Divider>状态变更记录</Divider>
       <Timeline
         style={{
           height: '100%'
