@@ -74,10 +74,12 @@ const LogicDebug = () => {
 
                         }}>
                             <SyncOutlined />
-                            刷新请求
+                            刷新记录
                         </Button>,
                         <Divider type='vertical' />,
                         <span>是否完成：{logicIns?.isOver ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}</span>,
+                        <Divider type='vertical' />,
+                        <span>待执行：{logicIns?.nextName}</span>,
                         <Divider type='vertical' />,
                         // <Button onClick={() => {
                         //     getLogicLogsByLogicIns(logicIns).then(res => {

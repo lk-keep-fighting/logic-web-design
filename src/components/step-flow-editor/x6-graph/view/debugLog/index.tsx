@@ -126,8 +126,21 @@ const DebugLog = (props: DebugProps) => {
             let lastNode: Node;
             v.itemLogs.forEach(i => {
               const node = graph?.getNodes().find(n => n.id == i.config.id);
+              console.log('fill node')
+              console.log(node)
               if (node) {
-                node.attr('body/fill', '#52c41a')
+                node.addTools({
+                  name: 'boundary',
+                  args: {
+                    attrs: {
+                      // fill: '#7c68fc',
+                      stroke: '#9254de',
+                      strokeWidth: 2,
+                      fillOpacity: 0.2,
+                    },
+                  },
+                })
+                // node.attr('body/fill', '#52c41a')
                 lastNode = node;
               }
             })
@@ -323,15 +336,16 @@ const DebugLog = (props: DebugProps) => {
       key: '1',
       label: '日志',
       children: <JsonView src={curItemLog} />
-    },
-    {
-      key: '2',
-      label: '节点配置',
-      children: <NodeData
-        editNode={selectedNode}
-        configSchemaProvider={props.configSchemaProvider}
-      />
     }
+    // ,
+    // {
+    //   key: '2',
+    //   label: '节点配置',
+    //   children: <NodeData
+    //     editNode={selectedNode}
+    //     configSchemaProvider={props.configSchemaProvider}
+    //   />
+    // }
   ]
   return <Layout style={{ margin: 0, height: '100vh' }}>
     <Layout.Sider
