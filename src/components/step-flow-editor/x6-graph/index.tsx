@@ -674,14 +674,15 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
             theme="light"
             collapsed={leftToolCollapsed}
             collapsedWidth={0}
-            width={300}
+            width={250}
+            ref={this.refStencil}
           >
-            <LeftTool
+            {/* <LeftTool
               refStencil={this.refStencil}
               graph={this.state.graph}
               logic={logic}
               onConfigChange={this.handleOnConfigChange}
-            />
+            /> */}
           </Layout.Sider>
           <Layout style={{ height: '100%' }}>
             <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>

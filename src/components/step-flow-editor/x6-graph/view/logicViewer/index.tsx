@@ -23,7 +23,6 @@ interface LogicViewerProps {
   nextId?: string,
   btns?: ReactNode[],
   configSchemaProvider?: (type: string) => Promise<Schema>;
-  itemLogSchemaProvider?: (type: string) => Promise<Schema>;
 }
 
 const LogicViewer = (props: LogicViewerProps) => {

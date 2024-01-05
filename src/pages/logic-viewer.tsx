@@ -13,15 +13,6 @@ const formProvider = async (type: string) => {
     console.log(res.data);
     return res.data;
 }
-const logFormProvider = async (type: string) => {
-    const res = await axios.get(`/setting/node-log/${type}.json`).catch(err => err);
-    console.log(res.data);
-    if (res.data)
-        return res.data;
-    else {
-        return (await axios.get(`/setting/node-log/_def.json`)).data;
-    }
-}
 
 const LogicViewerPage = () => {
     const { id, version } = useParams();
@@ -54,7 +45,6 @@ const LogicViewerPage = () => {
                     nextId={''}
                     config={logicData?.configJson}
                     configSchemaProvider={formProvider}
-                    itemLogSchemaProvider={logFormProvider}
                 />
             </Spin>
         </div>

@@ -1,11 +1,12 @@
 import { AppstoreOutlined, CodeOutlined } from '@ant-design/icons';
 import { Graph } from '@antv/x6';
-import Editor from '@monaco-editor/react';
 import { Tabs, TabsProps, Tooltip } from 'antd';
 import { Logic } from '@/components/step-flow-core/lasl/meta-data';
 import { InputJSONSchema } from 'amis-ui';
 import { useContext } from 'react';
 import { EditorContext } from '../x6-graph';
+import FormRenderById from '@/components/form-render/render-by-form-id';
+import JsonEditor from '../component/FormRender/ItemExt/JsonEditor';
 
 interface ILeftToolProps {
   graph?: Graph;
@@ -20,7 +21,7 @@ function LeftTool(props: ILeftToolProps) {
   const items: TabsProps['items'] = [
     {
       key: 'sharps-panel',
-      label: <AppstoreOutlined style={{ fontSize: '20px', marginTop: 10 }} />,
+      label: <AppstoreOutlined style={{ fontSize: '10px', marginTop: 5 }} />,
       children: (
         <div
           ref={props.refStencil}
@@ -28,38 +29,29 @@ function LeftTool(props: ILeftToolProps) {
         ></div>
       ),
     },
-    {
-      key: 'logic',
-      label: <CodeOutlined style={{ fontSize: '20px', marginTop: 10 }} />,
-      children: (
-        <div style={{ margin: 0, height: '100vh' }}>
-          <Tooltip title="用于解析执行编排的逻辑。">
-            <h3>Logic DSL</h3>
-          </Tooltip>
-          <Editor
-            defaultLanguage="json"
-            // width={200}
-            options={{
-              lineNumbers: 'off',
-              lineDecorationsWidth: 0,
-              minimap: {
-                enabled: false,
-              },
-            }}
-
-            value={JSON.stringify(props.logic)}
-            onChange={props.onConfigChange}
-          />
-        </div>
-      ),
-    },
+    // {
+    //   key: 'logic',
+    //   label: <CodeOutlined style={{ fontSize: '20px', marginTop: 10 }} />,
+    //   children: (
+    //     <div style={{ margin: 0, height: '100vh' }}>
+    //       <Tooltip title="用于解析执行编排的逻辑。">
+    //         <h3>Logic DSL</h3>
+    //       </Tooltip>
+    //       <JsonEditor
+    //         onChange={null}
+    //         shema={null}
+    //         value={JSON.stringify(props.logic)}
+    //       />
+    //     </div>
+    //   ),
+    // },
   ];
   return (
     <Tabs
       tabPosition="left"
       style={{ margin: 0 }}
       items={items}
-      tabBarStyle={{ width: 50, margin: 0 }}
+      tabBarStyle={{ width: 30, margin: 0 }}
     ></Tabs>
   );
 }

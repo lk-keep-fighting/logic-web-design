@@ -66,7 +66,6 @@ interface DebugProps {
   logicIns: any,
   debugLogs?: Log[],
   configSchemaProvider?: (type: string) => Promise<Schema>;
-  itemLogSchemaProvider?: (type: string) => Promise<Schema>;
 }
 
 const DebugLog = (props: DebugProps) => {

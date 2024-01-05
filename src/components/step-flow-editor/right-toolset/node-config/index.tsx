@@ -12,7 +12,6 @@ interface INodeEditorProps {
 export default (props: INodeEditorProps) => {
     const [formScheme, setFormScheme] = useState({ type: 'form' })
     const [formData, setFormData] = useState({})
-    const formSchemaProvider = props.configSchemaProvider;
     const onSubmit = (formData: any) => {
         props.editNode?.setAttrByPath('text/text', formData.name);
         const preConfig = props.editNode?.data.config;
@@ -50,7 +49,7 @@ export default (props: INodeEditorProps) => {
         if (nodeAttr && nodeAttr.text && nodeAttr.text.text)
             formData.name = nodeAttr.text.text;
         setFormData(formData)
-    }, [formScheme, props.editNode?.data])
+    }, [formScheme])
     return (
         <FormRender
             config={formScheme}
