@@ -25,14 +25,34 @@ const FormRender = (props: IFormRenderProps) => {
         if (type === 'formSubmited') {
             console.log('内部表单提交了', data);
             props.onSubmit(data)
+        } else {
+            console.log('内部表单触发了Broadcast', data);
         }
     }
+    /**
+     * 值变更时
+     */
+    useEffect(() => {
+        if (props.config && props.config.body) {
+            const form = props.config.body[0];
+            form.body?.forEach(element => {
+                console.log('deal editor autotip');
+                findEditorItem(element)
+            });
+        }
+        // const form = amisScoped?.getComponentByName('page1.form1');
+        // form?.props.store.clear()
+    }, [props.config])
+    /**
+     * 配置变更时
+     */
     useEffect(() => {
         const form = amisScoped?.getComponentByName('page1.form1');
         console.log('update values', props.values)
         form?.props.store.clear()
         form?.props.store.setValues(props.values)
-    }, [props.config, props.values])
+    }, [props.values])
+
     const [monaco, setMonaco] = useState();
     function findEditorItem(element) {
         if (element.type == 'editor' && element.language == 'javascript') {
@@ -70,15 +90,10 @@ const FormRender = (props: IFormRenderProps) => {
             })
         }
     }
-    useEffect(() => {
-        if (props.config && props.config.body) {
-            const form = props.config.body[0];
-            form.body?.forEach(element => {
-                console.log('deal editor autotip');
-                findEditorItem(element)
-            });
-        }
-    }, [props.config])
+
+    /**
+     * 追加全局js编辑器自动提示
+     */
     useEffect(() => {
         if (logic) {
             console.log('monaco editor autotip by logic');
@@ -112,12 +127,13 @@ const FormRender = (props: IFormRenderProps) => {
                     props?.config,
                     {
                         onBroadcast: handleBroadcast,
-                        data: props.values,
+                        // data: props.values,
                         // props...
                         // locale: 'en-US' // 请参考「多语言」的文档
                         scopeRef: (ref: any) => (setAmisScoped(ref))  // 功能和前面 SDK 的 amisScoped 一样
                     },
                     {
+                        // enableAMISDebug: true,
                         // 下面三个接口必须实现
                         fetcher: ({
                             url, // 接口地址
@@ -139,7 +155,7 @@ const FormRender = (props: IFormRenderProps) => {
 
                             config.headers = headers || {};
                             if (!config.headers['Authorization'])
-                            config.headers['Authorization'] = "Bearer " + TokenUtil.getTokenFormLocal()
+                                config.headers['Authorization'] = "Bearer " + TokenUtil.getTokenFormLocal()
                             if (method !== 'post' && method !== 'put' && method !== 'patch') {
                                 if (data) {
                                     config.params = data;

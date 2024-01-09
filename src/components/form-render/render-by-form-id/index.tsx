@@ -22,14 +22,6 @@ const FormRenderById = (props: IFormRenderByIdProps) => {
             setFormScheme(data);
         })
     }, [props.formId])
-    function handleBroadcast(type: string, rawEvent: any, data: any) {
-        console.log(type);
-        console.log(data);
-        if (type === 'formSubmited') {
-            console.log('内部表单提交了');
-            props.onSubmit(data)
-        }
-    }
 
     return (
         <div>
