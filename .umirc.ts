@@ -81,6 +81,11 @@ export default defineConfig({
     { path: "/debug/form/i/:id", layout: false, component: "render/form/debug" },
     // { path: "/editor/:id", layout: false, component: "logic-editor" },
     { path: "/form", component: "form-editor" },
+    {
+      path: "/ext/mes/process/edit",
+      layout: false,
+      component: "process-logic/logic-editor",
+    }
   ],
   npmClient: 'pnpm',
   chainWebpack: (memo, args) => {
