@@ -7,7 +7,7 @@ import { getLogicConfig, saveLogic } from "@/services/ideSvc";
 import axios from "axios";
 import { TokenUtil } from "@/utils/tokenUtil";
 import { InitPanelData } from "@/components/mes-logic-editor/x6-graph/settings/PanelSetting";
-import { Graph } from "@antv/x6";
+import { Graph, Shape } from "@antv/x6";
 import { RedoOutlined, SaveOutlined, UndoOutlined } from "@ant-design/icons";
 import { ReDoIcon, UnDoIcon } from "amis-ui";
 import { getPanelData } from "./services/panelSvc";
@@ -24,7 +24,7 @@ const LogicEditor = () => {
     const [graphJson, setGraphJson] = useState({});
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useSearchParams();
-    const [lineColor, setColor] = useState<'black' | 'red'>('black')
+    const [lineStyle, setLineStyle] = useState<'1' | '2'>('1')
     const [graph, setGraph] = useState<Graph>();
     const [panleNodes, setPanelNodes] = useState([]);
     function handleSave(graph: Graph) {
@@ -88,10 +88,10 @@ const LogicEditor = () => {
                         node = PresetNodes.get('triangle2')
                         node.setConfigSchemel('process')
                         break;
-                    case 'COMBIN_GROUP':
-                        node = PresetNodes.get('group')
-                        node.setConfigSchemel('process')
-                        break;
+                    // case 'COMBIN_GROUP':
+                    //     node = PresetNodes.get('group')
+                    //     node.setConfigSchemel('process-group')
+                    //     break;
                     default:
                         node = PresetNodes.get('ExtSharp');
                         node.setConfigSchemel('process')
@@ -103,11 +103,41 @@ const LogicEditor = () => {
                 let copy = JSON.parse(JSON.stringify(node));
                 cusNodes.push(copy)
             })
+            let groupNode = PresetNodes.get('group');
+            groupNode?.setLabel('工序组')
+            groupNode?.setConfigSchemel('process-group');
+            groupNode.groups = ['process'];
+            cusNodes.push(groupNode)
             console.log('cusNodes')
             console.log(cusNodes)
             setPanelNodes(cusNodes);
         })
     }, [])
+    const createEdge = useCallback(() => {
+        return new Shape.Edge({
+            attrs: {
+                line: {
+                    targetMarker: 'classic',
+                    stroke: lineStyle == '1' ? 'black' : 'red',
+                    // stroke: '#f5222d',
+                },
+            },
+            tools: [
+                {
+                    name: 'edge-editor',
+                    args: {
+                        attrs: {
+                            backgroundColor: '#fff',
+                        },
+                    },
+                },
+            ],
+            zIndex: 0,
+            data: {
+                type: lineStyle
+            }
+        });
+    }, [lineStyle]);
     const { Text } = Typography;
     const HeaderInfo = () => {
         return <Space style={{ height: '50px' }}>
@@ -140,17 +170,17 @@ const LogicEditor = () => {
                     }}
                     showLeft={true}
                     graphIns={graph}
-                    lineStyle={{ color: lineColor }}
+                    // lineStyle={{ color: lineColor }}
                     toolElements={[
                         <Button icon={<SaveOutlined />} type='primary' onClick={() => {
                             handleSave(graph)
                         }}>保存</Button>,
                         <span>连接线类型：
-                            <Select style={{ width: '100px' }} value={lineColor} onSelect={(v) => {
-                                setColor(v)
+                            <Select style={{ width: '100px' }} value={lineStyle} onSelect={(v) => {
+                                setLineStyle(v)
                             }}>
-                                <Select.Option key={'red'}>返工线</Select.Option>
-                                <Select.Option key={'black'}>加工线</Select.Option>
+                                <Select.Option key={'1'}>加工线</Select.Option>
+                                <Select.Option key={'2'}>返工线</Select.Option>
                             </Select></span>,
                         <Button icon={<UnDoIcon />} onClick={() => {
                             debugger;
@@ -178,6 +208,7 @@ const LogicEditor = () => {
                     ]}
                     graphJson={graphJson}
                     // config={config}
+                    createEdge={createEdge}
                     onSave={handleSave}
                     onGraphInsChange={v => setGraph(v)}
                 />
