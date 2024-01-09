@@ -46,10 +46,10 @@ export default defineConfig({
       path: "/page/amis/:pageId",
       component: "render",
     },
-    {
-      path: "/page/form",
-      component: "render/form",
-    },
+    // {
+    //   path: "/page/form",
+    //   component: "render/form",
+    // },
     {
       path: "/set/design/:render/:id",
       layout: false,
@@ -78,6 +78,7 @@ export default defineConfig({
         }],
     },
     { path: "/debug/logic/instance/:id", layout: false, component: "logic-debug" },
+    { path: "/debug/form/i/:id", layout: false, component: "render/form/debug" },
     // { path: "/editor/:id", layout: false, component: "logic-editor" },
     { path: "/form", component: "form-editor" },
   ],
