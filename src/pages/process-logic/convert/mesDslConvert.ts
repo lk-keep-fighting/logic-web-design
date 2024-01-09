@@ -12,17 +12,48 @@ export class MESConvert {
         cells.forEach((v) => {
             const id = v.id || '';
             if (v.shape === 'edge') {
-                //边,当前无自定义边，当有自定义边时这里可能有问题
-                edges.push(v);
-            } else {
-                let config = v.data.config;
-                if (config && config.type != 'start') {
+                let edge: Edge.Config = v;
+                let edgeType = edge.data.type;
+                let sourceNode = edge.getSourceNode();
+                let targetNode = edge.getTargetNode();
+                if (targetNode.getChildCount() > 0) {
+                    let childNodes = targetNode.getChildren()
+                    childNodes?.forEach(c => {
+                        process.routeProductDetailList?.push({
+                            fromNode: sourceNode?.id,
+                            fromNodeName: sourceNode?.getAttrByPath('text/text'),
+                            toNode: c.id,
+                            toNodeName: c.getAttrByPath('text/text'),
+                            productCode: presetInput?.productCode,
+                            productName: presetInput?.productName,
+                            routeType: edgeType,
+                            routeDetailDto: c.data.config
+                        })
+                    })
+                } else if (sourceNode?.getChildCount() > 0) {
+                    let childNodes = sourceNode?.getChildren()
+                    childNodes?.forEach(c => {
+                        process.routeProductDetailList?.push({
+                            fromNode: c.id,
+                            fromNodeName: c.getAttrByPath('text/text'),
+                            toNode: targetNode.id,
+                            toNodeName: targetNode?.getAttrByPath('text/text'),
+                            productCode: presetInput?.productCode,
+                            productName: presetInput?.productName,
+                            routeType: edgeType,
+                            routeDetailDto: c.data.config
+                        })
+                    })
+                } else {
                     process.routeProductDetailList?.push({
+                        fromNode: sourceNode?.id,
+                        fromNodeName: sourceNode?.getAttrByPath('text/text'),
+                        toNode: targetNode.id,
+                        toNodeName: targetNode?.getAttrByPath('text/text'),
+                        routeType: edgeType,
                         productCode: presetInput?.productCode,
                         productName: presetInput?.productName,
-                        routeDetailDto: {
-                            ...config
-                        }
+                        routeDetailDto: sourceNode?.data.config
                     })
                 }
             }
