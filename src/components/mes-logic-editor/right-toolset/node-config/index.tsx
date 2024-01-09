@@ -11,14 +11,14 @@ interface INodeEditorProps {
 
 export default (props: INodeEditorProps) => {
     const [formScheme, setFormScheme] = useState({ type: 'form' })
+    const [configSchema, setConfigSchema] = useState('');
     const [formData, setFormData] = useState({})
-    const formSchemaProvider = props.configSchemaProvider;
     const onSubmit = (formData: any) => {
         props.editNode?.setAttrByPath('text/text', formData.name);
         const preConfig = props.editNode?.data.config;
         if (props.editNode) {
             console.log('update graph data', formData)
-            props.editNode.setData({ config: { ...preConfig, ...formData } }, { overwrite: true })
+            props.editNode.setData({ ...props.editNode.data, config: { ...preConfig, ...formData } }, { overwrite: true })
         }
         // props.editNode.data.config = { ...preConfig, ...formData };
         console.log('submit---props.editNode.data.config');
@@ -36,13 +36,19 @@ export default (props: INodeEditorProps) => {
     useEffect(() => {
         if (props.editNode && props.editNode.data) {
             let config = props.editNode.data.config || {};
-            getFormJson(props.editNode.data.configSchema || config.type,).then((nodeConfigSchema) => {
-                console.log('nodeConfigSchema')
-                console.log(nodeConfigSchema)
-                setFormScheme(nodeConfigSchema)
-            })
+            setConfigSchema(props.editNode.data.configSchema || config.type);
+
         }
     }, [props.editNode]);
+
+    useEffect(() => {
+        getFormJson(configSchema).then((nodeConfigSchema) => {
+            console.log('nodeConfigSchemaChange')
+            console.log(nodeConfigSchema)
+            setFormScheme(nodeConfigSchema)
+        })
+    }, [configSchema])
+
     useEffect(() => {
         let config = props.editNode?.data.config || {};
         let formData = { ...config };
@@ -50,7 +56,7 @@ export default (props: INodeEditorProps) => {
         if (nodeAttr && nodeAttr.text && nodeAttr.text.text)
             formData.name = nodeAttr.text.text;
         setFormData(formData)
-    }, [formScheme, props.editNode?.data])
+    }, [props.editNode?.data])
     return (
         <FormRender
             config={formScheme}

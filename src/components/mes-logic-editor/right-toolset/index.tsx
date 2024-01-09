@@ -39,7 +39,6 @@ function RightToolset(props: IRightToolset) {
   return (
     <div style={{ margin: 0, height: '95vh', overflowY: 'scroll' }}>
       <NodeData
-        logic={props.logic}
         editNode={props.editNode}
         onSubmit={props.onSubmit} />
       {props?.isCollapsed ? '' : <Button

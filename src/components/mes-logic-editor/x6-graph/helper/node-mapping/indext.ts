@@ -13,131 +13,132 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
     // const startNode = curNodes.find(item => 'start' === data.config.type);
     let newNode: Node;
     if (['ExtSharp', 'polygon'].indexOf(node.shape) > -1) {
-        switch (data.config.type) {
-            case 'switch':
-                let width = 200;
-                const switchNode = graph.addNode({
-                    shape: 'switch',
-                    position: pos,
-                    width,
-                    height: 50,
-                    ports,
-                    data: node.data,
-                    attrs: {
-                        body: {
-                            stroke: '#8f8f8f',
-                            strokeWidth: 1,
-                            fill: '#fff',
-                            rx: 6,
-                            ry: 6,
+        if (data?.config && data.config.type)
+            switch (data.config.type) {
+                case 'switch':
+                    let width = 200;
+                    const switchNode = graph.addNode({
+                        shape: 'switch',
+                        position: pos,
+                        width,
+                        height: 50,
+                        ports,
+                        data: node.data,
+                        attrs: {
+                            body: {
+                                stroke: '#8f8f8f',
+                                strokeWidth: 1,
+                                fill: '#fff',
+                                rx: 6,
+                                ry: 6,
+                            },
+                        }
+                    })
+                    graph.removeNode(node);
+                    const defCaseNode1 = graph.addNode({
+                        shape: 'switch-case',
+                        position: { y: pos.y + 100, x: pos.x - width / 2 },
+                        width: 120,
+                        height: 50,
+                        ports,
+                        data: {
+                            config: {
+                                type: 'switch-case',
+                            },
                         },
-                    }
-                })
-                graph.removeNode(node);
-                const defCaseNode1 = graph.addNode({
-                    shape: 'switch-case',
-                    position: { y: pos.y + 100, x: pos.x - width / 2 },
-                    width: 120,
-                    height: 50,
-                    ports,
-                    data: {
-                        config: {
-                            type: 'switch-case',
+                    })
+                    const defCaseNode2 = graph.addNode({
+                        shape: 'switch-default',
+                        position: { y: pos.y + 100, x: pos.x + width },
+                        width: 120,
+                        height: 50,
+                        ports,
+                        data: {
+                            config: {
+                                type: 'switch-default',
+                            },
                         },
-                    },
-                })
-                const defCaseNode2 = graph.addNode({
-                    shape: 'switch-default',
-                    position: { y: pos.y + 100, x: pos.x + width },
-                    width: 120,
-                    height: 50,
-                    ports,
-                    data: {
-                        config: {
-                            type: 'switch-default',
-                        },
-                    },
-                })
-                const se1 = graph.addEdge({
-                    source: switchNode,
-                    sourcePort: switchNode.ports.items.find(i => i.group == 'bottom')?.id,
-                    target: defCaseNode1,
-                    targetPort: defCaseNode1.ports.items.find(i => i.group == 'top')?.id,
-                    zIndex: 0
-                })
-                const se2 = graph.addEdge({
-                    source: switchNode,
-                    sourcePort: switchNode.ports.items.find(i => i.group == 'bottom')?.id,
-                    target: defCaseNode2,
-                    targetPort: defCaseNode2.ports.items.find(i => i.group == 'top')?.id,
-                    zIndex: 0
-                })
-                // graph.addNodes([switchNode, defCaseNode1, defCaseNode2]);
-                // switchNode.addChild(defCaseNode1);
-                // switchNode.addChild(defCaseNode2);
-                // graph.addNodes([switchNode]);
-                // graph.addEdges([se1, se2]);
-                newNode = switchNode;
-                break;
-            case 'switch-case':
-                const switchCaseNode = graph.createNode({
-                    shape: 'switch-case',
-                    position: node.position(),
-                    width: 120,
-                    height: 50,
-                    ports,
-                    data: node.data
-                })
-                graph.removeNode(node);
-                graph.addNode(switchCaseNode);
-                newNode = switchCaseNode;
-                break;
-            case 'string':
-                const strNode = graph.createNode({
-                    shape: 'string',
-                    position: node.position(),
-                    width: 100,
-                    height: 50,
-                    ports,
-                    data: node.data
-                })
-                graph.removeNode(node);
-                graph.addNode(strNode);
-                newNode = strNode;;
-                break;
-            case 'num':
-                const numNode = graph.createNode({
-                    shape: 'num',
-                    position: node.position(),
-                    width: 100,
-                    height: 50,
-                    ports,
-                    data: node.data
-                })
-                graph.removeNode(node);
-                graph.addNode(numNode);
-                newNode = numNode;
-                break;
-            case 'assignment':
-                const assignmentNode = graph.createNode({
-                    shape: 'assignment',
-                    position: node.position(),
-                    width: 220,
-                    height: 50,
-                    ports,
-                    data: node.data
-                })
-                graph.removeNode(node);
-                graph.addNode(assignmentNode);
-                newNode = assignmentNode;
-                break;
-            default:
-                break;
-        }
+                    })
+                    const se1 = graph.addEdge({
+                        source: switchNode,
+                        sourcePort: switchNode.ports.items.find(i => i.group == 'bottom')?.id,
+                        target: defCaseNode1,
+                        targetPort: defCaseNode1.ports.items.find(i => i.group == 'top')?.id,
+                        zIndex: 0
+                    })
+                    const se2 = graph.addEdge({
+                        source: switchNode,
+                        sourcePort: switchNode.ports.items.find(i => i.group == 'bottom')?.id,
+                        target: defCaseNode2,
+                        targetPort: defCaseNode2.ports.items.find(i => i.group == 'top')?.id,
+                        zIndex: 0
+                    })
+                    // graph.addNodes([switchNode, defCaseNode1, defCaseNode2]);
+                    // switchNode.addChild(defCaseNode1);
+                    // switchNode.addChild(defCaseNode2);
+                    // graph.addNodes([switchNode]);
+                    // graph.addEdges([se1, se2]);
+                    newNode = switchNode;
+                    break;
+                case 'switch-case':
+                    const switchCaseNode = graph.createNode({
+                        shape: 'switch-case',
+                        position: node.position(),
+                        width: 120,
+                        height: 50,
+                        ports,
+                        data: node.data
+                    })
+                    graph.removeNode(node);
+                    graph.addNode(switchCaseNode);
+                    newNode = switchCaseNode;
+                    break;
+                case 'string':
+                    const strNode = graph.createNode({
+                        shape: 'string',
+                        position: node.position(),
+                        width: 100,
+                        height: 50,
+                        ports,
+                        data: node.data
+                    })
+                    graph.removeNode(node);
+                    graph.addNode(strNode);
+                    newNode = strNode;;
+                    break;
+                case 'num':
+                    const numNode = graph.createNode({
+                        shape: 'num',
+                        position: node.position(),
+                        width: 100,
+                        height: 50,
+                        ports,
+                        data: node.data
+                    })
+                    graph.removeNode(node);
+                    graph.addNode(numNode);
+                    newNode = numNode;
+                    break;
+                case 'assignment':
+                    const assignmentNode = graph.createNode({
+                        shape: 'assignment',
+                        position: node.position(),
+                        width: 220,
+                        height: 50,
+                        ports,
+                        data: node.data
+                    })
+                    graph.removeNode(node);
+                    graph.addNode(assignmentNode);
+                    newNode = assignmentNode;
+                    break;
+                default:
+                    break;
+            }
     }
-    if (['并行工序组', '平行工序组'].indexOf(node.getAttrByPath('text/text')) > -1) {
+    if (['工序组'].indexOf(node.getAttrByPath('text/text')) > -1) {
         node.zIndex = -1;
-        node.setAttrByPath('text/text', '');
+        // node.setAttrByPath('text/text', '');
     }
     console.log('node:added')
     if (newNode && curNodes.length == 1) {

@@ -16,7 +16,7 @@ export const autoDagreLayout = (graph: Graph) => {
         // align: 'DL',// 节点对齐方式，可选：'UL' | 'UR' | 'DL' | 'DR' | undefined
         controlPoints: true,
     });
-    const nodes = graph.getNodes();
+    const nodes = graph.getNodes().filter(n => n.hasParent() == false);
     const edges = graph.getEdges();
     let { nodes: newNodes = [] } = dagreLayout.layout({ nodes, edges });
     nodes.forEach((current) => {

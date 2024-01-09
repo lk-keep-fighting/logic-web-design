@@ -36,23 +36,23 @@ export function RegistShape(customSharps: any[]) {
     })
 }
 export function DefaultGraph(graph: Graph) {
-    // const startNode = graph.createNode({
-    //     shape: 'circle',
-    //     label: 'start',
-    //     width: 50,
-    //     height: 50,
-    //     attrs: {
-    //         body: {
-    //             // fill: '#d9d9d9',
-    //         },
-    //     },
-    //     ports: portsOnBottom,
-    //     data: {
-    //         config: {
-    //             type: 'start'
-    //         },
-    //     },
-    // })
+    const startNode = graph.createNode({
+        shape: 'circle',
+        label: 'start',
+        width: 50,
+        height: 50,
+        attrs: {
+            body: {
+                // fill: '#d9d9d9',
+            },
+        },
+        ports: portsOnBottom,
+        data: {
+            config: {
+                type: 'start'
+            },
+        },
+    })
     // // const endNode = graph.createNode({
     // //   shape: 'circle',
     // //   label: 'end',
@@ -76,6 +76,6 @@ export function DefaultGraph(graph: Graph) {
     // //   sourcePort: startNode.ports.items.find(i => i.group == 'right')?.id,
     // //   targetPort: endNode.ports.items.find(i => i.group == 'left')?.id
     // // })
-    // graph.addNode(startNode);
+    graph.addNode(startNode);
     // // graph.addEdge(se);
 }
