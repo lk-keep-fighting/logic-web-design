@@ -11,7 +11,7 @@ import { Graph, Shape } from "@antv/x6";
 import { RedoOutlined, SaveOutlined, UndoOutlined } from "@ant-design/icons";
 import { ReDoIcon, UnDoIcon } from "amis-ui";
 import { getPanelData } from "./services/panelSvc";
-import PresetNodes, { LogicNodeConfig } from "@/components/mes-logic-editor/x6-graph/settings/PresetNodes";
+import PresetNodes, { LogicNodeConfig, getPresetNode } from "@/components/mes-logic-editor/x6-graph/settings/PresetNodes";
 import { MESConvert } from "./convert/mesDslConvert";
 import { MesService } from "./services/mesSvc";
 import { ProcessInput } from "./services/dtos/processInput";
@@ -64,49 +64,58 @@ const LogicEditor = () => {
                 console.log('err')
                 console.log(err)
             })
+        let cusNodes = []
+        let startNode: LogicNodeConfig = getPresetNode('circle');
+        debugger;
+        startNode?.setConfigSchemel('start')
+        startNode?.setConfigData({ name: 'start' })
+        startNode?.setLabel('start');
+        startNode.setGroups(['def']);
+        cusNodes.push(startNode);
+        let endNode = getPresetNode('circle');
+        endNode?.setConfigSchemel('end')
+        endNode?.setLabel('end');
+        endNode?.setGroups(['def']);
+        cusNodes.push(endNode);
+
         getPanelData().then(data => {
             console.log('拉取大类数据')
             console.log(data)
-            let cusNodes = []
             data.data.forEach(item => {
                 let node;
                 switch (item.key) {
                     case 'PROCESS_GROUP':
-                        node = PresetNodes.get('circle');
+                        node = getPresetNode('circle');
                         node.setConfigSchemel('process')
                         break;
                     case 'CHECK_GROUP':
-                        node = PresetNodes.get('rhombus')
+                        node = getPresetNode('rhombus')
                         node.setConfigSchemel('process')
                         break;
                     case 'WAIT_GROUP':
-                        node = PresetNodes.get('triangle')
+                        node = getPresetNode('triangle')
                         node.setConfigSchemel('process')
                         break;
                         break;
                     case 'PICK_GROUP':
-                        node = PresetNodes.get('triangle2')
+                        node = getPresetNode('triangle2')
                         node.setConfigSchemel('process')
                         break;
-                    // case 'COMBIN_GROUP':
-                    //     node = PresetNodes.get('group')
-                    //     node.setConfigSchemel('process-group')
-                    //     break;
                     default:
-                        node = PresetNodes.get('ExtSharp');
+                        node = getPresetNode('ExtSharp');
                         node.setConfigSchemel('process')
                         break;
                 }
                 node?.setConfigData(item);
                 node.setLabel(item.text);
-                node.groups = ['process'];
-                let copy = JSON.parse(JSON.stringify(node));
+                node.setGroups(['process']);
+                let copy = node;
                 cusNodes.push(copy)
             })
-            let groupNode = PresetNodes.get('group');
+            let groupNode = getPresetNode('group');
             groupNode?.setLabel('工序组')
             groupNode?.setConfigSchemel('process-group');
-            groupNode.groups = ['process'];
+            groupNode.setGroups(['process']);
             cusNodes.push(groupNode)
             console.log('cusNodes')
             console.log(cusNodes)
@@ -163,6 +172,11 @@ const LogicEditor = () => {
                         Nodes: [...panleNodes],
                         Shapes,
                         Groups: [{
+                            name: 'def',
+                            title: '默认节点',
+                            graphHeight: 100,
+                        },
+                        {
                             name: 'process',
                             title: '工序',
                             graphHeight: 400,

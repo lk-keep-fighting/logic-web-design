@@ -13,6 +13,7 @@ export class MESConvert {
             const id = v.id || '';
             if (v.shape === 'edge') {
                 let edge: Edge.Config = v;
+                let edgeLabel = edge.labels?.length > 0 ? edge.labels[0].attrs.label.text : '';
                 let edgeType = edge.data.type;
                 let sourceNode = edge.getSourceNode();
                 let targetNode = edge.getTargetNode();
@@ -27,7 +28,8 @@ export class MESConvert {
                             productCode: presetInput?.productCode,
                             productName: presetInput?.productName,
                             routeType: edgeType,
-                            routeDetailDto: c.data.config
+                            routeDetailDto: c.data.config,
+                            inputOutputRatio: edgeLabel
                         })
                     })
                 } else if (sourceNode?.getChildCount() > 0) {
@@ -41,7 +43,8 @@ export class MESConvert {
                             productCode: presetInput?.productCode,
                             productName: presetInput?.productName,
                             routeType: edgeType,
-                            routeDetailDto: c.data.config
+                            routeDetailDto: c.data.config,
+                            inputOutputRatio: edgeLabel
                         })
                     })
                 } else {
@@ -53,7 +56,8 @@ export class MESConvert {
                         routeType: edgeType,
                         productCode: presetInput?.productCode,
                         productName: presetInput?.productName,
-                        routeDetailDto: sourceNode?.data.config
+                        routeDetailDto: sourceNode?.data.config,
+                        inputOutputRatio: edgeLabel
                     })
                 }
             }
