@@ -1,10 +1,11 @@
 
 import * as React from 'react';
 import { Editor } from 'amis-editor';
-import '../page-render/custom/form-item-js';
-// import 'amis/lib/themes/cxd.css';
-// import 'amis/lib/helper.css';
-// import 'amis/sdk/iconfont.css';
+// import '../page-render/custom/form-item-js';
+import { MyRendererPlugin } from '../page-render/custom/logic-editor-cmp';
+import 'amis/lib/themes/cxd.css';
+import 'amis/lib/helper.css';
+import 'amis/sdk/iconfont.css';
 interface IPageDesingerProps {
     preview: boolean;
     isMobile: boolean;
@@ -25,6 +26,7 @@ class PageDesinger extends React.Component<IPageDesingerProps, any> {
                 preview={preview}
                 onChange={onChange}
                 showCustomRenderersPanel
+            // plugins={[MyRendererPlugin]}
             />
         );
     }
