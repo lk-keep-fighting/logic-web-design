@@ -464,9 +464,9 @@ const MESLogicEditor = (props: EditorProps) => {
     if (stencilIns && props.panelData.Nodes) {
       const groupedNodes: { [Key: string]: any[] } = {};
       props.panelData.Nodes.forEach((v) => {
-        const n = graph.createNode(v.nodeConfig);
+        const n = graph.createNode(v.getNodeConfig());
         props.panelData.Groups.forEach((g) => {
-          if (v.groups.includes(g.name)) {
+          if (v.getGroups().includes(g.name)) {
             if (!groupedNodes[g.name]) groupedNodes[g.name] = [n];
             else groupedNodes[g.name].push(n);
           }

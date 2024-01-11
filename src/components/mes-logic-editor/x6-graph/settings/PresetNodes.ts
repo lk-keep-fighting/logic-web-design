@@ -2,32 +2,42 @@ import { Node } from '@antv/x6';
 import { ports } from './Consts';
 export class LogicNodeConfig {
   constructor(nodeConfig: Node.Config) {
-    this.nodeConfig = nodeConfig;
+    this._nodeConfig = JSON.parse(JSON.stringify(nodeConfig));
   }
-  nodeConfig: Node.Config;
-  groups?: any[];
+  _nodeConfig: Node.Config;
+  _groups?: any[];
+
+  getNodeConfig() {
+    return this._nodeConfig;
+  }
+  getGroups() {
+    return this._groups;
+  }
   setLabel(label: string) {
-    if (this.nodeConfig.attrs)
-      this.nodeConfig.attrs.text.text = label
+    if (this._nodeConfig.attrs)
+      this._nodeConfig.attrs.text.text = label
+  }
+  setGroups(groups: any[]) {
+    this._groups = groups;
   }
   setConfigSchemel(type: string) {
-    if (this.nodeConfig.data) {
-      this.nodeConfig.data.configSchema = type;
-      this.nodeConfig.data.config = { type }
+    if (this._nodeConfig.data) {
+      this._nodeConfig.data.configSchema = type;
+      this._nodeConfig.data.config = { type }
     }
     else {
-      this.nodeConfig.data = {
+      this._nodeConfig.data = {
         configSchema: type,
         config: { type }
       }
     }
   }
   setConfigData(config: any) {
-    if (this.nodeConfig.data) {
-      this.nodeConfig.data.config = config;
+    if (this._nodeConfig.data) {
+      this._nodeConfig.data.config = config;
     }
     else {
-      this.nodeConfig.data = {
+      this._nodeConfig.data = {
         config,
       }
     }
@@ -42,8 +52,8 @@ const commonAttrs = {
     strokeWidth: 1
   },
 };
-const PresetNodes = new Map<'group' | 'end' | 'circle' | 'triangle' | 'triangle2' | 'rhombus' | 'ExtSharp', LogicNodeConfig>();
-PresetNodes.set('group', new LogicNodeConfig({
+const PresetNodes = new Map<'group' | 'end' | 'circle' | 'triangle' | 'triangle2' | 'rhombus' | 'ExtSharp', any>();
+PresetNodes.set('group', {
   x: 40,
   y: 40,
   width: 100,
@@ -67,8 +77,8 @@ PresetNodes.set('group', new LogicNodeConfig({
   data: {
     parent: true,
   },
-}));
-PresetNodes.set('end', new LogicNodeConfig(
+});
+PresetNodes.set('end',
   {
     shape: 'circle',
     // label: 'wait-for-continue',
@@ -99,8 +109,8 @@ PresetNodes.set('end', new LogicNodeConfig(
     },
     // tools: ['node-editor'],
     // groups: ['process'],
-  }));
-PresetNodes.set('circle', new LogicNodeConfig(
+  });
+PresetNodes.set('circle',
   {
     shape: 'circle',
     // label: 'wait-for-continue',
@@ -130,8 +140,8 @@ PresetNodes.set('circle', new LogicNodeConfig(
     },
     // tools: ['node-editor'],
     groups: ['process'],
-  }));
-PresetNodes.set('triangle', new LogicNodeConfig(
+  });
+PresetNodes.set('triangle',
   {
     shape: 'path',
     x: 40,
@@ -158,8 +168,8 @@ PresetNodes.set('triangle', new LogicNodeConfig(
       config: {
       },
     },
-  }));
-PresetNodes.set('triangle2', new LogicNodeConfig(
+  });
+PresetNodes.set('triangle2',
   {
     shape: 'path',
     x: 40,
@@ -188,8 +198,8 @@ PresetNodes.set('triangle2', new LogicNodeConfig(
       },
     },
     groups: ['process'],
-  }));
-PresetNodes.set('rhombus', new LogicNodeConfig(
+  });
+PresetNodes.set('rhombus',
   {
     shape: 'polygon',
     x: 600,
@@ -213,8 +223,8 @@ PresetNodes.set('rhombus', new LogicNodeConfig(
       },
     },
     groups: ['process'],
-  }));
-PresetNodes.set('ExtSharp', new LogicNodeConfig({
+  });
+PresetNodes.set('ExtSharp', {
   shape: 'ExtSharp',
   // label: 'http请求',
   attrs: {
@@ -231,6 +241,8 @@ PresetNodes.set('ExtSharp', new LogicNodeConfig({
   },
   ports,
   // tools: ['node-editor'],
-}))
-
+})
+export function getPresetNode(type: 'group' | 'end' | 'circle' | 'triangle' | 'triangle2' | 'rhombus' | 'ExtSharp'): LogicNodeConfig | undefined {
+  return new LogicNodeConfig(PresetNodes.get(type));
+}
 export default PresetNodes;

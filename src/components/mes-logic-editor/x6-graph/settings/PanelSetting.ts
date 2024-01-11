@@ -17,8 +17,6 @@ export function InitPanelData(
     },
   };
   const endNode = PresetNodes.get('end');
-  endNode.groups = ['process'];
-  endNode?.setLabel('结束')
   const Nodes: LogicNodeConfig[] = [
     endNode,
     // {
