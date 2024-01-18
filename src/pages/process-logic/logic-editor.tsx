@@ -11,10 +11,11 @@ import { Graph, Shape } from "@antv/x6";
 import { MenuFoldOutlined, MenuUnfoldOutlined, RedoOutlined, SaveOutlined, UndoOutlined } from "@ant-design/icons";
 import { ReDoIcon, UnDoIcon } from "amis-ui";
 import { getPanelData } from "./services/panelSvc";
-import PresetNodes, { LogicNodeConfig, getPresetNode } from "@/components/mes-logic-editor/x6-graph/settings/PresetNodes";
 import { MESConvert } from "./convert/mesDslConvert";
 import { MesService } from "./services/mesSvc";
 import { ProcessInput } from "./services/dtos/processInput";
+import LogicNodeConfig from "@/components/logic-editor/LogicNodeConfig";
+import { getPresetNode } from "@/components/logic-editor/PresetNodes";
 
 //http://localhost:4051/#/assets/logic/process/i/gy2/edit?prodCode=CPBM-23MFU2&prodName=%E5%B9%B3%E6%9D%BF%E7%BA%B8U2&matCode=QUF237&version=v1.2
 const { Nodes, Shapes, Groups } = InitPanelData();

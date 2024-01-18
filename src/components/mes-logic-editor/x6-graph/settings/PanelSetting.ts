@@ -1,7 +1,8 @@
+import LogicNodeConfig from '@/components/logic-editor/LogicNodeConfig';
 import { StepTypeEnum } from '../../../step-flow-core/types';
 import { ports } from './Consts';
 import { DefaultShapeExt } from './DefaultSharpExt';
-import PresetNodes, { LogicNodeConfig } from './PresetNodes';
+import { PresetNodes } from '@/components/logic-editor/PresetNodes';
 export function InitPanelData(
   customNodes?: LogicNodeConfig[],
   customGroup?: any[],
