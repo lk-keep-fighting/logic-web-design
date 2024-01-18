@@ -1,5 +1,5 @@
 import { Graph, Node } from "@antv/x6";
-import { ports } from "../../settings/Consts";
+import { ports } from "@/components/logic-editor/Consts";
 
 /**
  * 
@@ -92,6 +92,23 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
                 graph.addNode(switchCaseNode);
                 newNode = switchCaseNode;
                 break;
+            case 'switch-default':
+                const switchDefNode = graph.addNode({
+                    shape: 'switch-default',
+                    position: node.position(),
+                    width: 120,
+                    height: 50,
+                    ports,
+                    data: {
+                        config: {
+                            type: 'switch-default',
+                        },
+                    },
+                })
+                graph.removeNode(node);
+                graph.addNode(switchDefNode);
+                newNode = switchDefNode;
+                break;
             case 'string':
                 const strNode = graph.createNode({
                     shape: 'string',
@@ -134,6 +151,10 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
             default:
                 break;
         }
+    }
+    if (node.getData().configSchema == 'group') {
+        node.zIndex = -1;
+        // node.setAttrByPath('text/text', '');
     }
     console.log('node:added')
     if (newNode && curNodes.length == 1) {

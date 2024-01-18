@@ -1,6 +1,8 @@
+import { PresetNodes, getPresetNode } from '@/components/logic-editor/PresetNodes';
 import { StepTypeEnum } from '../../../step-flow-core/types';
-import { ports } from './Consts';
+import { ports } from '@/components/logic-editor/Consts';
 import { DefaultShapeExt } from './DefaultSharpExt';
+import LogicNodeConfig from '@/components/logic-editor/LogicNodeConfig';
 export function InitPanelData(
   customNodes?: any[],
   customGroup?: any[],
@@ -84,6 +86,34 @@ export function InitPanelData(
       // tools: ['node-editor'],
       groups: ['global'],
     },
+    // {
+    //   sharp: 'rect',
+    //   x: 40,
+    //   y: 40,
+    //   width: 100,
+    //   height: 50,
+    //   ports,
+    //   attrs: {
+    //     body: {
+    //       ...commonAttrs.body,
+    //       stroke: 'black',
+    //       strokeWidth: 1,
+    //       fillOpacity: 0
+    //     },
+    //     text: {
+    //       text: '分组',
+    //       refX: 0,
+    //       refY: 10,
+    //       'text-anchor': 'start',
+    //       // 'font-weight': 'bolder',
+    //     },
+    //   },
+    //   data: {
+    //     configSchema: 'group',
+    //     parent: true,
+    //   },
+    //   groups: ['global']
+    // },
     // {
     //   shape: 'ExtSharp',
     //   width,
@@ -370,6 +400,43 @@ export function InitPanelData(
     },
     {
       shape: 'ExtSharp',
+      width: 50,
+      height,
+      attrs: {
+        // body: {
+        //   refPoints: '0,10 10,0 20,10 10,20',
+        //   strokeWidth: 1,
+        //   stroke: '#5F95FF',
+        //   fill: '#EFF4FF',
+        // },
+        image: {
+          'xlink:href': '/icons/text.svg',
+          width: 30,
+          x: 8,
+          y: 10
+        },
+        text: {
+          text: 'default',
+          fontSize: 14,
+          // fill: '#5F95FF',
+          refX: 0.5,
+          refY: '100%',
+          refY2: 4,
+          textAnchor: 'middle',
+          textVerticalAnchor: 'top',
+        },
+      },
+      data: {
+        config: {
+          type: 'switch-default',
+        },
+      },
+      ports,
+      // tools: ['node-editor'],
+      groups: ['ctrl'],
+    },
+    {
+      shape: 'ExtSharp',
       width,
       height,
       attrs: {
@@ -470,6 +537,11 @@ export function InitPanelData(
     //   groups: ['var'],
     // },
   ];
+  // let groupNode = getPresetNode('group');
+  // groupNode.setGroups(['global']);
+  // groupNode.setLabel('分组');
+  // groupNode.setConfigSchemel('group');
+  // Nodes.push(groupNode)
   if (customNodes && customNodes.length > 0)
     Array.prototype.push.apply(Nodes, customNodes);
   const Groups: any[] = [
