@@ -152,10 +152,10 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
                 break;
         }
     }
-    if (node.getData().configSchema == 'group') {
-        node.zIndex = -1;
-        // node.setAttrByPath('text/text', '');
-    }
+    // if (node.getData().configSchema == 'group') {
+    //     node.zIndex = -1;
+    //     // node.setAttrByPath('text/text', '');
+    // }
     console.log('node:added')
     if (newNode && curNodes.length == 1) {
         graph.addEdge({

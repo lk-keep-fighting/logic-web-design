@@ -10,6 +10,7 @@ specifiers:
   '@antv/x6-plugin-export': ^2.1.6
   '@antv/x6-plugin-history': ^2.2.2
   '@antv/x6-plugin-keyboard': ^2.2.1
+  '@antv/x6-plugin-minimap': ^2.0.6
   '@antv/x6-plugin-scroller': ^2.0.10
   '@antv/x6-plugin-selection': ^2.1.7
   '@antv/x6-plugin-snapline': ^2.1.7
@@ -52,6 +53,7 @@ dependencies:
   '@antv/x6-plugin-export': registry.npmjs.org/@antv/x6-plugin-export/2.1.6_@antv+x6@2.13.1
   '@antv/x6-plugin-history': registry.npmjs.org/@antv/x6-plugin-history/2.2.3_@antv+x6@2.13.1
   '@antv/x6-plugin-keyboard': registry.npmjs.org/@antv/x6-plugin-keyboard/2.2.1_@antv+x6@2.13.1
+  '@antv/x6-plugin-minimap': 2.0.6_@antv+x6@2.13.1
   '@antv/x6-plugin-scroller': registry.npmjs.org/@antv/x6-plugin-scroller/2.0.10_@antv+x6@2.13.1
   '@antv/x6-plugin-selection': registry.npmjs.org/@antv/x6-plugin-selection/2.1.7_@antv+x6@2.13.1
   '@antv/x6-plugin-snapline': registry.npmjs.org/@antv/x6-plugin-snapline/2.1.7_@antv+x6@2.13.1
@@ -87,6 +89,14 @@ devDependencies:
   typescript: registry.npmjs.org/typescript/5.1.6
 
 packages:
+
+  /@antv/x6-plugin-minimap/2.0.6_@antv+x6@2.13.1:
+    resolution: {integrity: sha512-of16qYK+M+wiIdEu/AP2oOep49a+SV2XxoD6SX5gnqH5/liGOUKzdatITncW3c3iBgniwRrUmz8XS6GTQNKN0Q==}
+    peerDependencies:
+      '@antv/x6': ^2.x
+    dependencies:
+      '@antv/x6': registry.npmjs.org/@antv/x6/2.13.1
+    dev: false
 
   /@antv/x6-plugin-transform/2.1.8_@antv+x6@2.13.1:
     resolution: {integrity: sha512-GvJuiJ4BKp0H7+qx3R1I+Vzbw5gXp9+oByXo/WyVxE3urOC7LC5sqnaDfIjyYMN6ROLPYPZraLSeSyYBgMgcDw==}

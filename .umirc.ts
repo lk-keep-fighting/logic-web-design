@@ -85,6 +85,11 @@ export default defineConfig({
       path: "/ext/mes/process/edit",
       layout: false,
       component: "process-logic/logic-editor",
+    },
+    {
+      path: "/ext/mes/process/view",
+      layout: false,
+      component: "process-logic/logic-viewer",
     }
   ],
   npmClient: 'pnpm',

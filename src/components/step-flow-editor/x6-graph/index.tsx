@@ -1,5 +1,6 @@
-import { EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, SaveOutlined, SettingTwoTone } from '@ant-design/icons';
+import { EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, RocketOutlined, SaveOutlined, SettingTwoTone } from '@ant-design/icons';
 import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
+import { MiniMap } from '@antv/x6-plugin-minimap'
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
@@ -14,15 +15,13 @@ import { Button, Col, Dropdown, Layout, MenuProps, Modal, Row, Space, message } 
 import React from 'react';
 import { GraphToLogic } from '@/components/step-flow-core/lasl/parser/logic-parser';
 import './index.css';
-import LeftTool from '../left-toolset';
 import RightToolset from '../right-toolset';
 import { InitPanelData } from './settings/PanelSetting';
 import { DefaultGraph, RegistShape } from './settings/InitGraph';
-import { ConfigSchemaProvider } from './settings/DefaultFormExt';
 import DagreGraph from './instance/dagre-graph';
 import ParamSetting from '../component/param-setting';
 import { dealGraphNodeWhenAddedFromPanel } from './helper/node-mapping/indext';
-import { autoDagreLayout } from './layout/dagreLayout';
+import { autoDagreLayout, autoDagreLayoutByNodesAndCells } from './layout/dagreLayout';
 import { TypeAnnotationParser } from '../../step-flow-core/lasl/parser/type-annotation-parser';
 import { Schema } from 'form-render';
 import { Logic } from '@/components/step-flow-core/lasl/meta-data';
@@ -33,7 +32,6 @@ import CodeEditor from '../component/CodeEditor';
 import dayjs from 'dayjs';
 import { JsonView } from 'amis';
 import { Transform } from '@antv/x6-plugin-transform';
-import FormRenderById from '@/components/form-render/render-by-form-id';
 import PageRenderById from '@/components/page-render/render-by-page-id';
 
 
@@ -153,18 +151,32 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
   initGraph = (container?: HTMLDivElement) => {
     const graph = new Graph({
       container: container,
+      // embedding: {
+      //   enabled: this.state.embeddingEnable,
+      //   validate: (args: {
+      //     child: Node,
+      //     parent: Node,
+      //     childView: CellView,
+      //     parentView: CellView,
+      //   }) => {
+      //     //实现拖拽连接，设置自动顺序连接的节点
+      //     args.child.setData({ hoverNode: args.parent })
+      //     return true;
+      //   }
+      // },
       embedding: {
-        enabled: this.state.embeddingEnable,
-        validate: (args: {
-          child: Node,
-          parent: Node,
-          childView: CellView,
-          parentView: CellView,
-        }) => {
-          //实现拖拽连接，设置自动顺序连接的节点
-          args.child.setData({ hoverNode: args.parent })
-          return true;
-        }
+        enabled: true,
+        findParent({ node }) {
+          const bbox = node.getBBox()
+          return this.getNodes().filter((node) => {
+            const data = node.getData<any>()
+            if (data && data.parent) {
+              const targetBBox = node.getBBox()
+              return bbox.isIntersectWithRect(targetBBox)
+            }
+            return false
+          })
+        },
       },
       mousewheel: {
         enabled: true,
@@ -191,14 +203,14 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
         createEdge() {
           return new Shape.Edge({
             tools: [
-              {
-                name: 'edge-editor',
-                args: {
-                  attrs: {
-                    backgroundColor: '#fff',
-                  },
-                },
-              },
+              // {
+              //   name: 'edge-editor',
+              //   args: {
+              //     attrs: {
+              //       backgroundColor: '#fff',
+              //     },
+              //   },
+              // },
               // {
               //   name: 'button',
               //   args: {
@@ -239,6 +251,10 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
               //     },
               //   },
               // },
+            ],
+            vertices: [
+              // { x: 90, y: 160 },
+              // { x: 210, y: 160 },
             ],
             zIndex: 0
           });
@@ -297,13 +313,16 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
       .use(new Keyboard())
       .use(new Clipboard())
       .use(new Export())
+      .use(new MiniMap({
+        container: this.minimapContainer,
+      }))
       .use(new Transform({
         resizing: {
           enabled: true,
           minWidth: 50,
-          maxWidth: 200,
+          // maxWidth: 200,
           minHeight: 50,
-          maxHeight: 50,
+          // maxHeight: 50,
           orthogonal: false,
           restrict: false,
           preserveAspectRatio: false,
@@ -316,7 +335,9 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
     });
 
     graph.on('edge:mouseenter', ({ cell }) => {
+      // cell.addTools(['vertices', 'segments'])
       cell.addTools([
+        'vertices', 'segments',
         {
           name: 'button-remove',
           args: { distance: -40 },
@@ -354,19 +375,19 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
       // showPorts(ports, false);
     });
     graph.on('node:moved', ({ e, x, y, node, view }) => {
-      const linkNode = node.data?.hoverNode;
-      if (this.state.embeddingEnable && linkNode) {
-        const ne = graph.createEdge({
-          source: linkNode,
-          sourcePort: linkNode.ports.items.find(i => i.group == 'bottom')?.id,
-          target: node,
-          targetPort: node.ports.items.find(i => i.group == 'top')?.id,
-          zIndex: 0,
-        })
-        node.data.hoverNode = undefined;
-        graph.addEdge(ne);
-        this.autoLayout(graph);
-      }
+      // const linkNode = node.data?.hoverNode;
+      // if (this.state.embeddingEnable && linkNode) {
+      //   const ne = graph.createEdge({
+      //     source: linkNode,
+      //     sourcePort: linkNode.ports.items.find(i => i.group == 'bottom')?.id,
+      //     target: node,
+      //     targetPort: node.ports.items.find(i => i.group == 'top')?.id,
+      //     zIndex: 0,
+      //   })
+      //   node.data.hoverNode = undefined;
+      //   graph.addEdge(ne);
+      //   this.autoLayout(graph);
+      // }
     })
     // graph.on('node:embedding', ({ e, x, y, node, view, currentParent, candidateParent }) => {
     //   console.log('embedding')
@@ -376,7 +397,6 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
     //   // console.log(candidateParent?.data)
     // })
     // graph.on('node:embedded', ({ e, x, y, node, view, previousParent, currentParent }) => {
-    //   // console.log('embedded')
     // })
     graph.on('node:mouseenter', ({ cell }) => {
       if (cell.data?.config?.type != 'start') {
@@ -545,6 +565,12 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
   autoLayout = (graph: Graph) => {
     autoDagreLayout(graph);
   }
+  autoLayoutSelectedCells = (graph: Graph) => {
+    let nodes = graph.getSelectedCells().filter(c => c.isNode())
+    let edges = graph.getSelectedCells().filter(c => c.isEdge())
+    debugger
+    autoDagreLayoutByNodesAndCells(nodes, edges);
+  }
   refContainer = (container: HTMLDivElement) => {
     this.container = container;
   };
@@ -654,6 +680,10 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
   setFlowSetting = (open: boolean) => {
     this.setState({ openFlowSetting: open })
   }
+  private minimapContainer: HTMLDivElement
+  refMiniMapContainer = (container: HTMLDivElement) => {
+    this.minimapContainer = container
+  }
   render() {
     const {
       editingNode,
@@ -738,7 +768,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                   type='dashed'
                   icon={<RocketOutlined />}
                   onClick={() => {
-                    this.autoLayout(this.state.graph)
+                    this.autoLayoutSelectedCells(this.state.graph)
                   }}
                 ></Button> */}
                 {this.props.btns?.map(b => <Button {...b} />)}
@@ -757,16 +787,6 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                             closable: true,
                             content: <div>
                               <PageRenderById pageId='debug-info' data={res.data} />
-                              {/* <Row>
-                                <Col>
-                                  <Row>
-                                    <Col span={24}>
-                                      <h4>{res.data.msg}</h4>
-                                      <JsonView src={res.data ?? {}} collapsed={1} />
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              </Row> */}
                             </div>,
                           })
                         } else {
@@ -776,20 +796,6 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                             closable: true,
                             content: <div>
                               <PageRenderById pageId='debug-info' data={res.data} />
-                              {/* <Row>
-                                <Col>
-                                  <Row>
-                                    <Col span={12}>
-                                      <h4>错误详细:</h4>
-                                      <JsonView src={res.data.error ?? {}} collapsed={1} />
-                                    </Col>
-                                    <Col span={12}>
-                                      <h4>返回数据:</h4>
-                                      <CodeEditor language='json' value={JSON.stringify(res.data)} width={500} />
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              </Row> */}
                             </div>,
                           })
                         }
@@ -839,41 +845,13 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
                 float: 'right',
                 right: '16px',
               }}>
-                {/* <span>
-                  拖拽连线
-                  <Switch
-                    checked={embeddingEnable}
-                    onChange={(v) => {
-                      this.setState({ embeddingEnable: v })
-                    }}
-                    checkedChildren={<CheckOutlined />}
-                    unCheckedChildren={<CloseOutlined />}
-                  />
-                </span> */}
-                {/* <Button
-                  type="text"
-                  icon={
-                    rightToolCollapsed ? (
-                      <MenuFoldOutlined />
-                    ) : (
-                      <MenuUnfoldOutlined />
-                    )
-                  }
-                  onClick={() => {
-                    this.setState({ rightToolCollapsed: !rightToolCollapsed });
-                  }}
-                  style={{
-                    fontSize: '16px',
-                    width: 64,
-                    height: 64,
-                  }}
-                /> */}
               </Space>
             </Layout.Header>
             <Layout.Content className="app-content" >
               <DagreGraph
                 ref={this.refContainer}
               />
+            <div className="app-minimap" ref={this.refMiniMapContainer} />
             </Layout.Content>
           </Layout>
           <Layout.Sider
