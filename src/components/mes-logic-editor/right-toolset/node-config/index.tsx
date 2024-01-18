@@ -1,4 +1,5 @@
 import FormRender from '@/components/form-render';
+import FormRenderById from '@/components/form-render/render-by-form-id';
 import { getFormJson } from '@/services/schemeSvc';
 import { Cell } from '@antv/x6';
 import { useEffect, useState } from 'react';
@@ -6,6 +7,7 @@ import { useEffect, useState } from 'react';
 interface INodeEditorProps {
     editNode: Cell | undefined;
     onSubmit: any;
+    isStatic?: boolean;
     configSchemaProvider?: (type: string) => Promise<Schema>;
 }
 
@@ -25,14 +27,14 @@ export default (props: INodeEditorProps) => {
         console.log(props.editNode?.data.config);
         props?.onSubmit();
     };
-    const getValuesFromNode = (editNode: any) => {
-        if (editNode && editNode.data) {
-            const config = editNode.data.config || {};
-            let nodeAttr = editNode.attrs;
-            config.name = nodeAttr?.text?.text;
-            return config;
-        } else return { name: '' };
-    };
+    // const getValuesFromNode = (editNode: any) => {
+    //     if (editNode && editNode.data) {
+    //         const config = editNode.data.config || {};
+    //         let nodeAttr = editNode.attrs;
+    //         config.name = nodeAttr?.text?.text;
+    //         return config;
+    //     } else return { name: '' };
+    // };
     useEffect(() => {
         if (props.editNode && props.editNode.data) {
             let config = props.editNode.data.config || {};
@@ -41,13 +43,13 @@ export default (props: INodeEditorProps) => {
         }
     }, [props.editNode]);
 
-    useEffect(() => {
-        getFormJson(configSchema).then((nodeConfigSchema) => {
-            console.log('nodeConfigSchemaChange')
-            console.log(nodeConfigSchema)
-            setFormScheme(nodeConfigSchema)
-        })
-    }, [configSchema])
+    // useEffect(() => {
+    //     getFormJson(configSchema).then((nodeConfigSchema) => {
+    //         console.log('nodeConfigSchemaChange')
+    //         console.log(nodeConfigSchema)
+    //         setFormScheme(nodeConfigSchema)
+    //     })
+    // }, [configSchema])
 
     useEffect(() => {
         let config = props.editNode?.data.config || {};
@@ -58,16 +60,17 @@ export default (props: INodeEditorProps) => {
         setFormData(formData)
     }, [props.editNode?.data])
     return (
-        <FormRender
-            config={formScheme}
+        <FormRenderById
+            // config={formScheme}
+            isStatic={props.isStatic}
+            formId={configSchema}
             values={{ ...formData }}
             onSubmit={onSubmit}
-        // onReset={() => {
-        //     const initConfig = getValuesFromNode(props.editNode);
-        //     form.setValues(initConfig);
-        //     return;
-        // }}
-        // footer={props.onSubmit ? true : false}
         />
+        // <FormRender
+        //     config={formScheme}
+        //     values={{ ...formData }}
+        //     onSubmit={onSubmit}
+        // />
     );
 };

@@ -1,6 +1,6 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import { X6Graph } from "@/components/mes-logic-editor";
-import { Button, Divider, Layout, Select, Space, Spin, Typography, message } from "antd";
+import { Affix, Button, Divider, Layout, Select, Space, Spin, Typography, message } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "umi";
 import { getLogicConfig, saveLogic } from "@/services/ideSvc";
@@ -8,7 +8,7 @@ import axios from "axios";
 import { TokenUtil } from "@/utils/tokenUtil";
 import { InitPanelData } from "@/components/mes-logic-editor/x6-graph/settings/PanelSetting";
 import { Graph, Shape } from "@antv/x6";
-import { MenuFoldOutlined, MenuUnfoldOutlined, RedoOutlined, SaveOutlined, UndoOutlined } from "@ant-design/icons";
+import { RedoOutlined, SaveOutlined, UndoOutlined } from "@ant-design/icons";
 import { ReDoIcon, UnDoIcon } from "amis-ui";
 import { getPanelData } from "./services/panelSvc";
 import PresetNodes, { LogicNodeConfig, getPresetNode } from "@/components/mes-logic-editor/x6-graph/settings/PresetNodes";
@@ -22,30 +22,12 @@ const mesService = new MesService();
 const LogicEditor = () => {
     const [dsl, setDsl] = useState<ProcessInput>({});
     const [graphJson, setGraphJson] = useState({});
-    const [showLeft, setShowLeft] = useState(true);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useSearchParams();
     const [lineStyle, setLineStyle] = useState<'1' | '2'>('1')
     const [graph, setGraph] = useState<Graph>();
     const [panleNodes, setPanelNodes] = useState([]);
-    function handleSave(graph: Graph) {
-        dsl.graphData = JSON.stringify(graph.toJSON());
-        let newDsl = new MESConvert().graphToMesDsl(graph, dsl)
-        setDsl(newDsl)
-        setLoading(true)
-        mesService.updateRouteProcessDesign(newDsl).then(res => {
-            console.log('保存接口返回')
-            const json = JSON.parse(res.data)
-            if (json.code == '500')
-                message.error(json.message)
-            else
-                message.success('保存成功');
-            setLoading(false)
-        }).catch(err => {
-            message.error(err);
-            setLoading(false);
-        });
-    }
+
     useEffect(() => {
         setLoading(true);
         mesService.getRouteProcessDesign(search.get('prodCode'), search.get('version'))
@@ -63,6 +45,7 @@ const LogicEditor = () => {
             })
         let cusNodes = []
         let startNode: LogicNodeConfig = getPresetNode('circle');
+        debugger;
         startNode?.setConfigSchemel('start')
         startNode?.setConfigData({ name: 'start' })
         startNode?.setLabel('start');
@@ -70,7 +53,6 @@ const LogicEditor = () => {
         cusNodes.push(startNode);
         let endNode = getPresetNode('circle');
         endNode?.setConfigSchemel('end')
-        startNode?.setConfigData({ name: 'end' })
         endNode?.setLabel('end');
         endNode?.setGroups(['def']);
         cusNodes.push(endNode);
@@ -124,7 +106,7 @@ const LogicEditor = () => {
             attrs: {
                 line: {
                     targetMarker: 'classic',
-                    stroke: lineStyle == '1' ? '#000000' : '#FF9900',
+                    stroke: lineStyle == '1' ? 'black' : 'red',
                     // stroke: '#f5222d',
                 },
             },
@@ -158,6 +140,18 @@ const LogicEditor = () => {
             <Divider type='vertical' />
             <Typography>版本号</Typography>
             <Text underline>{search.get('version')}</Text>
+            <Divider type='vertical' />
+            <span> 线类型：</span>
+            <span style={{
+                textDecoration: 'underline',
+                textDecorationThickness: 3,
+                textDecorationColor: '#000000'
+            }}>加工线</span>
+            <span style={{
+                textDecoration: 'underline',
+                textDecorationThickness: 3,
+                textDecorationColor: '#FF9900'
+            }}>返工线</span>
         </Space>;
     }
     return (
@@ -165,91 +159,27 @@ const LogicEditor = () => {
             <HeaderInfo></HeaderInfo>
             <Spin spinning={loading}>
                 <X6Graph
-                    panelData={{
-                        Nodes: [...panleNodes],
-                        Shapes,
-                        Groups: [{
-                            name: 'def',
-                            title: '默认节点',
-                            graphHeight: 100,
-                        },
-                        {
-                            name: 'process',
-                            title: '工序',
-                            graphHeight: 400,
-                        }]
-                    }}
-                    showLeft={showLeft}
+                    showLeft={false}
                     graphIns={graph}
+                    isFormStatic={true}
                     // lineStyle={{ color: lineColor }}
-                    toolElements={[
-                        <Button
-                            type="text"
-                            icon={showLeft
-                                ? (
-                                    <MenuFoldOutlined />
-                                ) : (
-                                    <MenuUnfoldOutlined />
-                                )
-                            }
-                            onClick={() => {
-                                setShowLeft(!showLeft)
-                            }}
-                            style={{
-                                fontSize: '16px',
-                                width: 64,
-                                height: 64,
-                            }}
-                        />,
-                        <Button icon={<SaveOutlined />} type='primary' onClick={() => {
-                            handleSave(graph)
-                        }}>保存</Button>,
-                        <span>连接线类型：
-                            <Select style={{ width: '100px' }} value={lineStyle} onSelect={(v) => {
-                                setLineStyle(v)
-                            }}>
-                                <Select.Option key={'1'}><span style={{
-                                    textDecoration: 'underline',
-                                    textDecorationThickness: 3,
-                                    textDecorationColor: '#000000'
-                                }}>加工线</span>
-                                </Select.Option>
-                                <Select.Option key={'2'}><span style={{
-                                    textDecoration: 'underline',
-                                    textDecorationThickness: 3,
-                                    textDecorationColor: '#FF9900'
-                                }}>返工线</span>
-                                </Select.Option>
-                            </Select></span>,
-                        <Button icon={<UnDoIcon />} onClick={() => {
-                            debugger;
-                            if (graph && graph.canUndo()) {
-                                graph.undo();
-                            }
-                        }}>撤销</Button>,
-                        <Button icon={<ReDoIcon />} onClick={() => {
-                            debugger;
-                            if (graph && graph.canRedo()) {
-                                graph.undo();
-                            }
-                        }}>重做</Button>,
-                        <Button onClick={() => {
-                            axios.post('/api/mes/asm-system/bbs/v1/common/accounts/employee/access-token', {
-                                "loginName": "admin",
-                                "password": "1234@qwer"
-                            }).then(res => {
-                                debugger
-                                TokenUtil.setTokenToLocal(res.data.data.accessToken);
-                                message.success(res.data.data.accessToken)
-                            }).catch(err => message.error(err.toString()))
-                        }}
-                        >获取权限</Button>
-                    ]}
+                    // toolElements={[
+                        // <Button onClick={() => {
+                        //     axios.post('/api/mes/asm-system/bbs/v1/common/accounts/employee/access-token', {
+                        //         "loginName": "admin",
+                        //         "password": "1234@qwer"
+                        //     }).then(res => {
+                        //         debugger
+                        //         TokenUtil.setTokenToLocal(res.data.data.accessToken);
+                        //         message.success(res.data.data.accessToken)
+                        //     }).catch(err => message.error(err.toString()))
+                        // }}
+                        // >获取权限</Button>
+                    // ]}
                     graphJson={graphJson}
-                    // config={config}
-                    createEdge={createEdge}
-                    onSave={handleSave}
-                    onGraphInsChange={v => setGraph(v)}
+
+                // createEdge={createEdge}
+                // onGraphInsChange={v => setGraph(v)}
                 />
             </Spin>
         </div >

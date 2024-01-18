@@ -15,10 +15,12 @@ interface IFormRenderProps {
     config: any
     values?: any
     onSubmit?: any
-    // config: Schema
+    isStatic?: boolean
 }
 const FormRender = (props: IFormRenderProps) => {
     const editorCtx = useContext(EditorContext);
+    const [config, setConfig] = useState(props?.config);
+    const [values, setValues] = useState(props?.values);
     const { logic } = editorCtx;
     const [amisScoped, setAmisScoped] = useState();
     function handleBroadcast(type: string, rawEvent: any, data: any) {
@@ -34,23 +36,37 @@ const FormRender = (props: IFormRenderProps) => {
      */
     useEffect(() => {
         if (props.config && props.config.body) {
-            const form = props.config.body[0];
-            form.body?.forEach(element => {
+            const formConfig = props.config.body[0];
+            formConfig.body?.forEach(element => {
                 console.log('deal editor autotip');
                 findEditorItem(element)
             });
+            // if (props.isStatic == true) {
+            //     props.config.body[0].static = true;
+            //     props.config.body[0].actions = [];
+            // }
+            const form = amisScoped?.getComponentByName('page1.form1');
+            form?.props.store.clear()
+            setConfig(props.config);
         }
         // const form = amisScoped?.getComponentByName('page1.form1');
         // form?.props.store.clear()
     }, [props.config])
+
+    useEffect(() => {
+        const form = amisScoped?.getComponentByName('page1.form1');
+        form?.props.store.clear()
+        form?.props.store.setValues(props.values)
+    }, [config])
     /**
      * 配置变更时
      */
     useEffect(() => {
         const form = amisScoped?.getComponentByName('page1.form1');
-        console.log('update values', props.values)
+        // console.log('update values', props.values)
         form?.props.store.clear()
         form?.props.store.setValues(props.values)
+        setValues(props.values)
     }, [props.values])
 
     const [monaco, setMonaco] = useState();
@@ -124,10 +140,10 @@ const FormRender = (props: IFormRenderProps) => {
             <AlertComponent theme={'cxd'} key="alert" locale={'zh-CN'} />
             {
                 renderAmis(
-                    props?.config,
+                    config,
                     {
                         onBroadcast: handleBroadcast,
-                        // data: props.values,
+                        data: values,
                         // props...
                         // locale: 'en-US' // 请参考「多语言」的文档
                         scopeRef: (ref: any) => (setAmisScoped(ref))  // 功能和前面 SDK 的 amisScoped 一样

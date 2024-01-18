@@ -13,12 +13,14 @@ interface IFormRenderByIdProps {
     formId: string
     values?: any
     onSubmit?: any
+    isStatic?: boolean
 }
 const FormRenderById = (props: IFormRenderByIdProps) => {
     const [formScheme, setFormScheme] = useState({ type: 'page' });
     const [container, setContainer] = useState<HTMLDivElement | null>(null);
     useEffect(() => {
-        getFormJson(props.formId).then(data => {
+        let formId = props.isStatic ? props.formId + '-static' : props.formId;
+        getFormJson(formId).then(data => {
             setFormScheme(data);
         })
     }, [props.formId])
@@ -26,9 +28,9 @@ const FormRenderById = (props: IFormRenderByIdProps) => {
     return (
         <div>
             <FormRender {...props} config={formScheme} />
-            <Affix offsetBottom={2} target={() => container} style={{ position: 'absolute', right: 16 }}>
+            {/* <Affix offsetBottom={2} target={() => container} style={{ position: 'absolute', right: 16 }}>
                 <Link to={`/set/design/form/${props.formId}`} target='_blank' >{<EditOutlined />}</Link>
-            </Affix>
+            </Affix> */}
         </div>
     );
 }

@@ -29,7 +29,8 @@ export class MESConvert {
                             productName: presetInput?.productName,
                             routeType: edgeType,
                             routeDetailDto: c.data.config,
-                            inputOutputRatio: edgeLabel
+                            inputOutputRatio: edgeLabel,
+                            groupTag: targetNode?.getAttrByPath('text/text')
                         })
                     })
                 } else if (sourceNode?.getChildCount() > 0) {
@@ -44,7 +45,8 @@ export class MESConvert {
                             productName: presetInput?.productName,
                             routeType: edgeType,
                             routeDetailDto: c.data.config,
-                            inputOutputRatio: edgeLabel
+                            inputOutputRatio: edgeLabel,
+                            groupTag: sourceNode?.getAttrByPath('text/text')
                         })
                     })
                 } else {

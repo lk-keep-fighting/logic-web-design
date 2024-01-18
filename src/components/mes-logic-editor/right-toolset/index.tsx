@@ -7,6 +7,7 @@ interface IRightToolset {
   editNode: any;
   onSubmit: any;
   onClear: any;
+  isStatic?: boolean;
   logs?: any[];
   isCollapsed: boolean,
   configSchemaProvider?: (type: string) => Promise<Schema>;
@@ -39,6 +40,7 @@ function RightToolset(props: IRightToolset) {
   return (
     <div style={{ margin: 0, height: '95vh', overflowY: 'scroll' }}>
       <NodeData
+        isStatic={props.isStatic}
         editNode={props.editNode}
         onSubmit={props.onSubmit} />
       {props?.isCollapsed ? '' : <Button
@@ -50,7 +52,6 @@ function RightToolset(props: IRightToolset) {
       >
         x
       </Button>}
-
     </div>
   );
 }
