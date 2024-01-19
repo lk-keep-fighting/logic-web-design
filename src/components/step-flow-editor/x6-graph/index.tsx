@@ -579,6 +579,8 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
   };
   //处理表单提交
   handleSubmit = (v: any) => {
+    // this.setState({ editingNode: { ...this.state.editingNode, data: { ...v } } })
+    this.state.editingNode?.setData(v);
     //自动保存整个配置文件
     this.saveAndConvertGraphToDsl();
   };
@@ -851,7 +853,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
               <DagreGraph
                 ref={this.refContainer}
               />
-            <div className="app-minimap" ref={this.refMiniMapContainer} />
+              <div className="app-minimap" ref={this.refMiniMapContainer} />
             </Layout.Content>
           </Layout>
           <Layout.Sider

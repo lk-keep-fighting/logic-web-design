@@ -73,8 +73,12 @@ export default defineConfig({
           component: "logic-viewer"
         },
         {
+          path: "/assets/logic/biz/i/:id/edit",
+          component: "logic-flow/biz/logic-editor",
+        },
+        {
           path: "/assets/logic/process/i/:id/edit",
-          component: "process-logic/logic-editor",
+          component: "logic-flow/process/logic-editor",
         }],
     },
     { path: "/debug/logic/instance/:id", layout: false, component: "logic-debug" },
@@ -84,12 +88,12 @@ export default defineConfig({
     {
       path: "/ext/mes/process/edit",
       layout: false,
-      component: "process-logic/logic-editor",
+      component: "logic-flow/process/logic-editor",
     },
     {
       path: "/ext/mes/process/view",
       layout: false,
-      component: "process-logic/logic-viewer",
+      component: "logic-flow/process/logic-viewer",
     }
   ],
   npmClient: 'pnpm',

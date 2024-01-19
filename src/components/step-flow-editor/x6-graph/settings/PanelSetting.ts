@@ -1,8 +1,8 @@
-import { PresetNodes, getPresetNode } from '@/components/logic-editor/PresetNodes';
+import { PresetNodes, getPresetNode } from '@/components/logic-editor/nodes/PresetNodes';
 import { StepTypeEnum } from '../../../step-flow-core/types';
-import { ports } from '@/components/logic-editor/Consts';
+import { ports } from '@/components/logic-editor/settings/Consts';
 import { DefaultShapeExt } from './DefaultSharpExt';
-import LogicNodeConfig from '@/components/logic-editor/LogicNodeConfig';
+import LogicNodeConfig from '@/components/logic-editor/types/LogicNodeConfig';
 export function InitPanelData(
   customNodes?: any[],
   customGroup?: any[],
@@ -436,6 +436,36 @@ export function InitPanelData(
       groups: ['ctrl'],
     },
     {
+      shape: 'polygon',
+      x: 600,
+      y: 70,
+      width,
+      height,
+      points: '0,10 10,0 20,10 10,20',
+      attrs: {
+        body: {
+          ...commonAttrs.body,
+        },
+        text: {
+          text: 'if判断',
+          fontSize: 14,
+          // fill: '#5F95FF',
+          refX: 0.5,
+          refY: '100%',
+          refY2: 4,
+          textAnchor: 'middle',
+          textVerticalAnchor: 'top',
+        },
+      },
+      ports,
+      data: {
+        config: {
+          type: 'if',
+        },
+      },
+      groups: ['ctrl'],
+    },
+    {
       shape: 'ExtSharp',
       width,
       height,
@@ -558,7 +588,7 @@ export function InitPanelData(
     {
       name: 'ctrl',
       title: '逻辑控制',
-      graphHeight: 220,
+      graphHeight: 330,
     },
     {
       name: 'biz',

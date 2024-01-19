@@ -1,5 +1,5 @@
 import { Graph, Node } from "@antv/x6";
-import { ports } from "@/components/logic-editor/Consts";
+import { ports } from "@/components/logic-editor/settings/Consts";
 
 /**
  * 

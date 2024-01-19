@@ -4,7 +4,7 @@ import { StringNode } from "../ext-shape/string";
 import { NumNode } from "../ext-shape/num";
 import { SwitchCaseNode } from "../ext-shape/swtich-case";
 import { SwitchNode } from "../ext-shape/swtich";
-import { portsOnBottom } from "@/components/logic-editor/Consts";
+import { portsOnBottom } from "@/components/logic-editor/settings/Consts";
 import { SwitchDefaultNode } from "../ext-shape/swtich-default";
 
 export function RegistShape(customSharps: any[]) {

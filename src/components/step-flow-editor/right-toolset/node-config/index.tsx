@@ -22,7 +22,8 @@ export default (props: INodeEditorProps) => {
         // props.editNode.data.config = { ...preConfig, ...formData };
         console.log('submit---props.editNode.data.config');
         console.log(props.editNode?.data.config);
-        props?.onSubmit();
+        let newData = { config: { ...preConfig, ...formData } };
+        props?.onSubmit(newData);
     };
     const getValuesFromNode = (editNode: any) => {
         if (editNode && editNode.data) {
