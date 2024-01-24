@@ -1,7 +1,6 @@
 import { Button, Tabs, TabsProps } from 'antd';
 // import NodeData from './step-config';
 import NodeData from './node-config';
-import { Schema } from 'form-render';
 
 interface IRightToolset {
   editNode: any;
@@ -9,6 +8,7 @@ interface IRightToolset {
   onClear: any;
   isStatic?: boolean;
   logs?: any[];
+  jsTipMap?: Map<string, object>;
   isCollapsed: boolean,
 }
 function RightToolset(props: IRightToolset) {
@@ -17,6 +17,7 @@ function RightToolset(props: IRightToolset) {
       <NodeData
         isStatic={props.isStatic}
         editNode={props.editNode}
+        jsTipMap={props.jsTipMap}
         onSubmit={props.onSubmit} />
       {props?.isCollapsed ? '' : <Button
         type="text"

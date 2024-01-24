@@ -164,6 +164,7 @@ const ProcessLogicEditor = () => {
             <HeaderInfo></HeaderInfo>
             <Spin spinning={loading}>
                 <LogicFlowEditor
+
                     panelData={{
                         Nodes: [...panleNodes],
                         Shapes: [PresetShapes.get('ExtSharp')],

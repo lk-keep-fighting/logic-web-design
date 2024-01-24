@@ -6,6 +6,7 @@ interface INodeEditorProps {
     editNode: Cell | undefined;
     onSubmit: any;
     isStatic?: boolean;
+    jsTipMap?: Map<string, object>
 }
 
 export default (props: INodeEditorProps) => {
@@ -44,6 +45,7 @@ export default (props: INodeEditorProps) => {
             formId={configSchema}
             values={{ ...formData }}
             onSubmit={onSubmit}
+            jsTipMap={props.jsTipMap}
         />
     );
 };

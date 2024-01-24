@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import copy from 'copy-to-clipboard';
-import { Schema, render as renderAmis } from 'amis';
+import { render as renderAmis } from 'amis';
 import { ToastComponent, AlertComponent, alert, confirm, toast } from 'amis-ui';
 import React, { useContext, useEffect, useState } from 'react';
 import { TypeAnnotationParser } from '../step-flow-core/lasl/parser/type-annotation-parser';
@@ -11,17 +11,21 @@ import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
 import { TokenUtil } from '@/utils/tokenUtil';
+import { LogicEditorContext } from '../logic-editor/editor';
 interface IFormRenderProps {
     config: any
     values?: any
     onSubmit?: any
     isStatic?: boolean
+    // jsTipMap?: Map<string, object>
 }
 const FormRender = (props: IFormRenderProps) => {
     const editorCtx = useContext(EditorContext);
+    const logicEditorCtx = useContext(LogicEditorContext);
     const [config, setConfig] = useState(props?.config);
     const [values, setValues] = useState(props?.values);
     const { logic } = editorCtx;
+    const jsTips = logicEditorCtx?.jsTips;
     const [amisScoped, setAmisScoped] = useState();
     function handleBroadcast(type: string, rawEvent: any, data: any) {
         if (type === 'formSubmited') {
@@ -41,10 +45,7 @@ const FormRender = (props: IFormRenderProps) => {
                 console.log('deal editor autotip');
                 findEditorItem(element)
             });
-            // if (props.isStatic == true) {
-            //     props.config.body[0].static = true;
-            //     props.config.body[0].actions = [];
-            // }
+
             const form = amisScoped?.getComponentByName('page1.form1');
             form?.props.store.clear()
             setConfig(props.config);
@@ -75,22 +76,28 @@ const FormRender = (props: IFormRenderProps) => {
             element.editorDidMount = (editor, monaco) => {
                 setMonaco(monaco);
                 // editor.theme = 'vs-dark';
-                if (logic) {
-                    console.log('editor autotip by logic');
-                    const varsJson = TypeAnnotationParser.getJsonByParams(logic.variables ?? [])
-                    const vars = buildVarExtarLibByObj('_var', varsJson)
-                    const inputJson = TypeAnnotationParser.getJsonByParams(logic.params ?? []);
-                    const input = buildVarExtarLibByObj('_par', inputJson)
-                    const returnJson = TypeAnnotationParser.getJsonByParams(logic.returns ?? []);
-                    const returnp = buildVarExtarLibByObj('_ret', returnJson)
-                    const envJson = TypeAnnotationParser.getJsonByParams(logic.envs ?? []);
-                    const env = buildVarExtarLibByObj('_env', envJson)
+                // if (logic) {
+                //     console.log('editor autotip by logic');
+                //     const varsJson = TypeAnnotationParser.getJsonByParams(logic.variables ?? [])
+                //     const vars = buildVarExtarLibByObj('_var', varsJson)
+                //     const inputJson = TypeAnnotationParser.getJsonByParams(logic.params ?? []);
+                //     const input = buildVarExtarLibByObj('_par', inputJson)
+                //     const returnJson = TypeAnnotationParser.getJsonByParams(logic.returns ?? []);
+                //     const returnp = buildVarExtarLibByObj('_ret', returnJson)
+                //     const envJson = TypeAnnotationParser.getJsonByParams(logic.envs ?? []);
+                //     const env = buildVarExtarLibByObj('_env', envJson)
 
-                    monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
-                    monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');
-                    monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
-                    monaco?.languages.typescript.javascriptDefaults.addExtraLib(env, 'env.ts');
-                    monaco?.languages.typescript.javascriptDefaults.addExtraLib('let _lastRet:{}', 'lastRet.ts');
+                //     monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
+                //     monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');
+                //     monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
+                //     monaco?.languages.typescript.javascriptDefaults.addExtraLib(env, 'env.ts');
+                //     monaco?.languages.typescript.javascriptDefaults.addExtraLib('let _lastRet:{}', 'lastRet.ts');
+                // }
+                if (jsTips) {
+                    Object.keys(jsTips).forEach(k => {
+                        const tipJson = buildVarExtarLibByObj(k, JSON.parse(jsTips[k]))
+                        monaco?.languages.typescript.javascriptDefaults.addExtraLib(tipJson, `${k}.ts`);
+                    })
                 }
                 return () => {
                     console.log('effect dispose')
@@ -111,24 +118,30 @@ const FormRender = (props: IFormRenderProps) => {
      * 追加全局js编辑器自动提示
      */
     useEffect(() => {
-        if (logic) {
-            console.log('monaco editor autotip by logic');
-            const varsJson = TypeAnnotationParser.getJsonByParams(logic.variables ?? [])
-            const vars = buildVarExtarLibByObj('_var', varsJson)
-            const inputJson = TypeAnnotationParser.getJsonByParams(logic.params ?? []);
-            const input = buildVarExtarLibByObj('_par', inputJson)
-            const returnJson = TypeAnnotationParser.getJsonByParams(logic.returns ?? []);
-            const returnp = buildVarExtarLibByObj('_ret', returnJson)
-            const envJson = TypeAnnotationParser.getJsonByParams(logic.envs ?? []);
-            const env = buildVarExtarLibByObj('_env', envJson)
+        if (jsTips) {
+            Object.keys(jsTips).forEach(k => {
+                const tipJson = buildVarExtarLibByObj(k, JSON.parse(jsTips[k]))
+                monaco?.languages.typescript.javascriptDefaults.addExtraLib(tipJson, `${k}.ts`);
+            })
 
-            monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
-            monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');
-            monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
-            monaco?.languages.typescript.javascriptDefaults.addExtraLib(env, 'env.ts');
-            monaco?.languages.typescript.javascriptDefaults.addExtraLib('let _lastRet:{}', 'lastRet.ts');
+            // console.log('monaco editor autotip by jsTipMap');
+            // const varsJson = TypeAnnotationParser.getJsonByParams(logic.variables ?? [])
+            // const vars = buildVarExtarLibByObj('_var', varsJson)
+            // const inputJson = TypeAnnotationParser.getJsonByParams(logic.params ?? []);
+            // const input = buildVarExtarLibByObj('_par', inputJson)
+            // const returnJson = TypeAnnotationParser.getJsonByParams(logic.returns ?? []);
+            // const returnp = buildVarExtarLibByObj('_ret', returnJson)
+            // const envJson = TypeAnnotationParser.getJsonByParams(logic.envs ?? []);
+            // const env = buildVarExtarLibByObj('_env', envJson)
+
+            // monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
+            // monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');
+            // monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
+            // monaco?.languages.typescript.javascriptDefaults.addExtraLib(env, 'env.ts');
+            // monaco?.languages.typescript.javascriptDefaults.addExtraLib('let _lastRet:{}', 'lastRet.ts');
         }
-    }, [logic, logic?.params, logic?.variables, logic?.returns, logic?.envs])
+        // }, [logic, logic?.params, logic?.variables, logic?.returns, logic?.envs, props.jsTipMap])
+    }, [jsTips])
     return (
         <div>
             < ToastComponent

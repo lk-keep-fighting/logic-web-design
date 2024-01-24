@@ -8,6 +8,7 @@ import { Snapline } from '@antv/x6-plugin-snapline';
 import { Stencil } from '@antv/x6-plugin-stencil';
 import { Scroller } from '@antv/x6-plugin-scroller'
 import { Export } from '@antv/x6-plugin-export'
+import { MiniMap } from '@antv/x6-plugin-minimap'
 import { Layout, Space, message } from 'antd';
 import './index.css';
 import RightPanel from '@/components/logic-editor/panel/right-panel';
@@ -15,7 +16,9 @@ import DagreGraph from '@/components/logic-editor/graph/dagre-graph';
 import { dealGraphNodeWhenAddedFromPanel } from '@/components/logic-editor/nodes/node-mapping';
 import { Transform } from '@antv/x6-plugin-transform';
 import LogicNodeConfig from '@/components/logic-editor/types/LogicNodeConfig';
+import { LogicEditorCtx } from '../types/LogicEditorCtx';
 
+type EdgeToolTypes = 'button-remove' | 'edge-editor' | 'vertices' | 'segments' | undefined;
 class EditorProps {
   constructor() {
     this.toolElements = []
@@ -24,7 +27,11 @@ class EditorProps {
     }
     this.showLeft = true;
     this.showRight = false;
+    this.editorCtx = {
+      jsTips: {}
+    };
   }
+  editorCtx?: LogicEditorCtx;
   graphIns: Graph | undefined;
   onGraphInsChange?: ((graph: Graph) => void) | undefined;
   name?: string;
@@ -38,13 +45,15 @@ class EditorProps {
   };
   isStatic?: boolean;
   graphJson?: Object;
+  jsTipMap?: Map<string, object>;
   createEdge?: () => Edge;
-  configSchemaProvider?: (type: string) => Promise<Schema>;
+  edgeTools?: EdgeToolTypes[];
   onGraphJsonEmpty?: (graph: Graph) => void;
   autoLayout?: (graph: Graph) => void
   onSave?: (graph: Graph) => void;
   // readyCallback?: (graph: Graph, flowRunner: FlowRunner) => void;
 }
+export const LogicEditorContext = React.createContext<LogicEditorCtx>({})
 // 控制连接桩显示/隐藏
 const showPorts = (ports: NodeListOf<SVGElement>, show: boolean) => {
   for (let i = 0, len = ports.length; i < len; i += 1) {
@@ -58,13 +67,14 @@ const Editor = (props: EditorProps) => {
   const [panel, setPanel] = useState<EditorProps['panelData']>(props.panelData);
   const [refStencil, setRefStencil] = useState<HTMLDivElement>();
   const [refContainer, setRefContainer] = useState<HTMLDivElement>();
+  const [refMiniMapContainer, setRefMiniMapContainer] = useState<HTMLDivElement>();
   const [graph, setGraph] = useState<Graph>(props.graphIns);
   const [stencilIns, setStencilIns] = useState<Stencil>();
   useEffect(() => {
     try {
       if (props.panelData?.Shapes) {
         props.panelData?.Shapes.forEach((v) => {
-          console.log('注册新节点:' + v.name);
+          console.log('图内部注册新节点:' + v.name);
           Graph.registerNode(v.name, v.config, true);
         });
       }
@@ -199,7 +209,10 @@ const Editor = (props: EditorProps) => {
           restrict: false,
           preserveAspectRatio: false,
         },
-      }),);
+      }),)
+      .use(new MiniMap({
+        container: refMiniMapContainer,
+      }));
     graph.on('edge:dblclick', ({ cell }) => {
       // this.setState({ openEdgeEditor: true, editingEdge: cell })
     });
@@ -216,30 +229,72 @@ const Editor = (props: EditorProps) => {
     )
 
     graph.on('edge:mouseenter', ({ cell }) => {
-      cell.addTools([
-        // {
-        //   name: 'button-remove',
-        //   args: { distance: -40 },
-        // },
-        // {
-        //     name: "source-arrowhead",
-        //     args: {
-        //         attrs: {
-        //             fill: "red",
-        //             visibility: "hidden"
-        //         },
-        //     },
-        // },
-        // {
-        //     name: "target-arrowhead",
-        //     args: {
-        //         attrs: {
-        //             fill: "red",
-        //             visibility: "hidden"
-        //         },
-        //     },
-        // },
-      ])
+      if (props.edgeTools)
+        props.edgeTools.forEach(t => {
+          switch (t) {
+            case 'edge-editor':
+              // if (!cell.hasTool('edge-editor'))
+                // cell.addTools([
+                //   {
+                //     name: 'edge-editor', args: {
+                //       attrs: {
+                //         backgroundColor: '#fff',
+                //         getText: 'text',
+                //         setText: 'text',
+                //       }
+                //     }
+                //   },
+                // ])
+              break;
+            case 'button-remove':
+              cell.addTools([
+                {
+                  name: 'button-remove',
+                  args: {
+                    attrs: {
+                      fill: '#fff',
+                      stroke: '#fff',
+                      r: 10,
+                      cursor: 'pointer',
+                    },
+                  },
+                },
+              ])
+              break;
+            case 'segments':
+              cell.addTools(['segments'])
+              break;
+            case 'vertices':
+              cell.addTools(['vertices'])
+              break;
+            default:
+              break;
+          }
+        })
+      // cell.addTools([
+      // {
+      //   name: 'button-remove',
+      //   args: { distance: -40 },
+      // },
+      // {
+      //     name: "source-arrowhead",
+      //     args: {
+      //         attrs: {
+      //             fill: "red",
+      //             visibility: "hidden"
+      //         },
+      //     },
+      // },
+      // {
+      //     name: "target-arrowhead",
+      //     args: {
+      //         attrs: {
+      //             fill: "red",
+      //             visibility: "hidden"
+      //         },
+      //     },
+      // },
+      // ])
       // const ports = this.container?.querySelectorAll(
       //   '.x6-port-body',
       // ) as NodeListOf<SVGElement>;
@@ -247,7 +302,10 @@ const Editor = (props: EditorProps) => {
     });
 
     graph.on('edge:mouseleave', ({ cell }) => {
-      // cell.removeTools();
+      cell.removeTools();
+      // cell.removeTool('button-remove')
+      // cell.removeTool('segments');
+      // cell.removeTool('vertices');
       // const ports = this.container?.querySelectorAll(
       //   '.x6-port-body',
       // ) as NodeListOf<SVGElement>;
@@ -354,6 +412,7 @@ const Editor = (props: EditorProps) => {
     });
     graph.on('blank:dblclick', ({ e, x, y }) => {
       console.log('blank:dbclick', x, y);
+      if (props.autoLayout) props.autoLayout(graph);
     })
 
     // zoom
@@ -441,35 +500,39 @@ const Editor = (props: EditorProps) => {
     }
   }, [props.toolElements])
   return (
-    <Layout style={{ height: '100vh', width: '100%', margin: 0 }}>
-      <Layout.Sider
-        theme="light"
-        collapsed={leftToolCollapsed}
-        collapsedWidth={0}
-        width={250}
-        ref={v => setRefStencil(v)}
-      >
-      </Layout.Sider>
-      <Layout style={{ height: '100vh' }}>
-        {renderTool}
-        <Layout.Content className="app-content">
-          <DagreGraph ref={v => setRefContainer(v)} />
-        </Layout.Content>
-      </Layout>
-      <Layout.Sider
-        theme="light"
-        collapsed={rightToolCollapsed}
-        collapsedWidth={0}
-        width={600} >
-        <RightPanel
-          isStatic={props.isStatic}
-          editNode={editingNode}
-          onSubmit={handleSave}
-          onClose={() => { setRightToolCollapsed(true); }}
-          isCollapsed={rightToolCollapsed}
-        />
-      </Layout.Sider>
-    </Layout >
+    <LogicEditorContext.Provider value={props.editorCtx}>
+      <Layout style={{ height: '100vh', width: '100%', margin: 0 }}>
+        <Layout.Sider
+          theme="light"
+          collapsed={leftToolCollapsed}
+          collapsedWidth={0}
+          width={250}
+          ref={v => setRefStencil(v)}
+        >
+        </Layout.Sider>
+        <Layout style={{ height: '100vh' }}>
+          {renderTool}
+          <Layout.Content className="app-content">
+            <DagreGraph ref={v => setRefContainer(v)} />
+            <div className="app-minimap" ref={v => setRefMiniMapContainer(v)} />
+          </Layout.Content>
+        </Layout>
+        <Layout.Sider
+          theme="light"
+          collapsed={rightToolCollapsed}
+          collapsedWidth={0}
+          width={600} >
+          <RightPanel
+            isStatic={props.isStatic}
+            editNode={editingNode}
+            onSubmit={handleSave}
+            jsTipMap={props.jsTipMap}
+            onClose={() => { setRightToolCollapsed(true); }}
+            isCollapsed={rightToolCollapsed}
+          />
+        </Layout.Sider>
+      </Layout >
+    </LogicEditorContext.Provider>
   );
 }
 export default Editor;

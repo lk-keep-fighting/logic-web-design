@@ -7,6 +7,7 @@ interface IFormRenderByIdProps {
     values?: any
     onSubmit?: any
     isStatic?: boolean
+    jsTipMap?: Map<string, object>
 }
 const FormRenderById = (props: IFormRenderByIdProps) => {
     const [formScheme, setFormScheme] = useState({ type: 'page' });

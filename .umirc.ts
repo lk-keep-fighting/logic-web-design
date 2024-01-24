@@ -66,7 +66,7 @@ export default defineConfig({
       routes: [
         {
           path: "/assets/logic/i/:id/edit",
-          component: "logic-editor",
+          component: "logic-flow/biz/logic-editor",
         },
         {
           path: "/assets/logic/i/:id/view/:version",
