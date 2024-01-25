@@ -316,7 +316,7 @@ const DebugLog = (props: DebugProps) => {
       label: '入出参',
       children: <FormRenderById
         formId='debug-log'
-        values={curItemLog}
+        values={{ returnData: curItemLog?.returnData, paramsJson: curItemLog?.paramsJson, body: curItemLog?.configInstance?.body }}
         onSubmit={() => { }}
       />
     }
@@ -328,7 +328,16 @@ const DebugLog = (props: DebugProps) => {
         onSubmit={() => { }}
         editNode={selectedNode}
       />
-    }
+    },
+    // {
+    //   key: 'configIns',
+    //   label: '节点实例',
+    //   children: <FormRenderById
+    //     formId='debug-config-ins'
+    //     values={curItemLog?.configInstance}
+    //     onSubmit={() => { }}
+    //   />
+    // }
   ]
   return <Layout style={{ margin: 0, height: '100vh' }}>
     <Layout.Sider

@@ -129,7 +129,8 @@ export default defineConfig({
     },
     '/api/runtime': {
       // 'target': 'http://localhost:18080',
-      'target': 'http://localhost:4052',
+      // 'target': 'http://localhost:4052',
+      'target': 'http://192.168.153.18:31001',
       // 'target': 'http://localhost:8080',
       // 'target': 'http://192.168.154.51:4054',
       // 'target': 'http://192.168.44.87:4052',
@@ -143,7 +144,8 @@ export default defineConfig({
     },
     '/api/ide': {
       // 'target': 'http://localhost:18080',
-      'target': 'http://localhost:4052',
+      // 'target': 'http://localhost:4052',
+      'target': 'http://192.168.153.18:31001',
       // 'target': 'http://192.168.154.51:4054',
       // 'target': 'http://192.168.44.87:4052',
       'changeOrigin': true,
