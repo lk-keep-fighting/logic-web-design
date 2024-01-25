@@ -27,17 +27,18 @@ export default (props: INodeEditorProps) => {
         if (props.editNode && props.editNode.data) {
             let config = props.editNode.data.config || {};
             setConfigSchema(props.editNode.data.configSchema || config.type);
-
         }
     }, [props.editNode]);
 
     useEffect(() => {
-        let config = props.editNode?.data.config || {};
-        let formData = { ...config };
-        let nodeAttr = props.editNode?.attrs;
-        if (nodeAttr && nodeAttr.text && nodeAttr.text.text)
-            formData.name = nodeAttr.text.text;
-        setFormData(formData)
+        if (props.editNode?.data) {
+            let config = props.editNode?.data.config || {};
+            let formData = { ...config };
+            let nodeAttr = props.editNode?.attrs;
+            if (nodeAttr && nodeAttr.text && nodeAttr.text.text)
+                formData.name = nodeAttr.text.text;
+            setFormData(formData)
+        }
     }, [props.editNode?.data])
     return (
         <FormRenderById

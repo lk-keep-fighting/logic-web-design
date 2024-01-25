@@ -100,11 +100,16 @@ const FormRender = (props: IFormRenderProps) => {
                     })
                 }
                 return () => {
-                    console.log('effect dispose')
-                    // @ts-ignore
-                    editor?.dispose();
-                    editor?.current?.dispose();
-                    monaco?.current?.dispose();
+                    try {
+                        console.log('effect dispose')
+                        // @ts-ignore
+                        editor?.dispose();
+                        editor?.current?.dispose();
+                        monaco?.current?.dispose();
+                    } catch (error) {
+                        console.error('error in findEditorItem')
+                        console.error(error)
+                    }
                 }
             }
         } else if (element.body) {

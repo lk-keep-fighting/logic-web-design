@@ -35,7 +35,7 @@
     "amis-editor": "^5.6.2",
     "amis-editor-core": "^5.6.2",
     "amis-ui": "^3.5.3",
-    "antd": "^5.4.0",
+    "antd": "^5.10.0",
     "axios": "^1.4.0",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.10",

@@ -5,7 +5,7 @@ import { Keyboard } from '@antv/x6-plugin-keyboard';
 import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { Scroller } from '@antv/x6-plugin-scroller'
-import { Button, Divider, Layout, Space, Tabs, TabsProps, Timeline, TimelineItemProps, Typography } from 'antd';
+import { Button, Divider, Flex, Input, Layout, Space, Tabs, TabsProps, Timeline, TimelineItemProps, Typography } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import './index.css';
 // import { InitPanelData } from '@/components/step-flow-editor/x6-graph/settings/PanelSetting';
@@ -16,8 +16,11 @@ import { Logic, LogicItem } from '@/components/step-flow-core/lasl/meta-data';
 import { JsonView } from 'amis';
 import { InitPanelData } from '../../settings/PanelSetting';
 import { RegistShape } from '../../settings/InitGraph';
-import DagreGraph from '../../instance/dagre-graph';
 import { autoDagreLayout } from '../../layout/dagreLayout';
+import DagreGraph from '@/components/logic-editor/graph/dagre-graph';
+import NodeConfig from '@/components/logic-editor/panel/right-panel/node-config';
+import { TextArea } from 'form-render';
+import FormRenderById from '@/components/form-render/render-by-form-id';
 
 type EditorCtx = {
   logic: Logic,
@@ -26,24 +29,6 @@ export const EditorContext = React.createContext<EditorCtx>({
   logic: new Logic('')
 })
 
-// 控制连接桩显示/隐藏
-type StateType = {
-  editingNode?: Node;
-  openEdgeEditor: boolean;
-  editingEdge?: Edge;
-  graph?: Graph;
-  leftToolCollapsed: boolean;
-  rightToolCollapsed: boolean;
-  openFlowSetting: boolean;
-  openRunLogic: boolean;
-  editorCtx: EditorCtx;
-  // flowRunner: FlowRunner;
-  logs: any[];
-  panel: {
-    nodes: any[],
-    groups: any[],
-  };
-};
 interface ItemLog {
   name: string, paramsJson: object, config: LogicItem
 }
@@ -115,7 +100,6 @@ const DebugLog = (props: DebugProps) => {
         items.push({
           children: <><span style={{ cursor: 'pointer', fontWeight: v.id == curLog?.id ? 'bolder' : 'normal', color: v.id == curLog?.id ? '#52c41a' : 'black' }} onClick={() => {
             setCurLog(v);
-            console.log(v);
             graph?.fromJSON(logic?.visualConfig);
             // graph?.fitToContent();
             let lastNode: Node;
@@ -147,6 +131,7 @@ const DebugLog = (props: DebugProps) => {
             setSelectedNode({});
             // autoDagreLayout(graph);
           }} ><p>{v.itemLogs[0]?.config.name}</p>
+            <p>{v.serverTime}</p>
             {props.logicIns?.version == v.version ? <p></p> : <p>
               <Space>
                 <Typography.Paragraph style={{ color: 'red' }}>版本号:</Typography.Paragraph>
@@ -155,8 +140,6 @@ const DebugLog = (props: DebugProps) => {
                 </Typography.Paragraph>
               </Space>
             </p>}
-            <p>业务标识：{v.bizId}</p>
-            <p>{v.serverTime}</p>
             <p>{v.message}</p></span></>,
           color: v.success ? 'green' : 'red'
         })
@@ -329,19 +312,23 @@ const DebugLog = (props: DebugProps) => {
   }
   const tabItems: TabsProps['items'] = [
     {
-      key: '1',
-      label: '日志',
-      children: <JsonView src={curItemLog} levelExpand={0} />
-      // children: <JSONSchemaEditor value={curItemLog} />
+      key: 'inout',
+      label: '入出参',
+      children: <FormRenderById
+        formId='debug-log'
+        values={curItemLog}
+        onSubmit={() => { }}
+      />
     }
-    // ,
-    // {
-    //   key: '2',
-    //   label: '节点配置',
-    //   children: <NodeData
-    //     editNode={selectedNode}
-    //   />
-    // }
+    ,
+    {
+      key: 'config',
+      label: '节点配置',
+      children: <NodeConfig
+        onSubmit={() => { }}
+        editNode={selectedNode}
+      />
+    }
   ]
   return <Layout style={{ margin: 0, height: '100vh' }}>
     <Layout.Sider
@@ -391,18 +378,15 @@ const DebugLog = (props: DebugProps) => {
             height: 64,
           }}
         /> */}
-        <Space direction="horizontal" style={{}}>
-          <Divider type='vertical' />
-          {/* <Button icon={<PlayCircleTwoTone />} onClick={() => {
+        {/* <Space direction="horizontal" style={{}}> */}
+        {/* <Divider type='vertical' /> */}
+        {/* <Button icon={<PlayCircleTwoTone />} onClick={() => {
             setInterval(() => {
               replayLogs();
             }, 1000)
           }}></Button> */}
-          {props.btns?.map(b => b)}
-          {/* <Button onClick={() => {
-            // this.state.graph?.getNodes()[2].attr('body/fill', 'red');
-          }}></Button> */}
-        </Space>
+        {props.btns?.map(b => b)}
+        {/* </Space> */}
         <Button
           type="text"
           icon={
@@ -436,23 +420,30 @@ const DebugLog = (props: DebugProps) => {
       collapsed={rightToolCollapsed}
       collapsedWidth={0}
       style={{ overflow: 'scroll' }}
-      title='ddd'
       width={500} >
+      <Tabs items={tabItems} defaultActiveKey="inout" />
       <Button
         type="text"
         onClick={() => {
           setRightToolCollapsed(!rightToolCollapsed)
         }}
         style={{
-          float: 'right',
+          position: 'absolute',
+          top: 0,
+          right: 0,
           fontSize: '16px',
           width: 64,
           height: 64,
         }}
+      // style={{
+      //   float: 'right',
+      //   fontSize: '16px',
+      //   width: 64,
+      //   height: 64,
+      // }}
       >
         x
       </Button>
-      <Tabs items={tabItems} defaultActiveKey="1" />
     </Layout.Sider>
   </Layout >
 }

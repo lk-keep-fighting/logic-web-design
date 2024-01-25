@@ -1,8 +1,8 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
-import { DebugLogic } from "@/components/step-flow-editor";
+import DebugLogic from "@/pages/logic-flow/biz/page/debugLog";
 import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicJsonByBak } from "@/services/ideSvc";
 import { CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/icons";
-import { Button, Divider, Space, Spin, Typography } from "antd";
+import { Button, Divider, Space, Spin, Typography, Flex } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 // import * as monaco from 'monaco-editor';
@@ -57,7 +57,8 @@ const LogicDebug = () => {
             <Spin spinning={loading}>
                 <DebugLogic
                     btns={[
-                        <Button onClick={() => {
+                        <Divider type='vertical' />,
+                        <Button type='primary' onClick={() => {
                             setLoading(true)
                             getLogicInstanceById(id).then(insRes => {
                                 if (insRes) {
@@ -81,6 +82,14 @@ const LogicDebug = () => {
                         <Divider type='vertical' />,
                         <span>待执行：{logicIns?.nextName}</span>,
                         <Divider type='vertical' />,
+                        <Space>业务标识：{logicIns?.bizId}<Typography.Text copyable={{ tooltips: ['点击复制', '复制成功!'], text: logicIns?.bizId }} /></Space>,
+                        <Divider type='vertical' />,
+                        <span style={{ color: 'red' }}>执行版本：</span>,
+                        <span>{logicIns?.version}<Typography.Text copyable={{ tooltips: ['点击复制', '复制成功!'], text: logicIns?.version }} /></span>,
+
+                        // <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'], text: logicIns?.bizId }} >业务标识：{logicIns?.bizId}</Typography.Paragraph>,
+                        // <Typography.Paragraph style={{ color: 'red' }}>执行版本:</Typography.Paragraph>,
+                        // <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'] }} >{logicIns?.version}</Typography.Paragraph>,
                         // <Button onClick={() => {
                         //     getLogicLogsByLogicIns(logicIns).then(res => {
                         //         if (res) {
@@ -92,18 +101,14 @@ const LogicDebug = () => {
                         //     刷新日志
                         // </Button>,
                         // <span >实例逻辑名称：{config?.name}</span>,
-                        <Space>
-                            <Typography.Paragraph style={{ color: 'red' }}>执行版本:</Typography.Paragraph>
-                            <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'] }} >{logicIns?.version}</Typography.Paragraph></Space>
                     ]}
                     nextId={logicIns?.nextId}
                     config={config}
                     logicIns={logicIns}
-                    configSchemaProvider={formProvider}
                     debugLogs={debugLogs}
                 />
-            </Spin>
-        </div>
+            </Spin >
+        </div >
     );
 };
 
