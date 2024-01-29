@@ -234,17 +234,17 @@ const Editor = (props: EditorProps) => {
           switch (t) {
             case 'edge-editor':
               // if (!cell.hasTool('edge-editor'))
-                // cell.addTools([
-                //   {
-                //     name: 'edge-editor', args: {
-                //       attrs: {
-                //         backgroundColor: '#fff',
-                //         getText: 'text',
-                //         setText: 'text',
-                //       }
-                //     }
-                //   },
-                // ])
+              // cell.addTools([
+              //   {
+              //     name: 'edge-editor', args: {
+              //       attrs: {
+              //         backgroundColor: '#fff',
+              //         getText: 'text',
+              //         setText: 'text',
+              //       }
+              //     }
+              //   },
+              // ])
               break;
             case 'button-remove':
               cell.addTools([
@@ -429,7 +429,7 @@ const Editor = (props: EditorProps) => {
       }
     });
     setGraph(graph);
-
+    
     if (panel) {
       const groups = panel.Groups;
       const stencil = new Stencil({
@@ -450,19 +450,19 @@ const Editor = (props: EditorProps) => {
       setStencilIns(stencil)
     }
 
-    if (props.graphJson) {
+    if (props.graphJson && Object.keys(props.graphJson).length > 0) {
       // setEditorCtx({
       //   ...editorCtx,
       //   logic: props.graphJson
       // });
       graph.fromJSON(props.graphJson);
-      graph.centerContent();
     } else {
       if (props.onGraphJsonEmpty)
         props.onGraphJsonEmpty(graph);
     }
     if (props.onGraphInsChange)
       props.onGraphInsChange(graph)
+    graph.centerContent();
     return graph;
   };
   useEffect(() => {

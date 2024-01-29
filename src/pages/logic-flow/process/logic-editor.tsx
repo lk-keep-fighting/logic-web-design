@@ -18,6 +18,11 @@ import { PresetShapes } from "@/components/logic-editor/shapes/PresetShapes";
 
 //http://localhost:4051/#/assets/logic/process/i/gy2/edit?prodCode=CPBM-23MFU2&prodName=%E5%B9%B3%E6%9D%BF%E7%BA%B8U2&matCode=QUF237&version=v1.2
 const mesService = new MesService();
+const startNode: LogicNodeConfig = getPresetNode('circle');
+startNode?.setConfigSchemel('start')
+startNode?.setConfigData({ name: 'start' })
+startNode?.setLabel('start');
+startNode.setGroups(['def']);
 const ProcessLogicEditor = () => {
     const [dsl, setDsl] = useState<ProcessInput>({});
     const [graphJson, setGraphJson] = useState({});
@@ -61,11 +66,11 @@ const ProcessLogicEditor = () => {
                 console.log(err)
             })
         let cusNodes = []
-        let startNode: LogicNodeConfig = getPresetNode('circle');
-        startNode?.setConfigSchemel('start')
-        startNode?.setConfigData({ name: 'start' })
-        startNode?.setLabel('start');
-        startNode.setGroups(['def']);
+        // let startNode: LogicNodeConfig = getPresetNode('circle');
+        // startNode?.setConfigSchemel('start')
+        // startNode?.setConfigData({ name: 'start' })
+        // startNode?.setLabel('start');
+        // startNode.setGroups(['def']);
         cusNodes.push(startNode);
         let endNode = getPresetNode('circle');
         endNode?.setConfigSchemel('end')
@@ -244,7 +249,7 @@ const ProcessLogicEditor = () => {
                         >获取权限</Button>
                     ]}
                     graphJson={graphJson}
-                    onGraphJsonEmpty={appendStartNode}
+                    // onGraphJsonEmpty={(g) => g.addNode(startNode._nodeConfig)}
                     createEdge={createEdge}
                     onSave={handleSave}
                     onGraphInsChange={v => setGraph(v)}
