@@ -1,0 +1,28 @@
+
+version: '3.9'
+
+networks:
+  docker-host:
+    driver: bridge
+services:
+  logic:
+    container_name: logic
+    restart: always
+    image: nginx:1.18
+    ports:
+      - "4051:80"
+    volumes:
+      - ./logic/conf.d:/etc/nginx/conf.d
+      - ./logic/html:/usr/share/nginx/html
+      - ./logic/logs:/var/log/nginx
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      - docker-host
+    deploy:
+      resources:
+        limits:
+          cpus: "8.00"
+          memory: 1G
+        reservations:
+          memory: 100M
