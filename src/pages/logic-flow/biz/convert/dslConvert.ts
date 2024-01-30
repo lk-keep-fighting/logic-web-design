@@ -6,6 +6,6 @@ export class BizDslConvert {
     graphToLogicDsl(graph: Graph | undefined, dsl?: Logic): Logic {
         let logic: Logic = GraphToLogic(dsl?.id, graph?.getCells());
         logic.visualConfig = graph?.toJSON();
-        return { ...dsl, ...logic }
+        return { ...dsl, visualConfig: logic.visualConfig, items: logic.items }
     }
 }
