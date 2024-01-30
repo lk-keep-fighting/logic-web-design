@@ -30,82 +30,9 @@ export class LogicParser {
     return logic;
 
   }
-  public static parseProcessFromX6GraphCells(cells: Cell.Properties[]): Logic | undefined {
-    const logic: Logic = new Logic();
-    const edges: Edge.Properties[] = [];
-    const nodes: Node.Properties[] = [];
-    const nodesDic: { [Key: string]: Node.Properties } = {};
-    let startNode = undefined;
-    //分组所有的节点与边
-    cells.forEach((v) => {
-      const id = v.id || '';
-      if (v.shape === 'edge') {
-        //边,当前无自定义边，当有自定义边时这里判断条件可能有问题
-        edges.push(v);
-      } else {
-        const attr: any = v.attrs;
-        nodesDic[id] = v;
-        nodes.push(v);
-        if (startNode == undefined) startNode = v;
-      }
-    });
-    buildProcessLogicItem(startNode, nodesDic, edges, logic.items);
-    return logic;
-
-  }
 }
 
 function buildLogicItem(
-  curNode: Cell.Properties,
-  nodesDic: { [Key: string]: Node.Properties },
-  edges: Cell.Properties[],
-  items: LogicItem[],
-) {
-  const nodeConfig = curNode.data.config;
-  const nodeType = nodeConfig.type;
-  const nextNodes = edges.flatMap((v) => {//通过边找到下一个节点
-    if (v.source.cell === curNode.id) {
-      // let edgeLabel = '';
-      // if (v.labels && v.labels.length > 0 && v.labels[0].attrs) {
-      //   edgeLabel = v.labels[0].attrs.label?.text;
-      // }
-      return nodesDic[v.target.cell];
-    } else {
-      return [];
-    }
-  });
-  const attr: any = curNode.attrs;
-  let item: LogicItem = new LogicItem(curNode.id ?? '', nodeType);
-  item = {
-    ...nodeConfig,
-    id: curNode.id,
-    name: attr?.text?.text,
-  };
-  if (items.findIndex((s) => s.id === item.id) > -1) return; //已经解析
-  items.push(item);
-  if (nextNodes.length === 0) return;
-  switch (nodeType) {
-    default:
-      if (nextNodes.length > 1 || item.type === 'switch') {
-        console.log(curNode.data?.config);
-        console.log(nextNodes);
-        item.branches = [];
-        nextNodes.forEach((n) => {
-          console.log(n.data?.config);
-          item.branches?.push({
-            when: n.data?.config?.case,
-            nextId: n.id,
-          });
-          buildLogicItem(nodesDic[n.id], nodesDic, edges, items);
-        });
-      } else {
-        item.nextId = nextNodes[0].id;
-        buildLogicItem(nodesDic[nextNodes[0].id], nodesDic, edges, items);
-      }
-      break;
-  }
-}
-function buildProcessLogicItem(
   curNode: Cell.Properties,
   nodesDic: { [Key: string]: Node.Properties },
   edges: Cell.Properties[],
@@ -187,37 +114,7 @@ export function GraphToLogic(
   console.log(logic.items)
   return logic;
 }
-export function GraphToProcessLogic(
-  logicId: string,
-  cells: Cell.Properties[],
-): Logic | undefined {
-  const logic: Logic = new Logic(logicId);
-  const edges: Edge.Properties[] = [];
-  const nodes: Node.Properties[] = [];
-  const nodesDic: { [Key: string]: Node.Properties } = {};
-  let startNode = undefined;
-  //分组所有的节点与边
-  cells.forEach((v) => {
-    const id = v.id || '';
-    if (v.shape === 'edge') {
-      //边,当前无自定义边，当有自定义边时这里可能有问题
-      edges.push(v);
-    } else {
-      const attr: any = v.attrs;
-      nodesDic[id] = v;
-      nodes.push(v);
-      if (startNode == undefined) startNode = v;
-    }
-  });
-  if (!startNode) {
-    message.error('未发现开始节点，请配置！');
-    return undefined;
-  }
-  buildProcessLogicItem(startNode, nodesDic, edges, logic.items);
-  console.log('logic.items')
-  console.log(logic.items)
-  return logic;
-}
+
 //未完成
 export function LogicToGraph(logic: Logic): Cell.Properties[] {
   const cells: Cell.Properties[] = [];

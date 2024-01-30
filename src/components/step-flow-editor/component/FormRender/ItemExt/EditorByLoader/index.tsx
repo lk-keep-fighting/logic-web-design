@@ -3,7 +3,7 @@ import { EditorContext } from '../../../../x6-graph/index';
 import { Button } from 'antd';
 import Modal from 'antd/es/modal/Modal';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { buildVarExtarLibByObj } from '../../../MonacoHelper';
+import { buildVarExtarLibByObj } from '../../../../../monaco-helper';
 import './index.css'
 import { ArrowsAltOutlined } from '@ant-design/icons';
 import { TypeAnnotationParser } from '@/components/step-flow-core/lasl/parser/type-annotation-parser';

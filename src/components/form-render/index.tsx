@@ -2,11 +2,9 @@
 import axios from 'axios';
 import copy from 'copy-to-clipboard';
 import { render as renderAmis } from 'amis';
-import { ToastComponent, AlertComponent, alert, confirm, toast } from 'amis-ui';
+import { ToastComponent, AlertComponent, toast } from 'amis-ui';
 import React, { useContext, useEffect, useState } from 'react';
-import { TypeAnnotationParser } from '../step-flow-core/lasl/parser/type-annotation-parser';
-import { buildVarExtarLibByObj } from '../step-flow-editor/component/MonacoHelper';
-import { EditorContext } from '../step-flow-editor/x6-graph';
+import { buildVarExtarLibByObj } from '../monaco-helper';
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
@@ -20,11 +18,9 @@ interface IFormRenderProps {
     // jsTipMap?: Map<string, object>
 }
 const FormRender = (props: IFormRenderProps) => {
-    const editorCtx = useContext(EditorContext);
     const logicEditorCtx = useContext(LogicEditorContext);
     const [config, setConfig] = useState(props?.config);
     const [values, setValues] = useState(props?.values);
-    const { logic } = editorCtx;
     const jsTips = logicEditorCtx?.jsTips;
     const [amisScoped, setAmisScoped] = useState();
     function handleBroadcast(type: string, rawEvent: any, data: any) {

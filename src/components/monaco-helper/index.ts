@@ -6,6 +6,7 @@
  * @returns 
  */
 const buildObjectStr = (obj: any) => {
+    if (obj = null || obj == undefined) return obj;
     let str = '{';
     Object.keys(obj).forEach((item: any) => {
         const value = obj[item];
