@@ -6,7 +6,6 @@ import { Graph, Shape } from "@antv/x6";
 import { MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, SaveOutlined, SettingTwoTone } from "@ant-design/icons";
 import { getPanelData } from "./services/panelSvc";
 import { BizDslConvert } from "./convert/dslConvert";
-import { StoreService } from "./services/storeSvc";
 import { appendStartNode } from "@/components/logic-editor/settings/GraphDataHelper";
 import { PresetShapes } from "@/components/logic-editor/shapes/PresetShapes";
 import { getLogicConfig, saveLogic } from "@/services/ideSvc";
@@ -38,16 +37,16 @@ const BizLogicEditor = () => {
     var dslConvert = new BizDslConvert();
     function handleSave() {
         setLoading(true);
-        let newDsl: Logic = dslConvert.graphToLogicDsl(graph, dsl);
+        let newDsl: Logic = dslConvert.graphToLogicItems(graph, dsl);
         newDsl.version = newVersion();
         setDsl(newDsl)
-        savaDslToServer(newDsl)
+        saveDslToServer(newDsl)
     }
     function newVersion() {
         return dayjs(Date.now()).format('YYYYMMDDHHmmss');
     }
-    function savaDslToServer(newDsl: Logic) {
-        saveLogic(newDsl.id, newDsl.version, JSON.stringify(newDsl)).then(res => {
+    function saveDslToServer(newDsl: Logic) {
+        saveLogic(id, newDsl.version, JSON.stringify(newDsl)).then(res => {
             setLoading(false)
             message.success('保存成功')
             console.log('save logic')
@@ -75,7 +74,7 @@ const BizLogicEditor = () => {
         let newDsl: Logic = { ...dsl, params, returns, variables, envs };
         newDsl.version = newVersion();
         setDsl(newDsl)
-        savaDslToServer(newDsl)
+        saveDslToServer(newDsl)
     };
     function updateEditorCtx(dsl: Logic) {
         let jsTips: object = {};
