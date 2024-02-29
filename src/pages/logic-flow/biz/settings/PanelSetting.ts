@@ -143,7 +143,7 @@ export function InitPanelData(
             width: 15,
             x: 2,
             y: 2,
-            'xlink:href': '/icons/code.svg',
+            'xlink:href': '/icons/java.svg',
           },
           text: {
             text: 'java方法',

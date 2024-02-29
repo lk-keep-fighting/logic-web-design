@@ -312,10 +312,10 @@ const DebugLog = (props: DebugProps) => {
   }
   const tabItems: TabsProps['items'] = [
     {
-      key: 'inout',
-      label: '入出参',
+      key: 'debug-node-input',
+      label: '节点入出参',
       children: <FormRenderById
-        formId='debug-log'
+        formId='debug-node-input'
         values={{ returnData: curItemLog?.returnData, paramsJson: curItemLog?.paramsJson, body: curItemLog?.configInstance?.body }}
         onSubmit={() => { }}
       />
@@ -329,6 +329,15 @@ const DebugLog = (props: DebugProps) => {
         editNode={selectedNode}
       />
     },
+    {
+      key: 'debug-context',
+      label: '执行上下文',
+      children: <FormRenderById
+        formId='debug-context'
+        values={{ varsJson: curLog?.varsJson, paramsJson: curLog?.paramsJson, varsJsonEnd: curLog?.varsJsonEnd }}
+        onSubmit={() => { }}
+      />
+    }
     // {
     //   key: 'configIns',
     //   label: '节点实例',
