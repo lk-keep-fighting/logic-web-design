@@ -4,12 +4,12 @@ import copy from 'copy-to-clipboard';
 import { render as renderAmis } from 'amis';
 import { ToastComponent, AlertComponent, toast } from 'amis-ui';
 import React, { useContext, useEffect, useState } from 'react';
-import { buildVarExtarLibByObj } from '../monaco-helper';
+import { buildVarExtarLibByObj } from '../../monaco-helper';
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
-import { TokenUtil } from '@/utils/tokenUtil';
-import { LogicEditorContext } from '../logic-editor/editor';
+import { TokenUtil } from '@/components/ui-render/utils/tokenUtil';
+import { LogicEditorContext } from '../../logic-editor/editor';
 interface IFormRenderProps {
     config: any
     values?: any

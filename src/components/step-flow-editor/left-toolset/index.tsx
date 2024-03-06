@@ -5,7 +5,7 @@ import { Logic } from '@/components/step-flow-core/lasl/meta-data';
 import { InputJSONSchema } from 'amis-ui';
 import { useContext } from 'react';
 import { EditorContext } from '../x6-graph';
-import FormRenderById from '@/components/form-render/render-by-form-id';
+import FormRenderById from '@/components/ui-render/form-render/render-by-form-id';
 import JsonEditor from '../component/FormRender/ItemExt/JsonEditor';
 
 interface ILeftToolProps {

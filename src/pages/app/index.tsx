@@ -1,6 +1,6 @@
 import { useParams } from "@/.umi/exports";
-import PageRender from "@/components/page-render"
-import PageRenderById from "@/components/page-render/render-by-page-id";
+import PageRender from "@/components/ui-render/page-render"
+import PageRenderById from "@/components/ui-render/page-render/render-by-page-id";
 import { Schema } from "amis";
 import { useState } from "react";
 

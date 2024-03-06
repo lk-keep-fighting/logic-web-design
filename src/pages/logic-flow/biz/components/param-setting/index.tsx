@@ -1,4 +1,4 @@
-import FormRenderById from "@/components/form-render/render-by-form-id";
+import FormRenderById from "@/components/ui-render/form-render/render-by-form-id";
 import { TypeAnnotationParser } from "@/components/step-flow-core/lasl/parser/type-annotation-parser";
 import { Modal, Tabs, message } from "antd"
 import { useCallback, useEffect, useState } from "react";

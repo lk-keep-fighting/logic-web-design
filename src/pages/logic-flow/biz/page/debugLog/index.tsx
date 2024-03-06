@@ -20,7 +20,7 @@ import { autoDagreLayout } from '../../layout/dagreLayout';
 import DagreGraph from '@/components/logic-editor/graph/dagre-graph';
 import NodeConfig from '@/components/logic-editor/panel/right-panel/node-config';
 import { TextArea } from 'form-render';
-import FormRenderById from '@/components/form-render/render-by-form-id';
+import FormRenderById from '@/components/ui-render/form-render/render-by-form-id';
 
 type EditorCtx = {
   logic: Logic,

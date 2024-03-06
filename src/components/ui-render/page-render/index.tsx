@@ -8,7 +8,7 @@ import './custom/form-item-js';
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
-import { TokenUtil } from '@/utils/tokenUtil';
+import { TokenUtil } from '@/components/ui-render/utils/tokenUtil';
 interface IPageRenderProps {
     config: Schema
     data?: any

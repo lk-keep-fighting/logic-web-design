@@ -3,7 +3,7 @@ import { Button, Divider, Select, Space, Spin, Typography, message } from "antd"
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "umi";
 import axios from "axios";
-import { TokenUtil } from "@/utils/tokenUtil";
+import { TokenUtil } from "@/components/ui-render/utils/tokenUtil";
 import { Graph, Shape } from "@antv/x6";
 import { MenuFoldOutlined, MenuUnfoldOutlined, SaveOutlined } from "@ant-design/icons";
 import { ReDoIcon, UnDoIcon } from "amis-ui";

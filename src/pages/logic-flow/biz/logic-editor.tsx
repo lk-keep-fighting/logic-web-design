@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import { LogicEditorCtx } from "@/components/logic-editor/types/LogicEditorCtx";
 import RunLogic from "./components/run-logic";
 import { runLogicOnServer } from "@/services/logicSvc";
-import PageRenderById from "@/components/page-render/render-by-page-id";
+import PageRenderById from "@/components/ui-render/page-render/render-by-page-id";
 
 //http://localhost:4051/#/assets/logic/process/i/gy2/edit?prodCode=CPBM-23MFU2&prodName=%E5%B9%B3%E6%9D%BF%E7%BA%B8U2&matCode=QUF237&version=v1.2
 const BizLogicEditor = () => {

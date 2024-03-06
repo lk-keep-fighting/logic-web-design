@@ -1,4 +1,4 @@
-import FormRenderById from "@/components/form-render/render-by-form-id";
+import FormRenderById from "@/components/ui-render/form-render/render-by-form-id";
 import { useParams } from "umi";
 
 const FormRenderByIdPage = () => {

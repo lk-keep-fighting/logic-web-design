@@ -1,4 +1,4 @@
-import FormRenderById from '@/components/form-render/render-by-form-id';
+import FormRenderById from '@/components/ui-render/form-render/render-by-form-id';
 import { Cell } from '@antv/x6';
 import { useEffect, useState } from 'react';
 

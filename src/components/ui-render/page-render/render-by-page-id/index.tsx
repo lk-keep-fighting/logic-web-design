@@ -8,7 +8,7 @@ import { getPageJson } from '@/services/schemeSvc';
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
-import { TokenUtil } from '@/utils/tokenUtil';
+import { TokenUtil } from '@/components/ui-render/utils/tokenUtil';
 interface IPageRenderByIdProps {
     pageId: string
     data: any

@@ -1,4 +1,4 @@
-import PageRenderById from "@/components/page-render/render-by-page-id"
+import PageRenderById from "@/components/ui-render/page-render/render-by-page-id"
 import AppSvc, { ISystem } from "@/services/appSvr"
 import { useEffect, useState } from "react"
 

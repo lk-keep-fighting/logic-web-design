@@ -1,4 +1,4 @@
-import FormRender from '@/components/form-render';
+import FormRender from '@/components/ui-render/form-render';
 import { getFormJson } from '@/services/schemeSvc';
 import { Cell } from '@antv/x6';
 import { useEffect, useState } from 'react';

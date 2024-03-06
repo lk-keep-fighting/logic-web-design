@@ -1,4 +1,4 @@
-import PageRender from "@/components/page-render"
+import PageRender from "@/components/ui-render/page-render"
 import { Schema } from "amis";
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -7,7 +7,7 @@ import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
 import { getPageJson } from "@/services/schemeSvc";
 import { useParams } from "umi";
-import PageRenderById from "@/components/page-render/render-by-page-id";
+import PageRenderById from "@/components/ui-render/page-render/render-by-page-id";
 
 const Render = (props) => {
     const [config, setConfig] = useState<Schema>({ type: 'page' });

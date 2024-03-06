@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Editor } from 'amis-editor';
 // import '../page-render/custom/form-item-js';
-import { MyRendererPlugin } from '../page-render/custom/logic-editor-cmp';
+import { MyRendererPlugin } from '../ui-render/page-render/custom/logic-editor-cmp';
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';

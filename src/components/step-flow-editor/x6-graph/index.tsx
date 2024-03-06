@@ -32,7 +32,7 @@ import CodeEditor from '../component/CodeEditor';
 import dayjs from 'dayjs';
 import { JsonView } from 'amis';
 import { Transform } from '@antv/x6-plugin-transform';
-import PageRenderById from '@/components/page-render/render-by-page-id';
+import PageRenderById from '@/components/ui-render/page-render/render-by-page-id';
 
 
 type EditorCtx = {
