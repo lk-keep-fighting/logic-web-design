@@ -128,8 +128,8 @@ export default defineConfig({
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/runtime': {
-      // 'target': 'http://localhost:18080',
       'target': 'http://localhost:4052',
+      // 'target': 'http://192.168.153.107:9999',
       // 'target': 'http://192.168.153.18:31001',
       // 'target': 'http://localhost:8080',
       // 'target': 'http://192.168.154.51:4054',
@@ -138,8 +138,8 @@ export default defineConfig({
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/ide': {
-      // 'target': 'http://localhost:18080',
       'target': 'http://localhost:4052',
+      // 'target': 'http://192.168.153.107:9999',
       // 'target': 'http://192.168.153.18:31001',
       // 'target': 'http://192.168.154.51:4054',
       // 'target': 'http://192.168.44.87:4052',

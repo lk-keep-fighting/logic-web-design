@@ -5,9 +5,13 @@ import { useEffect, useState } from "react"
 const Main = (props) => {
     const [systemInfo, setSystemInfo] = useState<ISystem>({})
     useEffect(() => {
-        new AppSvc().getIndexJson().then(sys => {
-            setSystemInfo(sys);
+        var appSvc = new AppSvc();
+        appSvc.getSettingIndexJson().then(res => {
+            appSvc.getIndexJson(res.setting).then(sys => {
+                setSystemInfo(sys);
+            })
         })
+
     }, [])
     return <PageRenderById pageId="index" data={systemInfo} />
 }

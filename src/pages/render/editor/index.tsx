@@ -1,21 +1,19 @@
 
-import { useMatch, useParams } from 'umi';
+import { useParams } from 'umi';
 import styles from './index.less';
 import PageDesinger from '@/components/page-designer'
 import { Button, Divider, Input, Typography, Modal, Space, message } from 'antd';
-import { useEffect, useMemo, useState } from 'react';
-import { Editor, InputJSONSchema, JSONSchemaEditor, toast } from 'amis-ui'
+import { useEffect, useState } from 'react';
+import { Editor, toast } from 'amis-ui'
 import copy from 'copy-to-clipboard';
 import { BulbOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { getPageJson, getSchemeJson } from '@/services/schemeSvc';
+import { getSchemeJson, saveSchemeJson } from '@/services/schemeSvc';
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
 import 'amis-editor-core/lib/style.css';
 axios.interceptors.response.use(response => {
-    console.log('axios config')
-    console.log(response)
     if (response.data) {
         // 数据正常，进行的逻辑功能
         return response
@@ -51,13 +49,13 @@ const PageEditor: React.FC = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [prompt, setPrompt] = useState('');
     const [AIGCJson, setAIGCJson] = useState('');
-    const { Text } = Typography;
     return (
         <div className={styles.editorContainer}>
             <Space style={{ margin: '5px', float: 'right' }}>
                 {/* <Button key={0} onClick={() => setShowAssistant(true)}>小助手</Button> */}
                 <Button key={1} onClick={() => setPreview(!preview)}>{preview ? '编辑' : '预览'}</Button>
                 <Button key={2} type='primary' onClick={e => { copy(JSON.stringify(jsonSchema)) }}>复制配置</Button>
+                <Button key={3} type='primary' onClick={e => { saveSchemeJson(render, id, jsonSchema) }}>保存到DB</Button>
             </Space>
             <Divider style={{ margin: '0px' }} />
             <PageDesinger pageSchmea={jsonSchema} preview={preview} onChange={v => setJsonSchema(v)} style={{ height: '100vh' }} />

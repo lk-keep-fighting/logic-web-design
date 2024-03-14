@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "umi";
 import axios from "axios";
 import { TokenUtil } from "@/components/ui-render/index";
-// import { TokenUtil } from "@/components/ui-render/utils/tokenUtil";
 import { Graph, Shape } from "@antv/x6";
 import { MenuFoldOutlined, MenuUnfoldOutlined, SaveOutlined } from "@ant-design/icons";
 import { ReDoIcon, UnDoIcon } from "amis-ui";
