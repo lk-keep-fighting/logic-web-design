@@ -195,7 +195,7 @@ const BizLogicEditor = () => {
                                 setOpenRunLogic(false)
                                 if (dsl) {
                                     const { params, bizId, headers, bizStartCode } = values;
-                                    runLogicOnServer(dsl.id, JSON.parse(params), bizId, bizStartCode, model, JSON.parse(headers)).then(res => {
+                                    runLogicOnServer(id, JSON.parse(params), bizId, bizStartCode, model, JSON.parse(headers)).then(res => {
                                         if (res.data.code == 0) {
                                             Modal.success({
                                                 title: '执行成功',
