@@ -115,8 +115,10 @@ const DebugLog = (props: DebugProps) => {
                       // fill: '#7c68fc',
                       // stroke: '#9254de',
                       stroke: 'red',
-                      strokeWidth: 4,
+                      strokeWidth: 2,
                       fillOpacity: 0.2,
+                      rx: 5,
+                      ry: 5
                     },
                   },
                 })
@@ -316,7 +318,7 @@ const DebugLog = (props: DebugProps) => {
       label: '节点入出参',
       children: <FormRenderById
         formId='debug-node-input'
-        values={{ returnData: curItemLog?.returnData, paramsJson: curItemLog?.paramsJson, body: curItemLog?.configInstance?.body }}
+        values={{ returnData: curItemLog?.returnData, body: curItemLog?.configInstance?.body }}
         onSubmit={() => { }}
       />
     }
@@ -353,7 +355,7 @@ const DebugLog = (props: DebugProps) => {
       theme="light"
       // collapsed={leftToolCollapsed}
       collapsedWidth={0}
-      width={300}
+      width={260}
       style={{
         overflow: 'auto',
         height: '100vh',
@@ -366,7 +368,7 @@ const DebugLog = (props: DebugProps) => {
         borderRight: '0.5px solid'
       }}
     >
-      <Divider>状态变更记录</Divider>
+      <Divider>执行提交记录</Divider>
       <Timeline
         style={{
           height: '100%'
@@ -376,7 +378,7 @@ const DebugLog = (props: DebugProps) => {
         items={timeLineItems}
       />
     </Layout.Sider>
-    <Layout style={{ marginLeft: 300 }}>
+    <Layout style={{ marginLeft: 260 }}>
       <Layout.Header style={{ backgroundColor: 'white', padding: 0 }}>
         {/* <Button
           type="text"

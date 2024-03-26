@@ -17,6 +17,7 @@ import { Schema } from 'form-render';
 import { Logic, LogicItem } from '@/components/step-flow-core/lasl/meta-data';
 import NodeData from '@/components/step-flow-editor/right-toolset/step-config';
 import { JsonView } from 'amis';
+import NodeConfig from '@/components/logic-editor/panel/right-panel/node-config';
 
 interface LogicViewerProps {
   config?: Logic;
@@ -202,9 +203,9 @@ const LogicViewer = (props: LogicViewerProps) => {
     {
       key: '2',
       label: '节点配置',
-      children: <NodeData
+      children: <NodeConfig
+        onSubmit={() => { }}
         editNode={selectedNode}
-        configSchemaProvider={props.configSchemaProvider}
       />
     }
   ]
