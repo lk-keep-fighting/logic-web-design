@@ -10,6 +10,7 @@ import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
 import { TokenUtil } from '@/components/ui-render/utils/tokenUtil';
 import { LogicEditorContext } from '../../logic-editor/editor';
+import { axiosSet } from '../utils/axiosConfig';
 interface IFormRenderProps {
     config: any
     values?: any
@@ -31,6 +32,9 @@ const FormRender = (props: IFormRenderProps) => {
             console.log('内部表单触发了Broadcast', data);
         }
     }
+    useEffect(() => {
+        axiosSet(axios)
+    }, [])
     /**
      * 值变更时
      */
