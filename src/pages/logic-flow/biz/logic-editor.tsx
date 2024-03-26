@@ -19,6 +19,7 @@ import { LogicEditorCtx } from "@/components/logic-editor/types/LogicEditorCtx";
 import RunLogic from "./components/run-logic";
 import { runLogicOnServer } from "@/services/logicSvc";
 import PageRenderById from "@/components/ui-render/page-render/render-by-page-id";
+import { getEnvJson } from "@/services/runtimeSvc";
 
 //http://localhost:4051/#/assets/logic/process/i/gy2/edit?prodCode=CPBM-23MFU2&prodName=%E5%B9%B3%E6%9D%BF%E7%BA%B8U2&matCode=QUF237&version=v1.2
 const BizLogicEditor = () => {
@@ -58,14 +59,16 @@ const BizLogicEditor = () => {
             message.error('保存失败')
         })
     }
-
+    useEffect((() => {
+        setEditorCtx({ jsTips: { ...jsTipMap } })
+    }), [jsTipMap])
     //保存参数配置
     function saveFlowSettingAndConvertGraphToDsl(settingValues: any) {
         let jsTips: object = {};
         jsTips['_par'] = settingValues.params;
         jsTips['_var'] = settingValues.variables;
-        jsTips['_env'] = settingValues.envs;
-        setEditorCtx({ jsTips: { ...jsTips } })
+        // jsTips['_env'] = settingValues.envs;
+        setJsTipMap({ ...jsTipMap, ...jsTips })
         const params = TypeAnnotationParser.getParamArrayByJson(JSON.parse(settingValues.params ?? "{}"));
         const returns = TypeAnnotationParser.getReturnArrayByJson(JSON.parse(settingValues.returns ?? "{}"));
         const variables = TypeAnnotationParser.getVariableArrayByJson(JSON.parse(settingValues.variables ?? "{}"));
@@ -76,12 +79,15 @@ const BizLogicEditor = () => {
         setDsl(newDsl)
         saveDslToServer(newDsl)
     };
-    function updateEditorCtx(dsl: Logic) {
+    async function updateEditorCtx(dsl: Logic) {
         let jsTips: object = {};
         jsTips['_par'] = JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.params));
         jsTips['_var'] = JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.variables));
-        jsTips['_env'] = JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.envs));
-        setEditorCtx({ jsTips: { ...jsTips } })
+        let runtimeEnvs = await getEnvJson();
+        jsTips['_env'] = JSON.stringify(runtimeEnvs)//JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.envs));
+        jsTips['_lastRet'] = '{}';
+        setJsTipMap(jsTips)
+        // setEditorCtx({ jsTips: { ...jsTips } })
         setLoading(false);
     }
 
