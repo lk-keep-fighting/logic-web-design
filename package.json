@@ -29,6 +29,7 @@
     "@antv/x6-react-shape": "^2.1.2",
     "@babel/core": "^7.22.10",
     "@babel/runtime": "^7.22.6",
+    "@fortawesome/fontawesome-free": "^6.5.1",
     "@monaco-editor/react": "^4.5.1",
     "@xrenders/schema-builder": "1.0.0-alpha.5",
     "amis": "^3.5.3",
