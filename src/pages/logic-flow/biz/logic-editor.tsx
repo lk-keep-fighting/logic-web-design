@@ -74,7 +74,7 @@ const BizLogicEditor = () => {
         const variables = TypeAnnotationParser.getVariableArrayByJson(JSON.parse(settingValues.variables ?? "{}"));
         const envs = TypeAnnotationParser.getEnvsArrayByJson(JSON.parse(settingValues.envs ?? "{}"));
 
-        let newDsl: Logic = { ...dsl, params, returns, variables, envs };
+        let newDsl: Logic = { ...dsl, params, returns, variables, envs, log: settingValues.log };
         newDsl.version = newVersion();
         setDsl(newDsl)
         saveDslToServer(newDsl)
