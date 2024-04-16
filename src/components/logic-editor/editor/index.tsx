@@ -410,6 +410,10 @@ const Editor = (props: EditorProps) => {
         }
       }
     });
+    graph.on('blank:click', ({ e, x, y }) => {
+      console.log('blank:click', x, y);
+      setRightToolCollapsed(true)
+    })
     graph.on('blank:dblclick', ({ e, x, y }) => {
       console.log('blank:dbclick', x, y);
       if (props.autoLayout) props.autoLayout(graph);
@@ -429,7 +433,7 @@ const Editor = (props: EditorProps) => {
       }
     });
     setGraph(graph);
-    
+
     if (panel) {
       const groups = panel.Groups;
       const stencil = new Stencil({

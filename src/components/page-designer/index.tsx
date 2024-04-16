@@ -6,6 +6,7 @@ import { MyRendererPlugin } from '../ui-render/page-render/custom/logic-editor-c
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
+import '@fortawesome/fontawesome-free/css/all.css'
 interface IPageDesingerProps {
     preview: boolean;
     isMobile: boolean;

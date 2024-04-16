@@ -19,6 +19,7 @@ specifiers:
   '@antv/x6-react-shape': ^2.1.2
   '@babel/core': ^7.22.10
   '@babel/runtime': ^7.22.6
+  '@fortawesome/fontawesome-free': ^6.5.1
   '@monaco-editor/react': ^4.5.1
   '@types/react': ^18.0.33
   '@types/react-dom': ^18.0.11
@@ -62,6 +63,7 @@ dependencies:
   '@antv/x6-react-shape': registry.npmjs.org/@antv/x6-react-shape/2.2.2_3ihtbpm5sb534d42wzpviabtmy
   '@babel/core': registry.npmjs.org/@babel/core/7.22.10
   '@babel/runtime': registry.npmjs.org/@babel/runtime/7.22.10
+  '@fortawesome/fontawesome-free': 6.5.1
   '@monaco-editor/react': registry.npmjs.org/@monaco-editor/react/4.5.1_ozq64uhwsasskj3gljtgkwsete
   '@xrenders/schema-builder': registry.npmjs.org/@xrenders/schema-builder/1.0.0-alpha.5_grydae7fb4uioyqp4t73lrgzmm
   amis: 3.6.3_wwn5sdjvxajqygwvqgirnqpe2y
@@ -381,6 +383,12 @@ packages:
       lodash.isnil: 4.0.0
       lodash.isundefined: 3.0.1
       lodash.uniq: 4.5.0
+    dev: false
+
+  /@fortawesome/fontawesome-free/6.5.1:
+    resolution: {integrity: sha512-CNy5vSwN3fsUStPRLX7fUYojyuzoEMSXPl7zSLJ8TgtRfjv24LOnOWKT2zYwaHZCJGkdyRnTmstR0P+Ah503Gw==}
+    engines: {node: '>=6'}
+    requiresBuild: true
     dev: false
 
   /@icons/material/0.2.4_react@18.1.0:

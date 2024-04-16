@@ -8,6 +8,7 @@ import { getPageJson } from '@/services/schemeSvc';
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
+import '@fortawesome/fontawesome-free/css/all.css'
 import { TokenUtil } from '@/components/ui-render/utils/tokenUtil';
 import { axiosSet } from '../../utils/axiosConfig';
 interface IPageRenderByIdProps {

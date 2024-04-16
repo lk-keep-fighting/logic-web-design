@@ -5,12 +5,13 @@ import { useCallback, useEffect, useState } from "react";
 const ParamSetting = (props) => {
     const [formData, setFormData] = useState({})
     useEffect(() => {
-        const { params, variables, envs, returns } = props.values;
+        const { params, variables, envs, returns, log } = props.values;
         setFormData({
             params: JSON.stringify(TypeAnnotationParser.getJsonByParams(params)),
             variables: JSON.stringify(TypeAnnotationParser.getJsonByParams(variables)),
             returns: JSON.stringify(TypeAnnotationParser.getJsonByParams(returns)),
             envs: JSON.stringify(TypeAnnotationParser.getJsonByParams(envs)),
+            log
         })
     }, [props.values])
 
@@ -38,10 +39,32 @@ const ParamSetting = (props) => {
                 Object.keys(values).forEach(key => {
                     const item = values[key];
                     if (!validateJsonString(item)) {
-                        const field = key === 'params' ? '入参' : key === 'variables' ? '局部变量' : key === 'returns' ? '返回参数' : '环境变量'
-                        message.error(`${field}json格式错误`)
-                        hasError = true;
-                        return false;
+                        let field = key === 'params' ? '入参' : key === 'variables' ? '局部变量' : key === 'returns' ? '返回参数' : '环境变量'
+                        switch (key) {
+                            case 'params':
+                                message.error(`入参json格式错误`)
+                                hasError = true;
+                                return false;
+                                break;
+                            case 'variables':
+                                message.error(`局部变量json格式错误`)
+                                hasError = true;
+                                return false;
+                                break;
+                            case 'returns':
+                                message.error(`返回参数json格式错误`)
+                                hasError = true;
+                                return false;
+                                break;
+                            case 'ens':
+                                message.error(`环境变量json格式错误`)
+                                hasError = true;
+                                return false;
+                                break;
+                            default:
+                                break;
+                        }
+
                     }
                 });
                 if (!hasError) {

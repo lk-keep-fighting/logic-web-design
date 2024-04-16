@@ -22,6 +22,7 @@ export default class Logic {
     label?: string; // 逻辑标题
     description?: string; // 逻辑描述
     triggerType?: string; // triggerType
+    log?: string;//是否开启节点日志
     cron?: string; // cron表达式，用于定时触发
     typeParams?: Array<TypeParam>; // 类型参数列表
     params?: Array<Param>; // 逻辑输入参数列表
