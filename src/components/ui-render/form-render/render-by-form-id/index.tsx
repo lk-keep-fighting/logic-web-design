@@ -16,7 +16,12 @@ const FormRenderById = (props: IFormRenderByIdProps) => {
             let formId = props.isStatic ? props.formId + '-static' : props.formId;
             getFormJson(formId).then(data => {
                 setFormScheme(data);
-            })
+            }).catch(err => {
+                console.log(err);
+                getFormJson(props.formId).then(data => {
+                    setFormScheme(data);
+                })
+            });
         }
     }, [props.formId])
 

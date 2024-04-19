@@ -68,12 +68,55 @@ const DebugLog = (props: DebugProps) => {
     });
     setCurItemLog(itemLog)
   }
+  function getButtonTool(txt, itemLog, idx, btnCnt) {
+    return {
+      name: 'button',
+      args: {
+        markup: [
+          {
+            tagName: 'circle',
+            selector: 'button',
+            attrs: {
+              r: 14,
+              x: 0,
+              y: 0,
+              stroke: '#fe854f',
+              'stroke-width': 5 - idx < 1 ? 1 : 5 - idx,
+              fill: 'white',
+              cursor: 'pointer',
+            },
+          },
+          {
+            tagName: 'text',
+            textContent: txt,
+            selector: 'icon',
+            attrs: {
+              fill: '#fe854f',
+              'font-size': 20 - idx < 12 ? 12 : 20 - idx,
+              'text-anchor': 'middle',
+              'pointer-events': 'none',
+              y: '0.3em',
+            },
+          },
+        ],
+        x: (btnCnt - 1) * 28,
+        y: 0,
+        // offset: { x: 0, y: 0 },
+        onClick({ view }: { view: NodeView }) {
+          const node = view.cell
+          setSelectedNode(node)
+          setRightToolCollapsed(false)
+          setCurItemLog(itemLog)
+        },
+      },
+    }
+  }
   useEffect(() => {
     if (centerNode)
       graph?.centerCell(centerNode);
   }, [centerNode, graph])
   useEffect(() => {
-    console.log('play curItemLog', curItemLog)
+    console.log('select curItemLog', curItemLog)
     // graph?.getNodes().find(n => n.id == curItemLog?.config?.id)?.attr('body/fill', 'green')
   }, [curItemLog])
   useEffect(() => {
@@ -103,9 +146,10 @@ const DebugLog = (props: DebugProps) => {
             graph?.fromJSON(logic?.visualConfig);
             // graph?.fitToContent();
             let lastNode: Node;
-            v.itemLogs.forEach(i => {
-              const node = graph?.getNodes().find(n => n.id == i.config.id);
-              console.log('fill node')
+            let btnCounts = {};
+            v.itemLogs.forEach((v, i) => {
+              const node = graph?.getNodes().find(n => n.id == v.config.id);
+              console.log('选中的节点')
               console.log(node)
               if (node) {
                 node.addTools({
@@ -115,8 +159,8 @@ const DebugLog = (props: DebugProps) => {
                       // fill: '#7c68fc',
                       // stroke: '#9254de',
                       stroke: 'red',
-                      strokeWidth: 2,
-                      fillOpacity: 0.2,
+                      strokeWidth: 1.5,
+                      // fillOpacity: 0.2,
                       rx: 5,
                       ry: 5
                     },
@@ -125,6 +169,11 @@ const DebugLog = (props: DebugProps) => {
                 // node.attr('body/fill', '#52c41a')
                 lastNode = node;
               }
+              if (btnCounts[node?.id])
+                btnCounts[node?.id] += 1
+              else
+                btnCounts[node?.id] = 1
+              node?.addTools(getButtonTool(i, v, i, btnCounts[node?.id]))
             })
             // graph?.centerPoint(lastNode?.x, lastNode?.y);
             // graph?.centerCell(lastNode, { padding: { left: 0 } });
@@ -283,7 +332,7 @@ const DebugLog = (props: DebugProps) => {
     graph.on('node:added', () => {
     })
     graph.on('node:dblclick', ({ node }) => {
-      setRightToolCollapsed(false)
+      // setRightToolCollapsed(false)
     });
 
     graph.on('blank:dblclick', ({ x, y }) => {
@@ -293,11 +342,11 @@ const DebugLog = (props: DebugProps) => {
     setGraph(graph);
   }, [logic])
 
-  useEffect(() => {
-    graph?.off('node:click', onNodeClick)
-    graph?.on('node:click', onNodeClick)
+  // useEffect(() => {
+  //   graph?.off('node:click', onNodeClick)
+  //   graph?.on('node:click', onNodeClick)
 
-  }, [curLog])
+  // }, [curLog])
   const replayLogs = () => {
     // console.log('curItemLogIndex,', curItemLogIndex)
     // if (props.debugLogs) {
@@ -332,6 +381,15 @@ const DebugLog = (props: DebugProps) => {
       />
     },
     {
+      key: 'configIns',
+      label: '节点实例',
+      children: <FormRenderById
+        formId={curItemLog?.config?.type || ''}
+        values={curItemLog?.configInstance}
+        onSubmit={() => { }}
+      />
+    },
+    {
       key: 'debug-context',
       label: '执行上下文',
       children: <FormRenderById
@@ -340,15 +398,6 @@ const DebugLog = (props: DebugProps) => {
         onSubmit={() => { }}
       />
     }
-    // {
-    //   key: 'configIns',
-    //   label: '节点实例',
-    //   children: <FormRenderById
-    //     formId='debug-config-ins'
-    //     values={curItemLog?.configInstance}
-    //     onSubmit={() => { }}
-    //   />
-    // }
   ]
   return <Layout style={{ margin: 0, height: '100vh' }}>
     <Layout.Sider
