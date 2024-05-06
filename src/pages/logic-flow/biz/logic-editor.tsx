@@ -49,9 +49,16 @@ const BizLogicEditor = () => {
     function saveDslToServer(newDsl: Logic) {
         saveLogic(id, newDsl.version, JSON.stringify(newDsl)).then(res => {
             setLoading(false)
-            message.success('保存成功')
             console.log('save logic')
             console.log(newDsl)
+            if (res.status == 200) {
+                message.success('保存成功')
+                console.log('save logic success')
+            } else {
+                message.error('保存失败：' + res.statusText)
+                console.error('save logic error')
+            }
+
         }).catch(err => {
             setLoading(false)
             console.log('err')
@@ -201,8 +208,10 @@ const BizLogicEditor = () => {
                                 setOpenRunLogic(false)
                                 if (dsl) {
                                     const { params, bizId, headers, bizStartCode } = values;
+                                    setLoading(true);
                                     runLogicOnServer(id, JSON.parse(params), bizId, bizStartCode, model, JSON.parse(headers)).then(res => {
                                         if (res.data.code == 0) {
+                                            setLoading(false);
                                             Modal.success({
                                                 title: '执行成功',
                                                 width: '1000px',
@@ -212,6 +221,7 @@ const BizLogicEditor = () => {
                                                 </div>,
                                             })
                                         } else {
+                                            setLoading(false);
                                             Modal.error({
                                                 title: <span>{res.data.msg}</span>,
                                                 width: '1200px',
@@ -222,6 +232,7 @@ const BizLogicEditor = () => {
                                             })
                                         }
                                     }).catch(err => {
+                                        setLoading(false);
                                         const res = err.response.data;
                                         Modal.error({
                                             title: <span>{res.msg}</span>,

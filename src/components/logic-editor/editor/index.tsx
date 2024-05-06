@@ -196,7 +196,9 @@ const Editor = (props: EditorProps) => {
         enabled: true
       }))
       .use(new Keyboard())
-      .use(new Clipboard())
+      .use(new Clipboard({
+        enabled: true
+      }))
       .use(new Export())
       .use(new Transform({
         resizing: {
@@ -355,7 +357,16 @@ const Editor = (props: EditorProps) => {
     graph.bindKey(['meta+c', 'ctrl+c'], () => {
       const cells = graph.getSelectedCells();
       if (cells.length) {
-        graph.copy(cells);
+        graph.copy(cells, { useLocalStorage: true });
+      }
+      return false;
+    });
+    graph.bindKey(['meta+v', 'ctrl+v'], () => {
+      debugger;
+      if (!graph.isClipboardEmpty({ useLocalStorage: true })) {
+        const cells = graph.paste({ offset: 32, useLocalStorage: true });
+        graph.cleanSelection();
+        graph.select(cells);
       }
       return false;
     });
@@ -366,14 +377,7 @@ const Editor = (props: EditorProps) => {
       }
       return false;
     });
-    graph.bindKey(['meta+v', 'ctrl+v'], () => {
-      if (!graph.isClipboardEmpty()) {
-        const cells = graph.paste({ offset: 32 });
-        graph.cleanSelection();
-        graph.select(cells);
-      }
-      return false;
-    });
+
     //绑定撤销、重做
     graph.bindKey(['meta+z', 'ctrl+z'], () => {
       if (graph.canUndo()) {
