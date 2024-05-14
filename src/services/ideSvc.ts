@@ -50,6 +50,21 @@ export async function getLogicLogsByLogicIns(logicIns: any) {
         return logs;
     })
 }
+export async function getLogicLogsById(logicLogId: any) {
+    return axios.post(`/api/ide/logic-logs`, {
+        filters: [
+            { dataIndex: 'id', values: [logicLogId], type: '=' }
+        ],
+        pageSize: 1000
+    }).then(res => {
+        const logs = res.data.data.records;
+        if (logs && logs.length > 0) {
+            if (logs[0].itemLogs)
+                logs[0].itemLogs = JSON.parse(logs[0].itemLogs);
+        }
+        return logs[0];
+    })
+}
 /**
  * 通过逻辑编号与版本号获取逻辑配置
  * @param id 编号

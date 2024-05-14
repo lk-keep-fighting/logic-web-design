@@ -22,13 +22,6 @@ import NodeConfig from '@/components/logic-editor/panel/right-panel/node-config'
 import { TextArea } from 'form-render';
 import FormRenderById from '@/components/ui-render/form-render/render-by-form-id';
 
-type EditorCtx = {
-  logic: Logic,
-}
-export const EditorContext = React.createContext<EditorCtx>({
-  logic: new Logic('')
-})
-
 interface ItemLog {
   name: string, paramsJson: object, config: LogicItem
 }
@@ -47,11 +40,10 @@ interface DebugProps {
   config?: Logic;
   nextId?: string,
   btns?: ReactNode[],
-  logicIns: any,
-  debugLogs?: Log[],
+  logicLog?: Log,
 }
 
-const DebugLog = (props: DebugProps) => {
+const DebugLogicLog = (props: DebugProps) => {
   const [graph, setGraph] = useState<Graph>();
   const [logic, setLogic] = useState<Logic>();
   const [rightToolCollapsed, setRightToolCollapsed] = useState(true)
@@ -59,15 +51,7 @@ const DebugLog = (props: DebugProps) => {
   const [curLog, setCurLog] = useState()
   const [centerNode, setCenterNode] = useState<Node>();
   const [selectedNode, setSelectedNode] = useState<Node>();
-  const [timeLineItems, setTimeLineItems] = useState<TimelineItemProps[]>();
   const refContainer = useRef();
-  const onNodeClick = ({ node }) => {
-    setSelectedNode(node)
-    const itemLog = curLog?.itemLogs.find(i => {
-      return i.config.id == node.id
-    });
-    setCurItemLog(itemLog)
-  }
   function getButtonTool(txt, itemLog, idx, btnCnt) {
     return {
       name: 'button',
@@ -116,10 +100,6 @@ const DebugLog = (props: DebugProps) => {
       graph?.centerCell(centerNode);
   }, [centerNode, graph])
   useEffect(() => {
-    console.log('select curItemLog', curItemLog)
-    // graph?.getNodes().find(n => n.id == curItemLog?.config?.id)?.attr('body/fill', 'green')
-  }, [curItemLog])
-  useEffect(() => {
     const node = graph?.getNodes().find(n => n.id == props.nextId);
     node?.attr('body/fill', 'red');
     setCenterNode(node)
@@ -133,70 +113,48 @@ const DebugLog = (props: DebugProps) => {
     }
   }, [props.config])
   useEffect(() => {
-    console.log('props.debugLogs', props.debugLogs)
-    if (props.debugLogs?.length > 0) {
-      setInterval(replayLogs, 2000);
-    }
-    const items: TimelineItemProps[] = [];
-    if (props)
-      props.debugLogs?.forEach(v => {
-        items.push({
-          children: <><span style={{ cursor: 'pointer', fontWeight: v.id == curLog?.id ? 'bolder' : 'normal', color: v.id == curLog?.id ? '#52c41a' : 'black' }} onClick={() => {
-            setCurLog(v);
-            graph?.fromJSON(logic?.visualConfig);
-            // graph?.fitToContent();
-            let lastNode: Node;
-            let btnCounts = {};
-            v.itemLogs.forEach((v, i) => {
-              const node = graph?.getNodes().find(n => n.id == v.config.id);
-              console.log('选中的节点')
-              console.log(node)
-              if (node) {
-                node.addTools({
-                  name: 'boundary',
-                  args: {
-                    attrs: {
-                      // fill: '#7c68fc',
-                      // stroke: '#9254de',
-                      stroke: 'red',
-                      strokeWidth: 1.5,
-                      // fillOpacity: 0.2,
-                      rx: 5,
-                      ry: 5
-                    },
-                  },
-                })
-                // node.attr('body/fill', '#52c41a')
-                lastNode = node;
-              }
-              if (btnCounts[node?.id])
-                btnCounts[node?.id] += 1
-              else
-                btnCounts[node?.id] = 1
-              node?.addTools(getButtonTool(i, v, i, btnCounts[node?.id]))
+    console.log('props.logicLog', props.logicLog)
+    if (props.logicLog) {
+      const logicLog = props.logicLog;
+      setCurLog(props.logicLog);
+      graph?.fromJSON(logic?.visualConfig);
+      let lastNode: Node;
+      let btnCounts = {};
+      if (logicLog && logicLog.itemLogs) {
+        logicLog.itemLogs.forEach((v, i) => {
+          const node = graph?.getNodes().find(n => n.id == v.config.id);
+          console.log('选中的节点')
+          console.log(node)
+          if (node) {
+            node.addTools({
+              name: 'boundary',
+              args: {
+                attrs: {
+                  // fill: '#7c68fc',
+                  // stroke: '#9254de',
+                  stroke: 'red',
+                  strokeWidth: 1.5,
+                  // fillOpacity: 0.2,
+                  rx: 5,
+                  ry: 5
+                },
+              },
             })
-            // graph?.centerPoint(lastNode?.x, lastNode?.y);
-            // graph?.centerCell(lastNode, { padding: { left: 0 } });
-            graph?.centerCell(lastNode);
-            setCurItemLog({});
-            setSelectedNode({});
-            // autoDagreLayout(graph);
-          }} ><p>{v.itemLogs[0]?.config.name}</p>
-            <p>{v.serverTime}</p>
-            {props.logicIns?.version == v.version ? <p></p> : <p>
-              <Space>
-                <Typography.Paragraph style={{ color: 'red' }}>版本号:</Typography.Paragraph>
-                <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'], text: v.version }} >{v.version}
-                  <Typography.Link style={{ margin: '5px' }} href={`#/assets/logic/i/${v.logicId}/view/${v.version}`} target="_blank"><ApartmentOutlined /></Typography.Link>
-                </Typography.Paragraph>
-              </Space>
-            </p>}
-            <p>{v.message}</p></span></>,
-          color: v.success ? 'green' : 'red'
+            // node.attr('body/fill', '#52c41a')
+            lastNode = node;
+          }
+          if (btnCounts[node?.id])
+            btnCounts[node?.id] += 1
+          else
+            btnCounts[node?.id] = 1
+          node?.addTools(getButtonTool(i, v, i, btnCounts[node?.id]))
         })
-      })
-    setTimeLineItems(items);
-  }, [props.debugLogs, props.logicIns, graph, curLog])
+        graph?.centerCell(lastNode);
+        setCurItemLog({});
+        setSelectedNode({});
+      }
+    }
+  }, [props.logicLog, graph])
   useEffect(() => {
     if (!logic) return;
     try {
@@ -342,25 +300,6 @@ const DebugLog = (props: DebugProps) => {
     setGraph(graph);
   }, [logic])
 
-  // useEffect(() => {
-  //   graph?.off('node:click', onNodeClick)
-  //   graph?.on('node:click', onNodeClick)
-
-  // }, [curLog])
-  const replayLogs = () => {
-    // console.log('curItemLogIndex,', curItemLogIndex)
-    // if (props.debugLogs) {
-    //   setCurItemLog(props.debugLogs[curLogIndex].debug.itemLogs[curItemLogIndex]);
-    //   if (curItemLogIndex == props.debugLogs[curLogIndex].debug.itemLogs.length - 1 && curLogIndex < props.debugLogs.length - 1) {
-    //     setCurItemLogIndex(0);
-    //     setCurLogIndex(curLogIndex + 1);
-    //   }
-    //   if (curItemLogIndex < props.debugLogs[curLogIndex].debug.itemLogs.length) {
-    //     console.log('curItemLogIndex,', curItemLogIndex)
-    //     setCurItemLogIndex(curItemLogIndex + 1);
-    //   }
-    // }
-  }
   const tabItems: TabsProps['items'] = [
     {
       key: 'debug-node-input',
@@ -400,62 +339,9 @@ const DebugLog = (props: DebugProps) => {
     }
   ]
   return <Layout style={{ margin: 0, height: '100vh' }}>
-    <Layout.Sider
-      theme="light"
-      // collapsed={leftToolCollapsed}
-      collapsedWidth={0}
-      width={260}
-      style={{
-        overflow: 'auto',
-        height: '100vh',
-        position: 'fixed',
-        left: 0,
-        top: 0,
-        bottom: 0,
-        // padding: '5px',
-        // backgroundColor: 'WhiteSmoke',
-        borderRight: '0.5px solid'
-      }}
-    >
-      <Divider>执行记录</Divider>
-      <Timeline
-        style={{
-          height: '100%'
-
-        }}
-        // pending={true}
-        items={timeLineItems}
-      />
-    </Layout.Sider>
-    <Layout style={{ marginLeft: 260 }}>
+    <Layout>
       <Layout.Header style={{ backgroundColor: 'white', padding: 0 }}>
-        {/* <Button
-          type="text"
-          icon={
-            leftToolCollapsed ? (
-              <MenuUnfoldOutlined />
-            ) : (
-              <MenuFoldOutlined />
-            )
-          }
-          onClick={() => {
-            setLeftToolCollapsed(!leftToolCollapsed);
-          }}
-          style={{
-            fontSize: '16px',
-            width: 64,
-            height: 64,
-          }}
-        /> */}
-        {/* <Space direction="horizontal" style={{}}> */}
-        {/* <Divider type='vertical' /> */}
-        {/* <Button icon={<PlayCircleTwoTone />} onClick={() => {
-            setInterval(() => {
-              replayLogs();
-            }, 1000)
-          }}></Button> */}
         {props.btns?.map(b => b)}
-        {/* </Space> */}
         <Button
           type="text"
           icon={
@@ -476,7 +362,6 @@ const DebugLog = (props: DebugProps) => {
             height: 64,
           }}
         />
-
       </Layout.Header>
       <Layout.Content className="app-content" >
         <DagreGraph
@@ -516,4 +401,4 @@ const DebugLog = (props: DebugProps) => {
     </Layout.Sider>
   </Layout >
 }
-export default DebugLog;
+export default DebugLogicLog;

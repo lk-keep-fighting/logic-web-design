@@ -82,6 +82,7 @@ export default defineConfig({
         }],
     },
     { path: "/debug/logic/instance/:id", layout: false, component: "logic-debug" },
+    { path: "/debug/logic-log/i/:id", layout: false, component: "logic-log-debug" },
     { path: "/debug/form/i/:id", layout: false, component: "render/form/debug" },
     // { path: "/editor/:id", layout: false, component: "logic-editor" },
     { path: "/form", component: "form-editor" },
