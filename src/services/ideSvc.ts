@@ -83,6 +83,7 @@ export async function getLogicJsonByBak(id: string, version: string) {
         return json
     })
 }
+
 /**
  * 通过逻辑编号与版本号获取逻辑配置
  * @param id 编号
