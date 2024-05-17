@@ -3,12 +3,12 @@ import { Button, Modal, Spin, message } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "umi";
 import { Graph, Shape } from "@antv/x6";
-import { MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, SaveOutlined, SettingTwoTone } from "@ant-design/icons";
+import { ClusterOutlined, LayoutTwoTone, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, RocketOutlined, RocketTwoTone, SaveOutlined, SettingTwoTone } from "@ant-design/icons";
 import { getPanelData } from "./services/panelSvc";
 import { BizDslConvert } from "./convert/dslConvert";
 import { appendStartNode } from "@/components/logic-editor/settings/GraphDataHelper";
 import { PresetShapes } from "@/components/logic-editor/shapes/PresetShapes";
-import { getLogicConfig, saveLogic } from "@/services/ideSvc";
+import { getLogic, getLogicConfig, saveLogic } from "@/services/ideSvc";
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import { RegistShape } from "./settings/InitGraph";
 import { autoDagreLayout } from "./layout/dagreLayout";
@@ -101,9 +101,10 @@ const BizLogicEditor = () => {
     useEffect(() => {
         RegistShape([PresetShapes.get('ExtSharp')]);
         setLoading(true);
-        getLogicConfig(id).then(res => {
-            const configJson = res;
+        getLogic(id).then(res => {
+            const { name, configJson } = res;
             configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
+            configJson.name = name;//默认使用当前id作为配置id，用于复用配置时简化更新操作
             setDsl(configJson)
             setGraphJson(configJson?.visualConfig)
             updateEditorCtx(configJson);
@@ -199,7 +200,7 @@ const BizLogicEditor = () => {
                             <Button
                                 onClick={() => setParmamsSetting(true)}
                                 icon={<SettingTwoTone />}
-                            >配置参数</Button>
+                            >参数</Button>
                         </ParamSetting>,
                         <RunLogic open={openRunLogic}
                             setOpen={() => setOpenRunLogic(!openRunLogic)}
@@ -252,7 +253,12 @@ const BizLogicEditor = () => {
                                 调试
                             </Button>
                         </RunLogic>,
-                        <span>当前版本:{dsl.version}</span>
+                        <Button
+                            icon={<RocketTwoTone />}
+                            onClick={() => { autoDagreLayout(graph) }}
+                        >布局</Button>,
+                        <span style={{ fontSize: '16px', fontWeight: 'bold' }}>[{dsl.name}]</span>,
+                        <span>版本:{dsl.version}</span>,
                         // <Button icon={<UnDoIcon />} onClick={() => {
                         //     debugger;
                         //     if (graph && graph.canUndo()) {
@@ -275,7 +281,7 @@ const BizLogicEditor = () => {
                     autoLayout={(g) => autoDagreLayout(g)}
                     onGraphInsChange={v => setGraph(v)}
                 />
-            </Spin>
+            </Spin >
         </div >
     );
 };

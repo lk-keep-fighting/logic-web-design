@@ -6,7 +6,11 @@ export async function publishLogicFromDevToTest(id: string) {
 }
 
 export async function getLogic(id: string) {
-    return axios.get(`/api/ide/logic/${id}`);
+    return axios.get(`/api/ide/logic/${id}`).then(res => {
+        const data = res.data?.data;
+        data.configJson = JSON.parse(data.configJson);
+        return data;
+    });
 }
 
 export async function getLogicConfig(id: string) {
