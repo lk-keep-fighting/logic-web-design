@@ -1,6 +1,6 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import DebugLogic from "@/pages/logic-flow/biz/page/debugLog";
-import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicJsonByBak, getLogicLogsById } from "@/services/ideSvc";
+import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicJsonByBak, getLogicLogsById, getLogicByBak } from "@/services/ideSvc";
 import { CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/icons";
 import { Button, Divider, Space, Spin, Typography, Flex } from "antd";
 import axios from "axios";
@@ -10,6 +10,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "umi";
 import DebugLogicLog from "./logic-flow/biz/page/debugLogicLog";
 
+function refreshWebTitle(dsl: Logic) {
+    window.document.title = "-[" + dsl.name + "]日志";
+}
 const LogicLogDebug = () => {
     const { id } = useParams();
     const [config, setConfig] = useState<Logic>();
@@ -18,11 +21,11 @@ const LogicLogDebug = () => {
     useEffect(() => {
         setLoading(true);
         if (debugLog)
-            getLogicJsonByBak(debugLog.logicId, debugLog.version).then(res => {
-                const configJson = res;
-                configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
+            getLogicByBak(debugLog.logicId, debugLog.version).then(res => {
+                const { configJson } = res;
                 setConfig(configJson)
                 setLoading(false);
+                refreshWebTitle(configJson)
             }).catch(err => {
                 setLoading(false);
                 console.log('err')

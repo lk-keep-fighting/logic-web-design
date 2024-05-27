@@ -104,6 +104,8 @@ export async function getLogicByBak(id: string, version: string) {
         let logic = res.data.data.records[0];
         const jsonStr = logic.configJson;
         logic.configJson = JSON.parse(jsonStr);
+        logic.configJson.id = logic.id;
+        logic.configJson.name = logic.name;
         return logic
     })
 }

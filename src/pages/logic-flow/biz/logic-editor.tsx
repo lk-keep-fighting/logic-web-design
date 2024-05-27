@@ -1,9 +1,9 @@
 import { LogicFlowEditor } from "@/components/logic-editor";
-import { Button, Modal, Spin, message } from "antd";
+import { Button, Modal, Space, Spin, message, Typography } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "umi";
 import { Graph, Shape } from "@antv/x6";
-import { ClusterOutlined, LayoutTwoTone, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, RocketOutlined, RocketTwoTone, SaveOutlined, SettingTwoTone } from "@ant-design/icons";
+import { LayoutTwoTone, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, RocketOutlined, RocketTwoTone, SaveOutlined, SettingTwoTone } from "@ant-design/icons";
 import { getPanelData } from "./services/panelSvc";
 import { BizDslConvert } from "./convert/dslConvert";
 import { appendStartNode } from "@/components/logic-editor/settings/GraphDataHelper";
@@ -36,12 +36,16 @@ const BizLogicEditor = () => {
     const [jsTipMap, setJsTipMap] = useState(new Map<string, object>)
     const { id } = useParams();
     var dslConvert = new BizDslConvert();
+    function refreshWebTitle(dsl: Logic) {
+        window.document.title = "[" + dsl.name + ']:' + dsl.version;
+    }
     function handleSave() {
         setLoading(true);
         let newDsl: Logic = dslConvert.graphToLogicItems(graph, dsl);
         newDsl.version = newVersion();
         setDsl(newDsl)
         saveDslToServer(newDsl)
+        refreshWebTitle(newDsl)
     }
     function newVersion() {
         return dayjs(Date.now()).format('YYYYMMDDHHmmss');
@@ -108,6 +112,7 @@ const BizLogicEditor = () => {
             setDsl(configJson)
             setGraphJson(configJson?.visualConfig)
             updateEditorCtx(configJson);
+            refreshWebTitle(configJson)
         }).catch(err => {
             setLoading(false);
             console.log('err')
@@ -257,8 +262,10 @@ const BizLogicEditor = () => {
                             icon={<RocketTwoTone />}
                             onClick={() => { autoDagreLayout(graph) }}
                         >布局</Button>,
-                        <span style={{ fontSize: '16px', fontWeight: 'bold' }}>[{dsl.name}]</span>,
-                        <span>版本:{dsl.version}</span>,
+                        <Typography.Text strong>[{dsl.name}]</Typography.Text>,
+                        <Typography.Text>版本:{dsl.version}</Typography.Text>
+
+
                         // <Button icon={<UnDoIcon />} onClick={() => {
                         //     debugger;
                         //     if (graph && graph.canUndo()) {

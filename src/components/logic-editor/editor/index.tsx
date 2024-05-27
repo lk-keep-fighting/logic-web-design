@@ -499,7 +499,7 @@ const Editor = (props: EditorProps) => {
   const renderTool = useMemo(() => {
     if (props.toolElements) {
       return <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>
-        <Space direction="horizontal">
+        <Space style={{height: '50px'}}>
           {props.toolElements?.map(b => b)}
         </Space>
       </Layout.Header>

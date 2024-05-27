@@ -9,12 +9,9 @@ import { useEffect, useState } from "react";
 // import { loader } from '@monaco-editor/react';
 import { useParams } from "umi";
 
-const formProvider = async (type: string) => {
-    const res = await axios.get(`/setting/node-form/${type}.json`);
-    console.log(res.data);
-    return res.data;
+function refreshWebTitle(dsl: Logic, logicIns) {
+    window.document.title = ">[" + dsl?.name + "]实例:" + logicIns?.bizId;
 }
-
 const LogicDebug = () => {
     const { id } = useParams();
     const [config, setConfig] = useState<Logic>();
@@ -30,13 +27,14 @@ const LogicDebug = () => {
         if (id)
             getLogicInstanceById(id).then(res => {
                 if (res) {
+                    const ins = res;
                     setLogicIns(res);
                     setLoading(true);
                     getLogicByBak(res.logicId, res.version).then(res => {
                         const { configJson, name } = res;
-                        configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
                         setLogicName(name)
                         setConfig(configJson)
+                        refreshWebTitle(configJson, ins)
                         setLoading(false);
                     }).catch(err => {
                         setLoading(false);
@@ -47,12 +45,13 @@ const LogicDebug = () => {
             })
     }, [id])
     useEffect(() => {
-        if (logicIns)
+        if (logicIns) {
             getLogicLogsByLogicIns(logicIns).then(res => {
                 if (res) {
                     setDebugLogs(res)
                 }
             })
+        }
     }, [logicIns])
     return (
         <div>
@@ -86,7 +85,7 @@ const LogicDebug = () => {
                         <Divider type='vertical' />,
                         <Space>业务标识：{logicIns?.bizId}<Typography.Text copyable={{ tooltips: ['复制标识', '复制成功!'], text: logicIns?.bizId }} /></Space>,
                         <Divider type='vertical' />,
-                        <Space>{logicName}</Space>,<Typography.Text copyable={{ tooltips: ['复制编号', '复制成功!'], text: logicIns?.logicId }} />,
+                        <Space>{logicName}</Space>, <Typography.Text copyable={{ tooltips: ['复制编号', '复制成功!'], text: logicIns?.logicId }} />,
                         <Divider type='vertical' />,
                         <span style={{ color: 'red' }}>执行版本：</span>,
                         <span>{logicIns?.version}<Typography.Text copyable={{ tooltips: ['复制版本号', '复制成功!'], text: logicIns?.version }} /></span>,
