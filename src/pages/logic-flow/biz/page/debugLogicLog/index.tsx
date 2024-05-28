@@ -304,11 +304,14 @@ const DebugLogicLog = (props: DebugProps) => {
     {
       key: 'debug-node-input',
       label: '节点入出参',
-      children: <FormRenderById
-        formId='debug-node-input'
-        values={{ returnData: curItemLog?.returnData, body: curItemLog?.configInstance?.body }}
-        onSubmit={() => { }}
-      />
+      children: <div>
+        <FormRenderById
+          formId='debug-node-input'
+          values={{ returnData: curItemLog?.returnData, body: curItemLog?.configInstance?.body }}
+          onSubmit={() => { }}
+        />
+        <Typography.Text style={{ marginLeft: '15px' }} copyable={{ tooltips: ['复制节点编号', '复制成功!'], text: selectedNode?.id }}>节点编号</Typography.Text>
+      </div>
     }
     ,
     {
