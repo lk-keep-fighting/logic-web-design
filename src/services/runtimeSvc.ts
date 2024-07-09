@@ -1,5 +1,5 @@
-import axios from "axios";
+import { get } from "../utils/http";
 
 export async function getEnvJson() {
-    return axios.get('/api/runtime/env').then(res => res.data.data)
+    return get('/api/runtime/env').then(res => res.data.data)
 }

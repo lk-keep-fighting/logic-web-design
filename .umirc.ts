@@ -6,29 +6,6 @@ export default defineConfig({
   favicons: ['/logo.png'],
   esbuildMinifyIIFE: true,
   routes: [
-    // {
-    //   path: "/",
-    //   layout: 'index',
-    //   routes: [
-    //     {
-    //       path: "/assets",
-    //       routes: [
-    //         {
-    //           path: "/assets/api/list",
-    //           component: "assets/api/list",
-    //         },
-    //         {
-    //           path: "/assets/swagger/list",
-    //           component: "assets/swagger/list",
-    //         },
-    //         {
-    //           path: "/assets/logic/list", component: "logic/list",
-    //         },
-    //       ]
-    //     },
-
-    //   ]
-    // },
     {
       path: "/",
       layout: false,
@@ -129,9 +106,9 @@ export default defineConfig({
     //   // 'pathRewrite': { '^/api': '/api' },
     // },
     '/api/runtime': {
-      // 'target': 'http://localhost:4052',
+      'target': 'http://localhost:4052',
       // 'target': 'http://192.168.153.107:9999',
-      'target': 'http://192.168.153.18:31001',
+      // 'target': 'http://192.168.153.18:31001',
       // 'target': 'http://192.168.51.18:31001',
       // 'target': 'http://localhost:8080',
       // 'target': 'http://192.168.52.100:9001',
@@ -141,9 +118,9 @@ export default defineConfig({
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/ide': {
-      // 'target': 'http://localhost:4052',
+      'target': 'http://localhost:4052',
       // 'target': 'http://192.168.153.107:9999',
-      'target': 'http://192.168.153.18:31001',
+      // 'target': 'http://192.168.153.18:31001',
       // 'target': 'http://192.168.51.18:31001',
       // 'target': 'http://localhost:9001',
       // 'target': 'http://192.168.52.100:9001',
