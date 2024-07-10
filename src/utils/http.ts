@@ -21,7 +21,7 @@ export function get(url: string, options?: AxiosRequestConfig) {
     return axios.get(url, appendOptions(options))
 }
 
-export function put(url: string, data: any, options: AxiosRequestConfig) {
+export function put(url: string, data: any, options?: AxiosRequestConfig) {
     return axios.put(url, data, appendOptions(options))
 }
 
@@ -38,7 +38,7 @@ function appendOptions(options?: AxiosRequestConfig): AxiosRequestConfig {
         "Content-Type": "application/json;charset=UTF-8",
     }
     if (localStorage.getItem("token")) {
-        defaultHeader["Authorization"] = localStorage.getItem("token");
+        defaultHeader["Authorization"] ='Bearer '+ localStorage.getItem("token");
     }
     return {
         ...options,

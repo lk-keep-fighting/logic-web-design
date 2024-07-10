@@ -1,12 +1,12 @@
-import axios from "axios";
+import { get, post, put } from "@/utils/http";
 import dayjs from "dayjs";
 
 export async function publishLogicFromDevToTest(id: string) {
-    return axios.post(`/api/ide/pub/logic/dev-to-test${id}`);
+    return post(`/api/ide/pub/logic/dev-to-test${id}`);
 }
 
 export async function getLogic(id: string) {
-    return axios.get(`/api/ide/logic/${id}`).then(res => {
+    return get(`/api/ide/logic/${id}`).then(res => {
         const data = res.data?.data;
         data.configJson = JSON.parse(data.configJson);
         return data;
@@ -14,13 +14,13 @@ export async function getLogic(id: string) {
 }
 
 export async function getLogicConfig(id: string) {
-    return axios.get(`/api/ide/logic/${id}/config`).then(res => res.data?.data);
+    return get(`/api/ide/logic/${id}/config`).then(res => res.data?.data);
 }
 export async function saveLogic(id: string, version: string, config: string) {
-    return axios.put(`/api/ide/logic/edit/${id}`, { version, configJson: config, updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss') });
+    return put(`/api/ide/logic/edit/${id}`, { version, configJson: config, updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss') });
 }
 export async function getLogicInstanceById(id: string) {
-    return axios.get(`/api/ide/logic-instance/${id}`).then(res => {
+    return get(`/api/ide/logic-instance/${id}`).then(res => {
         const ins = res.data.data;
         return ins;
     })
@@ -31,7 +31,7 @@ export async function getLogicInstanceById(id: string) {
  * @returns 
  */
 export async function getLogicLogsByLogicIns(logicIns: any) {
-    return axios.post(`/api/ide/logic-logs`, {
+    return post(`/api/ide/logic-logs`, {
         filters: [
             { dataIndex: 'logicId', values: [logicIns.logicId], type: '=' },
             { dataIndex: 'bizId', values: [logicIns.bizId], type: '=' }
@@ -55,7 +55,7 @@ export async function getLogicLogsByLogicIns(logicIns: any) {
     })
 }
 export async function getLogicLogsById(logicLogId: any) {
-    return axios.post(`/api/ide/logic-logs`, {
+    return post(`/api/ide/logic-logs`, {
         filters: [
             { dataIndex: 'id', values: [logicLogId], type: '=' }
         ],
@@ -76,7 +76,7 @@ export async function getLogicLogsById(logicLogId: any) {
  * @returns 
  */
 export async function getLogicJsonByBak(id: string, version: string) {
-    return axios.post(`/api/ide/logic-baks`, {
+    return post(`/api/ide/logic-baks`, {
         filters: [
             { dataIndex: 'id', values: [id], type: '=' },
             { dataIndex: 'version', values: [version], type: '=' }
@@ -95,7 +95,7 @@ export async function getLogicJsonByBak(id: string, version: string) {
  * @returns 
  */
 export async function getLogicByBak(id: string, version: string) {
-    return axios.post(`/api/ide/logic-baks`, {
+    return post(`/api/ide/logic-baks`, {
         filters: [
             { dataIndex: 'id', values: [id], type: '=' },
             { dataIndex: 'version', values: [version], type: '=' }
