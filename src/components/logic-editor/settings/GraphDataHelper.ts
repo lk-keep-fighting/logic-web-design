@@ -1,5 +1,7 @@
 import { Graph } from "@antv/x6";
-import { portsOnBottom } from "@/components/logic-editor/settings/Consts";
+import { ports, portsOnBottom } from "@/components/logic-editor/settings/Consts";
+import { LogicItem } from "@/components/step-flow-core/lasl/meta-data";
+import { LogicItemSharpMapping } from "@/pages/logic-flow/biz/convert/logicItemSharpMapping";
 
 export function appendStartNode(graph: Graph) {
     const startNode = graph.createNode({
@@ -44,4 +46,14 @@ export function appendStartNode(graph: Graph) {
     // // })
     graph.addNode(startNode);
     // // graph.addEdge(se);
+}
+export function appendLogicItemNode(graph: Graph, logicItem: LogicItem) {
+
+    var nodeConfig = LogicItemSharpMapping[logicItem.type]
+    if (nodeConfig) {
+        nodeConfig.data = { config: logicItem }
+        const itemNode = graph.createNode(nodeConfig)
+        itemNode.setAttrByPath('text/text', logicItem.name);
+        graph.addNode(itemNode);
+    }
 }

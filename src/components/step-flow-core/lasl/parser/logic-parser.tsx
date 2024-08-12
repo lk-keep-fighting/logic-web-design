@@ -116,12 +116,13 @@ export function GraphToLogic(
 }
 
 //未完成
-export function LogicToGraph(logic: Logic): Cell.Properties[] {
-  const cells: Cell.Properties[] = [];
+export function LogicToGraph(logic: Logic): Cell[] {
+  const nodes: Node[] = [];
+  const edges: Edge[] = [];
 
   // Create nodes
   logic.items.forEach((item) => {
-    const node: Node.Properties = {
+    const node: Node = {
       id: item.id,
       shape: item.type, // Adjust the shape based on your node representation
       // position: { x: 0, y: 0 }, // Set the appropriate position
@@ -134,12 +135,12 @@ export function LogicToGraph(logic: Logic): Cell.Properties[] {
       },
     };
 
-    cells.push(node);
+    nodes.push(node);
 
     // If the node has branches, create edges
     if (item.branches && item.branches.length > 0) {
       item.branches.forEach((branch) => {
-        const edge: Edge.Properties = {
+        const edge: Edge = {
           shape: 'edge', // Adjust the shape based on your edge representation
           source: { cell: item.id },
           target: { cell: branch.nextId },
@@ -153,7 +154,7 @@ export function LogicToGraph(logic: Logic): Cell.Properties[] {
           ],
         };
 
-        cells.push(edge);
+        edges.push(edge);
       });
     } else if (item.nextId) {
       // If the node has a single next node, create an edge
@@ -163,9 +164,9 @@ export function LogicToGraph(logic: Logic): Cell.Properties[] {
         target: { cell: item.nextId },
       };
 
-      cells.push(edge);
+      edges.push(edge);
     }
   });
 
-  return cells;
+  return { nodes, edges };
 }
