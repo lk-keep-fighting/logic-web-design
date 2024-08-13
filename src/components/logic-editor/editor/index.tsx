@@ -41,7 +41,8 @@ class EditorProps {
   panelData?: {
     Nodes: LogicNodeConfig[],
     Shapes: any[],
-    Groups: Stencil.Group[]
+    Groups: Stencil.Group[],
+    // CustomGroups: Stencil.Group[]
   };
   isStatic?: boolean;
   graphJson?: Object;
@@ -438,25 +439,25 @@ const Editor = (props: EditorProps) => {
     });
     setGraph(graph);
 
-    if (panel) {
-      const groups = panel.Groups;
-      const stencil = new Stencil({
-        title: '展开/收起',
-        target: graph,
-        search(cell, keyword) {
-          const label: string = cell.getAttrByPath('text/text');
-          return label?.indexOf(keyword) !== -1;
-        },
-        // placeholder: '通过图形',
-        notFoundText: '未找到',
-        collapsable: true,
-        stencilGraphWidth: 250,
-        groups: groups,
-        layoutOptions: { rowHeight: 100 }
-      });
-      refStencil?.appendChild(stencil.container);
-      setStencilIns(stencil)
-    }
+    // if (panel) {
+    //   const groups = panel.Groups;
+    //   const stencil = new Stencil({
+    //     title: '展开/收起',
+    //     target: graph,
+    //     search(cell, keyword) {
+    //       const label: string = cell.getAttrByPath('text/text');
+    //       return label?.indexOf(keyword) !== -1;
+    //     },
+    //     placeholder: '搜索节点',
+    //     notFoundText: '未找到',
+    //     collapsable: true,
+    //     stencilGraphWidth: 250,
+    //     groups: groups,
+    //     layoutOptions: { rowHeight: 100 }
+    //   });
+    //   refStencil?.appendChild(stencil.container);
+    //   setStencilIns(stencil)
+    // }
 
     if (props.graphJson && Object.keys(props.graphJson).length > 0) {
       // setEditorCtx({
@@ -474,7 +475,21 @@ const Editor = (props: EditorProps) => {
     return graph;
   };
   useEffect(() => {
-    if (stencilIns && props.panelData?.Nodes) {
+    if (props.panelData?.Groups && props.panelData.Nodes) {
+      const newStencil = new Stencil({
+        title: '展开/收起',
+        target: graph,
+        search(cell, keyword) {
+          const label: string = cell.getAttrByPath('text/text');
+          return label?.indexOf(keyword) !== -1;
+        },
+        placeholder: '搜索节点',
+        notFoundText: '未找到',
+        collapsable: true,
+        stencilGraphWidth: 250,
+        groups: props.panelData?.Groups,
+        layoutOptions: { rowHeight: 100 }
+      });
       const groupedNodes: { [Key: string]: any[] } = {};
       props.panelData.Nodes.forEach((v) => {
         const n = graph.createNode(v.getNodeConfig());
@@ -485,11 +500,38 @@ const Editor = (props: EditorProps) => {
           }
         });
       });
+
       Object.keys(groupedNodes).forEach((o) => {
-        stencilIns.load([...groupedNodes[o]], o);
+        newStencil.load([...groupedNodes[o]], o);
       });
+      refStencil?.children.item(0)?.remove();
+      refStencil?.appendChild(newStencil.container);
+      setStencilIns(newStencil)
     }
-  }, [stencilIns, props.panelData?.Nodes])
+
+    // if (stencilIns && props.panelData?.Groups) {
+    //   debugger
+    //   props.panelData?.Groups.forEach(group => {
+    //     stencilIns?.addGroup(group)
+    //   })
+    // }
+    // if (stencilIns && props.panelData?.Nodes) {
+    //   const groupedNodes: { [Key: string]: any[] } = {};
+    //   props.panelData.Nodes.forEach((v) => {
+    //     const n = graph.createNode(v.getNodeConfig());
+    //     props.panelData.Groups.forEach((g) => {
+    //       if (v.getGroups().includes(g.name)) {
+    //         if (!groupedNodes[g.name]) groupedNodes[g.name] = [n];
+    //         else groupedNodes[g.name].push(n);
+    //       }
+    //     });
+    //   });
+
+    //   Object.keys(groupedNodes).forEach((o) => {
+    //     stencilIns.load([...groupedNodes[o]], o);
+    //   });
+    // }
+  }, [props.panelData?.Nodes, props.panelData?.Groups])
 
   //保存到浏览器并转换dsl
   function handleSave() {
@@ -499,7 +541,7 @@ const Editor = (props: EditorProps) => {
   const renderTool = useMemo(() => {
     if (props.toolElements) {
       return <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>
-        <Space style={{height: '50px'}}>
+        <Space style={{ height: '50px' }}>
           {props.toolElements?.map(b => b)}
         </Space>
       </Layout.Header>
@@ -510,35 +552,37 @@ const Editor = (props: EditorProps) => {
   return (
     <LogicEditorContext.Provider value={props.editorCtx}>
       <Layout style={{ height: '100vh', width: '100%', margin: 0 }}>
-        <Layout.Sider
-          theme="light"
-          collapsed={leftToolCollapsed}
-          collapsedWidth={0}
-          width={250}
-          ref={v => setRefStencil(v)}
-        >
-        </Layout.Sider>
+        {renderTool}
+
         <Layout style={{ height: '100vh' }}>
-          {renderTool}
+          <Layout.Sider
+            theme="light"
+            collapsed={leftToolCollapsed}
+            collapsedWidth={0}
+            width={250}
+            ref={v => setRefStencil(v)}
+          >
+          </Layout.Sider>
           <Layout.Content className="app-content">
             <DagreGraph ref={v => setRefContainer(v)} />
             <div className="app-minimap" ref={v => setRefMiniMapContainer(v)} />
           </Layout.Content>
+          <Layout.Sider
+            theme="light"
+            collapsed={rightToolCollapsed}
+            collapsedWidth={0}
+            width={600} >
+            <RightPanel
+              isStatic={props.isStatic}
+              editNode={editingNode}
+              onSubmit={handleSave}
+              jsTipMap={props.jsTipMap}
+              onClose={() => { setRightToolCollapsed(true); }}
+              isCollapsed={rightToolCollapsed}
+            />
+          </Layout.Sider>
         </Layout>
-        <Layout.Sider
-          theme="light"
-          collapsed={rightToolCollapsed}
-          collapsedWidth={0}
-          width={600} >
-          <RightPanel
-            isStatic={props.isStatic}
-            editNode={editingNode}
-            onSubmit={handleSave}
-            jsTipMap={props.jsTipMap}
-            onClose={() => { setRightToolCollapsed(true); }}
-            isCollapsed={rightToolCollapsed}
-          />
-        </Layout.Sider>
+
       </Layout >
     </LogicEditorContext.Provider>
   );

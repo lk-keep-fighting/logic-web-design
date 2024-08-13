@@ -31,6 +31,7 @@ const BizLogicEditor = () => {
     const [lineStyle, setLineStyle] = useState<'1' | '2'>('1')
     const [graph, setGraph] = useState<Graph>();
     const [panleNodes, setPanelNodes] = useState([]);
+    const [customGroups, setCustomGroups] = useState([]);
     const [openParamsSetting, setParmamsSetting] = useState(false);
     const [openRunLogic, setOpenRunLogic] = useState(false);
     const [jsTipMap, setJsTipMap] = useState(new Map<string, object>)
@@ -119,6 +120,7 @@ const BizLogicEditor = () => {
             console.log(err)
         })
         getPanelData().then(data => {
+            setCustomGroups(data.Groups);
             setPanelNodes(data.Nodes);
         })
     }, [])
@@ -131,16 +133,6 @@ const BizLogicEditor = () => {
                     // stroke: '#f5222d',
                 },
             },
-            // tools: [
-            //     {
-            //         name: 'edge-editor',
-            //         args: {
-            //             attrs: {
-            //                 backgroundColor: '#fff',
-            //             },
-            //         },
-            //     },
-            // ],
             zIndex: 0,
             data: {
                 type: lineStyle
@@ -155,21 +147,19 @@ const BizLogicEditor = () => {
                     panelData={{
                         Nodes: [...panleNodes],
                         Shapes: [PresetShapes.get('ExtSharp')],
-                        Groups: [{
-                            name: 'global',
-                            title: '全局节点',
-                            graphHeight: 110,
-                        },
-                        {
-                            name: 'ctrl',
-                            title: '逻辑控制',
-                            graphHeight: 220,
-                        },
-                        {
-                            name: 'biz',
-                            title: '业务调用',
-                            graphHeight: 220,
-                        },]
+                        Groups: [
+                            {
+                                name: 'ctrl',
+                                title: '逻辑控制',
+                                graphHeight: 330,
+                            },
+                            {
+                                name: 'biz',
+                                title: '业务调用',
+                                graphHeight: 220,
+                            },
+                            ...customGroups
+                        ],
                     }}
                     showLeft={showLeft}
                     graphIns={graph}
@@ -204,7 +194,7 @@ const BizLogicEditor = () => {
                         >
                             <Button
                                 onClick={() => setParmamsSetting(true)}
-                                icon={<SettingTwoTone />}
+                                icon={<SettingTwoTone style={{ color: '#1677ff' }} />}
                             >参数</Button>
                         </ParamSetting>,
                         <RunLogic open={openRunLogic}
@@ -253,13 +243,13 @@ const BizLogicEditor = () => {
                                 onClick={() => {
                                     setOpenRunLogic(true)
                                 }}
-                                icon={<PlayCircleTwoTone />}
+                                icon={<PlayCircleTwoTone style={{ color: '#1677ff' }} />}
                             >
                                 调试
                             </Button>
                         </RunLogic>,
                         <Button
-                            icon={<RocketTwoTone />}
+                            icon={<RocketTwoTone style={{ color: '#1677ff' }}  />}
                             onClick={() => { autoDagreLayout(graph) }}
                         >布局</Button>,
                         <Typography.Text strong>[{dsl.name}]</Typography.Text>,

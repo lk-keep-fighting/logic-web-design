@@ -1,5 +1,4 @@
 import { ports } from '@/components/logic-editor/settings/Consts';
-import { DefaultShapeExt } from './DefaultSharpExt';
 import LogicNodeConfig from '@/components/logic-editor/types/LogicNodeConfig';
 export function InitPanelData(
   customNodes?: any[],
@@ -19,6 +18,39 @@ export function InitPanelData(
     new LogicNodeConfig(
       {
         shape: 'circle',
+        width,
+        height,
+        attrs: {
+          body: {
+            ...commonAttrs.body,
+            fill: 'white',
+          },
+          text: {
+            text: '开始',
+            fontSize: 12,
+          },
+        },
+        markup: [
+          {
+            tagName: 'circle',
+            selector: 'body',
+          },
+          {
+            tagName: 'text',
+            selector: 'label',
+          }],
+        ports,
+        data: {
+          config: {
+            type: 'start',
+          },
+        },
+        // tools: ['node-editor'],
+        _groups: ['ctrl'],
+      }),
+    new LogicNodeConfig(
+      {
+        shape: 'circle',
         // label: 'wait-for-continue',
         width,
         height,
@@ -30,6 +62,7 @@ export function InitPanelData(
           },
           text: {
             text: '交互点',
+            fontSize: 12,
             // 'font-weight': 'bolder',
           },
         },
@@ -49,42 +82,42 @@ export function InitPanelData(
           },
         },
         // tools: ['node-editor'],
-        _groups: ['global'],
+        _groups: ['ctrl'],
       }),
-    new LogicNodeConfig(
-      {
-        shape: 'circle',
-        label: 'end',
-        width,
-        height,
-        attrs: {
-          body: {
-            ...commonAttrs.body,
-            fill: '#d9d9d9',
-          },
-          text: {
-            text: 'end',
-            // 'font-weight': 'bolder',
-          },
-        },
-        markup: [
-          {
-            tagName: 'circle',
-            selector: 'body',
-          },
-          {
-            tagName: 'text',
-            selector: 'label',
-          }],
-        ports,
-        data: {
-          config: {
-            type: 'end',
-          },
-        },
-        // tools: ['node-editor'],
-        _groups: ['global'],
-      }),
+    // new LogicNodeConfig(
+    //   {
+    //     shape: 'circle',
+    //     label: 'end',
+    //     width,
+    //     height,
+    //     attrs: {
+    //       body: {
+    //         ...commonAttrs.body,
+    //         fill: '#d9d9d9',
+    //       },
+    //       text: {
+    //         text: 'end',
+    //         // 'font-weight': 'bolder',
+    //       },
+    //     },
+    //     markup: [
+    //       {
+    //         tagName: 'circle',
+    //         selector: 'body',
+    //       },
+    //       {
+    //         tagName: 'text',
+    //         selector: 'label',
+    //       }],
+    //     ports,
+    //     data: {
+    //       config: {
+    //         type: 'end',
+    //       },
+    //     },
+    //     // tools: ['node-editor'],
+    //     _groups: ['global'],
+    //   }),
     new LogicNodeConfig(
       {
         shape: 'ExtSharp',
@@ -92,7 +125,6 @@ export function InitPanelData(
         attrs: {
           text: {
             text: 'http请求',
-            fontSize: 14,
           },
           image: {
             'xlink:href': '/icons/http.svg',
@@ -123,7 +155,6 @@ export function InitPanelData(
         },
         text: {
           text: 'js脚本',
-          fontSize: 14,
         },
       },
       data: {
@@ -147,7 +178,6 @@ export function InitPanelData(
           },
           text: {
             text: 'java方法',
-            fontSize: 14,
           },
         },
         data: {
@@ -171,7 +201,6 @@ export function InitPanelData(
           },
           text: {
             text: '复用逻辑',
-            fontSize: 14,
           },
         },
         data: {
@@ -203,7 +232,7 @@ export function InitPanelData(
           },
           text: {
             text: 'switch',
-            fontSize: 14,
+            // fontSize: 14,
             // fill: '#5F95FF',
             refX: 0.5,
             refY: '100%',
@@ -241,7 +270,7 @@ export function InitPanelData(
           },
           text: {
             text: 'case',
-            fontSize: 14,
+            // fontSize: 14,
             // fill: '#5F95FF',
             refX: 0.5,
             refY: '100%',
@@ -279,7 +308,7 @@ export function InitPanelData(
           },
           text: {
             text: 'default',
-            fontSize: 14,
+            // fontSize: 14,
             // fill: '#5F95FF',
             refX: 0.5,
             refY: '100%',
@@ -317,7 +346,7 @@ export function InitPanelData(
           },
           text: {
             text: '等待',
-            fontSize: 14,
+            // fontSize: 14,
             // fill: '#5F95FF',
             refX: 0.5,
             refY: '100%',
@@ -344,46 +373,8 @@ export function InitPanelData(
   // Nodes.push(groupNode)
   if (customNodes && customNodes.length > 0)
     Array.prototype.push.apply(Nodes, customNodes);
-  const Groups: any[] = [
-    {
-      name: 'global',
-      title: '全局节点',
-      graphHeight: 110,
-    },
-    // {
-    //   name: 'var',
-    //   title: '变量声明',
-    //   graphHeight: 180,
-    // },
-    {
-      name: 'ctrl',
-      title: '逻辑控制',
-      graphHeight: 220,
-    },
-    {
-      name: 'biz',
-      title: '业务调用',
-      graphHeight: 220,
-    },
-    // {
-    //   name: 'mqtt',
-    //   title: 'MQTT',
-    //   graphHeight: 200,
-    // },
-    // {
-    //   name: 'def',
-    //   title: '其他',
-    //   graphHeight: 300,
-    // },
-  ];
-  if (customGroup && customGroup.length > 0)
-    Array.prototype.push.apply(Groups, customGroup);
-  const Shapes = DefaultShapeExt;
-  if (customSharps && customSharps.length > 0)
-    Array.prototype.push.apply(Shapes, customSharps);
   return {
-    Shapes,
     Nodes,
-    Groups,
+    // Groups,
   };
 }
