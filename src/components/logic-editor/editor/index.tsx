@@ -160,7 +160,7 @@ const Editor = (props: EditorProps) => {
           },
         },
         background: {
-          color: '#F2F7FA',
+          color: '#fff',
         },
         grid: true,
         // panning: {

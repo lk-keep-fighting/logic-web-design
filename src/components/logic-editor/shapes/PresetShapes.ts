@@ -11,7 +11,7 @@ PresetShapes.set('ExtSharp',
                 body: {
                     rx: 6,
                     ry: 6,
-                    fill: '#fff',
+                    fill: 'rgba(95, 149, 255, 0.05',
                     stroke: '#8f8f8f',
                     strokeWidth: 1,
                     // stroke: '#5F95FF',
