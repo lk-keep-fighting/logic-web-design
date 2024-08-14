@@ -1,4 +1,5 @@
 import { ports } from '@/components/logic-editor/settings/Consts';
+import { PresetShapes } from '@/components/logic-editor/shapes/PresetShapes';
 import LogicNodeConfig from '@/components/logic-editor/types/LogicNodeConfig';
 export function InitPanelData(
   customNodes?: any[],
@@ -371,10 +372,13 @@ export function InitPanelData(
   // groupNode.setLabel('分组');
   // groupNode.setConfigSchemel('group');
   // Nodes.push(groupNode)
+
   if (customNodes && customNodes.length > 0)
     Array.prototype.push.apply(Nodes, customNodes);
+  const Shapes = [PresetShapes.get('ExtSharp')]
   return {
     Nodes,
+    Shapes
     // Groups,
   };
 }

@@ -13,7 +13,6 @@ import './index.css';
 // import DagreGraph from '@/components/step-flow-editor/x6-graph/instance/dagre-graph';
 // import { autoDagreLayout } from '@/components/step-flow-editor/x6-graph/layout/dagreLayout';
 import { Logic, LogicItem } from '@/components/step-flow-core/lasl/meta-data';
-import { JsonView } from 'amis';
 import { InitPanelData } from '../../settings/PanelSetting';
 import { RegistShape } from '../../settings/InitGraph';
 import { autoDagreLayout } from '../../layout/dagreLayout';

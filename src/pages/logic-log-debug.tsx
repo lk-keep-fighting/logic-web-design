@@ -56,7 +56,6 @@ const LogicLogDebug = () => {
                         <Divider type='vertical' />,
                         <span style={{ color: 'red' }}>执行版本：</span>,
                         <span>{debugLog?.version}<Typography.Text copyable={{ tooltips: ['点击复制', '复制成功!'], text: debugLog?.version }} /></span>,
-
                         // <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'], text: logicIns?.bizId }} >业务标识：{logicIns?.bizId}</Typography.Paragraph>,
                         // <Typography.Paragraph style={{ color: 'red' }}>执行版本:</Typography.Paragraph>,
                         // <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'] }} >{logicIns?.version}</Typography.Paragraph>,
