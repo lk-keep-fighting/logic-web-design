@@ -239,7 +239,7 @@ const BizLogicEditor = () => {
                                 }
                             }}>
                             <Button
-                                type="default"
+                                // type="primary"
                                 onClick={() => {
                                     setOpenRunLogic(true)
                                 }}
@@ -249,10 +249,10 @@ const BizLogicEditor = () => {
                             </Button>
                         </RunLogic>,
                         <Button
-                            icon={<RocketTwoTone style={{ color: '#1677ff' }}  />}
+                            icon={<RocketTwoTone style={{ color: '#1677ff' }} />}
                             onClick={() => { autoDagreLayout(graph) }}
                         >布局</Button>,
-                        <Typography.Text strong>[{dsl.name}]</Typography.Text>,
+                        <Typography.Text strong style={{ fontSize: '18px' }}>[{dsl.name}]</Typography.Text>,
                         <Typography.Text>版本:{dsl.version}</Typography.Text>
 
 

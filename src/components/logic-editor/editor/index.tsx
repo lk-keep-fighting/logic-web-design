@@ -274,45 +274,10 @@ const Editor = (props: EditorProps) => {
               break;
           }
         })
-      // cell.addTools([
-      // {
-      //   name: 'button-remove',
-      //   args: { distance: -40 },
-      // },
-      // {
-      //     name: "source-arrowhead",
-      //     args: {
-      //         attrs: {
-      //             fill: "red",
-      //             visibility: "hidden"
-      //         },
-      //     },
-      // },
-      // {
-      //     name: "target-arrowhead",
-      //     args: {
-      //         attrs: {
-      //             fill: "red",
-      //             visibility: "hidden"
-      //         },
-      //     },
-      // },
-      // ])
-      // const ports = this.container?.querySelectorAll(
-      //   '.x6-port-body',
-      // ) as NodeListOf<SVGElement>;
-      // showPorts(ports, true);
     });
 
     graph.on('edge:mouseleave', ({ cell }) => {
       cell.removeTools();
-      // cell.removeTool('button-remove')
-      // cell.removeTool('segments');
-      // cell.removeTool('vertices');
-      // const ports = this.container?.querySelectorAll(
-      //   '.x6-port-body',
-      // ) as NodeListOf<SVGElement>;
-      // showPorts(ports, false);
     });
 
     graph.on('node:mouseenter', ({ cell }) => {
@@ -403,18 +368,9 @@ const Editor = (props: EditorProps) => {
     // delete
     graph.bindKey('backspace', () => {
       const cells = graph.getSelectedCells();
-      if (cells.length) {
-        if (cells.find(i => {
-          if (i.data)
-            return ['start'].indexOf(i.data.config?.type) > -1;
-          else return false;
-        })) {
-          message.error('禁止删除开始节点！')
-        } else {
-          graph.removeCells(cells);
-        }
-      }
+      graph.removeCells(cells);
     });
+
     graph.on('blank:click', ({ e, x, y }) => {
       console.log('blank:click', x, y);
       setRightToolCollapsed(true)
@@ -439,31 +395,8 @@ const Editor = (props: EditorProps) => {
     });
     setGraph(graph);
 
-    // if (panel) {
-    //   const groups = panel.Groups;
-    //   const stencil = new Stencil({
-    //     title: '展开/收起',
-    //     target: graph,
-    //     search(cell, keyword) {
-    //       const label: string = cell.getAttrByPath('text/text');
-    //       return label?.indexOf(keyword) !== -1;
-    //     },
-    //     placeholder: '搜索节点',
-    //     notFoundText: '未找到',
-    //     collapsable: true,
-    //     stencilGraphWidth: 250,
-    //     groups: groups,
-    //     layoutOptions: { rowHeight: 100 }
-    //   });
-    //   refStencil?.appendChild(stencil.container);
-    //   setStencilIns(stencil)
-    // }
-
     if (props.graphJson && Object.keys(props.graphJson).length > 0) {
-      // setEditorCtx({
-      //   ...editorCtx,
-      //   logic: props.graphJson
-      // });
+
       graph.fromJSON(props.graphJson);
     } else {
       if (props.onGraphJsonEmpty)
@@ -508,29 +441,6 @@ const Editor = (props: EditorProps) => {
       refStencil?.appendChild(newStencil.container);
       setStencilIns(newStencil)
     }
-
-    // if (stencilIns && props.panelData?.Groups) {
-    //   debugger
-    //   props.panelData?.Groups.forEach(group => {
-    //     stencilIns?.addGroup(group)
-    //   })
-    // }
-    // if (stencilIns && props.panelData?.Nodes) {
-    //   const groupedNodes: { [Key: string]: any[] } = {};
-    //   props.panelData.Nodes.forEach((v) => {
-    //     const n = graph.createNode(v.getNodeConfig());
-    //     props.panelData.Groups.forEach((g) => {
-    //       if (v.getGroups().includes(g.name)) {
-    //         if (!groupedNodes[g.name]) groupedNodes[g.name] = [n];
-    //         else groupedNodes[g.name].push(n);
-    //       }
-    //     });
-    //   });
-
-    //   Object.keys(groupedNodes).forEach((o) => {
-    //     stencilIns.load([...groupedNodes[o]], o);
-    //   });
-    // }
   }, [props.panelData?.Nodes, props.panelData?.Groups])
 
   //保存到浏览器并转换dsl
@@ -553,7 +463,6 @@ const Editor = (props: EditorProps) => {
     <LogicEditorContext.Provider value={props.editorCtx}>
       <Layout style={{ height: '100vh', width: '100%', margin: 0 }}>
         {renderTool}
-
         <Layout style={{ height: '100vh' }}>
           <Layout.Sider
             theme="light"
@@ -568,7 +477,8 @@ const Editor = (props: EditorProps) => {
             <div className="app-minimap" ref={v => setRefMiniMapContainer(v)} />
           </Layout.Content>
           <Layout.Sider
-            theme="light"
+            // theme="light"
+            style={{ background: 'transparent' }}
             collapsed={rightToolCollapsed}
             collapsedWidth={0}
             width={600} >
