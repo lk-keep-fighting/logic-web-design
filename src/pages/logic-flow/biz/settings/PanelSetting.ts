@@ -122,6 +122,18 @@ export function InitPanelData(
     new LogicNodeConfig(
       {
         shape: 'ExtSharp',
+        body: {
+          rx: 6,
+          ry: 6,
+          fill: '#0484fb',
+          stroke: '#0484fb',
+          strokeWidth: 1,
+          // stroke: '#5F95FF',
+          // strokeWidth: 1,
+          // fill: 'rgba(95,149,255,0.05)',
+          refWidth: 1,
+          refHeight: 1,
+      },
         // label: 'http请求',
         attrs: {
           text: {

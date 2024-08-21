@@ -104,7 +104,7 @@ const BizLogicEditor = () => {
     }
 
     useEffect(() => {
-        RegistShape([PresetShapes.get('ExtSharp')]);
+        RegistShape([...PresetShapes.values()]);
         setLoading(true);
         getLogic(id).then(res => {
             const { name, configJson } = res;
@@ -146,7 +146,7 @@ const BizLogicEditor = () => {
                     editorCtx={editorCtx}
                     panelData={{
                         Nodes: [...panleNodes],
-                        Shapes: [PresetShapes.get('ExtSharp')],
+                        // Shapes: [...PresetShapes.values()],
                         Groups: [
                             {
                                 name: 'ctrl',

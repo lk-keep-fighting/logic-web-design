@@ -18,13 +18,13 @@ export async function getPanelData() {
         console.log('getPanelData')
         if (res[1].status == 200) {
             var methodsByGroup = res[1].data.data;
-            Object.keys(methodsByGroup).forEach(group => {
+            Object.keys(methodsByGroup).forEach((group, groupIdx) => {
                 const groupConfig = PanelConfigBuilder.buildGroup(group, methodsByGroup[group].length, group)
                 customGroups.push(groupConfig)
                 methodsByGroup[group].forEach(item => {
                     res[0].Nodes.push(new LogicNodeConfig(
                         {
-                            shape: 'ExtSharp',
+                            shape: 'ExtShape' + (groupIdx % 3 == 0 ? '1' : groupIdx % 3 == 1 ? '2' : '3'),
                             ports,
                             attrs: {
                                 image: {
