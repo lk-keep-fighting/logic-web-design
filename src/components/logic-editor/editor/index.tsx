@@ -492,7 +492,6 @@ const Editor = (props: EditorProps) => {
             />
           </Layout.Sider>
         </Layout>
-
       </Layout >
     </LogicEditorContext.Provider>
   );

@@ -133,7 +133,7 @@ export function InitPanelData(
           // fill: 'rgba(95,149,255,0.05)',
           refWidth: 1,
           refHeight: 1,
-      },
+        },
         // label: 'http请求',
         attrs: {
           text: {
@@ -387,7 +387,7 @@ export function InitPanelData(
 
   if (customNodes && customNodes.length > 0)
     Array.prototype.push.apply(Nodes, customNodes);
-  const Shapes = [PresetShapes.get('ExtSharp')]
+  const Shapes = [...PresetShapes.values()]
   return {
     Nodes,
     Shapes

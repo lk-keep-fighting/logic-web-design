@@ -47,7 +47,7 @@ export default defineConfig({
         },
         {
           path: "/assets/logic/i/:id/view/:version",
-          component: "logic-viewer"
+          component: "logic-flow/biz/logic-viewer"
         },
         {
           path: "/assets/logic/biz/i/:id/edit",
@@ -106,9 +106,9 @@ export default defineConfig({
     //   // 'pathRewrite': { '^/api': '/api' },
     // },
     '/api/runtime': {
-      'target': 'http://localhost:4052',
+      // 'target': 'http://localhost:4052',
       // 'target': 'http://localhost:8080',
-      // 'target': 'http://localhost:18080',
+      'target': 'http://localhost:18080',
     //  'target': 'http://192.168.52.166:8080',
       // 'target': 'http://192.168.51.18:31001',
       // 'target': 'http://localhost:8080',
@@ -119,9 +119,9 @@ export default defineConfig({
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api/ide': {
-      'target': 'http://localhost:4052',
+      // 'target': 'http://localhost:4052',
       // 'target': 'http://localhost:8080',
-      // 'target': 'http://localhost:18080',
+      'target': 'http://localhost:18080',
       // 'target': 'http://192.168.52.166:8080',
       // 'target': 'http://192.168.51.18:31001',
       // 'target': 'http://localhost:9001',
