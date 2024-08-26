@@ -421,7 +421,7 @@ const Editor = (props: EditorProps) => {
         collapsable: true,
         stencilGraphWidth: 250,
         groups: props.panelData?.Groups,
-        layoutOptions: { rowHeight: 100 }
+        layoutOptions: { rowHeight: 85, columns: 2 }
       });
       const groupedNodes: { [Key: string]: any[] } = {};
       props.panelData.Nodes.forEach((v) => {

@@ -85,145 +85,6 @@ export function InitPanelData(
         // tools: ['node-editor'],
         _groups: ['ctrl'],
       }),
-    // new LogicNodeConfig(
-    //   {
-    //     shape: 'circle',
-    //     label: 'end',
-    //     width,
-    //     height,
-    //     attrs: {
-    //       body: {
-    //         ...commonAttrs.body,
-    //         fill: '#d9d9d9',
-    //       },
-    //       text: {
-    //         text: 'end',
-    //         // 'font-weight': 'bolder',
-    //       },
-    //     },
-    //     markup: [
-    //       {
-    //         tagName: 'circle',
-    //         selector: 'body',
-    //       },
-    //       {
-    //         tagName: 'text',
-    //         selector: 'label',
-    //       }],
-    //     ports,
-    //     data: {
-    //       config: {
-    //         type: 'end',
-    //       },
-    //     },
-    //     // tools: ['node-editor'],
-    //     _groups: ['global'],
-    //   }),
-    new LogicNodeConfig(
-      {
-        shape: 'ExtSharp',
-        body: {
-          rx: 6,
-          ry: 6,
-          fill: '#0484fb',
-          stroke: '#0484fb',
-          strokeWidth: 1,
-          // stroke: '#5F95FF',
-          // strokeWidth: 1,
-          // fill: 'rgba(95,149,255,0.05)',
-          refWidth: 1,
-          refHeight: 1,
-        },
-        // label: 'http请求',
-        attrs: {
-          text: {
-            text: 'http请求',
-          },
-          image: {
-            'xlink:href': '/icons/http.svg',
-            width: 20,
-            x: 2,
-            y: 2,
-          },
-        },
-        data: {
-          config: {
-            type: 'http',
-            method: 'POST',
-          },
-        },
-        ports,
-        // tools: ['node-editor'],
-        _groups: ['biz'],
-      }),
-    new LogicNodeConfig({
-      shape: 'ExtSharp',
-      ports,
-      attrs: {
-        image: {
-          width: 15,
-          x: 2,
-          y: 2,
-          'xlink:href': '/icons/code.svg',
-        },
-        text: {
-          text: 'js脚本',
-        },
-      },
-      data: {
-        config: {
-          type: 'js',
-        },
-      },
-      // tools: ['node-editor'],
-      _groups: ['biz'],
-    }),
-    new LogicNodeConfig(
-      {
-        shape: 'ExtSharp',
-        ports,
-        attrs: {
-          image: {
-            width: 15,
-            x: 2,
-            y: 2,
-            'xlink:href': '/icons/java.svg',
-          },
-          text: {
-            text: 'java方法',
-          },
-        },
-        data: {
-          config: {
-            type: 'java',
-          },
-        },
-        // tools: ['node-editor'],
-        _groups: ['biz'],
-      }),
-    new LogicNodeConfig(
-      {
-        shape: 'ExtSharp',
-        ports,
-        attrs: {
-          image: {
-            width: 15,
-            x: 2,
-            y: 2,
-            'xlink:href': '/icons/CarbonSubflowLocal.svg',
-          },
-          text: {
-            text: '复用逻辑',
-          },
-        },
-        data: {
-          config: {
-            type: 'sub-logic',
-          },
-        },
-        // tools: ['node-editor'],
-        _groups: ['biz'],
-      }),
     new LogicNodeConfig(
       {
         shape: 'ExtSharp',
@@ -375,6 +236,145 @@ export function InitPanelData(
           },
         },
         ports,
+        // tools: ['node-editor'],
+        _groups: ['ctrl'],
+      }),
+    // new LogicNodeConfig(
+    //   {
+    //     shape: 'circle',
+    //     label: 'end',
+    //     width,
+    //     height,
+    //     attrs: {
+    //       body: {
+    //         ...commonAttrs.body,
+    //         fill: '#d9d9d9',
+    //       },
+    //       text: {
+    //         text: 'end',
+    //         // 'font-weight': 'bolder',
+    //       },
+    //     },
+    //     markup: [
+    //       {
+    //         tagName: 'circle',
+    //         selector: 'body',
+    //       },
+    //       {
+    //         tagName: 'text',
+    //         selector: 'label',
+    //       }],
+    //     ports,
+    //     data: {
+    //       config: {
+    //         type: 'end',
+    //       },
+    //     },
+    //     // tools: ['node-editor'],
+    //     _groups: ['global'],
+    //   }),
+    new LogicNodeConfig(
+      {
+        shape: 'ExtSharp',
+        body: {
+          rx: 6,
+          ry: 6,
+          fill: '#0484fb',
+          stroke: '#0484fb',
+          strokeWidth: 1,
+          // stroke: '#5F95FF',
+          // strokeWidth: 1,
+          // fill: 'rgba(95,149,255,0.05)',
+          refWidth: 1,
+          refHeight: 1,
+        },
+        // label: 'http请求',
+        attrs: {
+          text: {
+            text: 'http请求',
+          },
+          image: {
+            'xlink:href': '/icons/http.svg',
+            width: 20,
+            x: 2,
+            y: 2,
+          },
+        },
+        data: {
+          config: {
+            type: 'http',
+            method: 'POST',
+          },
+        },
+        ports,
+        // tools: ['node-editor'],
+        _groups: ['ctrl'],
+      }),
+    new LogicNodeConfig({
+      shape: 'ExtSharp',
+      ports,
+      attrs: {
+        image: {
+          width: 15,
+          x: 2,
+          y: 2,
+          'xlink:href': '/icons/code.svg',
+        },
+        text: {
+          text: 'js脚本',
+        },
+      },
+      data: {
+        config: {
+          type: 'js',
+        },
+      },
+      // tools: ['node-editor'],
+      _groups: ['ctrl'],
+    }),
+    new LogicNodeConfig(
+      {
+        shape: 'ExtSharp',
+        ports,
+        attrs: {
+          image: {
+            width: 15,
+            x: 2,
+            y: 2,
+            'xlink:href': '/icons/java.svg',
+          },
+          text: {
+            text: 'java方法',
+          },
+        },
+        data: {
+          config: {
+            type: 'java',
+          },
+        },
+        // tools: ['node-editor'],
+        _groups: ['ctrl'],
+      }),
+    new LogicNodeConfig(
+      {
+        shape: 'ExtSharp',
+        ports,
+        attrs: {
+          image: {
+            width: 15,
+            x: 2,
+            y: 2,
+            'xlink:href': '/icons/CarbonSubflowLocal.svg',
+          },
+          text: {
+            text: '复用逻辑',
+          },
+        },
+        data: {
+          config: {
+            type: 'sub-logic',
+          },
+        },
         // tools: ['node-editor'],
         _groups: ['ctrl'],
       }),

@@ -151,13 +151,13 @@ const BizLogicEditor = () => {
                             {
                                 name: 'ctrl',
                                 title: '逻辑控制',
-                                graphHeight: 330,
+                                graphHeight: 450,
                             },
-                            {
-                                name: 'biz',
-                                title: '业务调用',
-                                graphHeight: 220,
-                            },
+                            // {
+                            //     name: 'biz',
+                            //     title: '业务调用',
+                            //     graphHeight: 220,
+                            // },
                             ...customGroups
                         ],
                     }}
