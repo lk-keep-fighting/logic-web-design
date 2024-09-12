@@ -62,7 +62,7 @@ PresetShapes.set('ExtShape1',
                 body: {
                     rx: 6,
                     ry: 6,
-                    fill: '#FFFFFF',
+                    fill: '#ffcc00',
                     stroke: '#8f8f8f',
                     strokeWidth: 1,
                     // stroke: '#5F95FF',

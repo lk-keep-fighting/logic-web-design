@@ -151,7 +151,7 @@ const BizLogicEditor = () => {
                             {
                                 name: 'ctrl',
                                 title: '逻辑控制',
-                                graphHeight: 450,
+                                graphHeight: 360
                             },
                             // {
                             //     name: 'biz',
