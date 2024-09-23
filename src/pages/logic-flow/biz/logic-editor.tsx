@@ -98,6 +98,7 @@ const BizLogicEditor = () => {
         let runtimeEnvs = await getEnvJson();
         jsTips['_env'] = JSON.stringify(runtimeEnvs)//JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.envs));
         jsTips['_lastRet'] = '{}';
+        jsTips['_last'] = JSON.stringify({ success: true, msg: '' });
         setJsTipMap(jsTips)
         // setEditorCtx({ jsTips: { ...jsTips } })
         setLoading(false);
@@ -254,8 +255,6 @@ const BizLogicEditor = () => {
                         >布局</Button>,
                         <Typography.Text strong style={{ fontSize: '18px' }}>[{dsl.name}]</Typography.Text>,
                         <Typography.Text>版本:{dsl.version}</Typography.Text>
-
-
                         // <Button icon={<UnDoIcon />} onClick={() => {
                         //     debugger;
                         //     if (graph && graph.canUndo()) {
