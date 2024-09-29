@@ -62,7 +62,8 @@ const DebugLogicLog = (props: DebugProps) => {
               r: 14,
               x: 0,
               y: 0,
-              stroke: '#fe854f',
+              stroke: itemLog.success ? '#52C41A' : 'red',
+              // 'stroke-width': 3 ,
               'stroke-width': 5 - idx < 1 ? 1 : 5 - idx,
               fill: 'white',
               cursor: 'pointer',
@@ -73,7 +74,7 @@ const DebugLogicLog = (props: DebugProps) => {
             textContent: txt,
             selector: 'icon',
             attrs: {
-              fill: '#fe854f',
+              // fill: '#fe854f',
               'font-size': 20 - idx < 12 ? 12 : 20 - idx,
               'text-anchor': 'middle',
               'pointer-events': 'none',
@@ -305,7 +306,7 @@ const DebugLogicLog = (props: DebugProps) => {
       children: <div>
         <FormRenderById
           formId='debug-node-input'
-          values={{ returnData: curItemLog?.returnData, body: curItemLog?.configInstance?.body }}
+          values={{ success: curItemLog?.success, msg: curItemLog?.msg,returnData: curItemLog?.returnData, body: curItemLog?.configInstance?.body }}
           onSubmit={() => { }}
         />
         <Typography.Text style={{ marginLeft: '15px' }} copyable={{ tooltips: ['复制节点编号', '复制成功!'], text: selectedNode?.id }}>节点编号</Typography.Text>
