@@ -1,14 +1,14 @@
 import { LogicFlowEditor } from "@/components/logic-editor";
-import { Button, Modal, Spin, message } from "antd";
+import { Button, Modal, Space, Spin, message, Typography } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "umi";
 import { Graph, Shape } from "@antv/x6";
-import { MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, SaveOutlined, SettingTwoTone } from "@ant-design/icons";
+import { LayoutTwoTone, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, RocketOutlined, RocketTwoTone, SaveOutlined, SettingTwoTone } from "@ant-design/icons";
 import { getPanelData } from "./services/panelSvc";
 import { BizDslConvert } from "./convert/dslConvert";
 import { appendStartNode } from "@/components/logic-editor/settings/GraphDataHelper";
 import { PresetShapes } from "@/components/logic-editor/shapes/PresetShapes";
-import { getLogicConfig, saveLogic } from "@/services/ideSvc";
+import { getLogic, getLogicConfig, saveLogic } from "@/services/ideSvc";
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import { RegistShape } from "./settings/InitGraph";
 import { autoDagreLayout } from "./layout/dagreLayout";
@@ -31,17 +31,22 @@ const BizLogicEditor = () => {
     const [lineStyle, setLineStyle] = useState<'1' | '2'>('1')
     const [graph, setGraph] = useState<Graph>();
     const [panleNodes, setPanelNodes] = useState([]);
+    const [customGroups, setCustomGroups] = useState([]);
     const [openParamsSetting, setParmamsSetting] = useState(false);
     const [openRunLogic, setOpenRunLogic] = useState(false);
     const [jsTipMap, setJsTipMap] = useState(new Map<string, object>)
     const { id } = useParams();
     var dslConvert = new BizDslConvert();
+    function refreshWebTitle(dsl: Logic) {
+        window.document.title = "[" + dsl.name + ']:' + dsl.version;
+    }
     function handleSave() {
         setLoading(true);
         let newDsl: Logic = dslConvert.graphToLogicItems(graph, dsl);
         newDsl.version = newVersion();
         setDsl(newDsl)
         saveDslToServer(newDsl)
+        refreshWebTitle(newDsl)
     }
     function newVersion() {
         return dayjs(Date.now()).format('YYYYMMDDHHmmss');
@@ -49,9 +54,16 @@ const BizLogicEditor = () => {
     function saveDslToServer(newDsl: Logic) {
         saveLogic(id, newDsl.version, JSON.stringify(newDsl)).then(res => {
             setLoading(false)
-            message.success('保存成功')
             console.log('save logic')
             console.log(newDsl)
+            if (res.status == 200) {
+                message.success('保存成功')
+                console.log('save logic success')
+            } else {
+                message.error('保存失败：' + res.statusText)
+                console.error('save logic error')
+            }
+
         }).catch(err => {
             setLoading(false)
             console.log('err')
@@ -86,26 +98,30 @@ const BizLogicEditor = () => {
         let runtimeEnvs = await getEnvJson();
         jsTips['_env'] = JSON.stringify(runtimeEnvs)//JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.envs));
         jsTips['_lastRet'] = '{}';
+        jsTips['_last'] = JSON.stringify({ success: true, msg: '' });
         setJsTipMap(jsTips)
         // setEditorCtx({ jsTips: { ...jsTips } })
         setLoading(false);
     }
 
     useEffect(() => {
-        RegistShape([PresetShapes.get('ExtSharp')]);
+        RegistShape([...PresetShapes.values()]);
         setLoading(true);
-        getLogicConfig(id).then(res => {
-            const configJson = res;
+        getLogic(id).then(res => {
+            const { name, configJson } = res;
             configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
+            configJson.name = name;//默认使用当前id作为配置id，用于复用配置时简化更新操作
             setDsl(configJson)
             setGraphJson(configJson?.visualConfig)
             updateEditorCtx(configJson);
+            refreshWebTitle(configJson)
         }).catch(err => {
             setLoading(false);
             console.log('err')
             console.log(err)
         })
         getPanelData().then(data => {
+            setCustomGroups(data.Groups);
             setPanelNodes(data.Nodes);
         })
     }, [])
@@ -118,16 +134,6 @@ const BizLogicEditor = () => {
                     // stroke: '#f5222d',
                 },
             },
-            // tools: [
-            //     {
-            //         name: 'edge-editor',
-            //         args: {
-            //             attrs: {
-            //                 backgroundColor: '#fff',
-            //             },
-            //         },
-            //     },
-            // ],
             zIndex: 0,
             data: {
                 type: lineStyle
@@ -141,22 +147,20 @@ const BizLogicEditor = () => {
                     editorCtx={editorCtx}
                     panelData={{
                         Nodes: [...panleNodes],
-                        Shapes: [PresetShapes.get('ExtSharp')],
-                        Groups: [{
-                            name: 'global',
-                            title: '全局节点',
-                            graphHeight: 110,
-                        },
-                        {
-                            name: 'ctrl',
-                            title: '逻辑控制',
-                            graphHeight: 220,
-                        },
-                        {
-                            name: 'biz',
-                            title: '业务调用',
-                            graphHeight: 220,
-                        },]
+                        // Shapes: [...PresetShapes.values()],
+                        Groups: [
+                            {
+                                name: 'ctrl',
+                                title: '逻辑控制',
+                                graphHeight: 360
+                            },
+                            // {
+                            //     name: 'biz',
+                            //     title: '业务调用',
+                            //     graphHeight: 220,
+                            // },
+                            ...customGroups
+                        ],
                     }}
                     showLeft={showLeft}
                     graphIns={graph}
@@ -191,8 +195,8 @@ const BizLogicEditor = () => {
                         >
                             <Button
                                 onClick={() => setParmamsSetting(true)}
-                                icon={<SettingTwoTone />}
-                            >配置参数</Button>
+                                icon={<SettingTwoTone style={{ color: '#1677ff' }} />}
+                            >参数</Button>
                         </ParamSetting>,
                         <RunLogic open={openRunLogic}
                             setOpen={() => setOpenRunLogic(!openRunLogic)}
@@ -201,8 +205,10 @@ const BizLogicEditor = () => {
                                 setOpenRunLogic(false)
                                 if (dsl) {
                                     const { params, bizId, headers, bizStartCode } = values;
+                                    setLoading(true);
                                     runLogicOnServer(id, JSON.parse(params), bizId, bizStartCode, model, JSON.parse(headers)).then(res => {
                                         if (res.data.code == 0) {
+                                            setLoading(false);
                                             Modal.success({
                                                 title: '执行成功',
                                                 width: '1000px',
@@ -212,6 +218,7 @@ const BizLogicEditor = () => {
                                                 </div>,
                                             })
                                         } else {
+                                            setLoading(false);
                                             Modal.error({
                                                 title: <span>{res.data.msg}</span>,
                                                 width: '1200px',
@@ -222,6 +229,7 @@ const BizLogicEditor = () => {
                                             })
                                         }
                                     }).catch(err => {
+                                        setLoading(false);
                                         const res = err.response.data;
                                         Modal.error({
                                             title: <span>{res.msg}</span>,
@@ -232,16 +240,21 @@ const BizLogicEditor = () => {
                                 }
                             }}>
                             <Button
-                                type="default"
+                                // type="primary"
                                 onClick={() => {
                                     setOpenRunLogic(true)
                                 }}
-                                icon={<PlayCircleTwoTone />}
+                                icon={<PlayCircleTwoTone style={{ color: '#1677ff' }} />}
                             >
                                 调试
                             </Button>
                         </RunLogic>,
-                        <span>当前版本:{dsl.version}</span>
+                        <Button
+                            icon={<RocketTwoTone style={{ color: '#1677ff' }} />}
+                            onClick={() => { autoDagreLayout(graph) }}
+                        >布局</Button>,
+                        <Typography.Text strong style={{ fontSize: '18px' }}>[{dsl.name}]</Typography.Text>,
+                        <Typography.Text>版本:{dsl.version}</Typography.Text>
                         // <Button icon={<UnDoIcon />} onClick={() => {
                         //     debugger;
                         //     if (graph && graph.canUndo()) {
@@ -264,7 +277,7 @@ const BizLogicEditor = () => {
                     autoLayout={(g) => autoDagreLayout(g)}
                     onGraphInsChange={v => setGraph(v)}
                 />
-            </Spin>
+            </Spin >
         </div >
     );
 };

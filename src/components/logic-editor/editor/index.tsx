@@ -41,7 +41,8 @@ class EditorProps {
   panelData?: {
     Nodes: LogicNodeConfig[],
     Shapes: any[],
-    Groups: Stencil.Group[]
+    Groups: Stencil.Group[],
+    // CustomGroups: Stencil.Group[]
   };
   isStatic?: boolean;
   graphJson?: Object;
@@ -159,7 +160,7 @@ const Editor = (props: EditorProps) => {
           },
         },
         background: {
-          color: '#F2F7FA',
+          color: '#fff',
         },
         grid: true,
         // panning: {
@@ -196,7 +197,9 @@ const Editor = (props: EditorProps) => {
         enabled: true
       }))
       .use(new Keyboard())
-      .use(new Clipboard())
+      .use(new Clipboard({
+        enabled: true
+      }))
       .use(new Export())
       .use(new Transform({
         resizing: {
@@ -271,45 +274,10 @@ const Editor = (props: EditorProps) => {
               break;
           }
         })
-      // cell.addTools([
-      // {
-      //   name: 'button-remove',
-      //   args: { distance: -40 },
-      // },
-      // {
-      //     name: "source-arrowhead",
-      //     args: {
-      //         attrs: {
-      //             fill: "red",
-      //             visibility: "hidden"
-      //         },
-      //     },
-      // },
-      // {
-      //     name: "target-arrowhead",
-      //     args: {
-      //         attrs: {
-      //             fill: "red",
-      //             visibility: "hidden"
-      //         },
-      //     },
-      // },
-      // ])
-      // const ports = this.container?.querySelectorAll(
-      //   '.x6-port-body',
-      // ) as NodeListOf<SVGElement>;
-      // showPorts(ports, true);
     });
 
     graph.on('edge:mouseleave', ({ cell }) => {
       cell.removeTools();
-      // cell.removeTool('button-remove')
-      // cell.removeTool('segments');
-      // cell.removeTool('vertices');
-      // const ports = this.container?.querySelectorAll(
-      //   '.x6-port-body',
-      // ) as NodeListOf<SVGElement>;
-      // showPorts(ports, false);
     });
 
     graph.on('node:mouseenter', ({ cell }) => {
@@ -355,7 +323,16 @@ const Editor = (props: EditorProps) => {
     graph.bindKey(['meta+c', 'ctrl+c'], () => {
       const cells = graph.getSelectedCells();
       if (cells.length) {
-        graph.copy(cells);
+        graph.copy(cells, { useLocalStorage: true });
+      }
+      return false;
+    });
+    graph.bindKey(['meta+v', 'ctrl+v'], () => {
+      debugger;
+      if (!graph.isClipboardEmpty({ useLocalStorage: true })) {
+        const cells = graph.paste({ offset: 32, useLocalStorage: true });
+        graph.cleanSelection();
+        graph.select(cells);
       }
       return false;
     });
@@ -366,14 +343,7 @@ const Editor = (props: EditorProps) => {
       }
       return false;
     });
-    graph.bindKey(['meta+v', 'ctrl+v'], () => {
-      if (!graph.isClipboardEmpty()) {
-        const cells = graph.paste({ offset: 32 });
-        graph.cleanSelection();
-        graph.select(cells);
-      }
-      return false;
-    });
+
     //绑定撤销、重做
     graph.bindKey(['meta+z', 'ctrl+z'], () => {
       if (graph.canUndo()) {
@@ -398,18 +368,9 @@ const Editor = (props: EditorProps) => {
     // delete
     graph.bindKey('backspace', () => {
       const cells = graph.getSelectedCells();
-      if (cells.length) {
-        if (cells.find(i => {
-          if (i.data)
-            return ['start'].indexOf(i.data.config?.type) > -1;
-          else return false;
-        })) {
-          message.error('禁止删除开始节点！')
-        } else {
-          graph.removeCells(cells);
-        }
-      }
+      graph.removeCells(cells);
     });
+
     graph.on('blank:click', ({ e, x, y }) => {
       console.log('blank:click', x, y);
       setRightToolCollapsed(true)
@@ -434,31 +395,8 @@ const Editor = (props: EditorProps) => {
     });
     setGraph(graph);
 
-    if (panel) {
-      const groups = panel.Groups;
-      const stencil = new Stencil({
-        title: '展开/收起',
-        target: graph,
-        search(cell, keyword) {
-          const label: string = cell.getAttrByPath('text/text');
-          return label?.indexOf(keyword) !== -1;
-        },
-        // placeholder: '通过图形',
-        notFoundText: '未找到',
-        collapsable: true,
-        stencilGraphWidth: 250,
-        groups: groups,
-        layoutOptions: { rowHeight: 100 }
-      });
-      refStencil?.appendChild(stencil.container);
-      setStencilIns(stencil)
-    }
-
     if (props.graphJson && Object.keys(props.graphJson).length > 0) {
-      // setEditorCtx({
-      //   ...editorCtx,
-      //   logic: props.graphJson
-      // });
+
       graph.fromJSON(props.graphJson);
     } else {
       if (props.onGraphJsonEmpty)
@@ -470,7 +408,21 @@ const Editor = (props: EditorProps) => {
     return graph;
   };
   useEffect(() => {
-    if (stencilIns && props.panelData?.Nodes) {
+    if (props.panelData?.Groups && props.panelData.Nodes) {
+      const newStencil = new Stencil({
+        title: '展开/收起',
+        target: graph,
+        search(cell, keyword) {
+          const label: string = cell.getAttrByPath('text/text');
+          return label?.indexOf(keyword) !== -1;
+        },
+        placeholder: '搜索节点',
+        notFoundText: '未找到',
+        collapsable: true,
+        stencilGraphWidth: 250,
+        groups: props.panelData?.Groups,
+        layoutOptions: { rowHeight: 70, columns: 2 }
+      });
       const groupedNodes: { [Key: string]: any[] } = {};
       props.panelData.Nodes.forEach((v) => {
         const n = graph.createNode(v.getNodeConfig());
@@ -481,11 +433,15 @@ const Editor = (props: EditorProps) => {
           }
         });
       });
+
       Object.keys(groupedNodes).forEach((o) => {
-        stencilIns.load([...groupedNodes[o]], o);
+        newStencil.load([...groupedNodes[o]], o);
       });
+      refStencil?.children.item(0)?.remove();
+      refStencil?.appendChild(newStencil.container);
+      setStencilIns(newStencil)
     }
-  }, [stencilIns, props.panelData?.Nodes])
+  }, [props.panelData?.Nodes, props.panelData?.Groups])
 
   //保存到浏览器并转换dsl
   function handleSave() {
@@ -495,7 +451,7 @@ const Editor = (props: EditorProps) => {
   const renderTool = useMemo(() => {
     if (props.toolElements) {
       return <Layout.Header style={{ padding: 0, backgroundColor: 'white' }}>
-        <Space direction="horizontal">
+        <Space style={{ height: '50px' }}>
           {props.toolElements?.map(b => b)}
         </Space>
       </Layout.Header>
@@ -506,35 +462,36 @@ const Editor = (props: EditorProps) => {
   return (
     <LogicEditorContext.Provider value={props.editorCtx}>
       <Layout style={{ height: '100vh', width: '100%', margin: 0 }}>
-        <Layout.Sider
-          theme="light"
-          collapsed={leftToolCollapsed}
-          collapsedWidth={0}
-          width={250}
-          ref={v => setRefStencil(v)}
-        >
-        </Layout.Sider>
+        {renderTool}
         <Layout style={{ height: '100vh' }}>
-          {renderTool}
+          <Layout.Sider
+            theme="light"
+            collapsed={leftToolCollapsed}
+            collapsedWidth={0}
+            width={250}
+            ref={v => setRefStencil(v)}
+          >
+          </Layout.Sider>
           <Layout.Content className="app-content">
             <DagreGraph ref={v => setRefContainer(v)} />
             <div className="app-minimap" ref={v => setRefMiniMapContainer(v)} />
           </Layout.Content>
+          <Layout.Sider
+            // theme="light"
+            style={{ background: 'transparent' }}
+            collapsed={rightToolCollapsed}
+            collapsedWidth={0}
+            width={600} >
+            <RightPanel
+              isStatic={props.isStatic}
+              editNode={editingNode}
+              onSubmit={handleSave}
+              jsTipMap={props.jsTipMap}
+              onClose={() => { setRightToolCollapsed(true); }}
+              isCollapsed={rightToolCollapsed}
+            />
+          </Layout.Sider>
         </Layout>
-        <Layout.Sider
-          theme="light"
-          collapsed={rightToolCollapsed}
-          collapsedWidth={0}
-          width={600} >
-          <RightPanel
-            isStatic={props.isStatic}
-            editNode={editingNode}
-            onSubmit={handleSave}
-            jsTipMap={props.jsTipMap}
-            onClose={() => { setRightToolCollapsed(true); }}
-            isCollapsed={rightToolCollapsed}
-          />
-        </Layout.Sider>
       </Layout >
     </LogicEditorContext.Provider>
   );

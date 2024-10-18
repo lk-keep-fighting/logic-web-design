@@ -1,6 +1,6 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import DebugLogic from "@/pages/logic-flow/biz/page/debugLog";
-import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicJsonByBak } from "@/services/ideSvc";
+import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicJsonByBak, getLogicByBak } from "@/services/ideSvc";
 import { CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/icons";
 import { Button, Divider, Space, Spin, Typography, Flex } from "antd";
 import axios from "axios";
@@ -9,15 +9,13 @@ import { useEffect, useState } from "react";
 // import { loader } from '@monaco-editor/react';
 import { useParams } from "umi";
 
-const formProvider = async (type: string) => {
-    const res = await axios.get(`/setting/node-form/${type}.json`);
-    console.log(res.data);
-    return res.data;
+function refreshWebTitle(dsl: Logic, logicIns) {
+    window.document.title = ">[" + dsl?.name + "]实例:" + logicIns?.bizId;
 }
-
 const LogicDebug = () => {
     const { id } = useParams();
     const [config, setConfig] = useState<Logic>();
+    const [logicName, setLogicName] = useState<string>('');
     const [loading, setLoading] = useState(false);
     const [debugLogs, setDebugLogs] = useState([])
     const [logicIns, setLogicIns] = useState();
@@ -29,12 +27,14 @@ const LogicDebug = () => {
         if (id)
             getLogicInstanceById(id).then(res => {
                 if (res) {
+                    const ins = res;
                     setLogicIns(res);
                     setLoading(true);
-                    getLogicJsonByBak(res.logicId, res.version).then(res => {
-                        const configJson = res;
-                        configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
+                    getLogicByBak(res.logicId, res.version).then(res => {
+                        const { configJson, name } = res;
+                        setLogicName(name)
                         setConfig(configJson)
+                        refreshWebTitle(configJson, ins)
                         setLoading(false);
                     }).catch(err => {
                         setLoading(false);
@@ -45,12 +45,13 @@ const LogicDebug = () => {
             })
     }, [id])
     useEffect(() => {
-        if (logicIns)
+        if (logicIns) {
             getLogicLogsByLogicIns(logicIns).then(res => {
                 if (res) {
                     setDebugLogs(res)
                 }
             })
+        }
     }, [logicIns])
     return (
         <div>
@@ -82,10 +83,12 @@ const LogicDebug = () => {
                         <Divider type='vertical' />,
                         <span>待执行：{logicIns?.nextName}</span>,
                         <Divider type='vertical' />,
-                        <Space>业务标识：{logicIns?.bizId}<Typography.Text copyable={{ tooltips: ['点击复制', '复制成功!'], text: logicIns?.bizId }} /></Space>,
+                        <Space>业务标识：{logicIns?.bizId}<Typography.Text copyable={{ tooltips: ['复制标识', '复制成功!'], text: logicIns?.bizId }} /></Space>,
+                        <Divider type='vertical' />,
+                        <Space>{logicName}</Space>, <Typography.Text copyable={{ tooltips: ['复制编号', '复制成功!'], text: logicIns?.logicId }} />,
                         <Divider type='vertical' />,
                         <span style={{ color: 'red' }}>执行版本：</span>,
-                        <span>{logicIns?.version}<Typography.Text copyable={{ tooltips: ['点击复制', '复制成功!'], text: logicIns?.version }} /></span>,
+                        <span>{logicIns?.version}<Typography.Text copyable={{ tooltips: ['复制版本号', '复制成功!'], text: logicIns?.version }} /></span>,
 
                         // <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'], text: logicIns?.bizId }} >业务标识：{logicIns?.bizId}</Typography.Paragraph>,
                         // <Typography.Paragraph style={{ color: 'red' }}>执行版本:</Typography.Paragraph>,

@@ -1,22 +1,26 @@
-import axios from "axios";
+import { get, post, put } from "@/utils/http";
 import dayjs from "dayjs";
 
 export async function publishLogicFromDevToTest(id: string) {
-    return axios.post(`/api/ide/pub/logic/dev-to-test${id}`);
+    return post(`/api/ide/pub/logic/dev-to-test${id}`);
 }
 
 export async function getLogic(id: string) {
-    return axios.get(`/api/ide/logic/${id}`);
+    return get(`/api/ide/logic/${id}`).then(res => {
+        const data = res.data?.data;
+        data.configJson = JSON.parse(data.configJson);
+        return data;
+    });
 }
 
 export async function getLogicConfig(id: string) {
-    return axios.get(`/api/ide/logic/${id}/config`).then(res => res.data?.data);
+    return get(`/api/ide/logic/${id}/config`).then(res => res.data?.data);
 }
 export async function saveLogic(id: string, version: string, config: string) {
-    return axios.put(`/api/ide/logic/edit/${id}`, { version, configJson: config, updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss') });
+    return put(`/api/ide/logic/edit/${id}`, { version, configJson: config, updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss') });
 }
 export async function getLogicInstanceById(id: string) {
-    return axios.get(`/api/ide/logic-instance/${id}`).then(res => {
+    return get(`/api/ide/logic-instance/${id}`).then(res => {
         const ins = res.data.data;
         return ins;
     })
@@ -27,7 +31,7 @@ export async function getLogicInstanceById(id: string) {
  * @returns 
  */
 export async function getLogicLogsByLogicIns(logicIns: any) {
-    return axios.post(`/api/ide/logic-logs`, {
+    return post(`/api/ide/logic-logs`, {
         filters: [
             { dataIndex: 'logicId', values: [logicIns.logicId], type: '=' },
             { dataIndex: 'bizId', values: [logicIns.bizId], type: '=' }
@@ -50,6 +54,21 @@ export async function getLogicLogsByLogicIns(logicIns: any) {
         return logs;
     })
 }
+export async function getLogicLogsById(logicLogId: any) {
+    return post(`/api/ide/logic-logs`, {
+        filters: [
+            { dataIndex: 'id', values: [logicLogId], type: '=' }
+        ],
+        pageSize: 1000
+    }).then(res => {
+        const logs = res.data.data.records;
+        if (logs && logs.length > 0) {
+            if (logs[0].itemLogs)
+                logs[0].itemLogs = JSON.parse(logs[0].itemLogs);
+        }
+        return logs[0];
+    })
+}
 /**
  * 通过逻辑编号与版本号获取逻辑配置
  * @param id 编号
@@ -57,7 +76,7 @@ export async function getLogicLogsByLogicIns(logicIns: any) {
  * @returns 
  */
 export async function getLogicJsonByBak(id: string, version: string) {
-    return axios.post(`/api/ide/logic-baks`, {
+    return post(`/api/ide/logic-baks`, {
         filters: [
             { dataIndex: 'id', values: [id], type: '=' },
             { dataIndex: 'version', values: [version], type: '=' }
@@ -68,6 +87,7 @@ export async function getLogicJsonByBak(id: string, version: string) {
         return json
     })
 }
+
 /**
  * 通过逻辑编号与版本号获取逻辑配置
  * @param id 编号
@@ -75,7 +95,7 @@ export async function getLogicJsonByBak(id: string, version: string) {
  * @returns 
  */
 export async function getLogicByBak(id: string, version: string) {
-    return axios.post(`/api/ide/logic-baks`, {
+    return post(`/api/ide/logic-baks`, {
         filters: [
             { dataIndex: 'id', values: [id], type: '=' },
             { dataIndex: 'version', values: [version], type: '=' }
@@ -84,6 +104,8 @@ export async function getLogicByBak(id: string, version: string) {
         let logic = res.data.data.records[0];
         const jsonStr = logic.configJson;
         logic.configJson = JSON.parse(jsonStr);
+        logic.configJson.id = logic.id;
+        logic.configJson.name = logic.name;
         return logic
     })
 }

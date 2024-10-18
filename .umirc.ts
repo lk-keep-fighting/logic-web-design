@@ -6,29 +6,6 @@ export default defineConfig({
   favicons: ['/logo.png'],
   esbuildMinifyIIFE: true,
   routes: [
-    // {
-    //   path: "/",
-    //   layout: 'index',
-    //   routes: [
-    //     {
-    //       path: "/assets",
-    //       routes: [
-    //         {
-    //           path: "/assets/api/list",
-    //           component: "assets/api/list",
-    //         },
-    //         {
-    //           path: "/assets/swagger/list",
-    //           component: "assets/swagger/list",
-    //         },
-    //         {
-    //           path: "/assets/logic/list", component: "logic/list",
-    //         },
-    //       ]
-    //     },
-
-    //   ]
-    // },
     {
       path: "/",
       layout: false,
@@ -70,7 +47,7 @@ export default defineConfig({
         },
         {
           path: "/assets/logic/i/:id/view/:version",
-          component: "logic-viewer"
+          component: "logic-flow/biz/logic-viewer"
         },
         {
           path: "/assets/logic/biz/i/:id/edit",
@@ -82,6 +59,7 @@ export default defineConfig({
         }],
     },
     { path: "/debug/logic/instance/:id", layout: false, component: "logic-debug" },
+    { path: "/debug/logic-log/i/:id", layout: false, component: "logic-log-debug" },
     { path: "/debug/form/i/:id", layout: false, component: "render/form/debug" },
     // { path: "/editor/:id", layout: false, component: "logic-editor" },
     { path: "/form", component: "form-editor" },
@@ -121,31 +99,60 @@ export default defineConfig({
       'changeOrigin': true,
       'pathRewrite': { '^/file': '/' },
     },
-    '/api/form': {
-      'target': 'http://192.168.44.70:5001',
-      // 'target': 'http://localhost:5000',
-      'changeOrigin': true,
-      // 'pathRewrite': { '^/api': '/api' },
-    },
-    '/api/runtime': {
-      'target': 'http://localhost:4052',
-      // 'target': 'http://192.168.153.107:9999',
-      // 'target': 'http://192.168.153.18:31001',
+    // '/api/form': {
+    //   'target': 'http://192.168.44.70:5001',
+    //   // 'target': 'http://localhost:5000',
+    //   'changeOrigin': true,
+    //   // 'pathRewrite': { '^/api': '/api' },
+    // },
+    '/api': {
+      // 'target': 'http://localhost:8888',
       // 'target': 'http://localhost:8080',
-      // 'target': 'http://192.168.154.51:4054',
+      // 'target': 'http://localhost:18080',
+     'target': 'http://192.168.152.38:18080',
+      // 'target': 'http://192.168.51.18:31001',
+      // 'target': 'http://localhost:8080',
+      // 'target': 'http://192.168.52.100:9001',
+      // 'target': 'http://localhost:9001',
       // 'target': 'http://192.168.44.87:4052',
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },
-    '/api/ide': {
-      'target': 'http://localhost:4052',
-      // 'target': 'http://192.168.153.107:9999',
-      // 'target': 'http://192.168.153.18:31001',
-      // 'target': 'http://192.168.154.51:4054',
-      // 'target': 'http://192.168.44.87:4052',
-      'changeOrigin': true,
-      // 'pathRewrite': { '^/api/ide': '/ide/api' },
-    },
+    // '/api/runtime': {
+    //   'target': 'http://localhost:4052',
+    //   // 'target': 'http://localhost:8080',
+    //   // 'target': 'http://localhost:18080',
+    // //  'target': 'http://192.168.52.166:8080',
+    //   // 'target': 'http://192.168.51.18:31001',
+    //   // 'target': 'http://localhost:8080',
+    //   // 'target': 'http://192.168.52.100:9001',
+    //   // 'target': 'http://localhost:9001',
+    //   // 'target': 'http://192.168.44.87:4052',
+    //   'changeOrigin': true,
+    //   // 'pathRewrite': { '^/api': '/api' },
+    // },
+    // '/api/ide': {
+    //   // 'target': 'http://localhost:4052',
+    //   // 'target': 'http://localhost:8080',
+    //   // 'target': 'http://localhost:18080',
+    //   'target': 'http://192.168.52.166:8080',
+    //   // 'target': 'http://192.168.51.18:31001',
+    //   // 'target': 'http://localhost:9001',
+    //   // 'target': 'http://192.168.52.100:9001',
+    //   // 'target': 'http://192.168.44.87:4052',
+    //   'changeOrigin': true,
+    //   // 'pathRewrite': { '^/api/ide': '/ide/api' },
+    // },
+    // '/logic/api': {
+    //   // 'target': 'http://localhost:4052',
+    //   // 'target': 'http://192.168.153.107:9999',
+    //   // 'target': 'http://192.168.153.18:31001',
+    // 'target': 'http://localhost:9001',
+    //   'target': 'http://192.168.152.200:9001',
+    //   // 'target': 'http://192.168.44.87:4052',
+    //   'changeOrigin': true,
+    //   // 'pathRewrite': { '^/api/ide': '/ide/api' },
+    // },
     '/api/mes': {
       'target': 'http://192.168.54.89:9996',
       'pathRewrite': { '^/api/mes': '' },

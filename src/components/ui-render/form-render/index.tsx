@@ -42,7 +42,7 @@ const FormRender = (props: IFormRenderProps) => {
         if (props.config && props.config.body) {
             const formConfig = props.config.body[0];
             formConfig.body?.forEach(element => {
-                console.log('deal editor autotip');
+                // console.log('处理Editor自动提示');
                 findEditorItem(element)
             });
 
