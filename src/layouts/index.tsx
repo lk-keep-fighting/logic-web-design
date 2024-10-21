@@ -53,7 +53,7 @@ export default function DefaultLayout(props) {
         }}>
           <img
             style={{ marginRight: '20px', width: '30px', height: '30px' }}
-            src='/logo.png' />
+            src='/logic/logo.png' />
           <div style={{ color: 'ButtonFace', fontSize: '18px', fontFamily: '黑体', fontWeight: 'bolder', cursor: 'pointer' }} onClick={() => {
             history.push(`/`)
           }}>{title}</div>

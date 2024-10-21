@@ -157,7 +157,7 @@ export function InitPanelData(
           fontSize: 14,
         },
         image: {
-          'xlink:href': '/icons/http.svg',
+          'xlink:href': '/logic/icons/http.svg',
           width: 20,
           x: 2,
           y: 2,
@@ -259,7 +259,7 @@ export function InitPanelData(
           width: 15,
           x: 2,
           y: 2,
-          'xlink:href': '/icons/code.svg',
+          'xlink:href': '/logic/icons/code.svg',
         },
         text: {
           text: 'js脚本',
@@ -282,7 +282,7 @@ export function InitPanelData(
           width: 15,
           x: 2,
           y: 2,
-          'xlink:href': '/icons/code.svg',
+          'xlink:href': '/logic/icons/code.svg',
         },
         text: {
           text: 'java方法',
@@ -305,7 +305,7 @@ export function InitPanelData(
           width: 15,
           x: 2,
           y: 2,
-          'xlink:href': '/icons/CarbonSubflowLocal.svg',
+          'xlink:href': '/logic/icons/CarbonSubflowLocal.svg',
         },
         text: {
           text: '复用逻辑',
@@ -333,7 +333,7 @@ export function InitPanelData(
         //   fill: '#EFF4FF',
         // },
         image: {
-          'xlink:href': '/icons/switch.svg',
+          'xlink:href': '/logic/icons/switch.svg',
           width: 45,
           x: 1,
           y: 2,
@@ -370,7 +370,7 @@ export function InitPanelData(
         //   fill: '#EFF4FF',
         // },
         image: {
-          'xlink:href': '/icons/text.svg',
+          'xlink:href': '/logic/icons/text.svg',
           width: 30,
           x: 8,
           y: 10
@@ -407,7 +407,7 @@ export function InitPanelData(
         //   fill: '#EFF4FF',
         // },
         image: {
-          'xlink:href': '/icons/text.svg',
+          'xlink:href': '/logic/icons/text.svg',
           width: 30,
           x: 8,
           y: 10
@@ -474,7 +474,7 @@ export function InitPanelData(
         //   fill: '#EFF4FF',
         // },
         image: {
-          'xlink:href': '/icons/delay.svg',
+          'xlink:href': '/logic/icons/delay.svg',
           width: 30,
           x: 8,
           y: 10

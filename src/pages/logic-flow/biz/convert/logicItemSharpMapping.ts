@@ -49,7 +49,7 @@ export const LogicItemSharpMapping = {
                 width: 15,
                 x: 2,
                 y: 2,
-                'xlink:href': '/icons/code.svg',
+                'xlink:href': '/logic/icons/code.svg',
             },
             text: {
                 text: 'js脚本',
@@ -70,7 +70,7 @@ export const LogicItemSharpMapping = {
                 width: 15,
                 x: 2,
                 y: 2,
-                'xlink:href': '/icons/java.svg',
+                'xlink:href': '/logic/icons/java.svg',
             },
             text: {
                 text: 'java方法',
@@ -97,7 +97,7 @@ export const LogicItemSharpMapping = {
             //   fill: '#EFF4FF',
             // },
             image: {
-                'xlink:href': '/icons/switch.svg',
+                'xlink:href': '/logic/icons/switch.svg',
                 width: 45,
                 x: 1,
                 y: 2,

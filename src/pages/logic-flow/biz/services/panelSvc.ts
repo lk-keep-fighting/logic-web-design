@@ -31,7 +31,7 @@ export async function getPanelData() {
                                     width: 15,
                                     x: 2,
                                     y: 2,
-                                    'xlink:href': '/icons/java.svg',
+                                    'xlink:href': '/logic/icons/java.svg',
                                 },
                                 text: {
                                     text: autoSplitStrToMultiLine(item.name),

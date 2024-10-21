@@ -20,14 +20,14 @@ export default class AppSvc {
         if (GlobalData.getModel() == 'db') {
             return AssetSvc.getAssetFromDb('app', appId)
         } else
-            return (await get(`/setting/apps/${appId}.json`)).data;
+            return (await get(`/logic/setting/apps/${appId}.json`)).data;
     }
     public async getIndexJson(): Promise<ISystem> {
         if (GlobalData.getModel() == 'db') {
             return AssetSvc.getAssetFromDb('app', 'index')
         }
         else
-            return (await get('/setting/apps/index.json')).data;
+            return (await get('/logic/setting/apps/index.json')).data;
 
     }
     public async getSettingIndexJson(): Promise<typeof GlobalData> {

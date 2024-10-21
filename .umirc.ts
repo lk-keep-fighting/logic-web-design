@@ -3,7 +3,8 @@ const MonacoPlugin = require('monaco-editor-webpack-plugin')
 export default defineConfig({
   title: "业务编排",
   history: { type: 'hash' },
-  favicons: ['/logo.png'],
+  favicons: ['/logic/logo.png'],
+  publicPath: '/logic/',
   esbuildMinifyIIFE: true,
   routes: [
     {
@@ -83,10 +84,10 @@ export default defineConfig({
     // }
   },
   headScripts: [{
-    src: '/js/umd/react.development.js',
+    src: '/logic/js/umd/react.development.js',
   },
   {
-    src: '/js/umd/react-dom.development.js',
+    src: '/logic/js/umd/react-dom.development.js',
   }],
   externals: {
     "react": "React",
@@ -106,10 +107,11 @@ export default defineConfig({
     //   // 'pathRewrite': { '^/api': '/api' },
     // },
     '/api': {
-      // 'target': 'http://localhost:8888',
+      // 'target': 'http://localhost:4052',
+      'target': 'http://localhost:8888',
       // 'target': 'http://localhost:8080',
       // 'target': 'http://localhost:18080',
-     'target': 'http://192.168.152.38:18080',
+    //  'target': 'http://192.168.152.38:18080',
       // 'target': 'http://192.168.51.18:31001',
       // 'target': 'http://localhost:8080',
       // 'target': 'http://192.168.52.100:9001',
