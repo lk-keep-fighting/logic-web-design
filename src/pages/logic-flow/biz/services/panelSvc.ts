@@ -24,7 +24,7 @@ export async function getPanelData() {
                 methodsByGroup[group].forEach(item => {
                     res[0].Nodes.push(new LogicNodeConfig(
                         {
-                            shape: 'ExtShape' + (groupIdx % 3 == 0 ? '1' : groupIdx % 3 == 1 ? '2' : '3'),
+                            shape: item.shape ? item.shape : ('ExtShape' + (groupIdx % 3 == 0 ? '1' : groupIdx % 3 == 1 ? '2' : '3')),
                             ports,
                             attrs: {
                                 image: {
