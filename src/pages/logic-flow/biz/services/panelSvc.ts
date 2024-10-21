@@ -21,7 +21,7 @@ export async function getPanelData() {
             Object.keys(methodsByGroup).forEach((group, groupIdx) => {
                 const groupConfig = PanelConfigBuilder.buildGroup(group, methodsByGroup[group].length, group)
                 customGroups.push(groupConfig)
-                methodsByGroup[group].forEach(item => {
+                methodsByGroup[group].sort((a, b) => a.order.localeCompare(b.order)).forEach(item => {
                     res[0].Nodes.push(new LogicNodeConfig(
                         {
                             shape: item.shape ? item.shape : ('ExtShape' + (groupIdx % 3 == 0 ? '1' : groupIdx % 3 == 1 ? '2' : '3')),
