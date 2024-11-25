@@ -7,7 +7,7 @@ const Main = (props) => {
     useEffect(() => {
         var appSvc = new AppSvc();
         appSvc.getSettingIndexJson().then(res => {
-            appSvc.getIndexJson(res.setting).then(sys => {
+            appSvc.getIndexJson().then(sys => {
                 setSystemInfo(sys);
             })
         })

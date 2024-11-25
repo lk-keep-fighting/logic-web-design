@@ -12,8 +12,9 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import { TokenUtil } from '@/components/ui-render/utils/tokenUtil';
 import { axiosSet } from '../../utils/axiosConfig';
 interface IPageRenderByIdProps {
-    pageId: string
-    data: any
+    pageId: string,
+    urlPrefix?: string,
+    data?: any
 }
 
 const PageRenderById = (props: IPageRenderByIdProps) => {
@@ -59,6 +60,7 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
                             config, // 其他配置
                             headers // 请求头
                         }: any) => {
+                            url = props.urlPrefix ? props.urlPrefix + url : url;
                             config = config || {};
                             config.withCredentials = true;
                             responseType && (config.responseType = responseType);

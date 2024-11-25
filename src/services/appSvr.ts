@@ -2,6 +2,7 @@ import { MenuProps } from "antd";
 import { GlobalData } from "@/global";
 import AssetSvc from "./assetSvc";
 import { get } from "../utils/http";
+import { getEnvJson } from "./runtimeSvc";
 export type IApp = {
     id: string
     title: string
@@ -31,9 +32,7 @@ export default class AppSvc {
 
     }
     public async getSettingIndexJson(): Promise<typeof GlobalData> {
-        // var res = (await axios.get('/setting/index.json')).data;
-        var res = (await get('/api/runtime/env')).data;
-        GlobalData.setModel(res.data.UI_CONFIG_MODEL);
+        await getEnvJson();
         return GlobalData;
     }
 }

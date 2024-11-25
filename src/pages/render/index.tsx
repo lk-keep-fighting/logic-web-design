@@ -1,24 +1,23 @@
-import PageRender from "@/components/ui-render/page-render"
-import { Schema } from "amis";
-import axios from "axios"
 import { useEffect, useState } from "react"
 import 'amis/lib/themes/cxd.css';
 import 'amis/lib/helper.css';
 import 'amis/sdk/iconfont.css';
-import { getPageJson } from "@/services/schemeSvc";
 import { useParams } from "umi";
 import PageRenderById from "@/components/ui-render/page-render/render-by-page-id";
+import { getEnvJson } from "@/services/runtimeSvc";
+import { GlobalData } from "@/global";
 
 const Render = (props) => {
-    const [config, setConfig] = useState<Schema>({ type: 'page' });
+    const [urlPrefix, setUrlPrefix] = useState<string>();
+    const [envs, setEnvs] = useState<{}>();
     const { pageId } = useParams()
     useEffect(() => {
         if (pageId)
-            getPageJson(pageId).then(res => {
-                setConfig(res)
+            getEnvJson().then(data => {
+                setUrlPrefix(GlobalData.getApiUrlPrefix())
+                setEnvs(JSON.parse(GlobalData.getEnv()))
             })
     }, [pageId])
-    // return <PageRenderById config={config} />
-    return <PageRenderById pageId={pageId} data={props} />
+    return <PageRenderById urlPrefix={urlPrefix} pageId={pageId} data={{ envs: envs }} />
 }
 export default Render;

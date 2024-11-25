@@ -3,7 +3,6 @@ import AssetSvc from "./assetSvc";
 import { get } from "../utils/http";
 
 export async function getPageJson(pageId: string): Promise<any> {
-    debugger;
     if (GlobalData.getModel() == 'db') {
         return AssetSvc.getAssetFromDb('page', pageId)
     } else
