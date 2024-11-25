@@ -11,6 +11,8 @@ import 'amis/sdk/iconfont.css';
 import '@fortawesome/fontawesome-free/css/all.css'
 import { TokenUtil } from '@/components/ui-render/utils/tokenUtil';
 import { axiosSet } from '../../utils/axiosConfig';
+import { getEnvJson } from '@/services/runtimeSvc';
+import { GlobalData } from '@/global';
 interface IPageRenderByIdProps {
     pageId: string,
     urlPrefix?: string,
@@ -19,6 +21,9 @@ interface IPageRenderByIdProps {
 
 const PageRenderById = (props: IPageRenderByIdProps) => {
     const [pageScheme, setPageScheme] = useState({ type: 'page' })
+    const [envs, setEnvs] = useState<{}>();
+    const [urlPrefix, setUrlPrefix] = useState<string>();
+
     const theme = 'cxd';
     const locale = 'zh-CN';
     useEffect(() => {
@@ -28,6 +33,9 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
         if (props.pageId) {
             getPageJson(props.pageId).then(data => {
                 setPageScheme(data);
+            })
+            getEnvJson().then(data => {
+                setEnvs(JSON.parse(GlobalData.getEnv()))
             })
         }
     }, [props.pageId])
@@ -45,7 +53,7 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
                 renderAmis(
                     pageScheme,
                     {
-                        data: props.data
+                        data: { envs }
                         // props...
                         // locale: 'en-US' // 请参考「多语言」的文档
                         // scopeRef: (ref: any) => (amisScoped = ref)  // 功能和前面 SDK 的 amisScoped 一样
@@ -60,7 +68,6 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
                             config, // 其他配置
                             headers // 请求头
                         }: any) => {
-                            url = props.urlPrefix ? props.urlPrefix + url : url;
                             config = config || {};
                             config.withCredentials = true;
                             responseType && (config.responseType = responseType);

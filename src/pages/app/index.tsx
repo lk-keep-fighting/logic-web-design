@@ -4,7 +4,6 @@ import { Schema } from "amis";
 import { useState } from "react";
 
 const App = (props) => {
-    const [config, setConfig] = useState<Schema>({ type: 'page' });
     const { pageId } = useParams()
     return <PageRenderById pageId={pageId || ''} data={props} />
 }

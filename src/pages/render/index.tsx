@@ -8,16 +8,7 @@ import { getEnvJson } from "@/services/runtimeSvc";
 import { GlobalData } from "@/global";
 
 const Render = (props) => {
-    const [urlPrefix, setUrlPrefix] = useState<string>();
-    const [envs, setEnvs] = useState<{}>();
     const { pageId } = useParams()
-    useEffect(() => {
-        if (pageId)
-            getEnvJson().then(data => {
-                setUrlPrefix(GlobalData.getApiUrlPrefix())
-                setEnvs(JSON.parse(GlobalData.getEnv()))
-            })
-    }, [pageId])
-    return <PageRenderById urlPrefix={urlPrefix} pageId={pageId} data={{ envs: envs }} />
+    return <PageRenderById pageId={pageId}/>
 }
 export default Render;
