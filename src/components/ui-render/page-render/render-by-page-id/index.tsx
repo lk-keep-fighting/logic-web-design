@@ -53,7 +53,7 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
                 renderAmis(
                     pageScheme,
                     {
-                        data: { envs }
+                        data: { envs, ...props.data }
                         // props...
                         // locale: 'en-US' // 请参考「多语言」的文档
                         // scopeRef: (ref: any) => (amisScoped = ref)  // 功能和前面 SDK 的 amisScoped 一样
