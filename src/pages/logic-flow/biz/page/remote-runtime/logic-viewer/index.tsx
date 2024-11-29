@@ -1,32 +1,25 @@
 import { LogicFlowEditor } from "@/components/logic-editor";
-import { Divider, Space, Spin, Typography } from "antd";
-import { useCallback, useEffect, useState } from "react";
-import { useParams, useSearchParams } from "umi";
-import { Graph, Shape } from "@antv/x6";
-import { getPanelData } from "./services/panelSvc";
-import { StoreService } from "./services/storeSvc";
-import { ProcessInput } from "./services/dtos/processInput";
-import LogicNodeConfig from "@/components/logic-editor/types/LogicNodeConfig";
-import { getPresetNode } from "@/components/logic-editor/nodes/PresetNodes";
-import { RegistShape } from "./settings/InitGraph";
+import { Spin } from "antd";
+import { useEffect, useState } from "react";
+import { useParams } from "umi";
+import { Graph } from "@antv/x6";
 import { PresetShapes } from "@/components/logic-editor/shapes/PresetShapes";
-import { getLogicByBak } from "@/services/ideSvc";
+import { getRemoteLogicByBak } from "@/services/ideSvc";
+import { RegistShape } from "../../../settings/InitGraph";
 
-//http://localhost:4051/#/assets/logic/process/i/gy2/edit?prodCode=CPBM-23MFU2&prodName=%E5%B9%B3%E6%9D%BF%E7%BA%B8U2&matCode=QUF237&version=v1.2
-const mesService = new StoreService();
 const BizLogicView = () => {
     const [logicData, setLogicData] = useState({});
     const [graphJson, setGraphJson] = useState({});
     const [loading, setLoading] = useState(false);
     const [graph, setGraph] = useState<Graph>();
-    const { id, version } = useParams();
+    const { id, version, runtime } = useParams();
     useEffect(() => {
         RegistShape([...PresetShapes.values()]);
     }, [])
     useEffect(() => {
         setLoading(true);
         if (id)
-            getLogicByBak(id, version).then(res => {
+            getRemoteLogicByBak(runtime, id, version).then(res => {
                 setLogicData(res)
                 setGraphJson(res.configJson.visualConfig)
                 setLoading(false);

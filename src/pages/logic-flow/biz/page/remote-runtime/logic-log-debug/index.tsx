@@ -1,23 +1,25 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
-import { getLogicLogsById, getLogicByBak } from "@/services/ideSvc";
-import { CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/icons";
-import { Button, Divider, Space, Spin, Typography, Flex } from "antd";
+import { getRemoteLogicByBak, getRemoteLogicLogsById } from "@/services/ideSvc";
+import { CheckCircleTwoTone, FrownOutlined } from "@ant-design/icons";
+import { Divider, Space, Spin, Typography } from "antd";
 import { useEffect, useState } from "react";
+// import * as monaco from 'monaco-editor';
+// import { loader } from '@monaco-editor/react';
 import { useParams } from "umi";
-import DebugLogicLog from "./logic-flow/biz/page/debugLogicLog";
+import DebugLogicLog from "../../debugLogicLog";
 
 function refreshWebTitle(dsl: Logic) {
     window.document.title = "-[" + dsl.name + "]日志";
 }
 const LogicLogDebug = () => {
-    const { id } = useParams();
+    const { id, runtime } = useParams();
     const [config, setConfig] = useState<Logic>();
     const [loading, setLoading] = useState(false);
     const [debugLog, setDebugLog] = useState({})
     useEffect(() => {
         setLoading(true);
         if (debugLog)
-            getLogicByBak(debugLog.logicId, debugLog.version).then(res => {
+            getRemoteLogicByBak(runtime, debugLog.logicId, debugLog.version).then(res => {
                 const { configJson } = res;
                 setConfig(configJson)
                 setLoading(false);
@@ -30,7 +32,7 @@ const LogicLogDebug = () => {
     }, [debugLog])
     useEffect(() => {
         if (id)
-            getLogicLogsById(id).then(res => {
+            getRemoteLogicLogsById(runtime, id).then(res => {
                 debugger;
                 if (res) {
                     setDebugLog(res)

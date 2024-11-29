@@ -1,26 +1,27 @@
 import { LogicFlowEditor } from "@/components/logic-editor";
-import { Button, Modal, Spin, message, Typography } from "antd";
+import { Button, Modal, Spin, message, Typography, Divider } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "umi";
 import { Graph, Shape } from "@antv/x6";
-import { MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, RocketTwoTone, SaveOutlined, SettingTwoTone } from "@ant-design/icons";
-import { getPanelData } from "./services/panelSvc";
-import { BizDslConvert } from "./convert/dslConvert";
+import { ApartmentOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, RocketTwoTone, SaveOutlined, SettingTwoTone } from "@ant-design/icons";
 import { appendStartNode } from "@/components/logic-editor/settings/GraphDataHelper";
 import { PresetShapes } from "@/components/logic-editor/shapes/PresetShapes";
-import { getLogic, runLogicOnServer, saveLogic } from "@/services/ideSvc";
+import { getRemoteLogic, runRemoteLogicOnServer, saveRemoteLogic } from "@/services/ideSvc";
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
-import { RegistShape } from "./settings/InitGraph";
-import { autoDagreLayout } from "./layout/dagreLayout";
-import ParamSetting from "./components/param-setting";
 import { TypeAnnotationParser } from "@/components/step-flow-core/lasl/parser/type-annotation-parser";
 import dayjs from "dayjs";
 import { LogicEditorCtx } from "@/components/logic-editor/types/LogicEditorCtx";
-import RunLogic from "./components/run-logic";
 import PageRenderById from "@/components/ui-render/page-render/render-by-page-id";
 import { RuntimeSvc } from "@/services/runtimeSvc";
+import { getPanelData } from "../../../services/panelSvc";
+import { BizDslConvert } from "../../../convert/dslConvert";
+import { RegistShape } from "../../../settings/InitGraph";
+import { autoDagreLayout } from "../../../layout/dagreLayout";
+import ParamSetting from "../../../components/param-setting";
+import RunLogic from "../../../components/run-logic";
+import { GlobalData } from "@/global";
 
-const BizLogicEditor = () => {
+const RemoteLogicEditor = () => {
     const [dsl, setDsl] = useState<Logic>({});
     const [editorCtx, setEditorCtx] = useState<LogicEditorCtx>({});
     const [graphJson, setGraphJson] = useState({});
@@ -33,7 +34,8 @@ const BizLogicEditor = () => {
     const [openParamsSetting, setParmamsSetting] = useState(false);
     const [openRunLogic, setOpenRunLogic] = useState(false);
     const [jsTipMap, setJsTipMap] = useState(new Map<string, object>)
-    const { id } = useParams();
+    const [runtimeDto, setRuntimeDto] = useState("");
+    const { id, runtime } = useParams();
     var dslConvert = new BizDslConvert();
     function refreshWebTitle(dsl: Logic) {
         window.document.title = "[" + dsl.name + ']:' + dsl.version;
@@ -52,7 +54,7 @@ const BizLogicEditor = () => {
 
 
     function saveDslToServer(newDsl: Logic) {
-        saveLogic(id, newDsl.version, JSON.stringify(newDsl)).then(res => {
+        saveRemoteLogic(runtime, id, newDsl.version, JSON.stringify(newDsl)).then(res => {
             setLoading(false)
             console.log('save logic')
             console.log(newDsl)
@@ -105,7 +107,7 @@ const BizLogicEditor = () => {
     }
 
     function queryAndLoadLogic(id: string) {
-        getLogic(id).then(res => {
+        getRemoteLogic(runtime, id).then(res => {
             const { name, configJson } = res;
             configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
             configJson.name = name;//默认使用当前id作为配置id，用于复用配置时简化更新操作
@@ -123,11 +125,20 @@ const BizLogicEditor = () => {
         RegistShape([...PresetShapes.values()]);
         setLoading(true);
         queryAndLoadLogic(id);
-        getPanelData().then(data => {
+        getPanelData(runtime).then(data => {
             setCustomGroups(data.Groups);
             setPanelNodes(data.Nodes);
         })
     }, [])
+    useEffect(() => {
+        if (runtime) {
+            GlobalData.getRemoteRuntimes().forEach(r => {
+                if (r.name == runtime) {
+                    setRuntimeDto(r);
+                }
+            })
+        }
+    }, [runtime])
     const createEdge = useCallback(() => {
         return new Shape.Edge({
             attrs: {
@@ -203,7 +214,7 @@ const BizLogicEditor = () => {
                                 if (dsl) {
                                     const { params, bizId, headers, bizStartCode } = values;
                                     setLoading(true);
-                                    runLogicOnServer(id, JSON.parse(params), bizId, bizStartCode, model, JSON.parse(headers)).then(res => {
+                                    runRemoteLogicOnServer(runtime, id, JSON.parse(params), bizId, bizStartCode, model, JSON.parse(headers)).then(res => {
                                         if (res.data.code == 0) {
                                             setLoading(false);
                                             Modal.success({
@@ -251,7 +262,11 @@ const BizLogicEditor = () => {
                             onClick={() => { autoDagreLayout(graph) }}
                         >布局</Button>,
                         <Typography.Text strong style={{ fontSize: '18px' }}>[{dsl.name}]</Typography.Text>,
-                        <Typography.Text>版本:{dsl.version}</Typography.Text>
+                        <Typography.Text>版本:{dsl.version}</Typography.Text>,
+                        <Divider type="vertical" />,
+                        <Typography.Text style={{ fontSize: '15px', float: 'right' }}><ApartmentOutlined style={{ color: '#1677ff' }} /></Typography.Text>,
+                        <Typography.Text style={{ fontSize: '15px', float: 'right' }}>{runtimeDto.title}</Typography.Text>,
+                        <a href={runtimeDto.url} target="blank">{runtimeDto.url}</a>
                     ]}
                     graphJson={graphJson}
                     onGraphJsonEmpty={appendStartNode}
@@ -267,4 +282,4 @@ const BizLogicEditor = () => {
     );
 };
 
-export default BizLogicEditor;
+export default RemoteLogicEditor;

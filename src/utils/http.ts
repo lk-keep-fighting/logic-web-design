@@ -17,19 +17,19 @@ import axios, { AxiosRequestConfig } from "axios";
 //         return res.data
 //     }
 // )
-export function get(url: string, options?: AxiosRequestConfig) {
+export async function get(url: string, options?: AxiosRequestConfig) {
     return axios.get(url, appendOptions(options))
 }
 
-export function put(url: string, data: any, options?: AxiosRequestConfig) {
+export async function put(url: string, data: any, options?: AxiosRequestConfig) {
     return axios.put(url, data, appendOptions(options))
 }
 
-export function del(url: string, options?: AxiosRequestConfig) {
+export async function del(url: string, options?: AxiosRequestConfig) {
     return axios.delete(url, appendOptions(options))
 }
 
-export function post(url: string, data?: any, options?: AxiosRequestConfig) {
+export async function post(url: string, data?: any, options?: AxiosRequestConfig) {
     return axios.post(url, data, appendOptions(options))
 }
 
@@ -38,7 +38,7 @@ function appendOptions(options?: AxiosRequestConfig): AxiosRequestConfig {
         "Content-Type": "application/json;charset=UTF-8",
     }
     if (localStorage.getItem("token")) {
-        defaultHeader["Authorization"] ='Bearer '+ localStorage.getItem("token");
+        defaultHeader["Authorization"] = 'Bearer ' + localStorage.getItem("token");
     }
     return {
         ...options,

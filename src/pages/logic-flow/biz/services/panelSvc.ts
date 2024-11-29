@@ -9,11 +9,15 @@ function autoSplitStrToMultiLine(str: string) {
         return `${str.substring(0, 7)}\r\n${str.substring(7)}`
     } else return str;
 }
-export async function getPanelData() {
+export async function getPanelData(runtime: string) {
     const customGroups = []
+    var url = '/api/ide/asset/v1/logic-item/readFromCode';
+    if (runtime) {
+        url = `/papi/${runtime}/api/ide/asset/v1/logic-item/readFromCode`
+    }
     return Promise.all([
         InitPanelData(),
-        axios.get('/api/ide/asset/v1/logic-item/readFromCode'),
+        axios.get(url),
     ]).then(res => {
         console.log('getPanelData')
         if (res[1].status == 200) {
@@ -72,7 +76,4 @@ export async function getPanelData() {
         }
         return { Nodes: res[0].Nodes, Groups: customGroups }
     })
-    // return new Promise((resolve, reject) => {
-    //     resolve(InitPanelData());
-    // });
 }

@@ -1,9 +1,12 @@
 import { Link, Outlet, history, useParams } from 'umi';
+import React from 'react';
 import styles from './index.less';
 import { Affix, Button, Layout, Menu, MenuProps, Space, Typography, theme } from 'antd';
 import { useEffect, useState } from 'react';
 import { EditOutlined, FileAddOutlined } from '@ant-design/icons';
 import AppSvc from '@/services/appSvr';
+import { GlobalData } from '@/global';
+import { RuntimeSvc } from '@/services/runtimeSvc';
 const { Content, Header, Sider, Footer } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -24,20 +27,27 @@ function getItem(
   } as MenuItem;
 }
 
-export default function DefaultLayout(props) {
+export default function RemoteRuntimeLayout(props) {
   const [collapsed, setCollapsed] = useState(false);
   const [meuns, setMenus] = useState<MenuProps[]>([])
-  const { pageId, appId } = useParams();
+  const { pageId, runtime } = useParams();
   const [title, setTitle] = useState('x');
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   useEffect(() => {
-    if (appId) {
-      new AppSvc().initApp().then(res => {
-        setMenus(res.menus);
-        setTitle(res.title);
-      })
-    }
-  }, [appId])
+    RuntimeSvc.getRemoteRuntimeConfig()
+  }, [])
+  useEffect(() => {
+    new AppSvc(runtime).getAppJson('remote-list').then(res => {
+      setMenus(res.menus);
+      var rns = GlobalData.getRemoteRuntimes();
+      if (rns) {
+        const rn = rns.find(r => r.name == runtime);
+        setTitle(rn?.title);
+      }
+    }).catch(err => {
+      console.error(err);
+    })
+  }, [runtime])
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -55,12 +65,15 @@ export default function DefaultLayout(props) {
         }}>
           <img
             style={{ marginRight: '20px', width: '30px', height: '30px' }}
-            src='/logo.png' />
-          <div style={{ color: 'ButtonFace', fontSize: '18px', fontFamily: '黑体', fontWeight: 'bolder' }}>{title}</div>
-          <Menu mode="horizontal" theme="dark" defaultSelectedKeys={['1']} items={meuns}
+            src={`/papi/${runtime}/logic/logo.png`} />
+          <div style={{ color: 'ButtonFace', fontSize: '18px', fontFamily: '黑体', fontWeight: 'bolder', cursor: 'pointer' }} onClick={() => {
+            history.push(`/`)
+          }}>{title}</div>
+          <Menu mode="horizontal" defaultSelectedKeys={['1']} items={meuns}
+            theme='dark'
             style={{ marginLeft: '100px', color: 'whitesmoke', fontSize: '16px', fontFamily: '黑体' }}
             onClick={(m) => {
-              history.push(`/page/amis/${m.key}`)
+              history.push(`/remote/${runtime}/page/${m.key}`)
             }} />
           {/* </Sider> */}
         </Header>

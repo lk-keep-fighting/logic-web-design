@@ -31,7 +31,7 @@ export default function DefaultLayout(props) {
   const [title, setTitle] = useState('x');
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   useEffect(() => {
-    new AppSvc().getAppJson(appId).then(res => {
+    new AppSvc('').getAppJson(appId).then(res => {
       setMenus(res.menus);
       setTitle(res.title);
     })

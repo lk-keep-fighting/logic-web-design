@@ -27,12 +27,12 @@ import { Schema } from 'form-render';
 import { Logic } from '@/components/step-flow-core/lasl/meta-data';
 import { ButtonProps } from 'antd/lib/button';
 import RunLogic from '../component/run-logic';
-import { runLogicOnServer } from '@/services/logicSvc';
 import CodeEditor from '../component/CodeEditor';
 import dayjs from 'dayjs';
 import { JsonView } from 'amis';
 import { Transform } from '@antv/x6-plugin-transform';
 import PageRenderById from '@/components/ui-render/page-render/render-by-page-id';
+import { runLogicOnServer } from '@/services/ideSvc';
 
 
 type EditorCtx = {

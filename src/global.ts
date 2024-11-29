@@ -19,6 +19,18 @@ export var GlobalData = {
     getApiUrlPrefix: () => {
         return localUtil.getKey('apiUrlPrefix')
     },
+    setRemoteRuntimes: (v: string) => {
+        if (v) {
+            localUtil.setKey('remoteRuntimes', v)
+        }
+    },
+    getRemoteRuntimes: (): [] => {
+        var runtimes = localUtil.getKey('remoteRuntimes');
+        if (!runtimes) {
+            return []
+        } else
+            return JSON.parse(runtimes)
+    },
     setReryApi: (v: string) => {
         if (v && v.length > 0) {
             localUtil.setKey('retryApi', v)

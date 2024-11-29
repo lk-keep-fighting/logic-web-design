@@ -11,8 +11,8 @@ import 'amis/sdk/iconfont.css';
 import '@fortawesome/fontawesome-free/css/all.css'
 import { TokenUtil } from '@/components/ui-render/utils/tokenUtil';
 import { axiosSet } from '../../utils/axiosConfig';
-import { getEnvJson } from '@/services/runtimeSvc';
 import { GlobalData } from '@/global';
+import { RuntimeSvc } from '@/services/runtimeSvc';
 interface IPageRenderByIdProps {
     pageId: string,
     urlPrefix?: string,
@@ -34,7 +34,7 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
             getPageJson(props.pageId).then(data => {
                 setPageScheme(data);
             })
-            getEnvJson().then(data => {
+            RuntimeSvc.getEnvJson().then(data => {
                 setEnvs(JSON.parse(GlobalData.getEnv()))
             })
         }
@@ -68,6 +68,15 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
                             config, // 其他配置
                             headers // 请求头
                         }: any) => {
+                            if (props.data && props.data.runtime) {
+                                url = `/papi/${props.data.runtime}${url}`
+                                // if (headers)
+                                //     headers['Connection'] = 'keep-alive';
+                                // else
+                                //     headers = {
+                                //         'Connection': 'keep-alive'
+                                //     }
+                            }
                             config = config || {};
                             config.withCredentials = true;
                             responseType && (config.responseType = responseType);

@@ -1,19 +1,16 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import DebugLogic from "@/pages/logic-flow/biz/page/debugLog";
-import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicByBak } from "@/services/ideSvc";
+import { getRemoteLogicInstanceById, getRemoteLogicByBak, getRemoteLogicLogsByLogicIns } from "@/services/ideSvc";
 import { CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/icons";
 import { Button, Divider, Space, Spin, Typography, Flex } from "antd";
-import axios from "axios";
 import { useEffect, useState } from "react";
-// import * as monaco from 'monaco-editor';
-// import { loader } from '@monaco-editor/react';
 import { useParams } from "umi";
 
 function refreshWebTitle(dsl: Logic, logicIns) {
     window.document.title = ">[" + dsl?.name + "]实例:" + logicIns?.bizId;
 }
 const LogicDebug = () => {
-    const { id } = useParams();
+    const { id, runtime } = useParams();
     const [config, setConfig] = useState<Logic>();
     const [logicName, setLogicName] = useState<string>('');
     const [loading, setLoading] = useState(false);
@@ -25,12 +22,12 @@ const LogicDebug = () => {
     useEffect(() => {
         setLoading(true);
         if (id)
-            getLogicInstanceById(id).then(res => {
+            getRemoteLogicInstanceById(runtime, id).then(res => {
                 if (res) {
                     const ins = res;
                     setLogicIns(res);
                     setLoading(true);
-                    getLogicByBak(res.logicId, res.version).then(res => {
+                    getRemoteLogicByBak(runtime, res.logicId, res.version).then(res => {
                         const { configJson, name } = res;
                         setLogicName(name)
                         setConfig(configJson)
@@ -46,7 +43,7 @@ const LogicDebug = () => {
     }, [id])
     useEffect(() => {
         if (logicIns) {
-            getLogicLogsByLogicIns(logicIns).then(res => {
+            getRemoteLogicLogsByLogicIns(runtime, logicIns).then(res => {
                 if (res) {
                     setDebugLogs(res)
                 }
@@ -61,10 +58,10 @@ const LogicDebug = () => {
                         <Divider type='vertical' />,
                         <Button type='primary' onClick={() => {
                             setLoading(true)
-                            getLogicInstanceById(id).then(insRes => {
+                            getRemoteLogicInstanceById(runtime, id).then(insRes => {
                                 if (insRes) {
                                     setLogicIns(insRes);
-                                    getLogicLogsByLogicIns(insRes).then(logsRes => {
+                                    getRemoteLogicLogsByLogicIns(runtime, insRes).then(logsRes => {
                                         if (logsRes) {
                                             setDebugLogs(logsRes)
                                         }

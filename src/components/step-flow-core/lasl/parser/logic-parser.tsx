@@ -6,7 +6,7 @@ export class LogicParser {
   public static parseFromX6GraphCells(cells: Cell.Properties[]): Logic | undefined {
     const logic: Logic = new Logic();
     const edges: Edge.Properties[] = [];
-    const nodes: Node.Properties[] = [];
+    // const nodes: Node.Properties[] = [];
     const nodesDic: { [Key: string]: Node.Properties } = {};
     let startNode = undefined;
     //分组所有的节点与边
@@ -18,7 +18,7 @@ export class LogicParser {
       } else {
         const attr: any = v.attrs;
         nodesDic[id] = v;
-        nodes.push(v);
+        // nodes.push(v);
         if (v.data.config.type === 'start') startNode = v;
       }
     });
@@ -99,7 +99,7 @@ export function GraphToLogic(
       //边,当前无自定义边，当有自定义边时这里可能有问题
       edges.push(v);
     } else {
-      const attr: any = v.attrs;
+      // const attr: any = v.attrs;
       nodesDic[id] = v;
       nodes.push(v);
       if (v.data.config.type === 'start') startNode = v;
