@@ -69,7 +69,7 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
                             headers // 请求头
                         }: any) => {
                             if (props.data && props.data.runtime) {
-                                url = `/papi/${props.data.runtime}${url}`
+                                url = `/api/ide/papi/${props.data.runtime}${url}`
                                 // if (headers)
                                 //     headers['Connection'] = 'keep-alive';
                                 // else

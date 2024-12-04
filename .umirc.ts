@@ -134,7 +134,7 @@ export default defineConfig({
     //   'changeOrigin': true,
     //   // 'pathRewrite': { '^/api': '/api' },
     // },
-    '/papi': {
+    '/api/ide/papi': {
       'target': 'http://localhost:4052',
       // 'target': 'http://localhost:8888',
       // 'target': 'http://localhost:8080',

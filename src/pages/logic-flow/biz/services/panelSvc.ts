@@ -13,7 +13,7 @@ export async function getPanelData(runtime: string) {
     const customGroups = []
     var url = '/api/ide/asset/v1/logic-item/readFromCode';
     if (runtime) {
-        url = `/papi/${runtime}/api/ide/asset/v1/logic-item/readFromCode`
+        url = `/api/ide/papi/${runtime}/api/ide/asset/v1/logic-item/readFromCode`
     }
     return Promise.all([
         InitPanelData(),

@@ -10,27 +10,27 @@ export class HttpRuntime {
     }
     public async get(url: string, options?: AxiosRequestConfig) {
         if (this.isRuntimeValid())
-            return axios.get(`/papi/${this.runtime}/${url}`, appendOptions(options))
+            return axios.get(`/api/ide/papi/${this.runtime}/${url}`, appendOptions(options))
         else return axios.get(url, appendOptions(options))
     }
 
     public async put(url: string, data: any, options?: AxiosRequestConfig) {
         if (this.isRuntimeValid())
-            return axios.put(`/papi/${this.runtime}/${url}`, data, appendOptions(options))
+            return axios.put(`/api/ide/papi/${this.runtime}/${url}`, data, appendOptions(options))
         else
             return axios.put(url, data, appendOptions(options))
     }
 
     public async del(url: string, options?: AxiosRequestConfig) {
         if (this.isRuntimeValid())
-            return axios.delete(`/papi/${this.runtime}/${url}`, appendOptions(options))
+            return axios.delete(`/api/ide/papi/${this.runtime}/${url}`, appendOptions(options))
         else
             return axios.delete(url, appendOptions(options))
     }
 
     public async post(url: string, data?: any, options?: AxiosRequestConfig) {
         if (this.isRuntimeValid())
-            return axios.post(`/papi/${this.runtime}/${url}`, data, appendOptions(options))
+            return axios.post(`/api/ide/papi/${this.runtime}/${url}`, data, appendOptions(options))
         else
             return axios.post(url, data, appendOptions(options))
     }

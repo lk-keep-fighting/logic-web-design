@@ -10,7 +10,7 @@ export async function getLogic(id: string) {
 }
 
 export async function getRemoteLogic(runtime: string, id: string) {
-    return get(`/papi/${runtime}/api/ide/logic/${id}`).then(res => {
+    return get(`/api/ide/papi/${runtime}/api/ide/logic/${id}`).then(res => {
         const data = res.data?.data;
         data.configJson = JSON.parse(data.configJson);
         return data;
@@ -24,7 +24,7 @@ export async function saveLogic(id: string, version: string, config: string) {
     return put(`/api/ide/logic/edit/${id}`, { version, configJson: config, updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss') });
 }
 export async function saveRemoteLogic(runtime: string, id: string, version: string, config: string) {
-    return put(`/papi/${runtime}/api/ide/logic/edit/${id}`, { version, configJson: config, updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss') });
+    return put(`/api/ide/papi/${runtime}/api/ide/logic/edit/${id}`, { version, configJson: config, updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss') });
 }
 export async function getLogicInstanceById(id: string) {
     return get(`/api/ide/logic-instance/${id}`).then(res => {
@@ -33,7 +33,7 @@ export async function getLogicInstanceById(id: string) {
     })
 }
 export async function getRemoteLogicInstanceById(runtime: string, id: string) {
-    return get(`/papi/${runtime}/api/ide/logic-instance/${id}`).then(res => {
+    return get(`/api/ide/papi/${runtime}/api/ide/logic-instance/${id}`).then(res => {
         const ins = res.data.data;
         return ins;
     })
@@ -68,7 +68,7 @@ export async function getLogicLogsByLogicIns(logicIns: any) {
     })
 }
 export async function getRemoteLogicLogsByLogicIns(runtime: string, logicIns: any) {
-    return post(`/papi/${runtime}/api/ide/logic-logs`, {
+    return post(`/api/ide/papi/${runtime}/api/ide/logic-logs`, {
         filters: [
             { dataIndex: 'logicId', values: [logicIns.logicId], type: '=' },
             { dataIndex: 'bizId', values: [logicIns.bizId], type: '=' }
@@ -107,7 +107,7 @@ export async function getLogicLogsById(logicLogId: any) {
     })
 }
 export async function getRemoteLogicLogsById(runtime: string, logicLogId: any) {
-    return post(`/papi/${runtime}/api/ide/logic-logs`, {
+    return post(`/api/ide/papi/${runtime}/api/ide/logic-logs`, {
         filters: [
             { dataIndex: 'id', values: [logicLogId], type: '=' }
         ],
@@ -144,7 +144,7 @@ export async function getLogicByBak(id: string, version: string) {
     })
 }
 export async function getRemoteLogicByBak(runtime: string, id: string, version: string) {
-    return post(`/papi/${runtime}/api/ide/logic-baks`, {
+    return post(`/api/ide/papi/${runtime}/api/ide/logic-baks`, {
         filters: [
             { dataIndex: 'id', values: [id], type: '=' },
             { dataIndex: 'version', values: [version], type: '=' }
@@ -193,7 +193,7 @@ export async function runRemoteLogicOnServer(runtime: string, id: string, params
             url = `/api/runtime/logic/v1/run-api/${id}?debug=true`;
             break;
     }
-    url = `/papi/${runtime}` + url;
+    url = `/api/ide/papi/${runtime}` + url;
     return post(url,
         params,
         { headers: { 'Content-Type': 'application/json', ...headers } })

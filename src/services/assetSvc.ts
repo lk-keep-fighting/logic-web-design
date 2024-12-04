@@ -8,10 +8,10 @@ export default class AssetSvc {
         return post(`/api/ide/settings/asset/${type}/${code}`, config);
     }
     public static async getRemoteAssetFromDb(remoteRuntime: string, type: 'app' | 'page' | 'form' | string, code: string): Promise<any> {
-        var res = (await get(`/papi/${remoteRuntime}/api/ide/settings/asset/${type}/${code}`)).data;
+        var res = (await get(`/api/ide/papi/${remoteRuntime}/api/ide/settings/asset/${type}/${code}`)).data;
         return JSON.parse(res.data.config);
     }
     public static async saveRemoteAssetToDb(remoteRuntime: string, type: 'app' | 'page' | 'form' | string, code: string, config: any): Promise<any> {
-        return post(`/papi/${remoteRuntime}/api/ide/settings/asset/${type}/${code}`, config);
+        return post(`/api/ide/papi/${remoteRuntime}/api/ide/settings/asset/${type}/${code}`, config);
     }
 }

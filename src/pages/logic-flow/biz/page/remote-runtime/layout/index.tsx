@@ -65,7 +65,7 @@ export default function RemoteRuntimeLayout(props) {
         }}>
           <img
             style={{ marginRight: '20px', width: '30px', height: '30px' }}
-            src={`/papi/${runtime}/logic/logo.png`} />
+            src={`/api/ide/papi/${runtime}/logic/logo.png`} />
           <div style={{ color: 'ButtonFace', fontSize: '18px', fontFamily: '黑体', fontWeight: 'bolder', cursor: 'pointer' }} onClick={() => {
             history.push(`/`)
           }}>{title}</div>
