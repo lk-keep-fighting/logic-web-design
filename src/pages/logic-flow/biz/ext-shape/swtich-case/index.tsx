@@ -8,8 +8,7 @@ export const SwitchCaseNode = (props) => {
     const label = name ? name : 'case';
     return (
         <div className={styles.customNode}>
-            <span>{'case'}</span>
-            <Input addonAfter={name} className="input" value={node?.data?.config?.case} width={150}
+            <Input addonBefore={name ? name : 'case'} className="input" value={node?.data?.config?.case} width={150}
                 onChange={
                     (e) => {
                         const data = node.data;

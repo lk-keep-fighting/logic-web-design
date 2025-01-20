@@ -253,14 +253,7 @@ const Editor = (props: EditorProps) => {
               cell.addTools([
                 {
                   name: 'button-remove',
-                  args: {
-                    attrs: {
-                      fill: '#fff',
-                      stroke: '#fff',
-                      r: 10,
-                      cursor: 'pointer',
-                    },
-                  },
+                  args: { distance: -10 },
                 },
               ])
               break;
