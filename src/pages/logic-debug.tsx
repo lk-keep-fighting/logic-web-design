@@ -1,12 +1,10 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import DebugLogic from "@/pages/logic-flow/biz/page/debugLog";
 import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicByBak } from "@/services/ideSvc";
-import { CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/icons";
+import { CheckCircleTwoTone, EditOutlined, ForkOutlined, FrownOutlined, LineOutlined, SyncOutlined } from "@ant-design/icons";
 import { Button, Divider, Space, Spin, Typography, Flex } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-// import * as monaco from 'monaco-editor';
-// import { loader } from '@monaco-editor/react';
 import { useParams } from "umi";
 
 function refreshWebTitle(dsl: Logic, logicIns) {
@@ -79,7 +77,11 @@ const LogicDebug = () => {
                             刷新记录
                         </Button>,
                         <Divider type='vertical' />,
-                        <span>是否完成：{logicIns?.isOver ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}</span>,
+                        <Button type='primary' href={`/#/assets/logic/i/${logicIns?.logicId}/edit`} target='_blank'>
+                            <EditOutlined />
+                            跳转设计</Button>,
+                        <Divider type='vertical' />,
+                        <span>是否完成：{logicIns?.isOver ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <LineOutlined twoToneColor='#52c41a' />}</span>,
                         <Divider type='vertical' />,
                         <span>待执行：{logicIns?.nextName}</span>,
                         <Divider type='vertical' />,
