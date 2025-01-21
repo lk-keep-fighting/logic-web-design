@@ -26,6 +26,12 @@ export async function saveLogic(id: string, version: string, config: string) {
 export async function saveRemoteLogic(runtime: string, id: string, version: string, config: string) {
     return put(`/api/ide/papi/${runtime}/api/ide/logic/edit/${id}`, { version, configJson: config, updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss') });
 }
+export async function getLogicInstanceByBizId(logicId: string, bizId: string) {
+    return get(`/api/ide/logic-instance/${logicId}/${bizId}`).then(res => {
+        const ins = res.data.data;
+        return ins;
+    })
+}
 export async function getLogicInstanceById(id: string) {
     return get(`/api/ide/logic-instance/${id}`).then(res => {
         const ins = res.data.data;
