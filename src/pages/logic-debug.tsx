@@ -77,7 +77,7 @@ const LogicDebug = () => {
                             刷新记录
                         </Button>,
                         <Divider type='vertical' />,
-                        <Button type='primary' href={`/#/assets/logic/i/${logicIns?.logicId}/edit`} target='_blank'>
+                        <Button type='primary' href={`/logic/#/assets/logic/i/${logicIns?.logicId}/edit`} target='_blank'>
                             <EditOutlined />
                             跳转设计</Button>,
                         <Divider type='vertical' />,
