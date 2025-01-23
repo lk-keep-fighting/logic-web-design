@@ -53,7 +53,7 @@ const LogicLogDebug = () => {
                         <span style={{ color: 'red' }}>执行版本：</span>,
                         <span>{debugLog?.version}<Typography.Text copyable={{ tooltips: ['点击复制', '复制成功!'], text: debugLog?.version }} /></span>,
                         <Divider type='vertical' />,
-                        <Button type='link' href={`/logic/#/assets/logic/i/${debugLog.logicId}/edit`} target='_blank'>跳转设计</Button> // <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'], text: logicIns?.bizId }} >业务标识：{logicIns?.bizId}</Typography.Paragraph>,
+                        <Button type='link' href={`/logic/index.html/#/assets/logic/i/${debugLog.logicId}/edit`} target='_blank'>跳转设计</Button> // <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'], text: logicIns?.bizId }} >业务标识：{logicIns?.bizId}</Typography.Paragraph>,
                         // <Typography.Paragraph style={{ color: 'red' }}>执行版本:</Typography.Paragraph>,
                         // <Typography.Paragraph copyable={{ tooltips: ['点击复制', '复制成功!'] }} >{logicIns?.version}</Typography.Paragraph>,
                         // <Button onClick={() => {

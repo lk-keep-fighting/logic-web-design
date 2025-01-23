@@ -61,13 +61,7 @@ const DebugLog = (props: DebugProps) => {
   const [selectedNode, setSelectedNode] = useState<Node>();
   const [timeLineItems, setTimeLineItems] = useState<TimelineItemProps[]>();
   const refContainer = useRef();
-  const onNodeClick = ({ node }) => {
-    setSelectedNode(node)
-    const itemLog = curLog?.itemLogs.find(i => {
-      return i.config.id == node.id
-    });
-    setCurItemLog(itemLog)
-  }
+
   function getButtonTool(txt, itemLog, idx, btnCnt) {
     return {
       name: 'button',
@@ -401,7 +395,11 @@ const DebugLog = (props: DebugProps) => {
       label: '执行上下文',
       children: <FormRenderById
         formId='debug-context'
-        values={{ varsJson: curLog?.varsJson, paramsJson: curLog?.paramsJson, varsJsonEnd: curLog?.varsJsonEnd }}
+        values={{
+          varsJson: curLog?.varsJson, paramsJson: curLog?.paramsJson, varsJsonEnd: curLog?.varsJsonEnd, startNodeId: curLog?.itemLogs[0].config.id, startNodeName: curLog?.itemLogs[0].config.name,
+          logicId: props.logicIns?.logicId,
+          bizId: props.logicIns?.bizId
+        }}
         onSubmit={() => { }}
       />
     }
