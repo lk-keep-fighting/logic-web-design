@@ -69,10 +69,19 @@ function buildLogicItem(
         item.branches = [];
         nextNodes.forEach((n) => {
           console.log(n.data?.config);
-          item.branches?.push({
-            when: n.data?.config?.case,
-            nextId: n.id,
-          });
+          if (n.data?.config.type === 'switch-cases') {
+            n.data?.config?.cases?.forEach((c) => {
+              item.branches?.push({
+                when: c,
+                nextId: n.id,
+              });
+            });
+          } else {
+            item.branches?.push({
+              when: n.data?.config?.case,
+              nextId: n.id,
+            });
+          }
           buildLogicItem(nodesDic[n.id], nodesDic, edges, items);
         });
       } else {

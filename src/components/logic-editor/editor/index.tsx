@@ -285,6 +285,7 @@ const Editor = (props: EditorProps) => {
             },
           },
         ])
+        cell.setData({ selected: true })
       }
 
       const ports = refContainer?.querySelectorAll(
@@ -294,6 +295,7 @@ const Editor = (props: EditorProps) => {
     });
 
     graph.on('node:mouseleave', ({ cell }) => {
+      cell.setData({ selected: false })
       cell.removeTools();
       const ports = refContainer?.querySelectorAll(
         '.x6-port-body',

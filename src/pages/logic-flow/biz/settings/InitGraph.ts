@@ -5,6 +5,7 @@ import { NumNode } from "../ext-shape/num";
 import { SwitchCaseNode } from "../ext-shape/swtich-case";
 import { SwitchNode } from "../ext-shape/swtich";
 import { SwitchDefaultNode } from "../ext-shape/swtich-default";
+import { SwitchCasesNode } from "../ext-shape/swtich-cases";
 
 export function RegistShape(customSharps: any[]) {
     customSharps.forEach((v) => {
@@ -20,6 +21,10 @@ export function RegistShape(customSharps: any[]) {
     register({
         shape: 'switch-case',
         component: SwitchCaseNode,
+    })
+    register({
+        shape: 'switch-cases',
+        component: SwitchCasesNode,
     })
     register({
         shape: 'switch-default',

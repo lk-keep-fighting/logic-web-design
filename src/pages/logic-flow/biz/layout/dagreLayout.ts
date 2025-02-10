@@ -15,7 +15,7 @@ export const autoDagreLayout = (graph: Graph) => {
         dagreLayout = new DagreLayout({
             type: 'dagre',
             begin: [nodes[0].getPosition().x, nodes[0].getPosition().y],
-            ranker: 'network-simplex', // 节点分层算法，可选：'tight-tree' 'longest-path' 'network-simplex'
+            ranker: 'tight-tree', // 节点分层算法，可选：'tight-tree' 'longest-path' 'network-simplex'
             rankdir: 'TB', // 图的延展方向，可选： 'TB' | 'BT' | 'LR' | 'RL'
             ranksep: 20, // 图的各个层次之间的间距
             // nodesep: 100, // 同层各个节点之间的间距
@@ -35,8 +35,6 @@ export const autoDagreLayout = (graph: Graph) => {
             }
 
         });
-        debugger;
-
         let { nodes: newNodes = [] } = dagreLayout.layout({ nodes, edges });
         nodes.forEach((current) => {
             const newNode = newNodes.find((node) => node.id === current.id);
@@ -66,13 +64,8 @@ export const autoDagreLayout = (graph: Graph) => {
         let { nodes: newNodes = [] } = dagreLayout.layout({ nodes, edges });
         nodes.forEach((current) => {
             const newNode = newNodes.find((node) => node.id === current.id);
-            // if (newNode.shape == 'circle' || newNode.shape == 'polygon')
-            //   current.position(newNode.x, newNode.y);
-            // else
-            // console.log(current.data?.config?.type)
-            // console.log(current.size())
             newNode.x -= current.size().width / 2;
-            newNode.y -= current.size().height / 2;
+            newNode.y -= current.size().height > 40 ? 20 : current.size().height / 2;
             current.position(newNode.x, newNode.y);
         });
     }

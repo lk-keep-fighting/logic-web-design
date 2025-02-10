@@ -165,6 +165,44 @@ export function InitPanelData(
     new LogicNodeConfig(
       {
         shape: 'ExtSharp',
+        width,
+        height,
+        attrs: {
+          // body: {
+          //   refPoints: '0,10 10,0 20,10 10,20',
+          //   strokeWidth: 1,
+          //   stroke: '#5F95FF',
+          //   fill: '#EFF4FF',
+          // },
+          image: {
+            'xlink:href': '/logic/icons/text.svg',
+            width: 30,
+            x: 8,
+            y: 10
+          },
+          text: {
+            text: '多值case',
+            // fontSize: 14,
+            // fill: '#5F95FF',
+            refX: 0.5,
+            refY: '100%',
+            refY2: 4,
+            textAnchor: 'middle',
+            textVerticalAnchor: 'top',
+          },
+        },
+        data: {
+          config: {
+            type: 'switch-cases',
+          },
+        },
+        ports,
+        // tools: ['node-editor'],
+        _groups: ['ctrl'],
+      }),
+    new LogicNodeConfig(
+      {
+        shape: 'ExtSharp',
         width: 50,
         height,
         attrs: {
