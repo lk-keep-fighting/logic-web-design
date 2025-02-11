@@ -25,11 +25,18 @@ const CasesInput: React.FC = (props: CasesInputProp) => {
   const inputRef = useRef<InputRef>(null);
   const editInputRef = useRef<InputRef>(null);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (props.onChange && tags !== props.cases) {
+  //     debugger;
+  //     props.onChange(tags);
+  //   }
+  // }, [tags]);
+  const onTagsChange = (newTags: string[]) => {
     if (props.onChange) {
-      props.onChange(tags);
+      debugger;
+      props.onChange(newTags);
     }
-  }, [tags]);
+  }
   useEffect(() => {
     setTags(props.cases || []);
   }, [props.cases]);
@@ -46,7 +53,7 @@ const CasesInput: React.FC = (props: CasesInputProp) => {
   const handleClose = (removedTag: string) => {
     const newTags = tags.filter((tag) => tag !== removedTag);
     console.log(newTags);
-    setTags(newTags);
+    onTagsChange(newTags);
   };
 
   const showInput = () => {
@@ -59,7 +66,7 @@ const CasesInput: React.FC = (props: CasesInputProp) => {
 
   const handleInputConfirm = () => {
     if (inputValue && !tags.includes(inputValue)) {
-      setTags([...tags, inputValue]);
+      onTagsChange([...tags, inputValue]);
     }
     setInputVisible(false);
     setInputValue('');
@@ -72,7 +79,7 @@ const CasesInput: React.FC = (props: CasesInputProp) => {
   const handleEditInputConfirm = () => {
     const newTags = [...tags];
     newTags[editInputIndex] = editInputValue;
-    setTags(newTags);
+    onTagsChange(newTags);
     setEditInputIndex(-1);
     setEditInputValue('');
   };
@@ -142,8 +149,8 @@ const CasesInput: React.FC = (props: CasesInputProp) => {
           onBlur={handleInputConfirm}
           onPressEnter={handleInputConfirm}
         />
-      ) : (
-        <Tag style={tagPlusStyle} icon={<PlusOutlined />} visible={props.editable} onClick={showInput}>
+      ) : props.editable && (
+        <Tag style={tagPlusStyle} icon={<PlusOutlined />} onClick={showInput}>
         </Tag>
       )}
     </Flex>
