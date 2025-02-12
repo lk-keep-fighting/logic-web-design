@@ -16,39 +16,39 @@ export function InitPanelData(
     },
   };
   const Nodes: any[] = [
-    new LogicNodeConfig(
-      {
-        shape: 'circle',
-        width,
-        height,
-        attrs: {
-          body: {
-            ...commonAttrs.body,
-            fill: 'white',
-          },
-          text: {
-            text: '开始',
-            fontSize: 12,
-          },
-        },
-        markup: [
-          {
-            tagName: 'circle',
-            selector: 'body',
-          },
-          {
-            tagName: 'text',
-            selector: 'label',
-          }],
-        ports,
-        data: {
-          config: {
-            type: 'start',
-          },
-        },
-        // tools: ['node-editor'],
-        _groups: ['ctrl'],
-      }),
+    // new LogicNodeConfig(
+    //   {
+    //     shape: 'circle',
+    //     width,
+    //     height,
+    //     attrs: {
+    //       body: {
+    //         ...commonAttrs.body,
+    //         fill: 'white',
+    //       },
+    //       text: {
+    //         text: '开始',
+    //         fontSize: 12,
+    //       },
+    //     },
+    //     markup: [
+    //       {
+    //         tagName: 'circle',
+    //         selector: 'body',
+    //       },
+    //       {
+    //         tagName: 'text',
+    //         selector: 'label',
+    //       }],
+    //     ports,
+    //     data: {
+    //       config: {
+    //         type: 'start',
+    //       },
+    //     },
+    //     // tools: ['node-editor'],
+    //     _groups: ['ctrl'],
+    //   }),
     new LogicNodeConfig(
       {
         shape: 'circle',

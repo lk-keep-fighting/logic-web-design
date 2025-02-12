@@ -6,18 +6,32 @@ import { LogicItemSharpMapping } from "@/pages/logic-flow/biz/convert/logicItemS
 export function appendStartNode(graph: Graph) {
     const startNode = graph.createNode({
         shape: 'circle',
-        label: 'start',
         width: 50,
         height: 50,
         attrs: {
             body: {
-                // fill: '#d9d9d9',
+                fill: 'white',
+            },
+            text: {
+                text: '开始',
+                fontSize: 12,
+                // 'font-weight': 'bolder',
             },
         },
+        markup: [
+            {
+                tagName: 'circle',
+                selector: 'body',
+            },
+            {
+                tagName: 'text',
+                selector: 'label',
+            }],
         ports: portsOnBottom,
         data: {
             config: {
-                type: 'start'
+                type: 'start',
+                name: '开始',
             },
         },
     })

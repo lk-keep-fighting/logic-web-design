@@ -166,7 +166,7 @@ const BizLogicEditor = () => {
                             {
                                 name: 'ctrl',
                                 title: '逻辑控制',
-                                graphHeight: 440
+                                graphHeight: 360
                             },
                             ...customGroups
                         ],
