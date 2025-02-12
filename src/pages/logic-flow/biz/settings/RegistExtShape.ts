@@ -6,6 +6,8 @@ import { SwitchCaseNode } from "../ext-shape/swtich-case";
 import { SwitchNode } from "../ext-shape/swtich";
 import { SwitchDefaultNode } from "../ext-shape/swtich-default";
 import { SwitchCasesNode } from "../ext-shape/swtich-cases";
+import { StartNode } from "../ext-shape/start";
+import { WaitForContinueNode } from "../ext-shape/wait-for-continue";
 
 export function RegistShape(customSharps: any[]) {
     customSharps.forEach((v) => {
@@ -13,6 +15,14 @@ export function RegistShape(customSharps: any[]) {
         Graph.registerNode(v.name, v.config, true);
     });
 
+    // register({
+    //     shape: 'start',
+    //     component: StartNode,
+    // })
+    // register({
+    //     shape: 'wait-for-continue',
+    //     component: WaitForContinueNode,
+    // })
     register({
         shape: 'switch',
         // effect: ['data'],

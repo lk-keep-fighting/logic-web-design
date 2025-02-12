@@ -15,7 +15,7 @@ import PageRenderById from "@/components/ui-render/page-render/render-by-page-id
 import { RuntimeSvc } from "@/services/runtimeSvc";
 import { getPanelData } from "../../../services/panelSvc";
 import { BizDslConvert } from "../../../convert/dslConvert";
-import { RegistShape } from "../../../settings/InitGraph";
+import { RegistShape } from "../../../settings/RegistExtShape";
 import { autoDagreLayout } from "../../../layout/dagreLayout";
 import ParamSetting from "../../../components/param-setting";
 import RunLogic from "../../../components/run-logic";

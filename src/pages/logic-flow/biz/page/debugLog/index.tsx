@@ -15,7 +15,7 @@ import './index.css';
 import { Logic, LogicItem } from '@/components/step-flow-core/lasl/meta-data';
 import { JsonView } from 'amis';
 import { InitPanelData } from '../../settings/PanelSetting';
-import { RegistShape } from '../../settings/InitGraph';
+import { RegistShape } from '../../settings/RegistExtShape';
 import { autoDagreLayout } from '../../layout/dagreLayout';
 import DagreGraph from '@/components/logic-editor/graph/dagre-graph';
 import NodeConfig from '@/components/logic-editor/panel/right-panel/node-config';

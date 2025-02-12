@@ -8,7 +8,7 @@ import { StoreService } from "./services/storeSvc";
 import { ProcessInput } from "./services/dtos/processInput";
 import LogicNodeConfig from "@/components/logic-editor/types/LogicNodeConfig";
 import { getPresetNode } from "@/components/logic-editor/nodes/PresetNodes";
-import { RegistShape } from "./settings/InitGraph";
+import { RegistShape } from "./settings/RegistExtShape";
 import { PresetShapes } from "@/components/logic-editor/shapes/PresetShapes";
 import { getLogicByBak } from "@/services/ideSvc";
 

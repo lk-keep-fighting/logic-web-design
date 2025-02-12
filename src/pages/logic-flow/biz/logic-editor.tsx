@@ -10,7 +10,7 @@ import { appendStartNode } from "@/components/logic-editor/settings/GraphDataHel
 import { PresetShapes } from "@/components/logic-editor/shapes/PresetShapes";
 import { getLogic, runLogicOnServer, saveLogic } from "@/services/ideSvc";
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
-import { RegistShape } from "./settings/InitGraph";
+import { RegistShape } from "./settings/RegistExtShape";
 import { autoDagreLayout } from "./layout/dagreLayout";
 import ParamSetting from "./components/param-setting";
 import { TypeAnnotationParser } from "@/components/step-flow-core/lasl/parser/type-annotation-parser";
@@ -40,11 +40,23 @@ const BizLogicEditor = () => {
     }
     function handleSave() {
         setLoading(true);
-        let newDsl: Logic = dslConvert.graphToLogicItems(graph, dsl);
-        newDsl.version = newVersion();
-        setDsl(newDsl)
-        saveDslToServer(newDsl)
-        refreshWebTitle(newDsl)
+        getLogic(id).then(res => {
+            if (res.version != dsl.version) {
+                setLoading(false)
+                message.error(`本地版本与服务器[${res.version}]不一致，无法保存！请打开新设计页手动合并逻辑！`)
+            } else {
+                let newDsl: Logic = dslConvert.graphToLogicItems(graph, dsl);
+                newDsl.version = newVersion();
+                setDsl(newDsl)
+                saveDslToServer(newDsl)
+                refreshWebTitle(newDsl)
+            }
+        }).catch(err => {
+            setLoading(false)
+            message.error('获取逻辑失败！')
+            console.log('err')
+            console.log(err)
+        })
     }
     function newVersion() {
         return dayjs(Date.now()).format('YYYYMMDDHHmmss');
@@ -154,7 +166,7 @@ const BizLogicEditor = () => {
                             {
                                 name: 'ctrl',
                                 title: '逻辑控制',
-                                graphHeight: 360
+                                graphHeight: 440
                             },
                             ...customGroups
                         ],

@@ -5,7 +5,7 @@ import { useParams } from "umi";
 import { Graph } from "@antv/x6";
 import { PresetShapes } from "@/components/logic-editor/shapes/PresetShapes";
 import { getRemoteLogicByBak } from "@/services/ideSvc";
-import { RegistShape } from "../../../settings/InitGraph";
+import { RegistShape } from "../../../settings/RegistExtShape";
 
 const BizLogicView = () => {
     const [logicData, setLogicData] = useState({});
