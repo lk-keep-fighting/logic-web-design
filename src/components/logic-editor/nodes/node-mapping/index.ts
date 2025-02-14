@@ -93,6 +93,19 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
                     graph.addNode(switchCaseNode);
                     newNode = switchCaseNode;
                     break;
+                case 'switch-default':
+                    const switchDefaultNode = graph.createNode({
+                        shape: 'switch-default',
+                        position: node.position(),
+                        width: 120,
+                        height: 50,
+                        ports,
+                        data: node.data
+                    })
+                    graph.removeNode(node);
+                    graph.addNode(switchDefaultNode);
+                    newNode = switchDefaultNode;
+                    break;
                 case 'switch-cases':
                     const switchCasesNode = graph.createNode({
                         shape: 'switch-cases',

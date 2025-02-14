@@ -52,153 +52,153 @@ PresetShapes.set('ExtSharp',
         },
     });
 
-PresetShapes.set('ExtShape1',
-    {
-        name: 'ExtShape1',
-        config: {
-            width: 100,
-            height,
-            attrs: {
-                body: {
-                    rx: 6,
-                    ry: 6,
-                    fill: '#ffcc00',
-                    stroke: '#8f8f8f',
-                    strokeWidth: 1,
-                    // stroke: '#5F95FF',
-                    // strokeWidth: 1,
-                    // fill: 'rgba(95,149,255,0.05)',
-                    refWidth: 1,
-                    refHeight: 1,
-                },
-                image: {
-                    // 'xlink:href':
-                    //     'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
-                    // width: 12,
-                    // height: 12,
-                    refX: 2,
-                    refY: 0,
-                },
-                text: {
-                    refX: 4,
-                    refY: 20,
-                    fontSize: 12,
-                    'text-anchor': 'start',
-                },
-            },
-            markup: [
-                {
-                    tagName: 'rect',
-                    selector: 'body',
-                },
-                {
-                    tagName: 'image',
-                    selector: 'image',
-                },
-                {
-                    tagName: 'text',
-                    selector: 'label',
-                }
-            ],
-        },
-    })
-PresetShapes.set('ExtShape2',
-    {
-        name: 'ExtShape2',
-        config: {
-            width: 100,
-            height,
-            attrs: {
-                body: {
-                    rx: 6,
-                    ry: 6,
-                    fill: '#87CEEB',
-                    stroke: '#8f8f8f',
-                    strokeWidth: 1,
-                    // stroke: '#5F95FF',
-                    // strokeWidth: 1,
-                    // fill: 'rgba(95,149,255,0.05)',
-                    refWidth: 1,
-                    refHeight: 1,
-                },
-                image: {
-                    // 'xlink:href':
-                    //     'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
-                    // width: 12,
-                    // height: 12,
-                    refX: 2,
-                    refY: 0,
-                },
-                text: {
-                    refX: 4,
-                    refY: 20,
-                    fontSize: 12,
-                    strokeWidth: 3,
-                    // fill: 'white',
-                    'text-anchor': 'start',
-                },
-            },
-            markup: [
-                {
-                    tagName: 'rect',
-                    selector: 'body',
-                },
-                {
-                    tagName: 'image',
-                    selector: 'image',
-                },
-                {
-                    tagName: 'text',
-                    selector: 'label',
-                }
-            ],
-        },
-    })
-PresetShapes.set('ExtShape3',
-    {
-        name: 'ExtShape3',
-        config: {
-            width: 100,
-            height,
-            attrs: {
-                body: {
-                    rx: 6,
-                    ry: 6,
-                    fill: '#FFF8DC',
-                    stroke: '#8f8f8f',
-                    strokeWidth: 1,
-                    // fill: '#CD7F32',
-                    refWidth: 1,
-                    refHeight: 1,
-                },
-                image: {
-                    // 'xlink:href':
-                    //     'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
-                    // width: 12,
-                    // height: 12,
-                    refX: 2,
-                    refY: 0,
-                },
-                text: {
-                    refX: 4,
-                    refY: 20,
-                    fontSize: 12,
-                    'text-anchor': 'start',
-                },
-            },
-            markup: [
-                {
-                    tagName: 'rect',
-                    selector: 'body',
-                },
-                {
-                    tagName: 'image',
-                    selector: 'image',
-                },
-                {
-                    tagName: 'text',
-                    selector: 'label',
-                }
-            ],
-        },
-    })
+// PresetShapes.set('ExtShape1',
+//     {
+//         name: 'ExtShape1',
+//         config: {
+//             width: 100,
+//             height,
+//             attrs: {
+//                 body: {
+//                     rx: 6,
+//                     ry: 6,
+//                     fill: '#ffcc00',
+//                     stroke: '#8f8f8f',
+//                     strokeWidth: 1,
+//                     // stroke: '#5F95FF',
+//                     // strokeWidth: 1,
+//                     // fill: 'rgba(95,149,255,0.05)',
+//                     refWidth: 1,
+//                     refHeight: 1,
+//                 },
+//                 image: {
+//                     // 'xlink:href':
+//                     //     'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
+//                     // width: 12,
+//                     // height: 12,
+//                     refX: 2,
+//                     refY: 0,
+//                 },
+//                 text: {
+//                     refX: 4,
+//                     refY: 20,
+//                     fontSize: 12,
+//                     'text-anchor': 'start',
+//                 },
+//             },
+//             markup: [
+//                 {
+//                     tagName: 'rect',
+//                     selector: 'body',
+//                 },
+//                 {
+//                     tagName: 'image',
+//                     selector: 'image',
+//                 },
+//                 {
+//                     tagName: 'text',
+//                     selector: 'label',
+//                 }
+//             ],
+//         },
+//     })
+// PresetShapes.set('ExtShape2',
+//     {
+//         name: 'ExtShape2',
+//         config: {
+//             width: 100,
+//             height,
+//             attrs: {
+//                 body: {
+//                     rx: 6,
+//                     ry: 6,
+//                     fill: '#87CEEB',
+//                     stroke: '#8f8f8f',
+//                     strokeWidth: 1,
+//                     // stroke: '#5F95FF',
+//                     // strokeWidth: 1,
+//                     // fill: 'rgba(95,149,255,0.05)',
+//                     refWidth: 1,
+//                     refHeight: 1,
+//                 },
+//                 image: {
+//                     // 'xlink:href':
+//                     //     'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
+//                     // width: 12,
+//                     // height: 12,
+//                     refX: 2,
+//                     refY: 0,
+//                 },
+//                 text: {
+//                     refX: 4,
+//                     refY: 20,
+//                     fontSize: 12,
+//                     strokeWidth: 3,
+//                     // fill: 'white',
+//                     'text-anchor': 'start',
+//                 },
+//             },
+//             markup: [
+//                 {
+//                     tagName: 'rect',
+//                     selector: 'body',
+//                 },
+//                 {
+//                     tagName: 'image',
+//                     selector: 'image',
+//                 },
+//                 {
+//                     tagName: 'text',
+//                     selector: 'label',
+//                 }
+//             ],
+//         },
+//     })
+// PresetShapes.set('ExtShape3',
+//     {
+//         name: 'ExtShape3',
+//         config: {
+//             width: 100,
+//             height,
+//             attrs: {
+//                 body: {
+//                     rx: 6,
+//                     ry: 6,
+//                     fill: '#FFF8DC',
+//                     stroke: '#8f8f8f',
+//                     strokeWidth: 1,
+//                     // fill: '#CD7F32',
+//                     refWidth: 1,
+//                     refHeight: 1,
+//                 },
+//                 image: {
+//                     // 'xlink:href':
+//                     //     'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
+//                     // width: 12,
+//                     // height: 12,
+//                     refX: 2,
+//                     refY: 0,
+//                 },
+//                 text: {
+//                     refX: 4,
+//                     refY: 20,
+//                     fontSize: 12,
+//                     'text-anchor': 'start',
+//                 },
+//             },
+//             markup: [
+//                 {
+//                     tagName: 'rect',
+//                     selector: 'body',
+//                 },
+//                 {
+//                     tagName: 'image',
+//                     selector: 'image',
+//                 },
+//                 {
+//                     tagName: 'text',
+//                     selector: 'label',
+//                 }
+//             ],
+//         },
+//     })

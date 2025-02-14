@@ -30,18 +30,9 @@ export async function getPanelData(runtime: string) {
                         {
                             shape: item.shape ? item.shape : ('ExtShape' + (groupIdx % 3 == 0 ? '1' : groupIdx % 3 == 1 ? '2' : '3')),
                             ports,
-                            attrs: {
-                                image: {
-                                    width: 15,
-                                    x: 2,
-                                    y: 2,
-                                    'xlink:href': '/logic/icons/java.svg',
-                                },
-                                text: {
-                                    text: autoSplitStrToMultiLine(item.name),
-                                    fontSize: 12,
-                                },
-                            },
+                            width: 100,
+                            height:50,
+                            text: item.name,
                             data: {
                                 config: item.logicItem,
                             },

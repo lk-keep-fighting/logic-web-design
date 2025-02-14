@@ -51,31 +51,31 @@ export function InitPanelData(
     //   }),
     new LogicNodeConfig(
       {
-        shape: 'circle',
+        shape: 'wait-for-continue',
         // label: 'wait-for-continue',
         width,
         height,
-        attrs: {
-          body: {
-            ...commonAttrs.body,
-            // fill: '#d9d9d9',
-            fill: 'white',
-          },
-          text: {
-            text: '交互点',
-            fontSize: 12,
-            // 'font-weight': 'bolder',
-          },
-        },
-        markup: [
-          {
-            tagName: 'circle',
-            selector: 'body',
-          },
-          {
-            tagName: 'text',
-            selector: 'label',
-          }],
+        // attrs: {
+        //   body: {
+        //     ...commonAttrs.body,
+        //     // fill: '#d9d9d9',
+        //     fill: 'white',
+        //   },
+        //   text: {
+        //     text: '交互点',
+        //     fontSize: 12,
+        //     // 'font-weight': 'bolder',
+        //   },
+        // },
+        // markup: [
+        //   {
+        //     tagName: 'circle',
+        //     selector: 'body',
+        //   },
+        //   {
+        //     tagName: 'text',
+        //     selector: 'label',
+        //   }],
         ports,
         data: {
           config: {
@@ -175,7 +175,7 @@ export function InitPanelData(
           //   fill: '#EFF4FF',
           // },
           image: {
-            'xlink:href': '/logic/icons/text.svg',
+            'xlink:href': '/logic/icons/texts.svg',
             width: 30,
             x: 8,
             y: 10
@@ -240,33 +240,33 @@ export function InitPanelData(
       }),
     new LogicNodeConfig(
       {
-        shape: 'ExtSharp',
+        shape: 'wait',
         width,
         height,
-        attrs: {
-          // body: {
-          //   refPoints: '0,10 10,0 20,10 10,20',
-          //   strokeWidth: 1,
-          //   stroke: '#5F95FF',
-          //   fill: '#EFF4FF',
-          // },
-          image: {
-            'xlink:href': '/logic/icons/delay.svg',
-            width: 30,
-            x: 8,
-            y: 10
-          },
-          text: {
-            text: '等待',
-            // fontSize: 14,
-            // fill: '#5F95FF',
-            refX: 0.5,
-            refY: '100%',
-            refY2: 4,
-            textAnchor: 'middle',
-            textVerticalAnchor: 'top',
-          },
-        },
+        // attrs: {
+        //   // body: {
+        //   //   refPoints: '0,10 10,0 20,10 10,20',
+        //   //   strokeWidth: 1,
+        //   //   stroke: '#5F95FF',
+        //   //   fill: '#EFF4FF',
+        //   // },
+        //   image: {
+        //     'xlink:href': '/logic/icons/delay.svg',
+        //     width: 30,
+        //     x: 8,
+        //     y: 10
+        //   },
+        //   text: {
+        //     text: '等待',
+        //     // fontSize: 14,
+        //     // fill: '#5F95FF',
+        //     refX: 0.5,
+        //     refY: '100%',
+        //     refY2: 4,
+        //     textAnchor: 'middle',
+        //     textVerticalAnchor: 'top',
+        //   },
+        // },
         data: {
           config: {
             type: 'wait',
@@ -277,67 +277,12 @@ export function InitPanelData(
         // tools: ['node-editor'],
         _groups: ['ctrl'],
       }),
-    // new LogicNodeConfig(
-    //   {
-    //     shape: 'circle',
-    //     label: 'end',
-    //     width,
-    //     height,
-    //     attrs: {
-    //       body: {
-    //         ...commonAttrs.body,
-    //         fill: '#d9d9d9',
-    //       },
-    //       text: {
-    //         text: 'end',
-    //         // 'font-weight': 'bolder',
-    //       },
-    //     },
-    //     markup: [
-    //       {
-    //         tagName: 'circle',
-    //         selector: 'body',
-    //       },
-    //       {
-    //         tagName: 'text',
-    //         selector: 'label',
-    //       }],
-    //     ports,
-    //     data: {
-    //       config: {
-    //         type: 'end',
-    //       },
-    //     },
-    //     // tools: ['node-editor'],
-    //     _groups: ['global'],
-    //   }),
     new LogicNodeConfig(
       {
-        shape: 'ExtSharp',
-        body: {
-          rx: 6,
-          ry: 6,
-          fill: '#0484fb',
-          stroke: '#0484fb',
-          strokeWidth: 1,
-          // stroke: '#5F95FF',
-          // strokeWidth: 1,
-          // fill: 'rgba(95,149,255,0.05)',
-          refWidth: 1,
-          refHeight: 1,
-        },
-        // label: 'http请求',
-        attrs: {
-          text: {
-            text: 'http请求',
-          },
-          image: {
-            'xlink:href': '/logic/icons/http.svg',
-            width: 20,
-            x: 2,
-            y: 2,
-          },
-        },
+        shape: 'http',
+        width: 100,
+        height,
+        text: 'http请求',
         data: {
           config: {
             type: 'http',
@@ -349,19 +294,12 @@ export function InitPanelData(
         _groups: ['ctrl'],
       }),
     new LogicNodeConfig({
-      shape: 'ExtSharp',
+      shape: 'js',
+      width: 100,
+      height,
       ports,
-      attrs: {
-        image: {
-          width: 15,
-          x: 2,
-          y: 2,
-          'xlink:href': '/logic/icons/code.svg',
-        },
-        text: {
-          text: 'js脚本',
-        },
-      },
+      imgSrc: '/logic/icons/code.svg',
+      text: 'js脚本',
       data: {
         config: {
           type: 'js',
@@ -372,42 +310,26 @@ export function InitPanelData(
     }),
     new LogicNodeConfig(
       {
-        shape: 'ExtSharp',
+        shape: 'java',
         ports,
-        attrs: {
-          image: {
-            width: 15,
-            x: 2,
-            y: 2,
-            'xlink:href': '/logic/icons/java.svg',
-          },
-          text: {
-            text: 'java方法',
-          },
-        },
+        width: 100,
+        height,
+        text: 'java方法',
         data: {
           config: {
             type: 'java',
           },
         },
-        // tools: ['node-editor'],
         _groups: ['ctrl'],
       }),
     new LogicNodeConfig(
       {
-        shape: 'ExtSharp',
+        shape: 'sub-logic',
         ports,
-        attrs: {
-          image: {
-            width: 15,
-            x: 2,
-            y: 2,
-            'xlink:href': '/logic/icons/CarbonSubflowLocal.svg',
-          },
-          text: {
-            text: '复用逻辑',
-          },
-        },
+        width: 100,
+        height,
+        imgSrc: '/logic/icons/CarbonSubflowLocal.svg',
+        text: '复用逻辑',
         data: {
           config: {
             type: 'sub-logic',
