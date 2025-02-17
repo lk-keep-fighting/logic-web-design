@@ -28,7 +28,7 @@ export const WaitForContinueNode = (props) => {
                     justifyContent: 'center'
                 }}
             >
-                {node.data?.label || '交互点'}
+                {node.data?.config.name || '交互点'}
             </div>
         </Popover >
     )
