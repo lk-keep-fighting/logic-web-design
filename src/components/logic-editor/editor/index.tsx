@@ -408,8 +408,11 @@ const Editor = (props: EditorProps) => {
         title: '展开/收起',
         target: graph,
         search(cell, keyword) {
-          const label: string = cell.getAttrByPath('text/text');
-          return label?.indexOf(keyword) !== -1;
+          const data: string = cell.getData();
+          const config: string = data.config;
+          if (!config) return false;
+          if (!config.name) return false;
+          return config.name.indexOf(keyword) !== -1;
         },
         placeholder: '搜索节点',
         notFoundText: '未找到',

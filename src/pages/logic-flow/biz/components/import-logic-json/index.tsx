@@ -34,9 +34,10 @@ const ImportLogicJson = ({ onConfirm, onCancel, isOpen }) => {
                 onCancel={() => onCancel()}
             >
                 <Editor
-                    height={400}
                     width={'100%'}
+                    height={500}
                     value={jsonValue}
+                    allowFullscreen={true}
                     language="json"
                     onChange={(value) => setJsonValue(value)}
                     placeholder="在这里粘贴json"

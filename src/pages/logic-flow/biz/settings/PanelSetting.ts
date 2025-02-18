@@ -55,34 +55,13 @@ export function InitPanelData(
         // label: 'wait-for-continue',
         width,
         height,
-        // attrs: {
-        //   body: {
-        //     ...commonAttrs.body,
-        //     // fill: '#d9d9d9',
-        //     fill: 'white',
-        //   },
-        //   text: {
-        //     text: '交互点',
-        //     fontSize: 12,
-        //     // 'font-weight': 'bolder',
-        //   },
-        // },
-        // markup: [
-        //   {
-        //     tagName: 'circle',
-        //     selector: 'body',
-        //   },
-        //   {
-        //     tagName: 'text',
-        //     selector: 'label',
-        //   }],
         ports,
         data: {
           config: {
             type: 'wait-for-continue',
+            name: '交互点'
           },
         },
-        // tools: ['node-editor'],
         _groups: ['ctrl'],
       }),
     new LogicNodeConfig(
@@ -92,12 +71,6 @@ export function InitPanelData(
         height,
         label: 'switch',
         attrs: {
-          // body: {
-          //   refPoints: '0,10 10,0 20,10 10,20',
-          //   strokeWidth: 1,
-          //   stroke: '#5F95FF',
-          //   fill: '#EFF4FF',
-          // },
           image: {
             'xlink:href': '/logic/icons/switch.svg',
             width: 45,
@@ -118,6 +91,7 @@ export function InitPanelData(
         data: {
           config: {
             type: 'switch',
+            name: 'switch',
           },
         },
         ports,
@@ -156,6 +130,7 @@ export function InitPanelData(
         data: {
           config: {
             type: 'switch-case',
+            name: 'case',
           },
         },
         ports,
@@ -194,6 +169,7 @@ export function InitPanelData(
         data: {
           config: {
             type: 'switch-cases',
+            name: '多值case',
           },
         },
         ports,
@@ -232,6 +208,7 @@ export function InitPanelData(
         data: {
           config: {
             type: 'switch-default',
+            name: 'default',
           },
         },
         ports,
@@ -270,6 +247,7 @@ export function InitPanelData(
         data: {
           config: {
             type: 'wait',
+            name: '等待',
             timeout: '2000',
           },
         },
@@ -286,6 +264,7 @@ export function InitPanelData(
         data: {
           config: {
             type: 'http',
+            name: 'http请求',
             method: 'POST',
           },
         },
@@ -302,6 +281,7 @@ export function InitPanelData(
       text: 'js脚本',
       data: {
         config: {
+          name: 'js脚本',
           type: 'js',
         },
       },
@@ -317,6 +297,7 @@ export function InitPanelData(
         text: 'java方法',
         data: {
           config: {
+            name: 'java方法',
             type: 'java',
           },
         },
@@ -330,6 +311,7 @@ export function InitPanelData(
         height,
         data: {
           config: {
+            name: '复用逻辑',
             type: 'sub-logic',
           },
         },

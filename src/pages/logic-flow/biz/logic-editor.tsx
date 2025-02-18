@@ -274,7 +274,9 @@ const BizLogicEditor = () => {
                             setOpenImportJson(false)
                             const res = LogicToGraph(JSON.parse(json))
                             setGraphJson(res)
-                            autoDagreLayout(graph)
+                            setTimeout(() => {
+                                autoDagreLayout(graph)
+                            }, 500);
                         }} onCancel={() => setOpenImportJson(false)} isOpen={openImportJson} />,
                         <Button
                             icon={<RocketTwoTone style={{ color: '#1677ff' }} />}
