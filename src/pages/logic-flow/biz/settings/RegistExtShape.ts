@@ -16,6 +16,7 @@ import { ExtShape1ReactNode } from "../ext-shape/extShape1";
 import { ExtShape2ReactNode } from "../ext-shape/extShape2";
 import { ExtShape3ReactNode } from "../ext-shape/extShape3";
 import { WaitNode } from "../ext-shape/wait";
+import { EndNode } from "../ext-shape/end";
 
 export function RegistShape(customSharps: any[]) {
     customSharps.forEach((v) => {
@@ -26,6 +27,10 @@ export function RegistShape(customSharps: any[]) {
     register({
         shape: 'start',
         component: StartNode,
+    })
+    register({
+        shape: 'end',
+        component: EndNode,
     })
     register({
         shape: 'wait-for-continue',

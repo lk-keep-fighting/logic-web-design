@@ -1,6 +1,7 @@
 import { Cell, Edge, Graph, Node } from '@antv/x6';
 import { message } from 'antd';
 import { Logic, LogicItem } from '../meta-data';
+import { ports } from '@/components/logic-editor/settings/Consts';
 //将图数据转换为Logic，不包含图原始数据，图原始数据保存在visualConfig属性中，在外部处理
 export class LogicParser {
   public static parseFromX6GraphCells(cells: Cell.Properties[]): Logic | undefined {
@@ -125,56 +126,78 @@ export function GraphToLogic(
 }
 
 //未完成
-export function LogicToGraph(logic: Logic): Cell[] {
-  const nodes: Node[] = [];
-  const edges: Edge[] = [];
+export function LogicToGraph(logic: Logic): {
+  nodes: Node.Metadata[];
+  edges: Edge.Metadata[];
+} {
+  if (!logic?.items?.length) {
+    return { nodes: [], edges: [] };
+  }
 
-  // Create nodes
-  logic.items.forEach((item) => {
-    const node: Node = {
-      id: item.id,
-      shape: item.type, // Adjust the shape based on your node representation
-      // position: { x: 0, y: 0 }, // Set the appropriate position
-      size: { width: 80, height: 40 }, // Set the appropriate size
-      data: {
-        config: item // Customize as needed
-      },
-      attrs: {
-        text: { text: item.name },
-      },
-    };
-
-    nodes.push(node);
-
-    // If the node has branches, create edges
-    if (item.branches && item.branches.length > 0) {
-      item.branches.forEach((branch) => {
-        const edge: Edge = {
-          shape: 'edge', // Adjust the shape based on your edge representation
-          source: { cell: item.id },
-          target: { cell: branch.nextId },
-          labels: [
-            {
-              position: 0.5,
-              attrs: {
-                label: { text: branch.when },
-              },
-            },
-          ],
+  const getDefaultNodeConfig = (type: string) => {
+    console.log('type')
+    console.log(type)
+    switch (type) {
+      case 'http':
+      case 'js':
+      case 'java':
+      case 'sub-logic':
+        return {
+          size: { width: 100, height: 50 },
         };
-
-        edges.push(edge);
-      });
-    } else if (item.nextId) {
-      // If the node has a single next node, create an edge
-      const edge: Edge.Properties = {
-        shape: 'edge', // Adjust the shape based on your edge representation
-        source: { cell: item.id },
-        target: { cell: item.nextId },
-      };
-
-      edges.push(edge);
+      case 'switch':
+        return {
+          size: { width: 200, height: 50 },
+        };
+      case 'switch-case':
+      case 'switch-default':
+      case 'switch-cases':
+        return {
+          size: { width: 120, height: 50 },
+        };
+      default:
+        return {
+          size: { width: 50, height: 50 },
+        };;
     }
+  }
+
+  const defaultEdgeConfig = {
+    shape: 'edge',
+  };
+
+  const nodes: Node.Metadata[] = logic.items.map((item) => ({
+    ...getDefaultNodeConfig(item.type),
+    id: item.id,
+    ports: {
+      ...ports,
+      items: ports.items.map((port) => ({
+        ...port,
+        id: `${item.id}-${port.group}`,
+      })),
+    },
+    shape: item.type,
+    data: { config: item },
+  }));
+
+  const edges: Edge.Metadata[] = logic.items.flatMap((item) => {
+    if (item.branches?.length) {
+      return item.branches.map((branch) => ({
+        ...defaultEdgeConfig,
+        source: { cell: item.id, port: item.id + '-bottom' },
+        target: { cell: branch.nextId, port: branch.nextId + '-top' },
+      }));
+    }
+
+    if (item.nextId) {
+      return [{
+        ...defaultEdgeConfig,
+        source: { cell: item.id, port: item.id + '-bottom' },
+        target: { cell: item.nextId, port: item.nextId + '-top' },
+      }];
+    }
+
+    return [];
   });
 
   return { nodes, edges };

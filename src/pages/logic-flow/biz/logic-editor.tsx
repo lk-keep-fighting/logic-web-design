@@ -1,5 +1,5 @@
 import { LogicFlowEditor } from "@/components/logic-editor";
-import { Button, Modal, Spin, message, Typography } from "antd";
+import { Button, Modal, Spin, message, Typography, Dropdown, MenuProps } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "umi";
 import { Graph, Shape } from "@antv/x6";
@@ -19,7 +19,8 @@ import { LogicEditorCtx } from "@/components/logic-editor/types/LogicEditorCtx";
 import RunLogic from "./components/run-logic";
 import PageRenderById from "@/components/ui-render/page-render/render-by-page-id";
 import { RuntimeSvc } from "@/services/runtimeSvc";
-
+import ImportLogicJson from "./components/import-logic-json";
+import { LogicToGraph } from "@/components/step-flow-core/lasl/parser/logic-parser";
 const BizLogicEditor = () => {
     const [dsl, setDsl] = useState<Logic>({});
     const [editorCtx, setEditorCtx] = useState<LogicEditorCtx>({});
@@ -27,6 +28,7 @@ const BizLogicEditor = () => {
     const [showLeft, setShowLeft] = useState(true);
     const [loading, setLoading] = useState(false);
     const [lineStyle, setLineStyle] = useState<'1' | '2'>('1')
+    const [openImportJson, setOpenImportJson] = useState(false);
     const [graph, setGraph] = useState<Graph>();
     const [panleNodes, setPanelNodes] = useState([]);
     const [customGroups, setCustomGroups] = useState([]);
@@ -155,6 +157,15 @@ const BizLogicEditor = () => {
             }
         });
     }, [lineStyle]);
+    const items = [
+        {
+            key: 'imoport',
+            label: '导入Json配置',
+        }
+    ];
+    const onMenuClick: MenuProps['onClick'] = (e) => {
+        setOpenImportJson(true);
+    };
     return (
         <div>
             <Spin spinning={loading}>
@@ -192,7 +203,8 @@ const BizLogicEditor = () => {
                                 height: 64,
                             }}
                         />,
-                        <Button icon={<SaveOutlined />} type='primary' onClick={() => handleSave()}>保存</Button>,
+                        <Dropdown.Button type='primary' onClick={() => handleSave()} menu={{ items, onClick: onMenuClick }}><SaveOutlined />保存</Dropdown.Button>,
+                        // <Button icon={<SaveOutlined />} type='primary' onClick={() => handleSave()}>保存</Button>,
                         <ParamSetting open={openParamsSetting}
                             values={{
                                 ...dsl
@@ -258,6 +270,12 @@ const BizLogicEditor = () => {
                                 调试
                             </Button>
                         </RunLogic>,
+                        <ImportLogicJson onConfirm={(json) => {
+                            setOpenImportJson(false)
+                            const res = LogicToGraph(JSON.parse(json))
+                            setGraphJson(res)
+                            autoDagreLayout(graph)
+                        }} onCancel={() => setOpenImportJson(false)} isOpen={openImportJson} />,
                         <Button
                             icon={<RocketTwoTone style={{ color: '#1677ff' }} />}
                             onClick={() => { autoDagreLayout(graph) }}

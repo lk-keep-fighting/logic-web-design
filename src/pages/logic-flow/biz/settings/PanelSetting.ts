@@ -328,8 +328,6 @@ export function InitPanelData(
         ports,
         width: 100,
         height,
-        imgSrc: '/logic/icons/CarbonSubflowLocal.svg',
-        text: '复用逻辑',
         data: {
           config: {
             type: 'sub-logic',

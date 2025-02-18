@@ -38,14 +38,11 @@ export const autoDagreLayout = (graph: Graph) => {
         let { nodes: newNodes = [] } = dagreLayout.layout({ nodes, edges });
         nodes.forEach((current) => {
             const newNode = newNodes.find((node) => node.id === current.id);
-            // if (newNode.shape == 'circle' || newNode.shape == 'polygon')
-            //   current.position(newNode.x, newNode.y);
-            // else
-            // console.log(current.data?.config?.type)
-            // console.log(current.size())
-            newNode.x -= current.size().width / 2;
-            newNode.y -= current.size().height / 2;
-            current.position(newNode.x, newNode.y);
+            if(newNode){
+                newNode.x -= current.size().width / 2;
+                newNode.y -= current.size().height / 2;
+                current.position(newNode.x, newNode.y);
+            }
         });
     } else {
         dagreLayout = new DagreLayout({
@@ -64,9 +61,11 @@ export const autoDagreLayout = (graph: Graph) => {
         let { nodes: newNodes = [] } = dagreLayout.layout({ nodes, edges });
         nodes.forEach((current) => {
             const newNode = newNodes.find((node) => node.id === current.id);
-            newNode.x -= current.size().width / 2;
-            newNode.y -= current.size().height > 40 ? 20 : current.size().height / 2;
-            current.position(newNode.x, newNode.y);
+            if (newNode) {
+                newNode.x -= current.size().width / 2;
+                newNode.y -= current.size().height > 40 ? 20 : current.size().height / 2;
+                current.position(newNode.x, newNode.y);
+            }
         });
     }
 
@@ -87,13 +86,10 @@ export const autoDagreLayoutByNodesAndCells = (nodes, edges) => {
     let { nodes: newNodes = [] } = dagreLayout.layout({ nodes, edges });
     nodes.forEach((current) => {
         const newNode = newNodes.find((node) => node.id === current.id);
-        // if (newNode.shape == 'circle' || newNode.shape == 'polygon')
-        //   current.position(newNode.x, newNode.y);
-        // else
-        // console.log(current.data?.config?.type)
-        // console.log(current.size())
-        newNode.x -= current.size().width / 2;
-        newNode.y -= current.size().height / 2;
-        current.position(newNode.x, newNode.y);
+        if(newNode){
+            newNode.x -= current.size().width / 2;
+            newNode.y -= current.size().height / 2;
+            current.position(newNode.x, newNode.y);
+        }
     });
 }
