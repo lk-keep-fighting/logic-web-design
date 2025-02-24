@@ -364,10 +364,20 @@ const DebugLog = (props: DebugProps) => {
         <div>
           <FormRenderById
             formId='debug-node-input'
-            values={{ success: curItemLog?.success, msg: curItemLog?.msg, returnData: curItemLog?.returnData, body: curItemLog?.configInstance?.body }}
+            values={{
+              success: curItemLog?.success,
+              msg: curItemLog?.msg,
+              returnData: curItemLog?.returnData,
+              body: curItemLog?.configInstance?.body,
+              bizId: curItemLog?.configInstance?.bizId,
+            }}
             onSubmit={() => { }}
           />
-          <Typography.Text style={{ marginLeft: '15px' }} copyable={{ tooltips: ['复制节点编号', '复制成功!'], text: selectedNode?.id }}>节点编号</Typography.Text>
+          <Typography.Text style={{ margin: '15px' }} copyable={{ tooltips: ['复制节点编号', '复制成功!'], text: selectedNode?.id }}>节点编号</Typography.Text>
+          <div />
+          {curItemLog?.configInstance?.type == 'sub-logic' ?
+            <Typography.Text style={{ margin: '15px' }} copyable={{ tooltips: ['复制业务标识', '复制成功!'], text: curItemLog?.configInstance?.bizId }}>跳转到业务实例:<a target='_blank' href={`#/debug/logic/instance/${curItemLog?.configInstance?.url}/${curItemLog?.configInstance?.bizId}`}>{curItemLog?.configInstance?.bizId}</a></Typography.Text>
+            : ''}
         </div>
     }
     ,

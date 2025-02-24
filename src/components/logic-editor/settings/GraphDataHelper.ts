@@ -27,7 +27,7 @@ export function appendStartNode(graph: Graph) {
         //         tagName: 'text',
         //         selector: 'label',
         //     }],
-        ports: portsOnBottom,
+        ports: ports,
         data: {
             config: {
                 type: 'start',

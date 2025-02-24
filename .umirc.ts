@@ -86,6 +86,7 @@ export default defineConfig({
         }],
     },
     { path: "/debug/logic/instance/:id", layout: false, component: "logic-debug" },
+    { path: "/debug/logic/instance/:logicId/:bizId", layout: false, component: "logic-debug" },
     { path: "/remote-debug/:runtime/instance/:id", layout: false, component: "logic-flow/biz/page/remote-runtime/logic-ins-debug" },
     { path: "/debug/logic-log/i/:id", layout: false, component: "logic-log-debug" },
     { path: "/remote-debug/:runtime/logic-log/i/:id", layout: false, component: "logic-flow/biz/page/remote-runtime/logic-log-debug" },

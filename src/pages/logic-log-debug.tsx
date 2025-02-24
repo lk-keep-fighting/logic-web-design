@@ -4,7 +4,7 @@ import { CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/ico
 import { Button, Divider, Space, Spin, Typography, Flex } from "antd";
 import { useEffect, useState } from "react";
 import { useParams } from "umi";
-import DebugLogicLog from "./logic-flow/biz/page/debugLogicLog";
+import DebugLogicLog from "./logic-flow/biz/components/debugLogicLog";
 
 function refreshWebTitle(dsl: Logic) {
     window.document.title = "-[" + dsl.name + "]日志";

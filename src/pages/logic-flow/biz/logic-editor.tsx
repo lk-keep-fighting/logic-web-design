@@ -43,7 +43,7 @@ const BizLogicEditor = () => {
     function handleSave() {
         setLoading(true);
         getLogic(id).then(res => {
-            if (res.version != dsl.version) {
+            if (res.version && res.version != dsl.version) {
                 setLoading(false)
                 message.error(`本地版本与服务器[${res.version}]不一致，无法保存！请打开新设计页手动合并逻辑！`)
             } else {

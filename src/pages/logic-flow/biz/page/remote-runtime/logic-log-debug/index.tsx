@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 // import * as monaco from 'monaco-editor';
 // import { loader } from '@monaco-editor/react';
 import { useParams } from "umi";
-import DebugLogicLog from "../../debugLogicLog";
+import DebugLogicLog from "../../../components/debugLogicLog";
 
 function refreshWebTitle(dsl: Logic) {
     window.document.title = "-[" + dsl.name + "]日志";

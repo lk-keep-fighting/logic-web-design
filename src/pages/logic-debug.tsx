@@ -1,6 +1,6 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
-import DebugLogic from "@/pages/logic-flow/biz/page/debugLog";
-import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicByBak } from "@/services/ideSvc";
+import DebugLogic from "@/pages/logic-flow/biz/components/debugLog";
+import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicByBak, getLogicInstanceByBizId } from "@/services/ideSvc";
 import { CheckCircleTwoTone, EditOutlined, ForkOutlined, FrownOutlined, LineOutlined, SyncOutlined } from "@ant-design/icons";
 import { Button, Divider, Space, Spin, Typography, Flex } from "antd";
 import axios from "axios";
@@ -11,7 +11,7 @@ function refreshWebTitle(dsl: Logic, logicIns) {
     window.document.title = ">[" + dsl?.name + "]实例:" + logicIns?.bizId;
 }
 const LogicDebug = () => {
-    const { id } = useParams();
+    const { id, logicId, bizId } = useParams();
     const [config, setConfig] = useState<Logic>();
     const [logicName, setLogicName] = useState<string>('');
     const [loading, setLoading] = useState(false);
@@ -42,6 +42,28 @@ const LogicDebug = () => {
                 }
             })
     }, [id])
+    useEffect(() => {
+        setLoading(true);
+        if (logicId && bizId)
+            getLogicInstanceByBizId(logicId, bizId).then(res => {
+                if (res) {
+                    const ins = res;
+                    setLogicIns(res);
+                    setLoading(true);
+                    getLogicByBak(res.logicId, res.version).then(res => {
+                        const { configJson, name } = res;
+                        setLogicName(name)
+                        setConfig(configJson)
+                        refreshWebTitle(configJson, ins)
+                        setLoading(false);
+                    }).catch(err => {
+                        setLoading(false);
+                        console.log('err')
+                        console.log(err)
+                    })
+                }
+            })
+    }, [bizId, logicId])
     useEffect(() => {
         if (logicIns) {
             getLogicLogsByLogicIns(logicIns).then(res => {
