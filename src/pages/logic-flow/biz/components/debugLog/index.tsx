@@ -343,18 +343,6 @@ const DebugLog = (props: DebugProps) => {
 
   // }, [curLog])
   const replayLogs = () => {
-    // console.log('curItemLogIndex,', curItemLogIndex)
-    // if (props.debugLogs) {
-    //   setCurItemLog(props.debugLogs[curLogIndex].debug.itemLogs[curItemLogIndex]);
-    //   if (curItemLogIndex == props.debugLogs[curLogIndex].debug.itemLogs.length - 1 && curLogIndex < props.debugLogs.length - 1) {
-    //     setCurItemLogIndex(0);
-    //     setCurLogIndex(curLogIndex + 1);
-    //   }
-    //   if (curItemLogIndex < props.debugLogs[curLogIndex].debug.itemLogs.length) {
-    //     console.log('curItemLogIndex,', curItemLogIndex)
-    //     setCurItemLogIndex(curItemLogIndex + 1);
-    //   }
-    // }
   }
   const tabItems: TabsProps['items'] = [
     {
@@ -362,6 +350,9 @@ const DebugLog = (props: DebugProps) => {
       label: '节点入出参',
       children:
         <div>
+          {curItemLog?.configInstance?.type == 'sub-logic' ? <div>
+            <Typography.Text style={{ margin: '15px' }} copyable={{ tooltips: ['', '复制成功!'], text: curItemLog?.configInstance?.objectId }}>子逻辑日志:<a target='_blank' href={`#/debug/logic-log/i/${curItemLog?.configInstance?.objectId}`}>{curItemLog?.configInstance?.objectId}</a></Typography.Text>
+            <Divider /></div> : ''}
           <FormRenderById
             formId='debug-node-input'
             values={{
@@ -370,14 +361,12 @@ const DebugLog = (props: DebugProps) => {
               returnData: curItemLog?.returnData,
               body: curItemLog?.configInstance?.body,
               bizId: curItemLog?.configInstance?.bizId,
+              logicId: curItemLog?.configInstance?.url
             }}
             onSubmit={() => { }}
           />
           <Typography.Text style={{ margin: '15px' }} copyable={{ tooltips: ['复制节点编号', '复制成功!'], text: selectedNode?.id }}>节点编号</Typography.Text>
           <div />
-          {curItemLog?.configInstance?.type == 'sub-logic' ?
-            <Typography.Text style={{ margin: '15px' }} copyable={{ tooltips: ['复制业务标识', '复制成功!'], text: curItemLog?.configInstance?.bizId }}>跳转到业务实例:<a target='_blank' href={`#/debug/logic/instance/${curItemLog?.configInstance?.url}/${curItemLog?.configInstance?.bizId}`}>{curItemLog?.configInstance?.bizId}</a></Typography.Text>
-            : ''}
         </div>
     }
     ,
@@ -394,11 +383,13 @@ const DebugLog = (props: DebugProps) => {
     {
       key: 'configIns',
       label: '节点实例',
-      children: <FormRenderById
-        formId={curItemLog?.config?.type || ''}
-        values={curItemLog?.configInstance}
-        onSubmit={() => { }}
-      />
+      children: <div>
+        <FormRenderById
+          formId={curItemLog?.config?.type || ''}
+          values={curItemLog?.configInstance}
+          onSubmit={() => { }}
+        />
+      </div>
     },
     {
       key: 'debug-context',

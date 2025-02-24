@@ -304,9 +304,19 @@ const DebugLogicLog = (props: DebugProps) => {
       key: 'debug-node-input',
       label: '节点入出参',
       children: <div>
+        {curItemLog?.configInstance?.type == 'sub-logic' ? <div>
+          <Typography.Text style={{ margin: '15px' }} copyable={{ tooltips: ['', '复制成功!'], text: curItemLog?.configInstance?.objectId }}>子逻辑日志:<a target='_blank' href={`#/debug/logic-log/i/${curItemLog?.configInstance?.objectId}`}>{curItemLog?.configInstance?.objectId}</a></Typography.Text>
+          <Divider /></div> : ''}
         <FormRenderById
           formId='debug-node-input'
-          values={{ success: curItemLog?.success, msg: curItemLog?.msg,returnData: curItemLog?.returnData, body: curItemLog?.configInstance?.body }}
+          values={{
+            success: curItemLog?.success,
+            msg: curItemLog?.msg,
+            returnData: curItemLog?.returnData,
+            body: curItemLog?.configInstance?.body,
+            bizId: curItemLog?.configInstance?.bizId,
+            logicId: curItemLog?.configInstance?.url
+          }}
           onSubmit={() => { }}
         />
         <Typography.Text style={{ marginLeft: '15px' }} copyable={{ tooltips: ['复制节点编号', '复制成功!'], text: selectedNode?.id }}>节点编号</Typography.Text>
@@ -324,11 +334,14 @@ const DebugLogicLog = (props: DebugProps) => {
     {
       key: 'configIns',
       label: '节点实例',
-      children: <FormRenderById
-        formId={curItemLog?.config?.type || ''}
-        values={curItemLog?.configInstance}
-        onSubmit={() => { }}
-      />
+      children:
+        <div>
+          <FormRenderById
+            formId={curItemLog?.config?.type || ''}
+            values={curItemLog?.configInstance}
+            onSubmit={() => { }}
+          />
+        </div>
     },
     {
       key: 'debug-context',
