@@ -4,7 +4,8 @@ import dayjs from "dayjs";
 export async function getLogic(id: string) {
     return get(`/api/ide/logic/${id}`).then(res => {
         const data = res.data?.data;
-        data.configJson = JSON.parse(data.configJson);
+        if (data.configJson)
+            data.configJson = JSON.parse(data.configJson);
         return data;
     });
 }
