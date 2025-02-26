@@ -38,6 +38,7 @@ export const LogicItemSharpMapping = {
         data: {
             config: {
                 type: 'wait-for-continue',
+                name: '交互点'
             },
         },
     },

@@ -61,13 +61,3 @@ export function appendStartNode(graph: Graph) {
     graph.addNode(startNode);
     // // graph.addEdge(se);
 }
-export function appendLogicItemNode(graph: Graph, logicItem: LogicItem) {
-
-    var nodeConfig = LogicItemSharpMapping[logicItem.type]
-    if (nodeConfig) {
-        nodeConfig.data = { config: logicItem }
-        const itemNode = graph.createNode(nodeConfig)
-        itemNode.setAttrByPath('text/text', logicItem.name);
-        graph.addNode(itemNode);
-    }
-}
