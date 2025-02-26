@@ -233,6 +233,7 @@ const BizLogicEditor = () => {
                                             Modal.success({
                                                 title: '执行成功',
                                                 width: '1000px',
+                                                okText: '关闭',
                                                 closable: true,
                                                 content: <div>
                                                     <PageRenderById pageId='debug-info' data={res.data} />
@@ -243,6 +244,7 @@ const BizLogicEditor = () => {
                                             Modal.error({
                                                 title: <span>{res.data.msg}</span>,
                                                 width: '1200px',
+                                                okText: '关闭',
                                                 closable: true,
                                                 content: <div>
                                                     <PageRenderById pageId='debug-info' data={res.data} />
