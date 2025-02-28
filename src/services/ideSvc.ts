@@ -59,7 +59,7 @@ export async function getLogicLogsByLogicIns(logicIns: any) {
         pageSize: 1000,
         orderBy: [
             {
-                "dataIndex": "id",
+                "dataIndex": "serverTime",
                 "desc": true
             }
         ]
@@ -83,7 +83,7 @@ export async function getRemoteLogicLogsByLogicIns(runtime: string, logicIns: an
         pageSize: 1000,
         orderBy: [
             {
-                "dataIndex": "id",
+                "dataIndex": "serverTime",
                 "desc": true
             }
         ]
