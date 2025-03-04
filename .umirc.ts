@@ -154,8 +154,8 @@ export default defineConfig({
       // 'pathRewrite': { '^/api': '/api' },
     },
     '/api': {
-      'target': 'http://localhost:4052',
-      // 'target': 'http://localhost:8888',
+      // 'target': 'http://localhost:4052',
+      'target': 'http://localhost:8888',
       // 'target': 'http://localhost:8080',
       // 'target': 'http://192.168.20.123:8088',
       // 'target': 'http://192.168.51.38:18080',
