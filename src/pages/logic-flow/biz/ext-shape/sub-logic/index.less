@@ -1,0 +1,40 @@
+.subprocess {
+    display: flex; /* 使用Flex布局 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    width: 100%; /* 总宽度 */
+    height: 100%; /* 高度 */
+    border: 0px solid #ff9300;/* 边框 */
+    border-top: 1px solid #ff9300; /* 上边框 */
+    border-bottom: 1px solid #ff9300; /* 下边框 */
+    background-color: #ffffff; /* 背景颜色 */
+    position: relative; /* 相对定位 */
+}
+/* 定义左右两边的小长方形 */
+.subprocessSide {
+    width: 10px; /* 小长方形的宽度 */
+    height: 100%; /* 小长方形的高度 */
+    border: 1px solid #ff9300; /* 边框 */
+    border-top: 0; /* 上边框 */
+    border-bottom: 0; /* 下边框 */
+    position: absolute; /* 绝对定位 */
+}
+
+/* 左边的小长方形 */
+.left {
+    .subprocessSide; /* 继承 .subprocessSide 的配置 */
+    left: 0; /* 靠左对齐 */
+}
+
+/* 右边的小长方形 */
+.right {
+    .subprocessSide; /* 继承 .subprocessSide 的配置 */
+    right: 0; /* 靠右对齐 */
+}
+ /* 中间的文本区域 */
+ .subprocessText {
+    width: 100%; /* 占满整个容器宽度 */
+    text-align: center; /* 文本居中 */
+    font-size: 12px; /* 字体大小 */
+    padding: 10px;
+}
