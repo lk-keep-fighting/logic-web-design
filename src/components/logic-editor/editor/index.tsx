@@ -365,6 +365,11 @@ const Editor = (props: EditorProps) => {
       const cells = graph.getSelectedCells();
       graph.removeCells(cells);
     });
+    graph.bindKey('delete', () => {
+      const cells = graph.getSelectedCells();
+      graph.removeCells(cells);
+    });
+
 
     graph.on('blank:click', ({ e, x, y }) => {
       console.log('blank:click', x, y);
