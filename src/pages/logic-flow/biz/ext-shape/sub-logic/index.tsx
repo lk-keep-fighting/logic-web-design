@@ -6,6 +6,7 @@ import { ExtShapeReactNode } from "../extShape";
 export const SubLogicNode = (props) => {
     const node: Node = props.node;
     const name = node.data.config?.name;
+    const async = node.data.config?.async;
     const type = node.data.config?.type;
     const memo = node.data.config?.memo;
     const imgSrc = node.prop('imgSrc') || '/logic/icons/CarbonSubflowLocal.svg';
@@ -24,7 +25,10 @@ export const SubLogicNode = (props) => {
                 </div> */}
                 <div className={styles.left}></div>
                 <div className={styles.right}></div>
-                <div className={styles.subprocessText}>{name || text}</div>
+                <div className={styles.subprocessText}>
+                    {name || text}
+                    {async ? <div className={styles.async}>异步执行</div> : ''}
+                </div>
             </div>
         </Popover >
     )
