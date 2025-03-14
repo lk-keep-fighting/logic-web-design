@@ -1,4 +1,5 @@
 #!/bin/bash
+pnpm build
 
 # 目标目录，需要清空并复制新内容
 TARGET_DIR="/Users/lk/Documents/Dev/aims/xuanwu-logic/logic-solution/logic-ide/src/main/resources/public"

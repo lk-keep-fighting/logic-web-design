@@ -93,6 +93,7 @@ const BizLogicEditor = () => {
         let jsTips: object = {};
         jsTips['_par'] = settingValues.params;
         jsTips['_var'] = settingValues.variables;
+        jsTips['_global'] = settingValues.variables.__global ?? "{}";
         // jsTips['_env'] = settingValues.envs;
         setJsTipMap({ ...jsTipMap, ...jsTips })
         const params = TypeAnnotationParser.getParamArrayByJson(JSON.parse(settingValues.params ?? "{}"));
@@ -108,7 +109,9 @@ const BizLogicEditor = () => {
     async function updateEditorCtx(dsl: Logic) {
         let jsTips: object = {};
         jsTips['_par'] = JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.params));
-        jsTips['_var'] = JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.variables));
+        var _varJson = TypeAnnotationParser.getJsonByParams(dsl.variables);
+        jsTips['_var'] = JSON.stringify(_varJson);
+        jsTips['_global'] = JSON.stringify(_varJson.__global ?? "{}");
         let runtimeEnvs = await RuntimeSvc.getEnvJson();
         jsTips['_env'] = JSON.stringify(runtimeEnvs)//JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.envs));
         jsTips['_lastRet'] = '{}';

@@ -17,6 +17,7 @@ import { ExtShape2ReactNode } from "../ext-shape/extShape2";
 import { ExtShape3ReactNode } from "../ext-shape/extShape3";
 import { WaitNode } from "../ext-shape/wait";
 import { EndNode } from "../ext-shape/end";
+import { AssignmentNode } from "../ext-shape/assignment";
 
 export function RegistShape(customSharps: any[]) {
     customSharps.forEach((v) => {
@@ -67,6 +68,10 @@ export function RegistShape(customSharps: any[]) {
     register({
         shape: 'ExtShape3',
         component: ExtShape3ReactNode,
+    })
+    register({
+        shape: 'assignment',
+        component: AssignmentNode,
     })
     register({
         shape: 'switch',

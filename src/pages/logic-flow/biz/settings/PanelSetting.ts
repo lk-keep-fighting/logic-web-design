@@ -8,47 +8,7 @@ export function InitPanelData(
 ) {
   const width = 50;
   const height = 50;
-  const commonAttrs = {
-    body: {
-      // fill: '#fff',
-      // stroke: '#8f8f8f',
-      // strokeWidth: 1,
-    },
-  };
   const Nodes: any[] = [
-    // new LogicNodeConfig(
-    //   {
-    //     shape: 'circle',
-    //     width,
-    //     height,
-    //     attrs: {
-    //       body: {
-    //         ...commonAttrs.body,
-    //         fill: 'white',
-    //       },
-    //       text: {
-    //         text: '开始',
-    //         fontSize: 12,
-    //       },
-    //     },
-    //     markup: [
-    //       {
-    //         tagName: 'circle',
-    //         selector: 'body',
-    //       },
-    //       {
-    //         tagName: 'text',
-    //         selector: 'label',
-    //       }],
-    //     ports,
-    //     data: {
-    //       config: {
-    //         type: 'start',
-    //       },
-    //     },
-    //     // tools: ['node-editor'],
-    //     _groups: ['ctrl'],
-    //   }),
     new LogicNodeConfig(
       {
         shape: 'wait-for-continue',
@@ -318,6 +278,86 @@ export function InitPanelData(
         // tools: ['node-editor'],
         _groups: ['ctrl'],
       }),
+    // new LogicNodeConfig(
+    //   {
+    //     shape: 'ExtSharp',
+    //     width: 50,
+    //     height,
+    //     attrs: {
+    //       body: {
+    //         // refPoints: '0,10 10,0 20,10 10,20',
+    //         // strokeWidth: 1,
+    //         // stroke: '#5F95FF',
+    //         fill: '#EFF4FF',
+    //       },
+    //       image: {
+    //         'xlink:href': '/logic/icons/assignment.svg',
+    //         width: 30,
+    //         x: 8,
+    //         y: 10
+    //       },
+    //       text: {
+    //         text: '全局变量赋值',
+    //         // fontSize: 14,
+    //         // fill: '#5F95FF',
+    //         refX: 0.5,
+    //         refY: '100%',
+    //         refY2: 4,
+    //         textAnchor: 'middle',
+    //         textVerticalAnchor: 'top',
+    //       },
+    //     },
+    //     data: {
+    //       config: {
+    //         name: '全局变量赋值',
+    //         type: 'assignment',
+    //       }
+    //     },
+    //     ports,
+    //     // tools: ['node-editor'],
+    //     _groups: ['ctrl'],
+    //   }
+    // ),
+    // new LogicNodeConfig(
+    //   {
+    //     shape: 'ExtSharp',
+    //     width: 50,
+    //     height,
+    //     attrs: {
+    //       body: {
+    //         // refPoints: '0,10 10,0 20,10 10,20',
+    //         // strokeWidth: 1,
+    //         // stroke: '#5F95FF',
+    //         fill: '#EFF4FF',
+    //       },
+    //       image: {
+    //         'xlink:href': '/logic/icons/assignment.svg',
+    //         width: 30,
+    //         x: 8,
+    //         y: 10
+    //       },
+    //       text: {
+    //         text: '局部变量赋值',
+    //         // fontSize: 14,
+    //         // fill: '#5F95FF',
+    //         refX: 0.5,
+    //         refY: '100%',
+    //         refY2: 4,
+    //         textAnchor: 'middle',
+    //         textVerticalAnchor: 'top',
+    //       },
+    //     },
+    //     data: {
+    //       config: {
+    //         name: '局部变量赋值',
+    //         type: 'assignment',
+    //       }
+    //     },
+    //     ports,
+    //     // tools: ['node-editor'],
+    //     _groups: ['ctrl'],
+    //   }
+    // )
   ];
   // let groupNode = getPresetNode('group');
   // groupNode.setGroups(['global']);

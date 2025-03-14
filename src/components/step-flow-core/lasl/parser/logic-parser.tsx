@@ -58,6 +58,7 @@ function buildLogicItem(
     ...nodeConfig,
     id: curNode.id,
     name: attr?.text?.text,
+    nextId: '',
   };
   if (items.findIndex((s) => s.id === item.id) > -1) return; //已经解析
   items.push(item);
@@ -115,6 +116,7 @@ export function GraphToLogic(
       if (v.data.config.type === 'start') startNode = v;
     }
   });
+  debugger;
   if (!startNode) {
     message.error('未发现开始节点，请配置！');
     return undefined;

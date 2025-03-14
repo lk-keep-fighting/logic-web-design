@@ -1,7 +1,5 @@
 import { Graph } from "@antv/x6";
 import { ports, portsOnBottom } from "@/components/logic-editor/settings/Consts";
-import { LogicItem } from "@/components/step-flow-core/lasl/meta-data";
-import { LogicItemSharpMapping } from "@/pages/logic-flow/biz/convert/logicItemSharpMapping";
 
 export function appendStartNode(graph: Graph) {
     const startNode = graph.createNode({

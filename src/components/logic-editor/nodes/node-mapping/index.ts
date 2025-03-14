@@ -149,8 +149,8 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
                     const assignmentNode = graph.createNode({
                         shape: 'assignment',
                         position: node.position(),
-                        width: 220,
-                        height: 50,
+                        width: 200,
+                        height: 60,
                         ports,
                         data: node.data
                     })
