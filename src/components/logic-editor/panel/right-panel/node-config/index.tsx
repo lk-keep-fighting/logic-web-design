@@ -15,6 +15,9 @@ export default (props: INodeEditorProps) => {
     const onSubmit = (formData: any) => {
         props.editNode?.setAttrByPath('text/text', formData.name);
         const preConfig = props.editNode?.data.config;
+        if (formData.type == 'switch-cases' && formData.caseItems) {
+            formData.cases = formData.caseItems.map(i => i.value)
+        }
         if (props.editNode) {
             console.log('update graph data', formData)
             props.editNode.setData({ ...props.editNode.data, config: { ...preConfig, ...formData } }, { overwrite: true })
@@ -37,6 +40,10 @@ export default (props: INodeEditorProps) => {
             let nodeAttr = props.editNode?.attrs;
             if (nodeAttr && nodeAttr.text && nodeAttr.text.text)
                 formData.name = nodeAttr.text.text;
+            // if (formData.type == 'switch-cases' && formData.cases) {
+            //     if (!formData.caseItems || formData.caseItems.length == 0)
+            //         formData.caseItems = formData.cases.map(i => { return { value: i } })
+            // }
             setFormData(formData)
         }
     }, [props.editNode?.data])

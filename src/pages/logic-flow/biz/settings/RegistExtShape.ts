@@ -17,7 +17,8 @@ import { ExtShape2ReactNode } from "../ext-shape/extShape2";
 import { ExtShape3ReactNode } from "../ext-shape/extShape3";
 import { WaitNode } from "../ext-shape/wait";
 import { EndNode } from "../ext-shape/end";
-import { AssignmentNode } from "../ext-shape/assignment";
+import { AssignGlobalNode } from "../ext-shape/assign/global";
+import { AssignLocalNode } from "../ext-shape/assign/local";
 
 export function RegistShape(customSharps: any[]) {
     customSharps.forEach((v) => {
@@ -70,8 +71,12 @@ export function RegistShape(customSharps: any[]) {
         component: ExtShape3ReactNode,
     })
     register({
-        shape: 'assignment',
-        component: AssignmentNode,
+        shape: 'assign-global',
+        component: AssignGlobalNode,
+    })
+    register({
+        shape: 'assign-local',
+        component: AssignLocalNode,
     })
     register({
         shape: 'switch',

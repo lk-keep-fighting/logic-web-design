@@ -145,18 +145,31 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
                     graph.addNode(numNode);
                     newNode = numNode;
                     break;
-                case 'assignment':
-                    const assignmentNode = graph.createNode({
-                        shape: 'assignment',
+                case 'assign-global':
+                    const assignmentGlobalNode = graph.createNode({
+                        shape: 'assign-global',
                         position: node.position(),
-                        width: 200,
-                        height: 60,
+                        width: 150,
+                        height: 40,
                         ports,
                         data: node.data
                     })
                     graph.removeNode(node);
-                    graph.addNode(assignmentNode);
-                    newNode = assignmentNode;
+                    graph.addNode(assignmentGlobalNode);
+                    newNode = assignmentGlobalNode;
+                    break;
+                case 'assign-local':
+                    const assignmentLocalNode = graph.createNode({
+                        shape: 'assign-local',
+                        position: node.position(),
+                        width: 150,
+                        height: 40,
+                        ports,
+                        data: node.data
+                    })
+                    graph.removeNode(node);
+                    graph.addNode(assignmentLocalNode);
+                    newNode = assignmentLocalNode;
                     break;
                 default:
                     break;

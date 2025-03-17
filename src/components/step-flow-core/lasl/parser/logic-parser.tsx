@@ -157,6 +157,11 @@ export function LogicToGraph(logic: Logic): {
         return {
           size: { width: 120, height: 50 },
         };
+      case 'assign-global':
+      case 'assign-local':
+        return {
+          size: { width: 150, height: 40 },
+        };
       default:
         return {
           size: { width: 50, height: 50 },

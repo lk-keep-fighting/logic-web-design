@@ -1,7 +1,7 @@
 import { Flex, Input, Popover, Select } from "antd"
 import styles from './index.less'
 
-export const AssignmentNode = (props) => {
+export const AssignLocalNode = (props) => {
     const node: Node = props.node;
     const name = node.data.config?.name;
     const body = node.data.config?.body;
@@ -11,11 +11,12 @@ export const AssignmentNode = (props) => {
     const text = node.prop('text');
     return (
         <Popover content={memo ? <Input.TextArea style={{ width: 300, height: 200 }} readOnly value={memo} ></Input.TextArea> : ''} trigger="click" mouseLeaveDelay={0}>
-            <div className={styles.customNode} style={{ backgroundColor: 'white', borderColor: node.data.selected ? 'blue' : 'red' }}>
-                {name ? <div style={{ textDecoration: 'underline' }}>{name}</div> : ''}
+            <div className={styles.customNode} style={{ backgroundColor: '#ff9300' }}>
+                {/* {name ? <div style={{ }}>{name}</div> : ''} */}
                 <Flex justify={'flex-start'} align={'center'}>
                     {props.node.data.selected ?
-                        <Input value={url ? url : '变量名'} width={50}
+                        <Input value={url} width={50}
+                            placeholder="变量名"
                             style={{ textAlign: 'right', fontWeight: 'bold' }}
                             onChange={
                                 (e) => {
@@ -29,7 +30,6 @@ export const AssignmentNode = (props) => {
                                     })
                                 }}
                         /> : <div style={{ margin: 2, width: '50%', fontWeight: 'bold', textAlign: 'right' }} >{url ? url : '变量名'}</div>}
-                    {/* <img style={{ margin: 2 }} height={'25px'} src="/logic/icons/assignment.svg" /> */}
                     <span style={{ margin: 2 }}>=</span>
                     {props.node.data.selected ?
                         <Input value={body} width={50}
@@ -44,7 +44,7 @@ export const AssignmentNode = (props) => {
                                         }
                                     })
                                 }}
-                        /> : <div style={{ margin: 2, width: '50%', textAlign: 'left' }} >{body}</div>}
+                        /> : <div style={{ margin: 2, width: '50%', fontWeight: 'bold', textAlign: 'left' }} >{body}</div>}
                 </Flex>
             </div >
         </Popover>

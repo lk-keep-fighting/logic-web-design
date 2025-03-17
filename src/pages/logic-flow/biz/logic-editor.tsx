@@ -182,6 +182,11 @@ const BizLogicEditor = () => {
                                 title: '逻辑控制',
                                 graphHeight: 360
                             },
+                            {
+                                name: 'assign',
+                                title: '变量赋值',
+                                graphHeight: 100
+                            },
                             ...customGroups
                         ],
                     }}

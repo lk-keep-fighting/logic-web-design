@@ -25,12 +25,6 @@ const CasesInput: React.FC = (props: CasesInputProp) => {
   const inputRef = useRef<InputRef>(null);
   const editInputRef = useRef<InputRef>(null);
 
-  // useEffect(() => {
-  //   if (props.onChange && tags !== props.cases) {
-  //     debugger;
-  //     props.onChange(tags);
-  //   }
-  // }, [tags]);
   const onTagsChange = (newTags: string[]) => {
     if (props.onChange) {
       debugger;
@@ -92,7 +86,9 @@ const CasesInput: React.FC = (props: CasesInputProp) => {
 
   return (
     <Flex gap="4px 0" wrap vertical>
-      {tags.map<React.ReactNode>((tag, index) => {
+      {tags.map<React.ReactNode>((item, index) => {
+        const tag = item.value;
+        const tagName = item.name;
         if (editInputIndex === index) {
           return (
             <Input
@@ -135,7 +131,9 @@ const CasesInput: React.FC = (props: CasesInputProp) => {
             {tagElem}
           </Tooltip>
         ) : (
-          tagElem
+          <span>
+            {tagName}:{tagElem}
+          </span>
         );
       })}
       {inputVisible ? (
