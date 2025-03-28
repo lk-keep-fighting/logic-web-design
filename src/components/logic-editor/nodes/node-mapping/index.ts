@@ -21,7 +21,7 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
                         shape: 'switch',
                         position: pos,
                         width,
-                        height: 50,
+                        height: 40,
                         ports,
                         data: node.data,
                         attrs: {
@@ -39,7 +39,7 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
                         shape: 'switch-case',
                         position: { y: pos.y + 100, x: pos.x - width / 2 },
                         width: 120,
-                        height: 50,
+                        height: 40,
                         ports,
                         data: {
                             config: {
@@ -51,7 +51,7 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
                         shape: 'switch-default',
                         position: { y: pos.y + 100, x: pos.x + width },
                         width: 120,
-                        height: 50,
+                        height: 40,
                         ports,
                         data: {
                             config: {
@@ -85,7 +85,7 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
                         shape: 'switch-case',
                         position: node.position(),
                         width: 120,
-                        height: 50,
+                        height: 40,
                         ports,
                         data: node.data
                     })
@@ -98,7 +98,7 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
                         shape: 'switch-default',
                         position: node.position(),
                         width: 120,
-                        height: 50,
+                        height: 40,
                         ports,
                         data: node.data
                     })
