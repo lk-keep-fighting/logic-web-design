@@ -1,5 +1,6 @@
 
 import axios from 'axios';
+import React from 'react';
 import copy from 'copy-to-clipboard';
 import { Schema, render as renderAmis } from 'amis';
 import { ToastComponent, AlertComponent, alert, confirm, toast } from 'amis-ui';
@@ -16,7 +17,8 @@ import { RuntimeSvc } from '@/services/runtimeSvc';
 interface IPageRenderByIdProps {
     pageId: string,
     urlPrefix?: string,
-    data?: any
+    data?: any,
+    onBroadcast?: (type: any, data: any) => void
 }
 
 const PageRenderById = (props: IPageRenderByIdProps) => {
@@ -39,6 +41,11 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
             })
         }
     }, [props.pageId])
+    const handleBroadcast = (payload: any, ctx: any) => {
+        console.log('broadcast:', payload, ctx);
+        if(props.onBroadcast)
+            props.onBroadcast(payload, ctx.data)
+    };
     // 请勿使用 React.StrictMode，目前还不支持
     return (
         <div>
@@ -53,7 +60,8 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
                 renderAmis(
                     pageScheme,
                     {
-                        data: { envs, ...props.data }
+                        data: { envs, ...props.data },
+                        onBroadcast: handleBroadcast,
                         // props...
                         // locale: 'en-US' // 请参考「多语言」的文档
                         // scopeRef: (ref: any) => (amisScoped = ref)  // 功能和前面 SDK 的 amisScoped 一样
@@ -158,11 +166,14 @@ const PageRenderById = (props: IPageRenderByIdProps) => {
                         // },
                         // alert,
                         // confirm,
-                        // tracker: (eventTracke) => {}
+                        // tracker: (eventTrack, props) => {
+                        //     console.log('eventTrack')
+                        //     console.log('', eventTrack, props)
+                        // }
                     }
                 )
             }
-        </div >
+        </div>
     );
 }
 export default PageRenderById;

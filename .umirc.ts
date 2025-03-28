@@ -92,7 +92,7 @@ export default defineConfig({
     { path: "/remote-debug/:runtime/logic-log/i/:id", layout: false, component: "logic-flow/biz/page/remote-runtime/logic-log-debug" },
     { path: "/debug/form/i/:id", layout: false, component: "render/form/debug" },
     // { path: "/editor/:id", layout: false, component: "logic-editor" },
-    { path: "/form", component: "form-editor" },
+    // { path: "/form", component: "form-editor" },
     {
       path: "/ext/mes/process/edit",
       layout: false,
@@ -158,9 +158,7 @@ export default defineConfig({
       'target': 'http://localhost:8888',
       // 'target': 'http://localhost:8080',
       // 'target': 'http://192.168.152.38:18080',
-      // 'target': 'http://192.168.51.38:18080',
       // 'target': 'http://192.168.51.18:31001',
-      // 'target': 'http://192.168.53.205:8080',
       // 'target': 'http://192.168.57.23:8080',
       // 'target': 'http://192.168.52.100:9001',
       // 'target': 'http://localhost:9001',

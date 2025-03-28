@@ -1,4 +1,4 @@
-import { ApartmentOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { ApartmentOutlined, ForkOutlined, MenuFoldOutlined, MenuUnfoldOutlined, OrderedListOutlined } from '@ant-design/icons';
 import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
 import { History } from '@antv/x6-plugin-history';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
@@ -13,14 +13,14 @@ import './index.css';
 // import DagreGraph from '@/components/step-flow-editor/x6-graph/instance/dagre-graph';
 // import { autoDagreLayout } from '@/components/step-flow-editor/x6-graph/layout/dagreLayout';
 import { Logic, LogicItem } from '@/components/step-flow-core/lasl/meta-data';
-import { JsonView } from 'amis';
 import { InitPanelData } from '../../settings/PanelSetting';
 import { RegistShape } from '../../settings/RegistExtShape';
 import { autoDagreLayout } from '../../layout/dagreLayout';
 import DagreGraph from '@/components/logic-editor/graph/dagre-graph';
 import NodeConfig from '@/components/logic-editor/panel/right-panel/node-config';
-import { TextArea } from 'form-render';
 import FormRenderById from '@/components/ui-render/form-render/render-by-form-id';
+import { PageRenderById } from '@/components/ui-render';
+
 
 type EditorCtx = {
   logic: Logic,
@@ -30,7 +30,12 @@ export const EditorContext = React.createContext<EditorCtx>({
 })
 
 interface ItemLog {
-  name: string, paramsJson: object, config: LogicItem
+  name: string,
+  beginTime: Date,
+  endTime: Date,
+  duration: number,
+  paramsJson: object,
+  config: LogicItem
 }
 interface Log {
   success: boolean
@@ -127,11 +132,9 @@ const DebugLog = (props: DebugProps) => {
       setLogic(props.config)
     }
   }, [props.config])
+
   useEffect(() => {
     console.log('props.debugLogs', props.debugLogs)
-    if (props.debugLogs?.length > 0) {
-      setInterval(replayLogs, 2000);
-    }
     const items: TimelineItemProps[] = [];
     if (props)
       props.debugLogs?.forEach(v => {
@@ -202,6 +205,7 @@ const DebugLog = (props: DebugProps) => {
       console.error('注册节点出错：');
       console.error(error);
     }
+    if (refContainer.current == null) return;
     const graph = new Graph({
       container: refContainer.current,
       embedding: {
@@ -433,7 +437,7 @@ const DebugLog = (props: DebugProps) => {
         items={timeLineItems}
       />
     </Layout.Sider>
-    <Layout style={{ marginLeft: 260 }}>
+    <Layout style={{ margin: 0, marginLeft: 260, padding: 0 }}>
       <Layout.Header style={{ backgroundColor: 'white', padding: 0 }}>
         {/* <Button
           type="text"
@@ -485,9 +489,40 @@ const DebugLog = (props: DebugProps) => {
 
       </Layout.Header>
       <Layout.Content className="app-content" >
-        <DagreGraph
-          ref={refContainer}
-        />
+        <Tabs
+          size='small'
+          style={{ backgroundColor: 'white', padding: 5, margin: 0 }}
+          items={[ForkOutlined, OrderedListOutlined].map((Icon, i) => {
+            const id = String(i + 1);
+            if (i == 0)
+              return {
+                key: id,
+                label: `逻辑图`,
+                children: <DagreGraph
+                  ref={refContainer}
+                />,
+                icon: <Icon />,
+              }; else
+              return {
+                key: id,
+                label: `执行节点`,
+                children: < PageRenderById pageId={'itemLogs-table'} data={{ items: curLog?.itemLogs }}
+                  onBroadcast={(type, data) => {
+                    var nodeId = data.item.config.id;
+                    var itemLog = data.item;
+                    var node = graph?.getNodes().find(n => n.id == nodeId);
+                    if (node) {
+                      setSelectedNode(node)
+                      setRightToolCollapsed(false)
+                      setCurItemLog(itemLog)
+                    }
+                  }} />,
+                icon: <Icon />,
+              };
+          })}>
+        </Tabs>
+        {/* <GanttView style={{ height: '100vh' }} items={curLog?.itemLogs} /> */}
+        {/* <Divider></Divider> */}
       </Layout.Content>
     </Layout>
     <Layout.Sider
