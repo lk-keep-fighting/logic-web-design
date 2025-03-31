@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "PORT=4051 umi dev",
     "build": "umi build",
+    "analyze": "ANALYZE=1 umi dev",
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev"

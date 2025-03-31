@@ -1,11 +1,21 @@
 import { defineConfig } from "umi";
 const MonacoPlugin = require('monaco-editor-webpack-plugin')
+const AnalyzerPlugin = require('webpack-bundle-analyzer')
 export default defineConfig({
   title: "业务编排",
   history: { type: 'hash' },
   favicons: ['/logic/logo.png'],
   publicPath: '/logic/',
   esbuildMinifyIIFE: true,
+  analyze: {
+    analyzerMode: 'static',
+    openAnalyzer: true,
+    reportFilename: './report.html',
+    generateStatsFile: false,
+    statsFilename: './stats.json',
+    statsOptions: null,
+    logLevel: 'info',
+  },
   routes: [
     {
       path: "/remote/:runtime",
@@ -106,11 +116,10 @@ export default defineConfig({
   ],
   npmClient: 'pnpm',
   chainWebpack: (memo, args) => {
-    // if (args.env == 'development') {
     memo.plugin('monaco-plugin').use(MonacoPlugin, [{
       languages: ['json', 'typescript', 'javascript']
     }])
-    // }
+
   },
   headScripts: [{
     src: '/logic/js/umd/react.development.js',
