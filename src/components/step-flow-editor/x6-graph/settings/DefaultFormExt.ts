@@ -487,8 +487,6 @@ export function ConfigSchemaProvider(tplOrType: string) {
     //     },
     //   };
     //   break;
-    case 'mqtt-client':
-      break;
     default:
       schema.properties = common;
   }

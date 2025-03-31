@@ -173,84 +173,6 @@ export function InitPanelData(
       // tools: ['node-editor'],
       groups: ['biz'],
     },
-    // {
-    //   shape: 'ExtSharp',
-    //   attrs: {
-    //     text: {
-    //       text: '建立客户端',
-    //       // fontSize: 14,
-    //     },
-    //     image: {
-    //       'xlink:href': '/icons/mqtt.png',
-    //       width: 36,
-    //       x: 2,
-    //       y: -8,
-    //     }
-    //   },
-    //   data: {
-    //     config: {
-    //       type: 'mqtt-client',
-    //     },
-    //   },
-    //   ports,
-    //   // tools: ['node-editor'],
-    //   groups: ['mqtt'],
-    // },
-    // {
-    //   shape: 'ExtSharp',
-    //   attrs: {
-    //     body: {
-    //       rx: 6,
-    //       ry: 6,
-    //       stroke: '#5F95FF',
-    //       strokeWidth: 3,
-    //       fill: 'rgba(95,149,255,0.05)',
-    //       refWidth: 1,
-    //       refHeight: 1,
-    //     },
-    //     text: {
-    //       text: '订阅Topic',
-    //       // fontSize: 14,
-    //     },
-    //     image: {
-    //       'xlink:href': '/icons/mqtt.png',
-    //       width: 36,
-    //       x: 2,
-    //       y: -8,
-    //     }
-    //   },
-    //   data: {
-    //     config: {
-    //       type: 'mqtt-sub',
-    //     },
-    //   },
-    //   ports,
-    //   // tools: ['node-editor'],
-    //   groups: ['mqtt'],
-    // },
-    // {
-    //   shape: 'ExtSharp',
-    //   attrs: {
-    //     text: {
-    //       text: '发布Topic',
-    //       // fontSize: 14,
-    //     },
-    //     image: {
-    //       'xlink:href': '/icons/mqtt.png',
-    //       width: 36,
-    //       x: 2,
-    //       y: -8,
-    //     }
-    //   },
-    //   data: {
-    //     config: {
-    //       type: 'mqtt-pub',
-    //     },
-    //   },
-    //   ports,
-    //   // tools: ['node-editor'],
-    //   groups: ['mqtt'],
-    // },
     {
       shape: 'ExtSharp',
       ports,
@@ -592,11 +514,6 @@ export function InitPanelData(
       title: '业务调用',
       graphHeight: 220,
     },
-    // {
-    //   name: 'mqtt',
-    //   title: 'MQTT',
-    //   graphHeight: 200,
-    // },
     // {
     //   name: 'def',
     //   title: '其他',
