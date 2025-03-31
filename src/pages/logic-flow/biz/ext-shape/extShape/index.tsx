@@ -17,7 +17,7 @@ export const ExtShapeReactNode = (props) => {
                 style={{
                     width: '100%', height: '100%', border: '1px solid #8f8f8f', borderRadius: '5px', position: 'relative',
                     overflow: 'hidden',
-                    backgroundColor: backgroundColor?.includes('#') ? backgroundColor : ''
+                    backgroundColor: backgroundColor?.includes('#') ? backgroundColor : 'white'
                 }}
             >
                 <img src={imgSrc ? imgSrc : `/logic/icons/${type}.svg`} style={{ width: 20, height: 20, position: 'absolute', top: 0, left: 5, margin: 0 }} />

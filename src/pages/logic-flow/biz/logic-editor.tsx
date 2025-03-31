@@ -150,8 +150,7 @@ const BizLogicEditor = () => {
             attrs: {
                 line: {
                     targetMarker: 'classic',
-                    stroke: lineStyle == '1' ? '#000000' : '#FF9900',
-                    // stroke: '#f5222d',
+                    stroke: lineStyle == '1' ? '#000000' : '#FF9900'
                 },
             },
             zIndex: 0,
