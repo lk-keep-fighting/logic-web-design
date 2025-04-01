@@ -1,6 +1,5 @@
 import { defineConfig } from "umi";
 const MonacoPlugin = require('monaco-editor-webpack-plugin')
-const AnalyzerPlugin = require('webpack-bundle-analyzer')
 export default defineConfig({
   title: "业务编排",
   history: { type: 'hash' },
