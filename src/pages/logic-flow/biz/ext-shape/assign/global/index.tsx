@@ -11,40 +11,42 @@ export const AssignGlobalNode = (props) => {
     const text = node.prop('text');
     return (
         <Popover content={memo ? <Input.TextArea style={{ width: 300, height: 200 }} readOnly value={memo} ></Input.TextArea> : ''} trigger="click" mouseLeaveDelay={0}>
-            <div className={styles.customNode} style={{ backgroundColor: 'red' }}>
+            <div className={styles.customNode}>
                 {/* {name ? <div style={{ textDecoration: 'underline' }}>{name}</div> : ''} */}
                 <Flex justify={'flex-start'} align={'center'}>
                     {props.node.data.selected ?
-                        <Input value={url} width={50}
-                            placeholder="变量名"
-                            style={{ textAlign: 'right', fontWeight: 'bold' }}
-                            onChange={
-                                (e) => {
-                                    const data = node.data;
-                                    node.setData({
-                                        ...data,
-                                        config: {
-                                            ...data.config,
-                                            url: e.target.value
-                                        }
-                                    })
-                                }}
-                        /> : <div style={{ margin: 2, width: '50%', fontWeight: 'bold', textAlign: 'right', color: 'white', fontSize: 15 }} >{url ? url : '变量名'}</div>}
-                    <span style={{ margin: 2, color: 'white' }}>=</span>
-                    {props.node.data.selected ?
-                        <Input value={body} width={50}
-                            onChange={
-                                (e) => {
-                                    const data = node.data;
-                                    node.setData({
-                                        ...data,
-                                        config: {
-                                            ...data.config,
-                                            body: e.target.value
-                                        }
-                                    })
-                                }}
-                        /> : <div style={{ margin: 2, width: '50%', fontWeight: 'bold', textAlign: 'left', color: 'white', fontSize: 15 }} >{body}</div>}
+                        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Input value={url} width={50}
+                                placeholder="变量名"
+                                style={{ fontWeight: 'bold' }}
+                                onChange={
+                                    (e) => {
+                                        const data = node.data;
+                                        node.setData({
+                                            ...data,
+                                            config: {
+                                                ...data.config,
+                                                url: e.target.value
+                                            }
+                                        })
+                                    }}
+                            />
+                            <span style={{ margin: 2 }}>=</span>
+                            <Input value={body} width={50}
+                                onChange={
+                                    (e) => {
+                                        const data = node.data;
+                                        node.setData({
+                                            ...data,
+                                            config: {
+                                                ...data.config,
+                                                body: e.target.value
+                                            }
+                                        })
+                                    }}
+                            />
+                        </div>
+                        : <div style={{ textAlign: 'center', margin: 2, width: '100%', fontWeight: 'bold', fontSize: 15 }} >{url ? url : '变量名'}  <span style={{ margin: 2 }}>=</span>{body}</div>}
                 </Flex>
             </div >
         </Popover>

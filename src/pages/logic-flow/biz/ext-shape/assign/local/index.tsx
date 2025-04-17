@@ -11,11 +11,11 @@ export const AssignLocalNode = (props) => {
     const text = node.prop('text');
     return (
         <Popover content={memo ? <Input.TextArea style={{ width: 300, height: 200 }} readOnly value={memo} ></Input.TextArea> : ''} trigger="click" mouseLeaveDelay={0}>
-            <div className={styles.customNode} style={{ backgroundColor: '#ff9300' }}>
+            <div className={styles.customNode}>
                 {/* {name ? <div style={{ }}>{name}</div> : ''} */}
                 <Flex justify={'flex-start'} align={'center'}>
                     {props.node.data.selected ?
-                        <Input value={url} width={50}
+                        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>   <Input value={url} width={50}
                             placeholder="变量名"
                             style={{ textAlign: 'right', fontWeight: 'bold' }}
                             onChange={
@@ -29,22 +29,24 @@ export const AssignLocalNode = (props) => {
                                         }
                                     })
                                 }}
-                        /> : <div style={{ margin: 2, width: '50%', fontWeight: 'bold', textAlign: 'right' }} >{url ? url : '变量名'}</div>}
-                    <span style={{ margin: 2 }}>=</span>
-                    {props.node.data.selected ?
-                        <Input value={body} width={50}
-                            onChange={
-                                (e) => {
-                                    const data = node.data;
-                                    node.setData({
-                                        ...data,
-                                        config: {
-                                            ...data.config,
-                                            body: e.target.value
-                                        }
-                                    })
-                                }}
-                        /> : <div style={{ margin: 2, width: '50%', fontWeight: 'bold', textAlign: 'left' }} >{body}</div>}
+                        /> <span style={{ margin: 2 }}>=</span>
+                            <Input value={body} width={50}
+                                onChange={
+                                    (e) => {
+                                        const data = node.data;
+                                        node.setData({
+                                            ...data,
+                                            config: {
+                                                ...data.config,
+                                                body: e.target.value
+                                            }
+                                        })
+                                    }}
+                            />
+                        </div>
+                        : <div style={{ margin: 2, width: '100%', fontWeight: 'bold', textAlign: 'center' }} >{url ? url : '变量名'}
+                            <span style={{ margin: 2 }}>=</span>{body}
+                        </div>}
                 </Flex>
             </div >
         </Popover>
