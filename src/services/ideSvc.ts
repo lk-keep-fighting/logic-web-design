@@ -1,4 +1,5 @@
 import { get, post, put } from "@/utils/http";
+import { message } from "antd";
 import dayjs from "dayjs";
 
 export async function getLogic(id: string) {
@@ -143,11 +144,17 @@ export async function getLogicByBak(id: string, version: string) {
         ]
     }).then(res => {
         let logic = res.data.data.records[0];
-        const jsonStr = logic.configJson;
-        logic.configJson = JSON.parse(jsonStr);
-        logic.configJson.id = logic.id;
-        logic.configJson.name = logic.name;
+        if (logic) {
+            const jsonStr = logic.configJson;
+            logic.configJson = JSON.parse(jsonStr);
+            logic.configJson.id = logic.id;
+            logic.configJson.name = logic.name;
+        } else {
+            message.error('对应的逻辑版本配置不存在！', 3)
+        }
         return logic
+    }).catch(err => {
+        console.log(err);
     })
 }
 export async function getRemoteLogicByBak(runtime: string, id: string, version: string) {

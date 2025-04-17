@@ -2,7 +2,7 @@ import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import DebugLogic from "@/pages/logic-flow/biz/components/debugLog";
 import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicByBak, getLogicInstanceByBizId } from "@/services/ideSvc";
 import { CheckCircleTwoTone, EditOutlined, ForkOutlined, FrownOutlined, LineOutlined, SyncOutlined } from "@ant-design/icons";
-import { Button, Divider, Space, Spin, Typography, Flex } from "antd";
+import { Button, Divider, Space, Spin, Typography, Flex, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "umi";
@@ -17,9 +17,11 @@ const LogicDebug = () => {
     const [loading, setLoading] = useState(false);
     const [debugLogs, setDebugLogs] = useState([])
     const [logicIns, setLogicIns] = useState();
-    // useEffect(() => {
-    //     loader.config({ monaco });
-    // }, [])
+    useEffect(() => {
+        message.config({
+            top: 200
+        })
+    }, [])
     useEffect(() => {
         setLoading(true);
         if (id)
@@ -29,10 +31,14 @@ const LogicDebug = () => {
                     setLogicIns(res);
                     setLoading(true);
                     getLogicByBak(res.logicId, res.version).then(res => {
-                        const { configJson, name } = res;
-                        setLogicName(name)
-                        setConfig(configJson)
-                        refreshWebTitle(configJson, ins)
+                        if (res) {
+                            const { configJson, name } = res;
+                            setLogicName(name)
+                            setConfig(configJson)
+                            refreshWebTitle(configJson, ins)
+                        } else {
+                            message.error('对应的逻辑版本配置不存在！', 3)
+                        }
                         setLoading(false);
                     }).catch(err => {
                         setLoading(false);

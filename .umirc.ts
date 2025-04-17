@@ -166,7 +166,7 @@ export default defineConfig({
       'target': 'http://localhost:8888',
       // 'target': 'http://localhost:8080',
       // 'target': 'http://192.168.152.38:18080',
-      // 'target': 'http://192.168.51.18:31001',
+      // 'target': 'http://192.168.58.91:18080',
       // 'target': 'http://192.168.57.23:8080',
       // 'target': 'http://192.168.52.100:9001',
       // 'target': 'http://localhost:9001',
