@@ -149,9 +149,7 @@ export async function getLogicByBak(id: string, version: string) {
             logic.configJson = JSON.parse(jsonStr);
             logic.configJson.id = logic.id;
             logic.configJson.name = logic.name;
-        } else {
-            message.error('对应的逻辑版本配置不存在！', 3)
-        }
+        } 
         return logic
     }).catch(err => {
         console.log(err);

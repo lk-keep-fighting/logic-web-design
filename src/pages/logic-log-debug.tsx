@@ -1,7 +1,7 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import { getLogicLogsById, getLogicByBak } from "@/services/ideSvc";
 import { CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/icons";
-import { Button, Divider, Space, Spin, Typography, Flex } from "antd";
+import { Button, Divider, Space, Spin, Typography, Flex, message } from "antd";
 import { useEffect, useState } from "react";
 import { useParams } from "umi";
 import DebugLogicLog from "./logic-flow/biz/components/debugLogicLog";
@@ -16,12 +16,16 @@ const LogicLogDebug = () => {
     const [debugLog, setDebugLog] = useState({})
     useEffect(() => {
         setLoading(true);
-        if (debugLog)
+        if (debugLog.logicId && config == undefined)
             getLogicByBak(debugLog.logicId, debugLog.version).then(res => {
-                const { configJson } = res;
-                setConfig(configJson)
+                if (res) {
+                    const { configJson } = res;
+                    refreshWebTitle(configJson)
+                    setConfig(configJson)
+                } else {
+                    message.error('对应的逻辑版本配置不存在！', 3)
+                }
                 setLoading(false);
-                refreshWebTitle(configJson)
             }).catch(err => {
                 setLoading(false);
                 console.log('err')
