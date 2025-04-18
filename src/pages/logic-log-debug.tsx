@@ -47,12 +47,13 @@ const LogicLogDebug = () => {
                 <DebugLogicLog
                     btns={[
                         <Divider type='vertical' />,
+                        <Space>{config?.name}[{debugLog?.logicId}<Typography.Text copyable={{ tooltips: ['复制编号', '复制成功!'], text: debugLog?.logicId }} />]</Space>,
+                        <Divider type='vertical' />,
+                        <Space>业务标识：{debugLog?.bizId}<Typography.Text copyable={{ tooltips: ['点击复制', '复制成功!'], text: debugLog?.bizId }} /></Space>,
                         <Divider type='vertical' />,
                         <span>是否完成：{debugLog?.isOver ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <FrownOutlined twoToneColor='red' />}</span>,
                         <Divider type='vertical' />,
                         <span>待执行：{debugLog?.nextName}</span>,
-                        <Divider type='vertical' />,
-                        <Space>业务标识：{debugLog?.bizId}<Typography.Text copyable={{ tooltips: ['点击复制', '复制成功!'], text: debugLog?.bizId }} /></Space>,
                         <Divider type='vertical' />,
                         <span style={{ color: 'red' }}>执行版本：</span>,
                         <span>{debugLog?.version}<Typography.Text copyable={{ tooltips: ['点击复制', '复制成功!'], text: debugLog?.version }} /></span>,

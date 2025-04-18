@@ -115,7 +115,7 @@ const LogicDebug = () => {
                         <Divider type='vertical' />,
                         <Space>业务标识：{logicIns?.bizId}<Typography.Text copyable={{ tooltips: ['复制标识', '复制成功!'], text: logicIns?.bizId }} /></Space>,
                         <Divider type='vertical' />,
-                        <Space>{logicName}</Space>, <Typography.Text copyable={{ tooltips: ['复制编号', '复制成功!'], text: logicIns?.logicId }} />,
+                        <Space>{logicName}[{logicIns?.logicId}<Typography.Text copyable={{ tooltips: ['复制编号', '复制成功!'], text: logicIns?.logicId }} />]</Space>,
                         <Divider type='vertical' />,
                         <span style={{ color: 'red' }}>执行版本：</span>,
                         <span>{logicIns?.version}<Typography.Text copyable={{ tooltips: ['复制版本号', '复制成功!'], text: logicIns?.version }} /></span>,

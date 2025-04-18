@@ -180,7 +180,8 @@ const DebugLog = (props: DebugProps) => {
             setSelectedNode({});
             // autoDagreLayout(graph);
           }} ><p>{v.itemLogs[0]?.config.name}</p>
-            <p>{v.serverTime}</p>
+            <p>开始：{v.itemLogs[0].beginTime}</p>
+            <p>结束：{v.itemLogs[v.itemLogs.length - 1].endTime}</p>
             {props.logicIns?.version == v.version ? <p></p> : <p>
               <Space>
                 <Typography.Paragraph style={{ color: 'red' }}>版本号:</Typography.Paragraph>
