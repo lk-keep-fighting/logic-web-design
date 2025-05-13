@@ -67,15 +67,24 @@ const LogicDebug = () => {
                         console.log('err')
                         console.log(err)
                     })
+                } else {
+                    message.error('实例不存在！如果为复用逻辑的实例，可能因为父逻辑报错被回滚！')
+                    setLoading(false);
                 }
             })
     }, [bizId, logicId])
     useEffect(() => {
         if (logicIns) {
+            setLoading(true);
             getLogicLogsByLogicIns(logicIns).then(res => {
                 if (res) {
                     setDebugLogs(res)
                 }
+                setLoading(false);
+            }).catch(err => {
+                setLoading(false);
+                console.log('err')
+                console.log(err)
             })
         }
     }, [logicIns])
@@ -87,15 +96,15 @@ const LogicDebug = () => {
                         <Divider type='vertical' />,
                         <Button type='primary' onClick={() => {
                             setLoading(true)
-                            getLogicInstanceById(id).then(insRes => {
+                            getLogicInstanceById(logicIns.id).then(insRes => {
                                 if (insRes) {
                                     setLogicIns(insRes);
-                                    getLogicLogsByLogicIns(insRes).then(logsRes => {
-                                        if (logsRes) {
-                                            setDebugLogs(logsRes)
-                                        }
-                                        setLoading(false)
-                                    })
+                                    // getLogicLogsByLogicIns(insRes).then(logsRes => {
+                                    //     if (logsRes) {
+                                    //         setDebugLogs(logsRes)
+                                    //     }
+                                    //     setLoading(false)
+                                    // })
                                 }
                                 setLoading(false);
                             })

@@ -114,6 +114,7 @@ const BizLogicEditor = () => {
         jsTips['_global'] = JSON.stringify(_varJson.__global ?? "{}");
         let runtimeEnvs = await RuntimeSvc.getEnvJson();
         jsTips['_env'] = JSON.stringify(runtimeEnvs)//JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.envs));
+        jsTips['_bizId'] = '""';
         jsTips['_lastRet'] = '{}';
         jsTips['_last'] = JSON.stringify({ success: true, msg: '' });
         setJsTipMap(jsTips)
@@ -127,8 +128,8 @@ const BizLogicEditor = () => {
             configJson.id = id;//默认使用当前id作为配置id，用于复用配置时简化更新操作
             configJson.name = name;//默认使用当前id作为配置id，用于复用配置时简化更新操作
             setDsl(configJson)
-            setGraphJson(configJson?.visualConfig)
             updateEditorCtx(configJson);
+            setGraphJson(configJson?.visualConfig)
             refreshWebTitle(configJson)
         }).catch(err => {
             setLoading(false);
