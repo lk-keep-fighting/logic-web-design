@@ -13,8 +13,12 @@ const FormRenderById = (props: IFormRenderByIdProps) => {
     const [formScheme, setFormScheme] = useState({ type: 'page' });
     useEffect(() => {
         if (props.formId) {
-            let formId = props.isStatic ? props.formId + '-static' : props.formId;
+            let formId = props.formId;
             getFormJson(formId).then(data => {
+                if (props.isStatic) {
+                    // data.body[0].disabled = true
+                    // data.body[0].static = true
+                }
                 setFormScheme(data);
             }).catch(err => {
                 console.log(err);

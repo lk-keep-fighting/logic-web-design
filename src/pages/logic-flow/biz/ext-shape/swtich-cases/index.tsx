@@ -3,6 +3,7 @@ import styles from '../default.less'
 import { Node } from "@antv/x6";
 import CasesInput from "./cases-input";
 import React, { useEffect, useState } from "react";
+import TranRibbon from "../../components/ribbon";
 
 export const SwitchCasesNode = (props) => {
     const node: Node = props.node;
@@ -38,20 +39,21 @@ export const SwitchCasesNode = (props) => {
     }, [node?.data?.config?.cases]);
     return (
         <Popover content={memo ? <Input.TextArea style={{ width: 300, height: 200 }} readOnly value={memo} ></Input.TextArea> : ''} trigger="click" mouseLeaveDelay={0}>
-            <div className={styles.customNode}>
-                {name ? name : 'cases'}
-                <List
-                    size="small"
-                    dataSource={caseItems}
-                    style={{ padding: '0', backgroundColor: 'white' }}
-                    renderItem={(item, index) => (
-                        <List.Item style={{ padding: '2px' }}>
-                            <Input size='small' addonBefore={item.name} value={item.value} readOnly ></Input>
-                        </List.Item>
-                    )}
-                >
-                </List>
-                {/* <CasesInput className="input" cases={caseItems} editable={props.node.data.selected} width={150}
+            <TranRibbon text={node.data.config?.tranGroupId}>
+                <div className={styles.customNode}>
+                    {name ? name : 'cases'}
+                    <List
+                        size="small"
+                        dataSource={caseItems}
+                        style={{ padding: '0', backgroundColor: 'white' }}
+                        renderItem={(item, index) => (
+                            <List.Item style={{ padding: '2px' }}>
+                                <Input size='small' addonBefore={item.name} value={item.value} readOnly ></Input>
+                            </List.Item>
+                        )}
+                    >
+                    </List>
+                    {/* <CasesInput className="input" cases={caseItems} editable={props.node.data.selected} width={150}
                     onChange={
                         (values) => {
                             const data = node.data;
@@ -64,7 +66,8 @@ export const SwitchCasesNode = (props) => {
                             })
                         }}
                 /> */}
-            </div>
+                </div>
+            </TranRibbon>
         </Popover >
     )
 }

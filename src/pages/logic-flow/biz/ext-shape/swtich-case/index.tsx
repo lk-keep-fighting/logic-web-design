@@ -1,6 +1,7 @@
 import { Input, Popover } from "antd"
 import styles from '../default.less'
 import { Node } from "@antv/x6";
+import TranRibbon from "../../components/ribbon";
 
 export const SwitchCaseNode = (props) => {
     const node: Node = props.node;
@@ -8,21 +9,23 @@ export const SwitchCaseNode = (props) => {
     const memo = node.data.config?.memo;
     return (
         <Popover content={memo ? <Input.TextArea style={{ width: 300, height: 200 }} readOnly value={memo} ></Input.TextArea> : ''} trigger="click" mouseLeaveDelay={0}>
-            <div className={styles.customNode}>
-                <Input addonBefore={name ? name : 'case'} className="input" value={node?.data?.config?.case} width={150}
-                    onChange={
-                        (e) => {
-                            const data = node.data;
-                            node.setData({
-                                ...data,
-                                config: {
-                                    ...data.config,
-                                    case: e.target.value
-                                }
-                            })
-                        }}
-                />
-            </div>
+            <TranRibbon text={node.data.config?.tranGroupId}>
+                <div className={styles.customNode}>
+                    <Input addonBefore={name ? name : 'case'} className="input" value={node?.data?.config?.case} width={150}
+                        onChange={
+                            (e) => {
+                                const data = node.data;
+                                node.setData({
+                                    ...data,
+                                    config: {
+                                        ...data.config,
+                                        case: e.target.value
+                                    }
+                                })
+                            }}
+                    />
+                </div>
+            </TranRibbon>
         </Popover>
     )
 }

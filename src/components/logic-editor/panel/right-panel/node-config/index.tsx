@@ -13,6 +13,10 @@ export default (props: INodeEditorProps) => {
     const [configSchema, setConfigSchema] = useState('');
     const [formData, setFormData] = useState({})
     const onSubmit = (formData: any) => {
+        if (props.isStatic) {
+            console.warn('静态展示模式，提交未生效');
+            return;
+        }
         props.editNode?.setAttrByPath('text/text', formData.name);
         const preConfig = props.editNode?.data.config;
         if (formData.type == 'switch-cases' && formData.caseItems) {
