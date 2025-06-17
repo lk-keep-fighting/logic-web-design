@@ -1,4 +1,4 @@
-import { ApartmentOutlined, ForkOutlined, MenuFoldOutlined, MenuUnfoldOutlined, OrderedListOutlined } from '@ant-design/icons';
+import { ApartmentOutlined, BulbOutlined, ForkOutlined, MenuFoldOutlined, MenuUnfoldOutlined, OrderedListOutlined } from '@ant-design/icons';
 import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
 import { History } from '@antv/x6-plugin-history';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
@@ -20,6 +20,7 @@ import DagreGraph from '@/components/logic-editor/graph/dagre-graph';
 import NodeConfig from '@/components/logic-editor/panel/right-panel/node-config';
 import FormRenderById from '@/components/ui-render/form-render/render-by-form-id';
 import { PageRenderById } from '@/components/ui-render';
+import AIDebugLog from '../ai-debug-log';
 
 
 type EditorCtx = {
@@ -66,6 +67,7 @@ const DebugLog = (props: DebugProps) => {
   const [selectedNode, setSelectedNode] = useState<Node>();
   const [timeLineItems, setTimeLineItems] = useState<TimelineItemProps[]>();
   const refContainer = useRef();
+  const [showAI, setShowAI] = useState(false);
 
   function getButtonTool(txt, itemLog, idx, btnCnt) {
     return {
@@ -190,7 +192,12 @@ const DebugLog = (props: DebugProps) => {
                 </Typography.Paragraph>
               </Space>
             </p>}
-            <p>{v.message}</p></span></>,
+            <p>{v.message}</p>
+            <Button type='primary' size='small' icon={<BulbOutlined />} onClick={() => {
+              setShowAI(true);
+            }} >AI分析</Button>
+          </span>
+          </>,
           color: v.success ? 'green' : 'red'
         })
       })
@@ -524,6 +531,7 @@ const DebugLog = (props: DebugProps) => {
         </Tabs>
         {/* <GanttView style={{ height: '100vh' }} items={curLog?.itemLogs} /> */}
         {/* <Divider></Divider> */}
+        <AIDebugLog show={showAI} logicLog={curLog} onClose={() => setShowAI(false)} />
       </Layout.Content>
     </Layout>
     <Layout.Sider
@@ -556,6 +564,7 @@ const DebugLog = (props: DebugProps) => {
         x
       </Button>
     </Layout.Sider>
+
   </Layout >
 }
 export default DebugLog;

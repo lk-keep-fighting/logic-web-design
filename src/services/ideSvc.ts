@@ -18,7 +18,15 @@ export async function getRemoteLogic(runtime: string, id: string) {
         return data;
     });
 }
+export async function getSourceCode(config) {
+    return post(`/api/ide/asset/v1/java/sourceCode`, config).then(res => {
+        const data = res.data?.data;
+        return data;
+    }).catch(err => {
+        message.error('获取逻辑源代码失败：' + err.message);
+    });
 
+}
 export async function getLogicConfig(id: string) {
     return get(`/api/ide/logic/${id}/config`).then(res => res.data?.data);
 }
@@ -149,7 +157,7 @@ export async function getLogicByBak(id: string, version: string) {
             logic.configJson = JSON.parse(jsonStr);
             logic.configJson.id = logic.id;
             logic.configJson.name = logic.name;
-        } 
+        }
         return logic
     }).catch(err => {
         console.log(err);
