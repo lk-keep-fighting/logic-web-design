@@ -108,18 +108,26 @@ export async function getRemoteLogicLogsByLogicIns(runtime: string, logicIns: an
     })
 }
 export async function getLogicLogsById(logicLogId: any) {
-    return post(`/api/ide/logic-logs`, {
-        filters: [
-            { dataIndex: 'id', values: [logicLogId], type: '=' }
-        ],
-        pageSize: 1000
-    }).then(res => {
-        const logs = res.data.data.records;
-        if (logs && logs.length > 0) {
-            if (logs[0].itemLogs)
-                logs[0].itemLogs = JSON.parse(logs[0].itemLogs);
+    // return post(`/api/ide/logic-logs`, {
+    //     filters: [
+    //         { dataIndex: 'id', values: [logicLogId], type: '=' }
+    //     ],
+    //     pageSize: 1000
+    // }).then(res => {
+    //     const logs = res.data.data.records;
+    //     if (logs && logs.length > 0) {
+    //         if (logs[0].itemLogs)
+    //             logs[0].itemLogs = JSON.parse(logs[0].itemLogs);
+    //     }
+    //     return logs[0];
+    // })
+    return get(`/api/ide/logic-log/${logicLogId}`).then(res => {
+        const logs = res.data.data;
+        if (logs) {
+            if (logs.itemLogs)
+                logs.itemLogs = JSON.parse(logs.itemLogs);
         }
-        return logs[0];
+        return logs;
     })
 }
 export async function getRemoteLogicLogsById(runtime: string, logicLogId: any) {
