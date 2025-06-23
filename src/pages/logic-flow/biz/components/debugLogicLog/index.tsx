@@ -121,7 +121,7 @@ const DebugLogicLog = (props: DebugProps) => {
       let btnCounts = {};
       if (logicLog && logicLog.itemLogs) {
         logicLog.itemLogs.forEach((v, i) => {
-          const node = graph?.getNodes().find(n => n.id == v.config.id);
+          const node = graph?.getNodes().find(n => n.id == v.config?.id);
           console.log('选中的节点')
           console.log(node)
           if (node) {
@@ -148,7 +148,8 @@ const DebugLogicLog = (props: DebugProps) => {
             btnCounts[node?.id] = 1
           node?.addTools(getButtonTool(i, v, i, btnCounts[node?.id]))
         })
-        graph?.centerCell(lastNode);
+        if (lastNode)
+          graph?.centerCell(lastNode);
         setCurItemLog({});
         setSelectedNode({});
       }

@@ -163,8 +163,8 @@ export default defineConfig({
     },
     '/api': {
       // 'target': 'http://localhost:4052',
-      // 'target': 'http://localhost:8888',
-      'target': 'http://192.168.53.220:20001',
+      'target': 'http://localhost:8888',
+      // 'target': 'http://192.168.53.220:20001',
       // 'target': 'http://localhost:18080',
       // 'target': 'http://192.168.58.55:18080',
       // 'target': 'http://192.168.58.91:18080',
@@ -172,15 +172,15 @@ export default defineConfig({
       // 'target': 'http://192.168.52.100:9001',
       // 'target': 'http://localhost:9001',
       // 'target': 'http://192.168.44.87:4052',
-      ws: false,
-      buffer: false,
-      proxyTimeout: 60000,
-      onProxyRes: function (proxyRes, req, res) {
-        // 关键：关闭缓冲，强制实时转发
-        if (proxyRes.flushHeaders) {
-          proxyRes.flushHeaders();
-        }
-      },
+      // ws: false,
+      // buffer: false,
+      // proxyTimeout: 60000,
+      // onProxyRes: function (proxyRes, req, res) {
+      //   // 关键：关闭缓冲，强制实时转发
+      //   if (proxyRes.flushHeaders) {
+      //     proxyRes.flushHeaders();
+      //   }
+      // },
       'changeOrigin': true,
       // 'pathRewrite': { '^/api': '/api' },
     },

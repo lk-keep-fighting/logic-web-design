@@ -148,7 +148,7 @@ const DebugLog = (props: DebugProps) => {
             let lastNode: Node;
             let btnCounts = {};
             v.itemLogs.forEach((v, i) => {
-              const node = graph?.getNodes().find(n => n.id == v.config.id);
+              const node = graph?.getNodes().find(n => n.id == v.config?.id);
               console.log('选中的节点')
               console.log(node)
               if (node) {
@@ -177,11 +177,12 @@ const DebugLog = (props: DebugProps) => {
             })
             // graph?.centerPoint(lastNode?.x, lastNode?.y);
             // graph?.centerCell(lastNode, { padding: { left: 0 } });
-            graph?.centerCell(lastNode);
+            if (lastNode)
+              graph?.centerCell(lastNode);
             setCurItemLog({});
             setSelectedNode({});
             // autoDagreLayout(graph);
-          }} ><p>{v.itemLogs[0]?.config.name}</p>
+          }} ><p>{v.itemLogs[0].config?.name}</p>
             <p>开始：{v.itemLogs[0].beginTime}</p>
             <p>结束：{v.itemLogs[v.itemLogs.length - 1].endTime}</p>
             {props.logicIns?.version == v.version ? <p></p> : <p>
@@ -409,7 +410,7 @@ const DebugLog = (props: DebugProps) => {
       children: <FormRenderById
         formId='debug-context'
         values={{
-          varsJson: curLog?.varsJson, paramsJson: curLog?.paramsJson, varsJsonEnd: curLog?.varsJsonEnd, startNodeId: curLog?.itemLogs[0].config.id, startNodeName: curLog?.itemLogs[0].config.name,
+          varsJson: curLog?.varsJson, paramsJson: curLog?.paramsJson, varsJsonEnd: curLog?.varsJsonEnd, startNodeId: curLog?.itemLogs[0].config?.id, startNodeName: curLog?.itemLogs[0].config?.name,
           logicId: props.logicIns?.logicId,
           bizId: props.logicIns?.bizId
         }}
