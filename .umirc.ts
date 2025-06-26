@@ -164,7 +164,7 @@ export default defineConfig({
     '/api': {
       // 'target': 'http://localhost:4052',
       'target': 'http://localhost:8888',
-      // 'target': 'http://192.168.53.220:20001',
+      // 'target': 'http://192.168.57.92:8004',
       // 'target': 'http://localhost:18080',
       // 'target': 'http://192.168.58.55:18080',
       // 'target': 'http://192.168.58.91:18080',
