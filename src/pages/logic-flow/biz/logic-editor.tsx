@@ -1,5 +1,5 @@
 import { LogicFlowEditor } from "@/components/logic-editor";
-import { Button, Modal, Spin, message, Typography, Dropdown, MenuProps } from "antd";
+import { Button, Modal, Spin, message, Typography, Dropdown, MenuProps, Tooltip } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "umi";
 import { Graph, Shape } from "@antv/x6";
@@ -35,6 +35,7 @@ const BizLogicEditor = () => {
     const [openParamsSetting, setParmamsSetting] = useState(false);
     const [openRunLogic, setOpenRunLogic] = useState(false);
     const [jsTipMap, setJsTipMap] = useState(new Map<string, object>)
+    const [env, setEnv] = useState({});
     const { id } = useParams();
     var dslConvert = new BizDslConvert();
     function refreshWebTitle(dsl: Logic) {
@@ -100,7 +101,7 @@ const BizLogicEditor = () => {
         const returns = TypeAnnotationParser.getReturnArrayByJson(JSON.parse(settingValues.returns ?? "{}"));
         const variables = TypeAnnotationParser.getVariableArrayByJson(JSON.parse(settingValues.variables ?? "{}"));
         const envs = TypeAnnotationParser.getEnvsArrayByJson(JSON.parse(settingValues.envs ?? "{}"));
-
+        setEnv(envs);
         let newDsl: Logic = { ...dsl, params, returns, variables, envs, log: settingValues.log };
         newDsl.version = newVersion();
         setDsl(newDsl)
@@ -112,8 +113,9 @@ const BizLogicEditor = () => {
         var _varJson = TypeAnnotationParser.getJsonByParams(dsl.variables);
         jsTips['_var'] = JSON.stringify(_varJson);
         jsTips['_global'] = JSON.stringify(_varJson.__global ?? "{}");
-        let runtimeEnvs = await RuntimeSvc.getEnvJson();
-        jsTips['_env'] = JSON.stringify(runtimeEnvs)//JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.envs));
+        var runtimeEnv = await RuntimeSvc.getEnvJson();
+        setEnv(runtimeEnv);
+        jsTips['_env'] = JSON.stringify(runtimeEnv)//JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.envs));
         jsTips['_bizId'] = '""';
         jsTips['_lastRet'] = '{}';
         jsTips['_last'] = JSON.stringify({ success: true, msg: '' });
@@ -293,7 +295,8 @@ const BizLogicEditor = () => {
                             onClick={() => { autoDagreLayout(graph) }}
                         >布局</Button>,
                         <Typography.Text strong style={{ fontSize: '18px' }}>[{dsl.name}]</Typography.Text>,
-                        <Typography.Text>版本:{dsl.version}</Typography.Text>
+                        <Typography.Text>版本:{dsl.version}</Typography.Text>,
+                        <Typography.Text>配置模式：<Tooltip title="online:配置存储在数据库;offline:存储在文件">{env.LOGIC_CONFIG_MODEL}</Tooltip></Typography.Text>,
                     ]}
                     graphJson={graphJson}
                     onGraphJsonEmpty={appendStartNode}
