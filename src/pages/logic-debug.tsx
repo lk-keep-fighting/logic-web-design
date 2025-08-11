@@ -1,6 +1,6 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
 import DebugLogic from "@/pages/logic-flow/biz/components/debugLog";
-import { getLogicInstanceById, getLogicLogsByLogicIns, getLogicByBak, getLogicInstanceByBizId } from "@/services/ideSvc";
+import { getLogicInstanceById, getLogicLogsByLogicIns, tryGetLogicConfigByAllWays, getLogicInstanceByBizId } from "@/services/ideSvc";
 import { CheckCircleTwoTone, EditOutlined, ForkOutlined, FrownOutlined, LineOutlined, SyncOutlined } from "@ant-design/icons";
 import { Button, Divider, Space, Spin, Typography, Flex, message } from "antd";
 import axios from "axios";
@@ -30,9 +30,10 @@ const LogicDebug = () => {
                     const ins = res;
                     setLogicIns(res);
                     setLoading(true);
-                    getLogicByBak(res.logicId, res.version).then(res => {
+                    tryGetLogicConfigByAllWays(res.logicId, res.version).then(res => {
                         if (res) {
-                            const { configJson, name } = res;
+                            const configJson = res;
+                            const { name } = res;
                             setLogicName(name)
                             setConfig(configJson)
                             refreshWebTitle(configJson, ins)
@@ -56,8 +57,9 @@ const LogicDebug = () => {
                     const ins = res;
                     setLogicIns(res);
                     setLoading(true);
-                    getLogicByBak(res.logicId, res.version).then(res => {
-                        const { configJson, name } = res;
+                    tryGetLogicConfigByAllWays(res.logicId, res.version).then(res => {
+                        const configJson = res;
+                        const { name } = res;
                         setLogicName(name)
                         setConfig(configJson)
                         refreshWebTitle(configJson, ins)

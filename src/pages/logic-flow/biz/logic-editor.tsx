@@ -1,5 +1,5 @@
 import { LogicFlowEditor } from "@/components/logic-editor";
-import { Button, Modal, Spin, message, Typography, Dropdown, MenuProps, Tooltip } from "antd";
+import { Button, Modal, Spin, message, Typography, Dropdown, MenuProps, Tooltip, Divider } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "umi";
 import { Graph, Shape } from "@antv/x6";
@@ -235,9 +235,9 @@ const BizLogicEditor = () => {
                             onSubmit={(values, model) => {
                                 setOpenRunLogic(false)
                                 if (dsl) {
-                                    const { params, bizId, headers, bizStartCode } = values;
+                                    const { params, bizId, headers, bizStartCode, configModel } = values;
                                     setLoading(true);
-                                    runLogicOnServer(id, JSON.parse(params), bizId, bizStartCode, model, JSON.parse(headers)).then(res => {
+                                    runLogicOnServer(id, JSON.parse(params), bizId, bizStartCode, model, JSON.parse(headers), configModel).then(res => {
                                         if (res.data.code == 0) {
                                             setLoading(false);
                                             Modal.success({
@@ -296,7 +296,8 @@ const BizLogicEditor = () => {
                         >布局</Button>,
                         <Typography.Text strong style={{ fontSize: '18px' }}>[{dsl.name}]</Typography.Text>,
                         <Typography.Text>版本:{dsl.version}</Typography.Text>,
-                        <Typography.Text>配置模式：<Tooltip title="online:配置存储在数据库;offline:存储在文件">{env.LOGIC_CONFIG_MODEL}</Tooltip></Typography.Text>,
+                        <Divider type="vertical" />,
+                        <Typography.Text>当前运行时：<Tooltip title="online:配置存储在数据库;offline:存储在文件">{env.LOGIC_CONFIG_MODEL}</Tooltip></Typography.Text>,
                     ]}
                     graphJson={graphJson}
                     onGraphJsonEmpty={appendStartNode}

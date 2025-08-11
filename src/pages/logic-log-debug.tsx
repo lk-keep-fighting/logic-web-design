@@ -1,5 +1,5 @@
 import { Logic } from "@/components/step-flow-core/lasl/meta-data";
-import { getLogicLogsById, getLogicByBak } from "@/services/ideSvc";
+import { getLogicLogsById, tryGetLogicConfigByAllWays } from "@/services/ideSvc";
 import { BulbOutlined, CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/icons";
 import { Button, Divider, Space, Spin, Typography, Flex, message } from "antd";
 import { useEffect, useState } from "react";
@@ -19,9 +19,9 @@ const LogicLogDebug = () => {
     useEffect(() => {
         setLoading(true);
         if (debugLog.logicId && config == undefined)
-            getLogicByBak(debugLog.logicId, debugLog.version).then(res => {
+            tryGetLogicConfigByAllWays(debugLog.logicId, debugLog.version).then(res => {
                 if (res) {
-                    const { configJson } = res;
+                    const configJson = res;
                     refreshWebTitle(configJson)
                     setConfig(configJson)
                 } else {

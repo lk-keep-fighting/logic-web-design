@@ -54,7 +54,7 @@ const RunLogic = (props: RunLogicProps) => {
     return <span>
         {props.children}
         <Modal open={props.open ?? false}
-            title='参数配置（通过json格式声明）'
+            title='调试参数配置'
             width={1000}
             // footer={
             //     <>

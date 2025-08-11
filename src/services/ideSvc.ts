@@ -145,6 +145,20 @@ export async function getRemoteLogicLogsById(runtime: string, logicLogId: any) {
         return logs[0];
     })
 }
+/**
+ * 通过逻辑编号与版本号获取逻辑配置
+ * @param id 编号
+ * @param version 版本号
+ * @returns 
+ */
+export async function tryGetLogicConfigByAllWays(id: string, version: string) {
+    return get(`/api/ide/logic/${id}/try-get/${version}`).then(res => {
+        let logic = res.data.data
+        return logic
+    }).catch(err => {
+        console.log(err);
+    })
+}
 
 /**
  * 通过逻辑编号与版本号获取逻辑配置
@@ -193,15 +207,15 @@ export async function getRemoteLogicByBak(runtime: string, id: string, version: 
  * @param params 逻辑入参
  * @returns 
  */
-export async function runLogicOnServer(id: string, params: any, bizId: string, bizStartCode: string, model: string, headers?: any) {
+export async function runLogicOnServer(id: string, params: any, bizId: string, bizStartCode: string, model: string, headers?: any, configModel: string) {
     let url = '';
+    if (!configModel) configModel = 'online'
     switch (model) {
         case "biz":
-            if (bizStartCode) url = `/api/runtime/logic/v1/biz/${id}/${bizStartCode}/${bizId}?debug=true`;
-            else url = `/api/runtime/logic/v1/run-biz/${id}/${bizId}?debug=true`;
+            url = `/api/ide/logic/debug/${configModel}/${id}?bizId=${bizId}`;
             break;
         default:
-            url = `/api/runtime/logic/v1/run-api/${id}?debug=true`;
+            url = `/api/ide/logic/debug/${configModel}/${id}`;
             break;
     }
 
