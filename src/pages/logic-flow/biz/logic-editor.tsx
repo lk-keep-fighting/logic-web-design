@@ -297,7 +297,7 @@ const BizLogicEditor = () => {
                         <Typography.Text strong style={{ fontSize: '18px' }}>[{dsl.name}]</Typography.Text>,
                         <Typography.Text>版本:{dsl.version}</Typography.Text>,
                         <Divider type="vertical" />,
-                        <Typography.Text>当前运行时：<Tooltip title="online:配置存储在数据库;offline:存储在文件">{env.LOGIC_CONFIG_MODEL}</Tooltip></Typography.Text>,
+                        <Typography.Text>配置模式：<Tooltip title="online:保存即生效;offline:发布后生效">{env.LOGIC_CONFIG_MODEL == "online" ? '保存即生效' : '发布后生效'}</Tooltip></Typography.Text>,
                     ]}
                     graphJson={graphJson}
                     onGraphJsonEmpty={appendStartNode}
