@@ -100,7 +100,7 @@ const RemoteLogicEditor = () => {
         let runtimeEnvs = await RuntimeSvc.getEnvJson();
         jsTips['_env'] = JSON.stringify(runtimeEnvs)//JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.envs));
         jsTips['_lastRet'] = '{}';
-        jsTips['_last'] = JSON.stringify({ success: true, msg: '' });
+        jsTips['_last'] = JSON.stringify({ success: true, msg: '', data: {} });
         setJsTipMap(jsTips)
         // setEditorCtx({ jsTips: { ...jsTips } })
         setLoading(false);

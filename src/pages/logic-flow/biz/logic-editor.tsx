@@ -118,7 +118,7 @@ const BizLogicEditor = () => {
         jsTips['_env'] = JSON.stringify(runtimeEnv)//JSON.stringify(TypeAnnotationParser.getJsonByParams(dsl.envs));
         jsTips['_bizId'] = '""';
         jsTips['_lastRet'] = '{}';
-        jsTips['_last'] = JSON.stringify({ success: true, msg: '' });
+        jsTips['_last'] = JSON.stringify({ success: true, msg: '', data: {} });
         setJsTipMap(jsTips)
         // setEditorCtx({ jsTips: { ...jsTips } })
         setLoading(false);
