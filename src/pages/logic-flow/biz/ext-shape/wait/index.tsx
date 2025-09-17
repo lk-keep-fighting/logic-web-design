@@ -6,9 +6,9 @@ export const WaitNode = (props) => {
     const node: Node = props.node;
     const name = node.data.config?.name;
     const memo = node.data.config?.memo;
-    const imgSrc = node.prop('imgSrc');
-    const text = node.prop('text');
-    const backgroundColor = node.prop('backgroundColor');
+    const imgSrc = ''//node.prop('imgSrc');
+    const text = ''//node.prop('text');
+    const backgroundColor = ''//node.prop('backgroundColor');
     return (
         <Popover content={memo ? <Input.TextArea style={{ width: 300, height: 200 }} readOnly value={memo} ></Input.TextArea> : ''} trigger="click" mouseLeaveDelay={0}>
             <div
@@ -21,7 +21,7 @@ export const WaitNode = (props) => {
             >
                 <img src={imgSrc ? imgSrc : `/logic/icons/delay.svg`} style={{ width: '30px', height: '30px', margin: 0 }} />
             </div>
-            <div style={{ fontSize: '12px', marginTop: '1px', textAlign: 'center' }}>{text ? text : '等待'}</div>
+            <div style={{ fontSize: '12px', marginTop: '1px', textAlign: 'center' }}>{text ? text : ''}</div>
         </Popover >
     )
 }

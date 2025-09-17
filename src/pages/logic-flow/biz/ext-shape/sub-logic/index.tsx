@@ -11,14 +11,13 @@ export const SubLogicNode = (props) => {
     const type = node.data.config?.type;
     const memo = node.data.config?.memo;
     const tranGroupId = node.data.config?.tranGroupId;
-    const imgSrc = node.prop('imgSrc') || '/logic/icons/CarbonSubflowLocal.svg';
-    const text = node.prop('text') || '复用逻辑';
-    const backgroundColor = node.prop('backgroundColor');
+    const text = ''//node.prop('text') || '复用逻辑';
     return (
         <Popover content={memo ? <Input.TextArea style={{ width: 300, height: 200 }} readOnly value={memo} ></Input.TextArea> : ''} trigger="click" mouseLeaveDelay={0}>
             <TranRibbon text={tranGroupId}>
                 <div style={{
-                    width: '100%', minHeight: '50px'
+                    width: '100%', minHeight: '50px',
+                    minWidth: '90px',
                 }}>
                     <div className={styles.subprocess} >
                         <div className={styles.subprocessText}>

@@ -1,0 +1,238 @@
+.custom-node-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* background: transparent; */
+  border-radius: 0;
+  overflow: hidden; /* Prevent panel from overflowing */
+}
+
+.panel-header {
+  padding: 16px;
+  border-bottom: 1px solid #e1e8f0;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.search-input {
+  flex: 1;
+}
+
+.toggle-button {
+  color: #666;
+  font-size: 12px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.toggle-button:hover {
+  color: #1677ff;
+  background-color: #f0f7ff;
+}
+
+.panel-content {
+  flex: 1;
+  overflow-y: auto; /* Allow vertical scrolling within the panel content */
+  overflow-x: hidden; /* Prevent horizontal overflow */
+  min-height: 0; /* Important for flex child to shrink */
+}
+
+.group-panel .ant-collapse-header {
+  padding: 8px 16px !important;
+  background: linear-gradient(135deg, #fafbfc 0%, #d8dfe0 100%) !important;
+  border-bottom: 1px solid #e1e8f0 !important;
+  font-weight: 500;
+  font-size: 13px;
+  color: #2c3e50;
+}
+
+.group-panel .ant-collapse-content {
+  background: white !important;
+}
+
+.group-panel .ant-collapse-content-box {
+  padding: 0 !important;
+  background: #ffffff;
+}
+
+.nodes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  padding: 15px;
+  /* Remove overflow to show all nodes */
+}
+
+/* Add some animation for when nodes appear */
+.custom-node-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2px;
+  /* border: 2px solid #e8f4fd; */
+  border-radius: 12px;
+  cursor: grab;
+  background: var(--node-bg, #ffffff);
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  user-select: none;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  animation: nodeAppear 0.4s ease-out;
+}
+
+@keyframes nodeAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* .custom-node-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--node-color, #e2ce92);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+} */
+
+.custom-node-item:hover::before {
+  transform: scaleX(1);
+}
+
+.custom-node-item:hover {
+  /* border-color: var(--node-color, #fcb849); */
+  /* background: var(--node-bg, #f0f7ff); */
+  transform: translateY(-4px) scale(1.02);
+  /* box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.08),
+    0 0 0 1px var(--node-color, #f1a549); */
+}
+
+.custom-node-item:active {
+  cursor: grabbing;
+  transform: translateY(-2px) scale(0.98);
+}
+
+.node-preview-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 4px;
+  transition: all 0.3s ease;
+  min-height: 75px; /* Ensure enough height for centering */
+}
+
+.node-preview {
+  width: 85px; /* Increased from 70px */
+  height: 75px; /* Increased from 50px */
+  border-radius: 8px;
+  /* background: var(--node-bg, #f0f7ff); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  /* border: 1px solid var(--node-color, #1677ff); */
+}
+
+.custom-node-item:hover .node-preview {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border-width: 2px;
+}
+
+/* .node-label {
+  font-size: 11px;
+  color: #434343;
+  text-align: center;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  transition: all 0.3s ease;
+  padding: 2px 4px;
+  flex-shrink: 0;
+} */
+
+.custom-node-item:hover .node-label {
+  color: var(--node-color, #1677ff);
+  transform: translateY(-1px);
+}
+
+/* Remove all custom scrollbar styles since we're removing scrollbars */
+
+/* Ant Design Collapse customization */
+.custom-node-panel .ant-collapse {
+  border: none;
+  background: transparent;
+  border-radius: 0;
+}
+
+.custom-node-panel .ant-collapse > .ant-collapse-item {
+  border: none;
+  margin-bottom: 2px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.custom-node-panel .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #fafbfc 0%, #f1f3f4 100%);
+  border: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.custom-node-panel .ant-collapse-content {
+  border: none;
+  background: white;
+  border-radius: 0 0 8px 8px;
+}
+
+.custom-node-panel .ant-collapse-content-box {
+  padding: 12px;
+}
+
+/* Search input customization */
+.panel-header .ant-input-affix-wrapper {
+  border-radius: 8px;
+  border: 1px solid #e1e8f0;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.panel-header .ant-input-affix-wrapper:focus-within {
+  border-color: #1677ff;
+  box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.1);
+}
+
+/* Add some visual enhancements */
+.custom-node-item {
+  position: relative;
+}

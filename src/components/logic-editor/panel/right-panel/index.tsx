@@ -9,7 +9,7 @@ interface IRightToolset {
   isStatic?: boolean;
   logs?: any[];
   jsTipMap?: Map<string, object>;
-  isCollapsed: boolean,
+  isCollapsed: boolean;
 }
 function RightToolset(props: IRightToolset) {
   return (
@@ -23,7 +23,7 @@ function RightToolset(props: IRightToolset) {
         type="text"
         style={{ position: 'absolute', top: 10, right: 15, fontSize: 20, textAlign: 'center' }}
         onClick={() => {
-          props?.onClose();
+          props?.onClear();
         }}
       >
         x

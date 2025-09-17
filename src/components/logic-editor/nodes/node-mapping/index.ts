@@ -10,8 +10,17 @@ export const dealGraphNodeWhenAddedFromPanel = (graph: Graph, node: Node): any =
     const data = node.getData();
     const pos = node.getPosition();
     const curNodes = graph.getNodes();
+    console.log('dealGraphNodeWhenAddedFromPanel called for node type:', data?.config?.type, 'Node ID:', node.id, 'Current nodes count:', curNodes.length);
+    
+    // Prevent duplicate processing
+    if (node.getData().__processed) {
+        console.log('Node already processed, skipping:', node.id);
+        return;
+    }
+    node.setData({ ...data, __processed: true });
+    
     // const startNode = curNodes.find(item => 'start' === data.config.type);
-    let newNode: Node;
+    let newNode: Node | undefined;
     if (['ExtSharp', 'polygon'].indexOf(node.shape) > -1) {
         if (data?.config && data.config.type)
             switch (data.config.type) {

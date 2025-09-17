@@ -8,13 +8,11 @@ export const AssignGlobalNode = (props) => {
     const body = node.data.config?.body;
     const url = node.data.config?.url;
     const memo = node.data.config?.memo;
-    const imgSrc = node.prop('imgSrc');
     const text = node.prop('text');
     return (
         <Popover content={memo ? <Input.TextArea style={{ width: 300, height: 200 }} readOnly value={memo} ></Input.TextArea> : ''} trigger="click" mouseLeaveDelay={0}>
             <TranRibbon text={node.data.config?.tranGroupId}>
                 <div className={styles.customNode}>
-                    {/* {name ? <div style={{ textDecoration: 'underline' }}>{name}</div> : ''} */}
                     <Flex justify={'flex-start'} align={'center'}>
                         {props.node.data.selected ?
                             <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

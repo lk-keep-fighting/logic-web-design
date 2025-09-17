@@ -1,6 +1,4 @@
 import { Input, Popover } from "antd"
-import { Editor } from 'amis-ui'
-import styles from '../default.less'
 import { Node } from "@antv/x6";
 
 export const WaitForContinueNode = (props) => {

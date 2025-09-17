@@ -9,9 +9,9 @@ export const ExtShapeReactNode = (props) => {
     const type = node.data.config?.type;
     const memo = node.data.config?.memo;
     const tranGroupId = node.data.config?.tranGroupId;
-    const imgSrc = node.prop('imgSrc');
-    const text = node.prop('text');
-    const backgroundColor = node.prop('backgroundColor');
+    const imgSrc = node.data.imgSrc;//node.prop('imgSrc');
+    const text = node.data.text;//node.prop('text');
+    const backgroundColor = node.data.backgroundColor;//node.prop('backgroundColor');
     return (
         <Popover content={memo ? <Input.TextArea style={{ width: 300, height: 200 }} readOnly value={memo} ></Input.TextArea> : ''} trigger="click" mouseLeaveDelay={0}>
             <div
@@ -19,10 +19,10 @@ export const ExtShapeReactNode = (props) => {
                 style={{
                     width: '100%', height: '100%', border: '1px solid #8f8f8f', borderRadius: '5px', position: 'relative',
                     overflow: 'hidden',
-                    backgroundColor: backgroundColor?.includes('#') ? backgroundColor : 'white'
+                    backgroundColor: backgroundColor? backgroundColor : 'white'
                 }}
             >
-                <img src={imgSrc ? imgSrc : `/logic/icons/${type}.svg`} style={{ width: 20, height: 20, position: 'absolute', top: 0, left: 5, margin: 0 }} />
+                <img src={imgSrc ? imgSrc : `/logic/icons/${type}.svg`} style={{ width: 16, height: 16, position: 'absolute', top: 0, left: 5, margin: 0 }} />
                 <TranRibbon text={tranGroupId}>
                     <div style={{ marginTop: 12, whiteSpace: 'pre-wrap', padding: 0, fontSize: '12px', wordWrap: 'break-word', textAlign: 'left', lineHeight: '1.2' }}>
                         {name || text}

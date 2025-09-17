@@ -171,7 +171,7 @@ export default defineConfig({
       // 'target': 'http://192.168.57.23:8080',
       // 'target': 'http://192.168.52.100:9001',
       // 'target': 'http://localhost:9001',
-      // 'target': 'http://192.168.44.87:4052',
+      // 'target': 'http://192.168.154.154:9988',
       // ws: false,
       // buffer: false,
       // proxyTimeout: 60000,

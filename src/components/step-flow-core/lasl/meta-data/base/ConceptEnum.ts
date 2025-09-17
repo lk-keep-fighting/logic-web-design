@@ -32,10 +32,11 @@ export enum LogicItemTypeEnum {
     'start' = 'start',
     'end' = 'end',
     'switch' = 'switch',
-    'switch-case' = 'switch-case',
-    'switch-def' = 'switch-def',
+    'switchCase' = 'switch-case',
+    'switchDef' = 'switch-def',
     'http' = 'http',
-    'logic' = 'logic',
+    'subLogic' = 'sub-logic',
     'js' = 'js',
-    'wait' = 'wait'
+    'wait' = 'wait',
+    'waitForContinue' = 'wait-for-continue',
 }

@@ -17,6 +17,8 @@ import { dealGraphNodeWhenAddedFromPanel } from '@/components/logic-editor/nodes
 import { Transform } from '@antv/x6-plugin-transform';
 import LogicNodeConfig from '@/components/logic-editor/types/LogicNodeConfig';
 import { LogicEditorCtx } from '../types/LogicEditorCtx';
+import CustomNodePanel from '../panel/custom-node-panel';
+import { Dnd } from '@antv/x6-plugin-dnd';
 
 type EdgeToolTypes = 'button-remove' | 'edge-editor' | 'vertices' | 'segments' | undefined;
 class EditorProps {
@@ -54,7 +56,7 @@ class EditorProps {
   onSave?: (graph: Graph) => void;
   // readyCallback?: (graph: Graph, flowRunner: FlowRunner) => void;
 }
-export const LogicEditorContext = React.createContext<LogicEditorCtx>({})
+export const LogicEditorContext = React.createContext<LogicEditorCtx>({ jsTips: {} })
 // 控制连接桩显示/隐藏
 const showPorts = (ports: NodeListOf<SVGElement>, show: boolean) => {
   for (let i = 0, len = ports.length; i < len; i += 1) {
@@ -62,15 +64,13 @@ const showPorts = (ports: NodeListOf<SVGElement>, show: boolean) => {
   }
 };
 const Editor = (props: EditorProps) => {
-  const [editingNode, setEditingNode] = useState();
+  const [editingNode, setEditingNode] = useState<any>();
   const [leftToolCollapsed, setLeftToolCollapsed] = useState<boolean>(!props.showLeft);
   const [rightToolCollapsed, setRightToolCollapsed] = useState<boolean>(!props.showRight);
   const [panel, setPanel] = useState<EditorProps['panelData']>(props.panelData);
-  const [refStencil, setRefStencil] = useState<HTMLDivElement>();
   const [refContainer, setRefContainer] = useState<HTMLDivElement>();
   const [refMiniMapContainer, setRefMiniMapContainer] = useState<HTMLDivElement>();
-  const [graph, setGraph] = useState<Graph>(props.graphIns);
-  const [stencilIns, setStencilIns] = useState<Stencil>();
+  const [graph, setGraph] = useState<Graph | undefined>(props.graphIns);
   useEffect(() => {
     try {
       if (props.panelData?.Shapes) {
@@ -407,48 +407,14 @@ const Editor = (props: EditorProps) => {
     graph.centerContent();
     return graph;
   };
+  // Update panel data when props change
   useEffect(() => {
-    if (props.panelData?.Groups && props.panelData.Nodes) {
-      const newStencil = new Stencil({
-        title: '展开/收起',
-        target: graph,
-        search(cell, keyword) {
-          const data: string = cell.getData();
-          const config: string = data.config;
-          if (!config) return false;
-          if (!config.name) return false;
-          return config.name.indexOf(keyword) !== -1;
-        },
-        placeholder: '搜索节点',
-        notFoundText: '未找到',
-        collapsable: true,
-        stencilGraphWidth: 250,
-        groups: props.panelData?.Groups,
-        layoutOptions: { rowHeight: 70, columns: 2 }
-      });
-      const groupedNodes: { [Key: string]: any[] } = {};
-      props.panelData.Nodes.forEach((v) => {
-        const n = graph.createNode(v.getNodeConfig());
-        props.panelData.Groups.forEach((g) => {
-          if (v.getGroups().includes(g.name)) {
-            if (!groupedNodes[g.name]) groupedNodes[g.name] = [n];
-            else groupedNodes[g.name].push(n);
-          }
-        });
-      });
-
-      Object.keys(groupedNodes).forEach((o) => {
-        newStencil.load([...groupedNodes[o]], o);
-      });
-      refStencil?.children.item(0)?.remove();
-      refStencil?.appendChild(newStencil.container);
-      setStencilIns(newStencil)
-    }
-  }, [props.panelData?.Nodes, props.panelData?.Groups])
+    setPanel(props.panelData);
+  }, [props.panelData]);
 
   //保存到浏览器并转换dsl
   function handleSave() {
-    if (props.onSave) props.onSave(graph);//调用父级传入的回调保存配置
+    if (props.onSave && graph) props.onSave(graph);//调用父级传入的回调保存配置
     // this.autoLayout(this.state.graph)//自动布局
   }
   const renderTool = useMemo(() => {
@@ -463,7 +429,7 @@ const Editor = (props: EditorProps) => {
     }
   }, [props.toolElements])
   return (
-    <LogicEditorContext.Provider value={props.editorCtx}>
+    <LogicEditorContext.Provider value={props.editorCtx || { jsTips: {} }}>
       <Layout style={{ height: '100vh', width: '100%', margin: 0 }}>
         {renderTool}
         <Layout style={{ height: '100vh' }}>
@@ -472,12 +438,22 @@ const Editor = (props: EditorProps) => {
             collapsed={leftToolCollapsed}
             collapsedWidth={0}
             width={250}
-            ref={v => setRefStencil(v)}
           >
+            {!leftToolCollapsed && panel && (
+              <CustomNodePanel
+                graph={graph}
+                nodes={panel.Nodes || []}
+                groups={panel.Groups || []}
+                onNodeAdd={(node) => {
+                  // Handle node added if needed
+                  console.log('Node added:', node);
+                }}
+              />
+            )}
           </Layout.Sider>
           <Layout.Content className="app-content">
-            <DagreGraph ref={v => setRefContainer(v)} />
-            <div className="app-minimap" ref={v => setRefMiniMapContainer(v)} />
+            <DagreGraph ref={(v: any) => setRefContainer(v)} />
+            <div className="app-minimap" ref={(v: HTMLDivElement | null) => v && setRefMiniMapContainer(v)} />
           </Layout.Content>
           <Layout.Sider
             // theme="light"
@@ -490,7 +466,7 @@ const Editor = (props: EditorProps) => {
               editNode={editingNode}
               onSubmit={handleSave}
               jsTipMap={props.jsTipMap}
-              onClose={() => { setRightToolCollapsed(true); }}
+              onClear={() => { setRightToolCollapsed(true); }}
               isCollapsed={rightToolCollapsed}
             />
           </Layout.Sider>

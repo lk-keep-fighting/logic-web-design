@@ -6,8 +6,8 @@ import { ExtShapeReactNode } from "../extShape";
 
 export const ExtShape2ReactNode = (props) => {
     const node: Node = props.node;
+    node.data.backgroundColor = '#87CEEB';
     useEffect(() => {
-        node.prop('backgroundColor', '#87CEEB');
     }, [])
     return (
         <ExtShapeReactNode node={node} />
