@@ -246,7 +246,7 @@ export function InitPanelData(
       shape: 'ExtSharp',
       width: 50,
       height,
-      label: 'switch',
+      label: 'switch判断',
       attrs: {
         // body: {
         //   refPoints: '0,10 10,0 20,10 10,20',
@@ -259,16 +259,6 @@ export function InitPanelData(
           width: 45,
           x: 1,
           y: 2,
-        },
-        text: {
-          text: 'switch',
-          fontSize: 14,
-          // fill: '#5F95FF',
-          refX: 0.5,
-          refY: '100%',
-          refY2: 4,
-          textAnchor: 'middle',
-          textVerticalAnchor: 'top',
         },
       },
       data: {

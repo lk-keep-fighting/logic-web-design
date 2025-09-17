@@ -96,7 +96,7 @@ const RectStyle = (props: RectStyleProps) => {
                 fontSize: '12px',
                 wordWrap: 'break-word',
                 textAlign: 'left',
-                lineHeight: '1.2',
+                // lineHeight: '1.2',
                 overflow: 'hidden'
             }}>
                 {name}

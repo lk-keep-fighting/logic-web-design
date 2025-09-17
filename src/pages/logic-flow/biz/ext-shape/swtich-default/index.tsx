@@ -10,7 +10,7 @@ export const SwitchDefaultNode = (props) => {
         <Popover content={memo ? <Input.TextArea style={{ width: 300, height: 200 }} readOnly value={memo} ></Input.TextArea> : ''} trigger="click" mouseLeaveDelay={0}>
             <TranRibbon text={node.data.config?.tranGroupId}>
                 <div className={styles.customNode}>
-                    <div style={{ textAlign: 'center', fontSize: '15px' }}>default</div>
+                    <div style={{ textAlign: 'center', fontSize: '15px' }}>默认分支</div>
                 </div>
             </TranRibbon>
         </Popover>

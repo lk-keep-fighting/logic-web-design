@@ -50,7 +50,7 @@ export function InitPanelData(
         shape: 'ExtSharp',
         width: 50,
         height,
-        label: 'switch',
+        label: 'switch判断',
         attrs: {
           image: {
             'xlink:href': '/logic/icons/switch.svg',
@@ -62,7 +62,7 @@ export function InitPanelData(
             strokeWidth: 0
           },
           text: {
-            text: 'switch',
+            text: 'switch判断',
             // fontSize: 14,
             // fill: '#5F95FF',
             refX: 0.5,
@@ -75,7 +75,7 @@ export function InitPanelData(
         data: {
           config: {
             type: 'switch',
-            name: 'switch',
+            name: '条件判断',
           },
         },
         ports,
@@ -111,7 +111,7 @@ export function InitPanelData(
         data: {
           config: {
             type: 'switch-case',
-            name: 'case',
+            name: '条件分支',
           },
         },
         ports,
@@ -133,21 +133,11 @@ export function InitPanelData(
             x: 8,
             y: 10
           },
-          text: {
-            text: '多值case',
-            // fontSize: 14,
-            // fill: '#5F95FF',
-            refX: 0.5,
-            refY: '100%',
-            refY2: 4,
-            textAnchor: 'middle',
-            textVerticalAnchor: 'top',
-          },
         },
         data: {
           config: {
             type: 'switch-cases',
-            name: '多值case',
+            name: '多条件分支',
           },
         },
         ports,
@@ -169,21 +159,11 @@ export function InitPanelData(
             x: 8,
             y: 10
           },
-          text: {
-            text: 'default',
-            // fontSize: 14,
-            // fill: '#5F95FF',
-            refX: 0.5,
-            refY: '100%',
-            refY2: 4,
-            textAnchor: 'middle',
-            textVerticalAnchor: 'top',
-          },
         },
         data: {
           config: {
             type: 'switch-default',
-            name: 'default',
+            name: '默认分支',
           },
         },
         ports,

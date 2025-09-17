@@ -9,65 +9,6 @@ import { dealGraphNodeWhenAddedFromPanel } from '../../nodes/node-mapping';
 import './index.css';
 import { PreviewInPanelReactNode } from '../../../../pages/logic-flow/biz/ext-shape/preview-in-panel';
 
-// Dynamic imports for node components
-// const StartNode = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/start').then(m => ({ default: m.StartNode })));
-// const EndNode = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/end').then(m => ({ default: m.EndNode })));
-// const AssignGlobalNode = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/assign/global').then(m => ({ default: m.AssignGlobalNode })));
-// const AssignLocalNode = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/assign/local').then(m => ({ default: m.AssignLocalNode })));
-// const JavaNode = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/java').then(m => ({ default: m.JavaNode })));
-// const JsNode = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/js').then(m => ({ default: m.JsNode })));
-// const HttpNode = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/http').then(m => ({ default: m.HttpNode })));
-// const WaitNode = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/wait').then(m => ({ default: m.WaitNode })));
-// const WaitForContinueNode = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/wait-for-continue').then(m => ({ default: m.WaitForContinueNode })));
-// const SwitchNode = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/swtich').then(m => ({ default: m.SwitchNode })));
-// const SubLogicNode = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/sub-logic').then(m => ({ default: m.SubLogicNode })));
-// const ExtShape = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/extShape').then(m => ({ default: m.ExtShapeReactNode })));
-// const ExtShape1 = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/extShape1').then(m => ({ default: m.ExtShape1ReactNode })));
-// const ExtShape2 = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/extShape2').then(m => ({ default: m.ExtShape2ReactNode })));
-// const PreviewInPanel = lazy(() => import('../../../../pages/logic-flow/biz/ext-shape/preview-in-panel').then(m => ({ default: m.PreviewInPanelReactNode })));
-
-// const getNodeComponent = (nodeShape: string) => {
-//   switch (nodeShape) {
-//     // case 'start':
-//     //   return StartNode;
-//     // case 'end':
-//     //   return EndNode;
-//     // // case 'assign-global':
-//     // //   return AssignGlobalNode;
-//     // // case 'assign-local':
-//     // //   return AssignLocalNode;
-//     // case 'java':
-//     //   return JavaNode;
-//     // case 'js':
-//     //   return JsNode;
-//     // case 'http':
-//     //   return HttpNode;
-//     // case 'wait':
-//     //   return WaitNode;
-//     // case 'wait-for-continue':
-//     //   return WaitForContinueNode;
-//     // case 'swtich':
-//     //   return SwitchNode;
-//     // // case 'swtich-case':
-//     // //   return SwitchCaseNode;
-//     // // case 'swtich-cases':
-//     // //   return SwitchCasesNode;
-//     // // case 'swtich-default':
-//     // //   return SwitchDefaultNode;
-//     // case 'sub-logic':
-//     //   return SubLogicNode;
-//     // case 'ExtShape':
-//     //   return ExtShape;
-//     // case 'ExtShape1':
-//     //   return ExtShape1;
-//     // case 'ExtShape2':
-//     //   return ExtShape2;
-//     // case 'ExtShape3':
-//     //   return ExtShape3;
-//     default:
-//       return PreviewInPanel;
-//   }
-// };
 
 const { Panel } = Collapse;
 const { Search } = Input;
@@ -138,7 +79,6 @@ const NodeItem: React.FC<NodeItemProps> = ({ node, graph, dnd, onNodeAdd }) => {
       >
         <Suspense fallback={<Spin size="small" />}>
           <PreviewInPanelReactNode node={nodeConfig} />
-          {/* <NodeComponent node={nodeConfig} /> */}
         </Suspense>
       </div>
     );

@@ -11,7 +11,7 @@ export const SwitchCaseNode = (props) => {
         <Popover content={memo ? <Input.TextArea style={{ width: 300, height: 200 }} readOnly value={memo} ></Input.TextArea> : ''} trigger="click" mouseLeaveDelay={0}>
             <TranRibbon text={node.data.config?.tranGroupId}>
                 <div className={styles.customNode}>
-                    <Input addonBefore={name ? name : 'case'} className="input" value={node?.data?.config?.case} width={150}
+                    <Input addonBefore={name ? name : '条件分支'} className="input" value={node?.data?.config?.case} width={150}
                         onChange={
                             (e) => {
                                 const data = node.data;
