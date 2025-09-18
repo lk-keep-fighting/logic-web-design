@@ -61,9 +61,7 @@ const NodeItem: React.FC<NodeItemProps> = ({ node, graph, dnd, onNodeAdd }) => {
     }
   }, [node, graph, dnd, onNodeAdd]);
 
-  // Render the actual node component as preview
   const renderNodePreview = () => {
-    // const NodeComponent = getNodeComponent(nodeConfig.shape || 'ExtShape');
     return (
       <div
         style={{
@@ -245,7 +243,7 @@ const CustomNodePanel: React.FC<CustomNodePanelProps> = ({
             onChange={(keys) => setActiveKeys(keys as string[])}
             ghost
             size="small"
-            expandIconPosition="end"
+            // expandIconPosition="end"
           >
             {groups.map(group => {
               const groupNodes = filteredGroupedNodes[group.name] || [];

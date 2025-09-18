@@ -49,16 +49,17 @@
 }
 
 .group-panel .ant-collapse-header {
-  padding: 8px 16px !important;
-  background: linear-gradient(135deg, #fafbfc 0%, #d8dfe0 100%) !important;
+  padding: 5px 10px !important;
+  /* background: linear-gradient(135deg, #fdf9ef 0%, #ffffff 100%) !important; */
+  background: linear-gradient(135deg, #f6f5f5 0%, #ffffff 100%) !important;
   border-bottom: 1px solid #e1e8f0 !important;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 13px;
   color: #2c3e50;
 }
 
 .group-panel .ant-collapse-content {
-  background: white !important;
+  background: rgb(17, 14, 14) !important;
 }
 
 .group-panel .ant-collapse-content-box {
