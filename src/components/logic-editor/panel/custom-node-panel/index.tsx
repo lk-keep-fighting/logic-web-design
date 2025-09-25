@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState, useMemo, lazy, Suspense } from 'react';
 import { Graph, Node } from '@antv/x6';
 import { Dnd } from '@antv/x6-plugin-dnd';
-import { Input, Collapse, Empty, Tooltip, Spin, Button } from 'antd';
-import { SearchOutlined, ExpandAltOutlined, ShrinkOutlined } from '@ant-design/icons';
+import { Input, Collapse, Empty, Tooltip, Spin, Button, Tabs } from 'antd';
+import { SearchOutlined, ExpandAltOutlined, ShrinkOutlined, DatabaseOutlined, JavaOutlined, AppstoreAddOutlined, UnorderedListOutlined, ColumnHeightOutlined } from '@ant-design/icons';
 import LogicNodeConfig from '../../types/LogicNodeConfig';
 import { Stencil } from '@antv/x6-plugin-stencil';
 import { dealGraphNodeWhenAddedFromPanel } from '../../nodes/node-mapping';
@@ -204,77 +204,88 @@ const CustomNodePanel: React.FC<CustomNodePanelProps> = ({
   );
 
   return (
-    <div className="custom-node-panel">
-      <div className="panel-header">
-        <div className="header-row">
-          <Search
-            placeholder="搜索节点"
-            allowClear
-            value={searchKeyword}
-            onChange={(e) => setSearchKeyword(e.target.value)}
-            // prefix={<SearchOutlined />}
-            // size="small" 
-            className="search-input"
-          />
-          <Tooltip title={isAllExpanded ? "收起全部" : "展开全部"}>
-            <Button
-              type="text"
-              // size="small"
-              icon={isAllExpanded ? <ShrinkOutlined /> : <ExpandAltOutlined />}
-              onClick={handleToggleAll}
-            // className="toggle-button"
-            >
-              {/* {isAllExpanded ? "收起" : "展开"} */}
-            </Button>
-          </Tooltip>
-        </div>
-      </div>
-
-      <div className="panel-content">
-        {!hasFilteredNodes ? (
-          <Empty
-            description="未找到节点"
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            style={{ marginTop: 40 }}
-          />
-        ) : (
-          <Collapse
-            activeKey={activeKeys}
-            onChange={(keys) => setActiveKeys(keys as string[])}
-            ghost
-            size="small"
-            // expandIconPosition="end"
-          >
-            {groups.map(group => {
-              const groupNodes = filteredGroupedNodes[group.name] || [];
-              if (groupNodes.length === 0) return null;
-
-              return (
-                <Panel
-                  header={<span >{group.title || group.name}</span>}
-                  key={group.name}
-                  className="group-panel"
-                >
-                  <div
-                    className="nodes-grid"
+    <div>
+      {/* <Tabs centered size='small' tabBarStyle={{ margin: 0 }}>
+        <Tabs.TabPane tab="本地组件" key="code" icon={<AppstoreAddOutlined />}> */}
+          <div className="custom-node-panel">
+            <div className="panel-header">
+              <div className="header-row">
+                <Search
+                  placeholder="搜索节点"
+                  allowClear
+                  value={searchKeyword}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
+                  // prefix={<SearchOutlined />}
+                  // size="small" 
+                  className="search-input"
+                />
+                <Tooltip title={isAllExpanded ? "收起全部" : "展开全部"}>
+                  <Button
+                    type="text"
+                    // size="small"
+                    icon={isAllExpanded ? <UnorderedListOutlined /> : <ColumnHeightOutlined />}
+                    // icon={isAllExpanded ? <ShrinkOutlined /> : <ExpandAltOutlined />}
+                    onClick={handleToggleAll}
+                  // className="toggle-button"
                   >
-                    {groupNodes.map((node, index) => (
-                      <NodeItem
-                        key={`${group.name}-${index}`}
-                        node={node}
-                        graph={graph}
-                        dnd={dnd}
-                        onNodeAdd={onNodeAdd}
-                      />
-                    ))}
-                  </div>
-                </Panel>
-              );
-            })}
-          </Collapse>
-        )}
-      </div>
+                    {/* {isAllExpanded ? "收起" : "展开"} */}
+                  </Button>
+                </Tooltip>
+              </div>
+            </div>
+
+            <div className="panel-content">
+              {!hasFilteredNodes ? (
+                <Empty
+                  description="未找到节点"
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  style={{ marginTop: 40 }}
+                />
+              ) : (
+                <Collapse
+                  activeKey={activeKeys}
+                  onChange={(keys) => setActiveKeys(keys as string[])}
+                  ghost
+                  size="small"
+                // expandIconPosition="end"
+                >
+                  {groups.map(group => {
+                    const groupNodes = filteredGroupedNodes[group.name] || [];
+                    if (groupNodes.length === 0) return null;
+
+                    return (
+                      <Panel
+                        header={<span >{group.title || group.name}</span>}
+                        key={group.name}
+                        className="group-panel"
+                      >
+                        <div
+                          className="nodes-grid"
+                        >
+                          {groupNodes.map((node, index) => (
+                            <NodeItem
+                              key={`${group.name}-${index}`}
+                              node={node}
+                              graph={graph}
+                              dnd={dnd}
+                              onNodeAdd={onNodeAdd}
+                            />
+                          ))}
+                        </div>
+                      </Panel>
+                    );
+                  })}
+                </Collapse>
+              )}
+            </div>
+          </div>
+        {/* </Tabs.TabPane>
+        <Tabs.TabPane tab="资产库" key="assets" icon={<DatabaseOutlined />}>
+        </Tabs.TabPane>
+      </Tabs> */}
+
     </div>
+
   );
 };
 

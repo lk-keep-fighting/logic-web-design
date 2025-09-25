@@ -2,7 +2,7 @@
 pnpm build
 
 # 目标目录，需要清空并复制新内容
-TARGET_DIR="/Users/lk/Documents/Dev/aims/xuanwu-logic/logic-solution/logic-ide/src/main/resources/public"
+TARGET_DIR="/Users/lk/Documents/Dev/aims/logic-workspace/logic-ide/logic-solution/logic-ide/src/main/resources/public"
 
 # 当前目录下的dist文件夹的绝对路径
 SOURCE_DIR="$(pwd)/dist"
