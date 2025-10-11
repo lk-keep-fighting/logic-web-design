@@ -83,7 +83,7 @@ const PageEditor: React.FC = (props) => {
                         setIsLoading(true);
                         axios.post('/openai/v1/chat/completions', {
                             headers: {
-                                Authorization: 'Bearer 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'
+                                Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY || 'YOUR_OPENAI_API_KEY'}`
                             },
                             data: {
                                 "model": "gpt-3.5-turbo",
