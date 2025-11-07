@@ -53,7 +53,8 @@ export default class LogicItem {
     method?: string;
     headers?: string;
     queryParams?: string;
-    tranScope?: string;//事务范围，交互、java节点、关闭
+    tranScope?: string;//事务范围，def、tranGroup、everyRequest
+    bizErrorModel?: string;//事务异常处理，def、ignore、stop
     body?: string;
     /**
      * 设置环境变量
