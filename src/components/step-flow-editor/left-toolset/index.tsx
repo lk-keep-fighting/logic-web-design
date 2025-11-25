@@ -1,7 +1,7 @@
 import { AppstoreOutlined, CodeOutlined } from '@ant-design/icons';
 import { Graph } from '@antv/x6';
 import { Tabs, TabsProps, Tooltip } from 'antd';
-import { Logic } from '@/components/step-flow-core/lasl/meta-data';
+import { Logic } from '@/components/lib/lasl/meta-data';
 import { InputJSONSchema } from 'amis-ui';
 import { useContext } from 'react';
 import { EditorContext } from '../x6-graph';

@@ -1,4 +1,4 @@
-import { Logic } from "@/components/step-flow-core/lasl/meta-data";
+import { Logic } from "@/components/lib/lasl/meta-data";
 import { X6Graph } from "@/components/step-flow-editor";
 import { Spin, message } from "antd";
 import axios from "axios";

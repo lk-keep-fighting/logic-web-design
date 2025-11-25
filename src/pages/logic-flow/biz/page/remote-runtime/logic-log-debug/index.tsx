@@ -1,4 +1,4 @@
-import { Logic } from "@/components/step-flow-core/lasl/meta-data";
+import { Logic } from "@/components/lib/lasl/meta-data";
 import { getRemoteLogicByBak, getRemoteLogicLogsById } from "@/services/ideSvc";
 import { CheckCircleTwoTone, FrownOutlined } from "@ant-design/icons";
 import { Divider, Space, Spin, Typography } from "antd";

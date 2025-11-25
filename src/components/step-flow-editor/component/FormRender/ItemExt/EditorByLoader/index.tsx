@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { buildVarExtarLibByObj } from '../../../../../monaco-helper';
 import './index.css'
 import { ArrowsAltOutlined } from '@ant-design/icons';
-import { TypeAnnotationParser } from '@/components/step-flow-core/lasl/parser/type-annotation-parser';
+import { TypeAnnotationParser } from '@/components/lib/lasl/parser/type-annotation-parser';
 // import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 class ICodeEditor {

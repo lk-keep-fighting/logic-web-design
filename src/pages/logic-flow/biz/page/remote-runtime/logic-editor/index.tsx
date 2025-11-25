@@ -7,8 +7,8 @@ import { ApartmentOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoT
 import { appendStartNode } from "@/components/logic-editor/settings/GraphDataHelper";
 import { PresetShapes } from "@/components/logic-editor/shapes/PresetShapes";
 import { getRemoteLogic, runRemoteLogicOnServer, saveRemoteLogic } from "@/services/ideSvc";
-import { Logic } from "@/components/step-flow-core/lasl/meta-data";
-import { TypeAnnotationParser } from "@/components/step-flow-core/lasl/parser/type-annotation-parser";
+import { Logic } from "@/components/lib/lasl/meta-data";
+import { TypeAnnotationParser } from "@/components/lib/lasl/parser/type-annotation-parser";
 import dayjs from "dayjs";
 import { LogicEditorCtx } from "@/components/logic-editor/types/LogicEditorCtx";
 import PageRenderById from "@/components/ui-render/page-render/render-by-page-id";

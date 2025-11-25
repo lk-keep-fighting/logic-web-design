@@ -12,7 +12,7 @@ import './index.css';
 // import { RegistShape } from '@/components/step-flow-editor/x6-graph/settings/InitGraph';
 // import DagreGraph from '@/components/step-flow-editor/x6-graph/instance/dagre-graph';
 // import { autoDagreLayout } from '@/components/step-flow-editor/x6-graph/layout/dagreLayout';
-import { Logic, LogicItem } from '@/components/step-flow-core/lasl/meta-data';
+import { Logic, LogicItem } from '@/components/lib/lasl/meta-data';
 import { InitPanelData } from '../../settings/PanelSetting';
 import { RegistShape } from '../../settings/RegistExtShape';
 import { autoDagreLayout } from '../../layout/dagreLayout';

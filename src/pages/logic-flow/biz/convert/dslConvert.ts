@@ -1,6 +1,6 @@
 import { Graph } from "@antv/x6";
-import { Logic } from "@/components/step-flow-core/lasl/meta-data";
-import { GraphToLogic, LogicToGraph } from "@/components/step-flow-core/lasl/parser/logic-parser";
+import { Logic } from "@/components/lib/lasl/meta-data";
+import { GraphToLogic, LogicToGraph } from "@/components/lib/lasl/parser/logic-parser";
 export class BizDslConvert {
     graphToLogicItems(graph: Graph | undefined, dsl?: Logic): Logic {
         let logic: Logic = GraphToLogic(dsl?.id, graph?.getCells());
