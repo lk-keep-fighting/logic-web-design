@@ -12,6 +12,7 @@ export default interface TypeAnnotation extends LASLBase {
     typeNamespace?: string,
     typeName: string,
     typeArguments?: Array<TypeAnnotation>,
+    genericTypes?: Array<TypeAnnotation>,
     returnType?: Array<TypeAnnotation>,
     inferred?: boolean,
     properties?: Array<StructureProperty>, //匿名数据结构属性
