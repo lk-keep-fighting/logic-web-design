@@ -1,5 +1,4 @@
 import { Button, Tabs, TabsProps } from 'antd';
-// import NodeData from './step-config';
 import NodeData from './node-config';
 import { Schema } from 'form-render';
 
