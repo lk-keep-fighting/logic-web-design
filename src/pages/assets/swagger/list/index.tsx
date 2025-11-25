@@ -2,7 +2,7 @@ import { Button, Card, Layout, Modal, Space, Table, message } from "antd"
 import { Link } from "umi"
 import { useCallback, useEffect, useState } from "react"
 import { CloseOutlined, DeleteOutlined, EditFilled, EditOutlined, FileAddOutlined, PlusOutlined } from "@ant-design/icons"
-import FormRender from "@/components/FormRender"
+import FormRender from "@/components/form-render"
 import { useForm } from "form-render"
 import { deleteSwagger, querySwaggers } from "@/services/swaggerSvc"
 
