@@ -1,5 +1,5 @@
 import { Logic } from "@/components/lib/lasl/meta-data";
-import { X6Graph } from "@/components/step-flow-editor";
+import X6Graph from "@/components/x6-graph";
 import { Spin, message } from "antd";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";

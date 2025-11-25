@@ -1,7 +1,7 @@
 import { Cell } from '@antv/x6';
 import { Schema, useForm } from 'form-render';
 import { useEffect } from 'react';
-import FormRender from '../../component/FormRender';
+import FormRender from '@/components/FormRender';
 
 interface INodeEditorProps {
   editNode: Cell | undefined;

@@ -4,9 +4,9 @@ import { Tabs, TabsProps, Tooltip } from 'antd';
 import { Logic } from '@/components/lib/lasl/meta-data';
 import { InputJSONSchema } from 'amis-ui';
 import { useContext } from 'react';
-import { EditorContext } from '../x6-graph';
+import { EditorContext } from '@/components/x6-graph';
 import FormRenderById from '@/components/ui-render/form-render/render-by-form-id';
-import JsonEditor from '../component/FormRender/ItemExt/JsonEditor';
+import JsonEditor from '@/components/FormRender/ItemExt/JsonEditor';
 
 interface ILeftToolProps {
   graph?: Graph;

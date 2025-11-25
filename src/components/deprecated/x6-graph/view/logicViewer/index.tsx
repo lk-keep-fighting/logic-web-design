@@ -9,13 +9,13 @@ import { Scroller } from '@antv/x6-plugin-scroller'
 import { Button, Layout, List, Space, Tabs, TabsProps, Timeline, TimelineItemProps } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import './index.css';
-import { InitPanelData } from '@/components/step-flow-editor/x6-graph/settings/PanelSetting';
-import { RegistShape } from '@/components/step-flow-editor/x6-graph/settings/InitGraph';
-import DagreGraph from '@/components/step-flow-editor/x6-graph/instance/dagre-graph';
-import { autoDagreLayout } from '@/components/step-flow-editor/x6-graph/layout/dagreLayout';
+import { InitPanelData } from '@/components/x6-graph/settings/PanelSetting';
+import { RegistShape } from '@/components/x6-graph/settings/InitGraph';
+import DagreGraph from '@/components/x6-graph/instance/dagre-graph';
+import { autoDagreLayout } from '@/components/x6-graph/layout/dagreLayout';
 import { Schema } from 'form-render';
 import { Logic, LogicItem } from '@/components/lib/lasl/meta-data';
-import NodeData from '@/components/step-flow-editor/right-toolset/step-config';
+import NodeData from '@/components/right-toolset/step-config';
 import { JsonView } from 'amis';
 import NodeConfig from '@/components/logic-editor/panel/right-panel/node-config';
 

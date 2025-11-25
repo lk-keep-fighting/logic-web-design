@@ -1,9 +1,9 @@
 import { Editor, useMonaco } from '@monaco-editor/react';
-import { EditorContext } from '../../../../x6-graph/index';
+import { EditorContext } from '@/components/x6-graph';
 import { Button } from 'antd';
 import Modal from 'antd/es/modal/Modal';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { buildVarExtarLibByObj } from '../../../../../monaco-helper';
+import { buildVarExtarLibByObj } from '@/components/monaco-helper';
 import './index.css'
 import { ArrowsAltOutlined } from '@ant-design/icons';
 import { TypeAnnotationParser } from '@/components/lib/lasl/parser/type-annotation-parser';
