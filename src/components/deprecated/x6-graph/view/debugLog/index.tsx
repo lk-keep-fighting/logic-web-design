@@ -8,16 +8,12 @@ import { Scroller } from '@antv/x6-plugin-scroller'
 import { Button, Divider, Layout, Space, Tabs, TabsProps, Timeline, TimelineItemProps, Typography } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import './index.css';
-// import { InitPanelData } from '@/components/step-flow-editor/x6-graph/settings/PanelSetting';
-// import { RegistShape } from '@/components/step-flow-editor/x6-graph/settings/InitGraph';
-// import DagreGraph from '@/components/step-flow-editor/x6-graph/instance/dagre-graph';
-// import { autoDagreLayout } from '@/components/step-flow-editor/x6-graph/layout/dagreLayout';
 import { Logic, LogicItem } from '@/components/lib/lasl/meta-data';
 import { JsonView } from 'amis';
-import { InitPanelData } from '../../settings/PanelSetting';
-import { RegistShape } from '../../settings/InitGraph';
-import DagreGraph from '../../instance/dagre-graph';
-import { autoDagreLayout } from '../../layout/dagreLayout';
+import { InitPanelData } from '@/components/x6-graph/settings/PanelSetting';
+import { RegistShape } from '@/components/x6-graph/settings/InitGraph';
+import DagreGraph from '@/components/x6-graph/instance/dagre-graph';
+import { autoDagreLayout } from '@/components/x6-graph/layout/dagreLayout';
 
 type EditorCtx = {
   logic: Logic,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Renderer } from 'amis';
-import { X6Graph } from '@/components/step-flow-editor';
+import X6Graph from '@/components/x6-graph';
 
 
 export default class CustomRenderer extends React.Component {
