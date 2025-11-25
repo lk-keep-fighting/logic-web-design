@@ -4,10 +4,11 @@ export default class Param {
     constructor(name: string) {
         this.name = name;
     }
-    concept: string = "Param";// 产品概念
+    concept?: string = "Param";// 产品概念
     name: string; // 输入参数名称
+    className?: string; // 参数所属的class，伴随后端类型
     description?: string; // 输入参数描述
     typeAnnotation?: TypeAnnotation; // 类型
     required?: boolean; // 是否必填
-    defaultValue?: string; // 默认值
+    defaultValue?: any; // 默认值
 }
