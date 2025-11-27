@@ -18,44 +18,11 @@ importers:
         specifier: ^0.3.23
         version: 0.3.25(dagre@0.8.5)
       '@antv/x6':
-        specifier: ^2.18.1
-        version: 2.18.1
-      '@antv/x6-plugin-clipboard':
-        specifier: ^2.1.6
-        version: 2.1.6(@antv/x6@2.18.1)
-      '@antv/x6-plugin-dnd':
-        specifier: ^2.0.5
-        version: 2.1.1(@antv/x6@2.18.1)
-      '@antv/x6-plugin-export':
-        specifier: ^2.1.6
-        version: 2.1.6(@antv/x6@2.18.1)
-      '@antv/x6-plugin-history':
-        specifier: ^2.2.2
-        version: 2.2.4(@antv/x6@2.18.1)
-      '@antv/x6-plugin-keyboard':
-        specifier: ^2.2.1
-        version: 2.2.3(@antv/x6@2.18.1)
-      '@antv/x6-plugin-minimap':
-        specifier: ^2.0.6
-        version: 2.0.7(@antv/x6@2.18.1)
-      '@antv/x6-plugin-scroller':
-        specifier: ^2.0.10
-        version: 2.0.10(@antv/x6@2.18.1)
-      '@antv/x6-plugin-selection':
-        specifier: ^2.1.7
-        version: 2.2.2(@antv/x6@2.18.1)
-      '@antv/x6-plugin-snapline':
-        specifier: ^2.1.7
-        version: 2.1.7(@antv/x6@2.18.1)
-      '@antv/x6-plugin-stencil':
-        specifier: ^2.0.3
-        version: 2.1.5(@antv/x6@2.18.1)
-      '@antv/x6-plugin-transform':
-        specifier: ^2.1.8
-        version: 2.1.8(@antv/x6@2.18.1)
+        specifier: ^3.0.1
+        version: 3.0.1
       '@antv/x6-react-shape':
-        specifier: ^2.1.2
-        version: 2.2.3(@antv/x6@2.18.1)(react-dom@18.3.1(react@18.1.0))(react@18.1.0)
+        specifier: 2.1.2
+        version: 2.1.2(@antv/x6@3.0.1)(react-dom@18.3.1(react@18.1.0))(react@18.1.0)
       '@babel/core':
         specifier: ^7.22.10
         version: 7.27.4
@@ -298,76 +265,16 @@ packages:
   '@antv/util@3.3.10':
     resolution: {integrity: sha512-basGML3DFA3O87INnzvDStjzS+n0JLEhRnRsDzP9keiXz8gT1z/fTdmJAZFOzMMWxy+HKbi7NbSt0+8vz/OsBQ==}
 
-  '@antv/x6-common@2.0.17':
-    resolution: {integrity: sha512-37g7vmRkNdYzZPdwjaMSZEGv/MMH0S4r70/Jwoab1mioycmuIBN73iyziX8m56BvJSDucZ3J/6DU07otWqzS6A==}
-
-  '@antv/x6-geometry@2.0.5':
-    resolution: {integrity: sha512-MId6riEQkxphBpVeTcL4ZNXL4lScyvDEPLyIafvWMcWNTGK0jgkK7N20XSzqt8ltJb0mGUso5s56mrk8ysHu2A==}
-
-  '@antv/x6-plugin-clipboard@2.1.6':
-    resolution: {integrity: sha512-roZPLnZx6PK8MBvee0QMo90fz/TXeF0WNe4EGin2NBq5M1I5XTWrYvA6N2XVIiWAAI67gjQeEE8TpkL7f8QdqA==}
-    peerDependencies:
-      '@antv/x6': ^2.x
-
-  '@antv/x6-plugin-dnd@2.1.1':
-    resolution: {integrity: sha512-v0szzik1RkadPDn4Qi5mOSaB2AeI78D40/YuCYbPVzplG+HydGsHwO3MLTgJPQ+R5n0eM0W5F850p1VfTOHR7g==}
-    peerDependencies:
-      '@antv/x6': ^2.x
-
-  '@antv/x6-plugin-export@2.1.6':
-    resolution: {integrity: sha512-m0ukMmZhrFE5n7uCR43DVQBdiUfpjGN+vm1mc+6RTZdHK8pa6Mxr0RZztaxPy34YA4tli+bGY3ePslsNPfh6PQ==}
-    peerDependencies:
-      '@antv/x6': ^2.x
-
-  '@antv/x6-plugin-history@2.2.4':
-    resolution: {integrity: sha512-9gHHvEW4Fla+1hxUV49zNgJyIMoV9CjVM52MrFgAJcvyRn1Kvxz4MfxiKlG+DEZUs+/zvfjl9pS6gJOd8laRkg==}
-    peerDependencies:
-      '@antv/x6': ^2.x
-
-  '@antv/x6-plugin-keyboard@2.2.3':
-    resolution: {integrity: sha512-pnCIC+mDyKKfkcDyLePfGxKVIqXBcldTgannITkHC1kc0IafRS1GMvzpvuDGrM5haRYd6Nwz8kjkJyHkJE4GPA==}
-    peerDependencies:
-      '@antv/x6': ^2.x
-
-  '@antv/x6-plugin-minimap@2.0.7':
-    resolution: {integrity: sha512-8zzESCx0jguFPCOKCA0gPFb6JmRgq81CXXtgJYe34XhySdZ6PB23I5Po062lNsEuTjTjnzli4lju8vvU+jzlGw==}
-    peerDependencies:
-      '@antv/x6': ^2.x
-
-  '@antv/x6-plugin-scroller@2.0.10':
-    resolution: {integrity: sha512-CrC5zCbtPe7LJEKK8ucLcDN+9lMtTJNApFmFObAiR/y2LO1QFCHz8GGLVeNOZaIEmJbR/Z/etpJkvc1LE7WhTg==}
-    peerDependencies:
-      '@antv/x6': ^2.x
-
-  '@antv/x6-plugin-selection@2.2.2':
-    resolution: {integrity: sha512-s2gtR9Onlhr7HOHqyqg0d+4sG76JCcQEbvrZZ64XmSChlvieIPlC3YtH4dg1KMNhYIuBmBmpSum6S0eVTEiPQw==}
-    peerDependencies:
-      '@antv/x6': ^2.x
-
-  '@antv/x6-plugin-snapline@2.1.7':
-    resolution: {integrity: sha512-AsysoCb9vES0U2USNhEpYuO/W8I0aYfkhlbee5Kt4NYiMfQfZKQyqW/YjDVaS2pm38C1NKu1LdPVk/BBr4CasA==}
-    peerDependencies:
-      '@antv/x6': ^2.x
-
-  '@antv/x6-plugin-stencil@2.1.5':
-    resolution: {integrity: sha512-q7wx7XRMFkUKPv3WsHkvZda6O1GW+6q6H/+c1lcrwlQoEKOFv1Djc4Hu2J4SGhV2z98P2JLfVJiT5m7YoOoCHw==}
-    peerDependencies:
-      '@antv/x6': ^2.x
-
-  '@antv/x6-plugin-transform@2.1.8':
-    resolution: {integrity: sha512-GvJuiJ4BKp0H7+qx3R1I+Vzbw5gXp9+oByXo/WyVxE3urOC7LC5sqnaDfIjyYMN6ROLPYPZraLSeSyYBgMgcDw==}
-    peerDependencies:
-      '@antv/x6': ^2.x
-
-  '@antv/x6-react-shape@2.2.3':
-    resolution: {integrity: sha512-42PGxk3XLnx9bsHQiRPauai5UQCrsh0MbWI3MyHRpjQaC30FK1rqyjH/EJ8qH0p6/cAndszZzCaiPqBbs3FqLQ==}
+  '@antv/x6-react-shape@2.1.2':
+    resolution: {integrity: sha512-kNflTM88oyQwfx9H1FQNAK1YdzEnB5vUtlcyU/5WZikbXGuaRmcJUBpSDMJt+AQ8ng3c2joKYQwWHQWeV6RgNw==}
     peerDependencies:
       '@antv/x6': ^2.x
       react: '>=18.0.0'
       react-dom: '>= 18.0.0'
 
-  '@antv/x6@2.18.1':
-    resolution: {integrity: sha512-FkWdbLOpN9J7dfJ+kiBxzowSx2N6syBily13NMVdMs+wqC6Eo5sLXWCZjQHateTFWgFw7ZGi2y9o3Pmdov1sXw==}
+  '@antv/x6@3.0.1':
+    resolution: {integrity: sha512-l6S5TkThZuROjGyub7JXesHnhSv0Hp4tfhBc/lNv5JQNxbXK5HnOFylNQhm9fR5o/T9vlMPLPfNsxvRwYCHXfw==}
+    engines: {node: '>=20.0.0'}
 
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
@@ -7843,69 +7750,17 @@ snapshots:
       gl-matrix: 3.4.3
       tslib: 2.8.1
 
-  '@antv/x6-common@2.0.17':
+  '@antv/x6-react-shape@2.1.2(@antv/x6@3.0.1)(react-dom@18.3.1(react@18.1.0))(react@18.1.0)':
     dependencies:
-      lodash-es: 4.17.21
-      utility-types: 3.11.0
-
-  '@antv/x6-geometry@2.0.5': {}
-
-  '@antv/x6-plugin-clipboard@2.1.6(@antv/x6@2.18.1)':
-    dependencies:
-      '@antv/x6': 2.18.1
-
-  '@antv/x6-plugin-dnd@2.1.1(@antv/x6@2.18.1)':
-    dependencies:
-      '@antv/x6': 2.18.1
-
-  '@antv/x6-plugin-export@2.1.6(@antv/x6@2.18.1)':
-    dependencies:
-      '@antv/x6': 2.18.1
-
-  '@antv/x6-plugin-history@2.2.4(@antv/x6@2.18.1)':
-    dependencies:
-      '@antv/x6': 2.18.1
-
-  '@antv/x6-plugin-keyboard@2.2.3(@antv/x6@2.18.1)':
-    dependencies:
-      '@antv/x6': 2.18.1
-      mousetrap: 1.6.5
-
-  '@antv/x6-plugin-minimap@2.0.7(@antv/x6@2.18.1)':
-    dependencies:
-      '@antv/x6': 2.18.1
-
-  '@antv/x6-plugin-scroller@2.0.10(@antv/x6@2.18.1)':
-    dependencies:
-      '@antv/x6': 2.18.1
-
-  '@antv/x6-plugin-selection@2.2.2(@antv/x6@2.18.1)':
-    dependencies:
-      '@antv/x6': 2.18.1
-
-  '@antv/x6-plugin-snapline@2.1.7(@antv/x6@2.18.1)':
-    dependencies:
-      '@antv/x6': 2.18.1
-
-  '@antv/x6-plugin-stencil@2.1.5(@antv/x6@2.18.1)':
-    dependencies:
-      '@antv/x6': 2.18.1
-      '@antv/x6-plugin-dnd': 2.1.1(@antv/x6@2.18.1)
-
-  '@antv/x6-plugin-transform@2.1.8(@antv/x6@2.18.1)':
-    dependencies:
-      '@antv/x6': 2.18.1
-
-  '@antv/x6-react-shape@2.2.3(@antv/x6@2.18.1)(react-dom@18.3.1(react@18.1.0))(react@18.1.0)':
-    dependencies:
-      '@antv/x6': 2.18.1
+      '@antv/x6': 3.0.1
       react: 18.1.0
       react-dom: 18.3.1(react@18.3.1)
 
-  '@antv/x6@2.18.1':
+  '@antv/x6@3.0.1':
     dependencies:
-      '@antv/x6-common': 2.0.17
-      '@antv/x6-geometry': 2.0.5
+      dom-align: 1.12.4
+      lodash-es: 4.17.21
+      mousetrap: 1.6.5
       utility-types: 3.11.0
 
   '@babel/code-frame@7.27.1':
@@ -9444,7 +9299,7 @@ snapshots:
 
   '@types/history@5.0.0':
     dependencies:
-      history: 4.10.1
+      history: 5.3.0
 
   '@types/hoist-non-react-statics@3.3.6':
     dependencies:
@@ -9511,7 +9366,7 @@ snapshots:
       '@types/history': 4.7.11
       '@types/react': 18.3.27
       '@types/react-router': 5.1.20
-      redux: 3.7.2
+      redux: 5.0.1
 
   '@types/react-router@5.1.20':
     dependencies:

@@ -1,10 +1,16 @@
 import { ApartmentOutlined, BulbOutlined, ForkOutlined, MenuFoldOutlined, MenuUnfoldOutlined, OrderedListOutlined } from '@ant-design/icons';
-import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
-import { History } from '@antv/x6-plugin-history';
-import { Keyboard } from '@antv/x6-plugin-keyboard';
-import { Selection } from '@antv/x6-plugin-selection';
-import { Snapline } from '@antv/x6-plugin-snapline';
-import { Scroller } from '@antv/x6-plugin-scroller'
+import {
+  CellView,
+  Edge,
+  Graph,
+  Node,
+  Shape,
+  History,
+  Keyboard,
+  Selection,
+  Snapline,
+  Scroller,
+} from '@antv/x6';
 import { Button, Divider, Flex, Input, Layout, Space, Tabs, TabsProps, Timeline, TimelineItemProps, Typography } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import './index.css';
@@ -282,9 +288,7 @@ const DebugLog = (props: DebugProps) => {
         color: '#F2F7FA',
       },
       grid: true,
-      // panning: {
-      //   enabled: true,
-      // },
+      panning: false,
     });
     //对齐线
     graph
@@ -312,7 +316,8 @@ const DebugLog = (props: DebugProps) => {
         }),
       )
       .use(new Scroller({
-        enabled: true
+        enabled: true,
+        virtual: false,
       }))
       .use(new Keyboard())
 
