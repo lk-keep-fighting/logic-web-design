@@ -1,14 +1,21 @@
 import { EllipsisOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, RocketOutlined, SaveOutlined, SettingTwoTone } from '@ant-design/icons';
-import { CellView, Edge, Graph, Node, Shape } from '@antv/x6';
-import { MiniMap } from '@antv/x6-plugin-minimap'
-import { Clipboard } from '@antv/x6-plugin-clipboard';
-import { History } from '@antv/x6-plugin-history';
-import { Keyboard } from '@antv/x6-plugin-keyboard';
-import { Selection } from '@antv/x6-plugin-selection';
-import { Snapline } from '@antv/x6-plugin-snapline';
-import { Stencil } from '@antv/x6-plugin-stencil';
-import { Scroller } from '@antv/x6-plugin-scroller'
-import { Export } from '@antv/x6-plugin-export'
+import {
+  CellView,
+  Edge,
+  Graph,
+  Node,
+  Shape,
+  MiniMap,
+  Clipboard,
+  History,
+  Keyboard,
+  Selection,
+  Snapline,
+  Stencil,
+  Scroller,
+  Export,
+  Transform,
+} from '@antv/x6';
 // import { loader } from '@monaco-editor/react';
 import { Button, Col, Dropdown, Layout, MenuProps, Modal, Row, Space, message } from 'antd';
 // import * as monaco from 'monaco-editor';
@@ -30,7 +37,6 @@ import RunLogic from '@/components/run-logic';
 import CodeEditor from '@/components/CodeEditor';
 import dayjs from 'dayjs';
 import { JsonView } from 'amis';
-import { Transform } from '@antv/x6-plugin-transform';
 import PageRenderById from '@/components/ui-render/page-render/render-by-page-id';
 import { runLogicOnServer } from '@/services/ideSvc';
 
@@ -278,9 +284,7 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
         color: '#F2F7FA',
       },
       grid: true,
-      // panning: {
-      //   enabled: true,
-      // },
+      panning: false,
     });
     //对齐线
     graph
@@ -308,7 +312,8 @@ export default class X6Graph extends React.Component<EditorProps, StateType> {
         }),
       )
       .use(new Scroller({
-        enabled: true
+        enabled: true,
+        virtual: false,
       }))
       .use(new Keyboard())
       .use(new Clipboard())

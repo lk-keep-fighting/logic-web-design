@@ -1,10 +1,8 @@
 import React, { useRef, useEffect, useState, useMemo, lazy, Suspense } from 'react';
-import { Graph, Node } from '@antv/x6';
-import { Dnd } from '@antv/x6-plugin-dnd';
+import { Graph, Node, Dnd, Stencil } from '@antv/x6';
 import { Input, Collapse, Empty, Tooltip, Spin, Button, Tabs } from 'antd';
 import { SearchOutlined, ExpandAltOutlined, ShrinkOutlined, DatabaseOutlined, JavaOutlined, AppstoreAddOutlined, UnorderedListOutlined, ColumnHeightOutlined } from '@ant-design/icons';
 import LogicNodeConfig from '../../types/LogicNodeConfig';
-import { Stencil } from '@antv/x6-plugin-stencil';
 import { dealGraphNodeWhenAddedFromPanel } from '../../nodes/node-mapping';
 import './index.css';
 import { PreviewInPanelReactNode } from '../../../../pages/logic-flow/biz/ext-shape/preview-in-panel';

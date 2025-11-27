@@ -1,24 +1,28 @@
 import React, { ReactElement, useEffect, useMemo, useState } from 'react';
-import { Cell, Edge, Graph } from '@antv/x6';
-import { Clipboard } from '@antv/x6-plugin-clipboard';
-import { History } from '@antv/x6-plugin-history';
-import { Keyboard } from '@antv/x6-plugin-keyboard';
-import { Selection } from '@antv/x6-plugin-selection';
-import { Snapline } from '@antv/x6-plugin-snapline';
-import { Stencil } from '@antv/x6-plugin-stencil';
-import { Scroller } from '@antv/x6-plugin-scroller'
-import { Export } from '@antv/x6-plugin-export'
-import { MiniMap } from '@antv/x6-plugin-minimap'
+import {
+  Cell,
+  Edge,
+  Graph,
+  Clipboard,
+  History,
+  Keyboard,
+  Selection,
+  Snapline,
+  Stencil,
+  Scroller,
+  Export,
+  MiniMap,
+  Transform,
+  Dnd,
+} from '@antv/x6';
 import { Layout, Space, message } from 'antd';
 import './index.css';
 import RightPanel from '@/components/logic-editor/panel/right-panel';
 import DagreGraph from '@/components/logic-editor/graph/dagre-graph';
 import { dealGraphNodeWhenAddedFromPanel } from '@/components/logic-editor/nodes/node-mapping';
-import { Transform } from '@antv/x6-plugin-transform';
 import LogicNodeConfig from '@/components/logic-editor/types/LogicNodeConfig';
 import { LogicEditorCtx } from '../types/LogicEditorCtx';
 import CustomNodePanel from '../panel/custom-node-panel';
-import { Dnd } from '@antv/x6-plugin-dnd';
 
 type EdgeToolTypes = 'button-remove' | 'edge-editor' | 'vertices' | 'segments' | undefined;
 class EditorProps {
@@ -163,9 +167,7 @@ const Editor = (props: EditorProps) => {
           color: '#fff',
         },
         grid: true,
-        // panning: {
-        //   enabled: true,
-        // },
+        panning: false,
       });
     }
     //对齐线
@@ -194,7 +196,8 @@ const Editor = (props: EditorProps) => {
         }),
       )
       .use(new Scroller({
-        enabled: true
+        enabled: true,
+        virtual: false,
       }))
       .use(new Keyboard())
       .use(new Clipboard({
