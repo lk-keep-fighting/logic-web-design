@@ -13,6 +13,7 @@ import ImportLogicJson from '../../components/import-logic-json';
 import { LogicEditorProvider } from '../../context/LogicEditorContext';
 import { useLogicEditor } from '../../hooks/useLogicEditor';
 import { ideApiService } from '../../services/api/ideApi';
+import { PageRenderById } from '@/components/ui-render';
 
 /**
  * 逻辑编辑器容器组件
@@ -25,7 +26,7 @@ const LogicEditorContainer: React.FC = () => {
   const [openParamsSetting, setOpenParamsSetting] = useState(false);
   const [openRunLogic, setOpenRunLogic] = useState(false);
   const [openImportJson, setOpenImportJson] = useState(false);
-  
+
   // 使用自定义Hook
   const logicEditor = useLogicEditor(id as string);
   const { state, dispatch } = logicEditor;
@@ -33,7 +34,7 @@ const LogicEditorContainer: React.FC = () => {
   // 注册图形
   React.useEffect(() => {
     RegistShape([...PresetShapes.values()]);
-    
+
     // 获取面板数据
     ideApiService.getPanelData().then(data => {
       setCustomGroups(data.Groups);
@@ -79,7 +80,7 @@ const LogicEditorContainer: React.FC = () => {
     try {
       setOpenRunLogic(false);
       dispatch({ type: 'SET_LOADING', payload: true });
-      
+
       const { params, bizId, headers, bizStartCode, configModel } = values;
       const res = await ideApiService.runLogicOnServer(
         id as string,
@@ -90,9 +91,9 @@ const LogicEditorContainer: React.FC = () => {
         JSON.parse(headers),
         configModel
       );
-      
+
       dispatch({ type: 'SET_LOADING', payload: false });
-      
+
       if (res.data.code === 0) {
         Modal.success({
           title: '执行成功',
@@ -100,8 +101,7 @@ const LogicEditorContainer: React.FC = () => {
           okText: '关闭',
           closable: true,
           content: <div>
-            {/* TODO: 替换为实际的调试信息组件 */}
-            <div>执行成功，结果：{JSON.stringify(res.data)}</div>
+            <PageRenderById pageId='debug-info' data={res.data} />
           </div>,
         });
       } else {
@@ -111,8 +111,9 @@ const LogicEditorContainer: React.FC = () => {
           okText: '关闭',
           closable: true,
           content: <div>
-            {/* TODO: 替换为实际的调试信息组件 */}
-            <div>执行失败，结果：{JSON.stringify(res.data)}</div>
+            content: <div>
+              <PageRenderById pageId='debug-info' data={res.data} />
+            </div>,
           </div>,
         });
       }
@@ -173,14 +174,14 @@ const LogicEditorContainer: React.FC = () => {
               height: 64,
             }}
           />,
-          <Dropdown.Button 
-            type='primary' 
-            onClick={handleSave} 
+          <Dropdown.Button
+            type='primary'
+            onClick={handleSave}
             menu={{ items: menuItems, onClick: onMenuClick }}
           >
             <SaveOutlined />保存
           </Dropdown.Button>,
-          <ParamSetting 
+          <ParamSetting
             open={openParamsSetting}
             values={{ ...state.dsl }}
             setOpen={() => setOpenParamsSetting(!openParamsSetting)}
@@ -191,7 +192,7 @@ const LogicEditorContainer: React.FC = () => {
               icon={<SettingTwoTone style={{ color: '#1677ff' }} />}
             >参数</Button>
           </ParamSetting>,
-          <RunLogic 
+          <RunLogic
             open={openRunLogic}
             setOpen={() => setOpenRunLogic(!openRunLogic)}
             values={{ params: state.dsl?.params }}
@@ -204,10 +205,10 @@ const LogicEditorContainer: React.FC = () => {
               调试
             </Button>
           </RunLogic>,
-          <ImportLogicJson 
-            onConfirm={handleImportJson} 
-            onCancel={() => setOpenImportJson(false)} 
-            isOpen={openImportJson} 
+          <ImportLogicJson
+            onConfirm={handleImportJson}
+            onCancel={() => setOpenImportJson(false)}
+            isOpen={openImportJson}
           />,
           <Button
             icon={<RocketTwoTone style={{ color: '#1677ff' }} />}

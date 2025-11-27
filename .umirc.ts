@@ -38,11 +38,6 @@ export default defineConfig({
       component: "render/editor",
     },
     {
-      path: "/assets/swagger/i/:id/ui",
-      layout: false,
-      component: "assets/swagger/ui",
-    },
-    {
       path: "/assets/logic",
       layout: false,
       routes: [
@@ -57,28 +52,12 @@ export default defineConfig({
         {
           path: "/assets/logic/biz/i/:id/edit",
           component: "logic-flow/biz/logic-editor",
-        },
-        {
-          path: "/assets/logic/process/i/:id/edit",
-          component: "logic-flow/process/logic-editor",
         }],
     },
-    { path: "/debug/logic/instance/:id", layout: false, component: "logic-debug" },
-    { path: "/debug/logic/instance/:logicId/:bizId", layout: false, component: "logic-debug" },
-    { path: "/debug/logic-log/i/:id", layout: false, component: "logic-log-debug" },
+    { path: "/debug/logic/instance/:id", layout: false, component: "logic-flow/biz/logic-debug" },
+    { path: "/debug/logic/instance/:logicId/:bizId", layout: false, component: "logic-flow/biz/logic-debug" },
+    { path: "/debug/logic-log/i/:id", layout: false, component: "logic-flow/biz/logic-log-debug" },
     { path: "/debug/form/i/:id", layout: false, component: "render/form/debug" },
-    // { path: "/editor/:id", layout: false, component: "logic-editor" },
-    // { path: "/form", component: "form-editor" },
-    {
-      path: "/ext/mes/process/edit",
-      layout: false,
-      component: "logic-flow/process/logic-editor",
-    },
-    {
-      path: "/ext/mes/process/view",
-      layout: false,
-      component: "logic-flow/process/logic-viewer",
-    }
   ],
   npmClient: 'pnpm',
   chainWebpack: (memo, args) => {
@@ -161,11 +140,6 @@ export default defineConfig({
     //   'changeOrigin': true,
     //   // 'pathRewrite': { '^/api/ide': '/ide/api' },
     // },
-    '/api/mes': {
-      'target': 'http://192.168.54.89:9996',
-      'pathRewrite': { '^/api/mes': '' },
-      'changeOrigin': true,
-    },
   },
 
 });

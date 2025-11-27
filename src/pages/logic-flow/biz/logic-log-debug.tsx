@@ -4,8 +4,8 @@ import { BulbOutlined, CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@
 import { Button, Divider, Space, Spin, Typography, Flex, message } from "antd";
 import { useEffect, useState } from "react";
 import { useParams } from "umi";
-import DebugLogicLog from "./logic-flow/biz/components/debugLogicLog";
-import AIDebugLog from "./logic-flow/biz/components/ai-debug-log";
+import DebugLogicLog from "./components/debugLogicLog";
+import AIDebugLog from "./components/ai-debug-log";
 
 function refreshWebTitle(dsl: Logic) {
     window.document.title = "-[" + dsl.name + "]日志";

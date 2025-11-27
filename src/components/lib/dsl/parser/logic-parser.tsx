@@ -93,7 +93,7 @@ function buildLogicItem(
       break;
   }
 }
-//将图数据转换为StepFlow，不包含图原始数据，图原始数据保存在visualConfig属性中，在外部处理
+//将图数据转换为Logic，不包含图原始数据，图原始数据保存在visualConfig属性中，在外部处理
 export function GraphToLogic(
   logicId: string,
   cells: Cell.Properties[],
