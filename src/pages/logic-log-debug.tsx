@@ -1,4 +1,4 @@
-import { Logic } from "@/components/lib/lasl/meta-data";
+import { Logic } from "@/components/lib/dsl/meta-data";
 import { getLogicLogsById, tryGetLogicConfigByAllWays } from "@/services/ideSvc";
 import { BulbOutlined, CheckCircleTwoTone, FrownOutlined, SyncOutlined } from "@ant-design/icons";
 import { Button, Divider, Space, Spin, Typography, Flex, message } from "antd";

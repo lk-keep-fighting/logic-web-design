@@ -17,37 +17,6 @@ export default defineConfig({
   },
   routes: [
     {
-      path: "/remote/:runtime",
-      layout: false,
-      component: 'logic-flow/biz/page/remote-runtime/layout',
-      routes: [
-        {
-          path: "/remote/:runtime/page/:pageId",
-          component: 'logic-flow/biz/page/remote-runtime/renderWithRuntime'
-        },
-        {
-          layout: false,
-          path: "/remote/:runtime/editor/:id/edit",
-          component: 'logic-flow/biz/page/remote-runtime/logic-editor'
-        }
-      ]
-    },
-    {
-      path: "/remote-editor/:runtime/:id/edit",
-      layout: false,
-      component: 'logic-flow/biz/page/remote-runtime/logic-editor'
-    },
-    {
-      path: "/remote-viewer/:runtime/:id/:version",
-      layout: false,
-      component: 'logic-flow/biz/page/remote-runtime/logic-viewer'
-    },
-    {
-      path: "/remote-list",
-      layout: false,
-      component: 'logic-flow/biz/page/remote-runtime/runtime-list'
-    },
-    {
       path: "/",
       layout: false,
       component: 'main'
@@ -96,9 +65,7 @@ export default defineConfig({
     },
     { path: "/debug/logic/instance/:id", layout: false, component: "logic-debug" },
     { path: "/debug/logic/instance/:logicId/:bizId", layout: false, component: "logic-debug" },
-    { path: "/remote-debug/:runtime/instance/:id", layout: false, component: "logic-flow/biz/page/remote-runtime/logic-ins-debug" },
     { path: "/debug/logic-log/i/:id", layout: false, component: "logic-log-debug" },
-    { path: "/remote-debug/:runtime/logic-log/i/:id", layout: false, component: "logic-flow/biz/page/remote-runtime/logic-log-debug" },
     { path: "/debug/form/i/:id", layout: false, component: "render/form/debug" },
     // { path: "/editor/:id", layout: false, component: "logic-editor" },
     // { path: "/form", component: "form-editor" },

@@ -1,7 +1,7 @@
 import { Badge, Input, Popover } from "antd"
 import styles from '../default.less'
 import { Node } from "@antv/x6";
-import { LogicItemTypeEnum } from "@/components/lib/lasl/meta-data/base/ConceptEnum";
+import { LogicItemTypeEnum } from "@/components/lib/dsl/meta-data/base/ConceptEnum";
 import { JavaNode } from "../java/index"
 import { JsNode } from "../js/index"
 import { HttpNode } from "../http/index"

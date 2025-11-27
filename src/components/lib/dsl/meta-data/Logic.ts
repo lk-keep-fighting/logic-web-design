@@ -7,17 +7,12 @@ export default class Logic {
     constructor(id?: string) {
         this.id = id ?? this.id;
         this.schemaVersion = "0.1";
-        this.schemeVersion = this.schemaVersion;
     }
     concept: string = ConceptEnum.Logic;
     /**
      * 配置文件格式版本号,默认0.1
      */
     schemaVersion?: string;
-    /**
-     * @deprecated 使用 schemaVersion 代替
-     */
-    schemeVersion?: string;
     /**
      * 实例版本
      */

@@ -1,4 +1,4 @@
-import { Logic } from "@/components/lib/lasl/meta-data";
+import { Logic } from "@/components/lib/dsl/meta-data";
 import DebugLogic from "@/pages/logic-flow/biz/components/debugLog";
 import { getLogicInstanceById, getLogicLogsByLogicIns, tryGetLogicConfigByAllWays, getLogicInstanceByBizId } from "@/services/ideSvc";
 import { CheckCircleTwoTone, EditOutlined, ForkOutlined, FrownOutlined, LineOutlined, SyncOutlined } from "@ant-design/icons";

@@ -8,7 +8,7 @@ import { Scroller } from '@antv/x6-plugin-scroller'
 import { Button, Divider, Flex, Input, Layout, Space, Tabs, TabsProps, Timeline, TimelineItemProps, Typography } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import './index.css';
-import { Logic, LogicItem } from '@/components/lib/lasl/meta-data';
+import { Logic, LogicItem } from '@/components/lib/dsl/meta-data';
 import { InitPanelData } from '../../settings/PanelSetting';
 import { RegistShape } from '../../settings/RegistExtShape';
 import { autoDagreLayout } from '../../layout/dagreLayout';
