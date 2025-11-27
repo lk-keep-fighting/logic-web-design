@@ -204,7 +204,7 @@ const CustomNodePanel: React.FC<CustomNodePanelProps> = ({
   );
 
   return (
-    <div>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* <Tabs centered size='small' tabBarStyle={{ margin: 0 }}>
         <Tabs.TabPane tab="本地组件" key="code" icon={<AppstoreAddOutlined />}> */}
           <div className="custom-node-panel">

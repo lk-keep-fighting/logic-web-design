@@ -438,6 +438,10 @@ const Editor = (props: EditorProps) => {
             collapsed={leftToolCollapsed}
             collapsedWidth={0}
             width={250}
+            style={{ 
+              height: '100%',
+              overflow: 'hidden'
+            }}
           >
             {!leftToolCollapsed && panel && (
               <CustomNodePanel

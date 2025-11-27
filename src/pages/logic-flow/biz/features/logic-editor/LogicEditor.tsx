@@ -111,9 +111,7 @@ const LogicEditorContainer: React.FC = () => {
           okText: '关闭',
           closable: true,
           content: <div>
-            content: <div>
-              <PageRenderById pageId='debug-info' data={res.data} />
-            </div>,
+            <PageRenderById pageId='debug-info' data={res.data} />
           </div>,
         });
       }
