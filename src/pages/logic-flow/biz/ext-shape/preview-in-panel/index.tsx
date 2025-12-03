@@ -66,7 +66,6 @@ const RectStyle = (props: RectStyleProps) => {
     const { backgroundColor, imgSrc, config } = props.node.data;
     let defConfig = { ...config }
     const { name, type } = defConfig
-    console.log(defConfig);
     return (
         <div
             style={{
@@ -116,7 +115,6 @@ export const PreviewInPanelReactNode = (props: NodeProps) => {
     // const imgSrc = node.data.imgSrc;//node.prop('imgSrc');
     // const text = node.data.text;//node.prop('text');
     // const backgroundColor = node.data.backgroundColor;//node.prop('backgroundColor');
-    console.log('props', props);
     switch (shape) {
         case LogicItemTypeEnum.wait:
             return <WaitNode node={props.node} />;

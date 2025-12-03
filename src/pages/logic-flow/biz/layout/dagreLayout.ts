@@ -20,8 +20,10 @@ export const autoDagreLayout = (graph: Graph) => {
             ranksepFunc: (d) => {
                 switch (d.data.config.type) {
                     case 'sub-logic':
-                    case 'switch-cases':
                         return 25;
+                    case 'switch-cases':
+                        var size = d.getSize();
+                        return size.height < 25 ? 25 : size.height;
                     default:
                         return 15;
                 }
@@ -62,8 +64,10 @@ export const autoDagreLayout = (graph: Graph) => {
             ranksepFunc: (d) => {
                 switch (d.data.config.type) {
                     case 'sub-logic':
-                    case 'switch-cases':
                         return 25;
+                    case 'switch-cases':
+                        var size = d.getSize();
+                        return size.height < 25 ? 25 : size.height;
                     default:
                         return 15;
                 }
