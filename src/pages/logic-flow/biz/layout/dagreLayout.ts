@@ -15,9 +15,18 @@ export const autoDagreLayout = (graph: Graph) => {
         dagreLayout = new DagreLayout({
             type: 'dagre',
             begin: [nodes[0].getPosition().x, nodes[0].getPosition().y],
-            ranker: 'tight-tree', // 节点分层算法，可选：'tight-tree' 'longest-path' 'network-simplex'
+            // ranker: 'tight-tree', // 节点分层算法，可选：'tight-tree' 'longest-path' 'network-simplex'
             rankdir: 'TB', // 图的延展方向，可选： 'TB' | 'BT' | 'LR' | 'RL'
-            ranksep: 20, // 图的各个层次之间的间距
+            ranksepFunc: (d) => {
+                switch (d.data.config.type) {
+                    case 'sub-logic':
+                    case 'switch-cases':
+                        return 25;
+                    default:
+                        return 15;
+                }
+            },
+            ranksep: 15, // 图的各个层次之间的间距
             // nodesep: 100, // 同层各个节点之间的间距
             nodeSize: 50, // 节点的大小，默认：20
             // align: 'DL',// 节点对齐方式，可选：'UL' | 'UR' | 'DL' | 'DR' | undefined
@@ -38,7 +47,7 @@ export const autoDagreLayout = (graph: Graph) => {
         let { nodes: newNodes = [] } = dagreLayout.layout({ nodes, edges });
         nodes.forEach((current) => {
             const newNode = newNodes.find((node) => node.id === current.id);
-            if(newNode){
+            if (newNode) {
                 newNode.x -= current.size().width / 2;
                 newNode.y -= current.size().height / 2;
                 current.position(newNode.x, newNode.y);
@@ -48,9 +57,18 @@ export const autoDagreLayout = (graph: Graph) => {
         dagreLayout = new DagreLayout({
             type: 'dagre',
             begin: [400, 100],
-            ranker: 'network-simplex', // 节点分层算法，可选：'tight-tree' 'longest-path' 'network-simplex'
+            // ranker: 'network-simplex', // 节点分层算法，可选：'tight-tree' 'longest-path' 'network-simplex'
             rankdir: 'TB', // 图的延展方向，可选： 'TB' | 'BT' | 'LR' | 'RL'
-            ranksep: 20, // 图的各个层次之间的间距
+            ranksepFunc: (d) => {
+                switch (d.data.config.type) {
+                    case 'sub-logic':
+                    case 'switch-cases':
+                        return 25;
+                    default:
+                        return 15;
+                }
+            },
+            ranksep: 15, // 图的各个层次之间的间距
             // nodesep: 100, // 同层各个节点之间的间距
             nodeSize: 50, // 节点的大小，默认：20
             align: 'DL',// 节点对齐方式，可选：'UL' | 'UR' | 'DL' | 'DR' | undefined
@@ -86,7 +104,7 @@ export const autoDagreLayoutByNodesAndCells = (nodes, edges) => {
     let { nodes: newNodes = [] } = dagreLayout.layout({ nodes, edges });
     nodes.forEach((current) => {
         const newNode = newNodes.find((node) => node.id === current.id);
-        if(newNode){
+        if (newNode) {
             newNode.x -= current.size().width / 2;
             newNode.y -= current.size().height / 2;
             current.position(newNode.x, newNode.y);
