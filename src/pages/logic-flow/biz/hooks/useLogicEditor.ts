@@ -88,6 +88,7 @@ export function useLogicEditor(logicId: string) {
       jsTips['_bizId'] = '""';
       jsTips['_lastRet'] = '{}';
       jsTips['_last'] = JSON.stringify({ success: true, msg: '', data: {} });
+      jsTips['_cur'] = JSON.stringify({ success: true, msg: '', data: {} });
       
       dispatch({ type: 'SET_JS_TIP_MAP', payload: new Map(Object.entries(jsTips)) });
     } catch (error) {

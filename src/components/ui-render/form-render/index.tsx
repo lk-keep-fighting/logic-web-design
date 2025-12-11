@@ -75,24 +75,6 @@ const FormRender = (props: IFormRenderProps) => {
         if (element.type == 'editor' && element.language == 'javascript') {
             element.editorDidMount = (editor, monaco) => {
                 setMonaco(monaco);
-                // editor.theme = 'vs-dark';
-                // if (logic) {
-                //     console.log('editor autotip by logic');
-                //     const varsJson = TypeAnnotationParser.getJsonByParams(logic.variables ?? [])
-                //     const vars = buildVarExtarLibByObj('_var', varsJson)
-                //     const inputJson = TypeAnnotationParser.getJsonByParams(logic.params ?? []);
-                //     const input = buildVarExtarLibByObj('_par', inputJson)
-                //     const returnJson = TypeAnnotationParser.getJsonByParams(logic.returns ?? []);
-                //     const returnp = buildVarExtarLibByObj('_ret', returnJson)
-                //     const envJson = TypeAnnotationParser.getJsonByParams(logic.envs ?? []);
-                //     const env = buildVarExtarLibByObj('_env', envJson)
-
-                //     monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
-                //     monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');
-                //     monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
-                //     monaco?.languages.typescript.javascriptDefaults.addExtraLib(env, 'env.ts');
-                //     monaco?.languages.typescript.javascriptDefaults.addExtraLib('let _lastRet:{}', 'lastRet.ts');
-                // }
                 if (jsTips) {
                     Object.keys(jsTips).forEach(k => {
                         const tipJson = buildVarExtarLibByObj(k, JSON.parse(jsTips[k]))
@@ -128,24 +110,7 @@ const FormRender = (props: IFormRenderProps) => {
                 const tipJson = buildVarExtarLibByObj(k, JSON.parse(jsTips[k]))
                 monaco?.languages.typescript.javascriptDefaults.addExtraLib(tipJson, `${k}.ts`);
             })
-
-            // console.log('monaco editor autotip by jsTipMap');
-            // const varsJson = TypeAnnotationParser.getJsonByParams(logic.variables ?? [])
-            // const vars = buildVarExtarLibByObj('_var', varsJson)
-            // const inputJson = TypeAnnotationParser.getJsonByParams(logic.params ?? []);
-            // const input = buildVarExtarLibByObj('_par', inputJson)
-            // const returnJson = TypeAnnotationParser.getJsonByParams(logic.returns ?? []);
-            // const returnp = buildVarExtarLibByObj('_ret', returnJson)
-            // const envJson = TypeAnnotationParser.getJsonByParams(logic.envs ?? []);
-            // const env = buildVarExtarLibByObj('_env', envJson)
-
-            // monaco?.languages.typescript.javascriptDefaults.addExtraLib(vars, 'var.ts');
-            // monaco?.languages.typescript.javascriptDefaults.addExtraLib(input, 'input.ts');
-            // monaco?.languages.typescript.javascriptDefaults.addExtraLib(returnp, 'return.ts');
-            // monaco?.languages.typescript.javascriptDefaults.addExtraLib(env, 'env.ts');
-            // monaco?.languages.typescript.javascriptDefaults.addExtraLib('let _lastRet:{}', 'lastRet.ts');
         }
-        // }, [logic, logic?.params, logic?.variables, logic?.returns, logic?.envs, props.jsTipMap])
     }, [jsTips])
     return (
         <div>
