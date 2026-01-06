@@ -5,6 +5,7 @@ import { Keyboard } from '@antv/x6-plugin-keyboard';
 import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { Scroller } from '@antv/x6-plugin-scroller'
+import { MiniMap } from '@antv/x6-plugin-minimap'
 import { Button, Divider, Flex, Input, Layout, Space, Tabs, TabsProps, Timeline, TimelineItemProps, Typography } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import './index.css';
@@ -63,6 +64,7 @@ const DebugLog = (props: DebugProps) => {
   const [selectedNode, setSelectedNode] = useState<Node>();
   const [timeLineItems, setTimeLineItems] = useState<TimelineItemProps[]>();
   const refContainer = useRef();
+  const refMiniMapContainer = useRef<HTMLDivElement>(null);
   const [showAI, setShowAI] = useState(false);
 
   function getButtonTool(txt, itemLog, idx, btnCnt) {
@@ -315,6 +317,9 @@ const DebugLog = (props: DebugProps) => {
         enabled: true
       }))
       .use(new Keyboard())
+      .use(new MiniMap({
+        container: refMiniMapContainer.current,
+      }));
 
     graph.on('edge:dblclick', () => {
     });
@@ -501,13 +506,16 @@ const DebugLog = (props: DebugProps) => {
             const id = String(i + 1);
             if (i == 0)
               return {
-                key: id,
-                label: `逻辑图`,
-                children: <DagreGraph
+              key: id,
+              label: `逻辑图`,
+              children: <div>
+                <DagreGraph
                   ref={refContainer}
-                />,
-                icon: <Icon />,
-              }; else
+                />
+                <div className="app-minimap" ref={refMiniMapContainer} />
+              </div>,
+              icon: <Icon />,
+            }; else
               return {
                 key: id,
                 label: `执行节点`,

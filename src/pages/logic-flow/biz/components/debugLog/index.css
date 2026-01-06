@@ -6,3 +6,10 @@
 .right {
   height: calc(100vh-64px);
 }
+
+.app-minimap {
+  bottom: 0;
+  right: 0;
+  opacity: 0.9;
+  position: absolute;
+}
