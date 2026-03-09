@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { Cell, Edge, Graph } from '@antv/x6';
 import { Clipboard } from '@antv/x6-plugin-clipboard';
 import { History } from '@antv/x6-plugin-history';
@@ -71,6 +71,7 @@ const Editor = (props: EditorProps) => {
   const [refContainer, setRefContainer] = useState<HTMLDivElement>();
   const [refMiniMapContainer, setRefMiniMapContainer] = useState<HTMLDivElement>();
   const [graph, setGraph] = useState<Graph | undefined>(props.graphIns);
+  const removeTimers = useRef(new Map<string, NodeJS.Timeout>());
   useEffect(() => {
     try {
       if (props.panelData?.Shapes) {
@@ -232,6 +233,12 @@ const Editor = (props: EditorProps) => {
     )
 
     graph.on('edge:mouseenter', ({ cell }) => {
+      const cellId = cell.id;
+      // 清除之前的定时器
+      if (removeTimers.current.has(cellId)) {
+        clearTimeout(removeTimers.current.get(cellId)!);
+        removeTimers.current.delete(cellId);
+      }
       if (props.edgeTools)
         props.edgeTools.forEach(t => {
           switch (t) {
@@ -270,7 +277,12 @@ const Editor = (props: EditorProps) => {
     });
 
     graph.on('edge:mouseleave', ({ cell }) => {
-      cell.removeTools();
+      const cellId = cell.id;
+      const timer = setTimeout(() => {
+        cell.removeTools();
+        removeTimers.current.delete(cellId);
+      }, 100);
+      removeTimers.current.set(cellId, timer);
     });
 
     graph.on('node:mouseenter', ({ cell }) => {
