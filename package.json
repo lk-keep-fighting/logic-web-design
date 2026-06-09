@@ -3,12 +3,15 @@
   "author": "lk <lkllyy@126.com>",
   "name": "xuanwu-logic-web-design",
   "version": "0.1",
+  "engines": {
+    "node": ">=18 <21"
+  },
   "scripts": {
-    "dev": "PORT=4051 umi dev",
-    "build": "umi build",
-    "analyze": "ANALYZE=1 umi dev",
-    "postinstall": "umi setup",
-    "setup": "umi setup",
+    "dev": "PORT=4051 bash scripts/use-node.sh umi dev",
+    "build": "bash scripts/use-node.sh umi build",
+    "analyze": "ANALYZE=1 bash scripts/use-node.sh umi dev",
+    "postinstall": "bash scripts/use-node.sh umi setup",
+    "setup": "bash scripts/use-node.sh umi setup",
     "start": "npm run dev"
   },
   "dependencies": {

@@ -53,7 +53,7 @@ const AIDebugLog = ({ logicLog, show, onClose }) => {
       const response = await fetch(`/api/ide/ai/chat/completions`, {
         method: 'post',
         body: JSON.stringify({
-          "model": "qwen2.5-coder:32b",
+          "model": "qwen3.6:35b",
           "stream": true,
           "messages": [
             {

@@ -92,10 +92,10 @@ export default defineConfig({
     '/api': {
       // 'target': 'http://localhost:4052',
       // 'target': 'http://localhost:8080',
-      'target': 'http://spring-boot-2-tests.logic-test.dev.aimstek.cn',
+      // 'target': 'http://wms.aims-protest-it.dev.aimstek.cn',
       // 'target': 'http://localhost:18080',
-      // 'target': 'http://192.168.54.29:7004',
-      // 'target': 'http://192.168.58.91:18080',
+      // 'target': 'http://192.168.54.30:7004',
+      'target': 'http://localhost:5004',
       // 'target': 'http://192.168.57.23:8080',
       // 'target': 'http://192.168.52.100:9001',
       // 'target': 'http://localhost:9001',

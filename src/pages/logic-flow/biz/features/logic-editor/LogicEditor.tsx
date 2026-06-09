@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { useParams } from 'umi';
 import { Graph, Shape } from '@antv/x6';
 import { Button, Modal, Spin, message, Typography, Dropdown, MenuProps, Tooltip, Divider } from 'antd';
-import { MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, RocketTwoTone, SaveOutlined, SettingTwoTone } from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleTwoTone, RocketTwoTone, SaveOutlined, SettingTwoTone, DownloadOutlined } from '@ant-design/icons';
 import { LogicFlowEditor } from '@/components/logic-editor';
 import { PresetShapes } from '@/components/logic-editor/shapes/PresetShapes';
 import { RegistShape } from '../../settings/RegistExtShape';
@@ -62,6 +62,8 @@ const LogicEditorContainer: React.FC = () => {
   const onMenuClick: MenuProps['onClick'] = (e) => {
     if (e.key === 'import') {
       setOpenImportJson(true);
+    } else if (e.key === 'export') {
+      handleExportDrawIO();
     }
   };
 
@@ -74,6 +76,93 @@ const LogicEditorContainer: React.FC = () => {
       message.error(error.message || '保存失败');
     }
   }, [graph, logicEditor]);
+
+  // 导出为DrawIO格式
+  const handleExportDrawIO = useCallback(() => {
+    if (!graph) {
+      message.error('图表未初始化');
+      return;
+    }
+    try {
+      const cells = graph.getCells();
+      const { height, width } = graph.getGraphArea();
+      let xmlCells = '';
+      let mxGeometry: Record<string, string> = {};
+
+      cells.forEach((cell, idx) => {
+        const id = cell.id;
+        const parent = '1';
+        const isEdge = cell.isEdge();
+
+        if (isEdge) {
+          const edge = cell as any;
+          const sourceData = edge.source;
+          const targetData = edge.target;
+          const labels = edge.getLabels();
+          const labelText = labels?.[0]?.attrs?.label?.text || labels?.[0]?.text || '';
+          const sourceId = typeof sourceData === 'string' ? sourceData : sourceData?.cell;
+          const targetId = typeof targetData === 'string' ? targetData : targetData?.cell;
+          const escapedLabel = String(labelText).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+          xmlCells += `<mxCell id="${id}" value="${escapedLabel}" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="${parent}" source="${sourceId}" target="${targetId}">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>`;
+        } else {
+          const node = cell as any;
+          const nodeData = node.getData() || {};
+          const type = nodeData.config?.type || 'task';
+          const label = nodeData.config?.name || nodeData.title || type;
+          const position = node.getPosition();
+          const size = node.getSize();
+          const escapedLabel = String(label).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+          const style = type === 'start' ? 'ellipse;whiteSpace=wrap;html=1;fillColor=#60c264;strokeColor=#4a7c59;' :
+            type === 'end' ? 'ellipse;whiteSpace=wrap;html=1;fillColor=#f06b4a;strokeColor=#b34a35;' :
+            type === 'switch' ? 'rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d79b00;' :
+            type === 'wait-for-continue' ? 'ellipse;whiteSpace=wrap;html=1;fillColor=#b4a7e3;strokeColor=#5c4b8a;' :
+            type === 'sub-logic' ? 'subroutine;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;' :
+              'rounded=1;whiteSpace=wrap;html=1;fillColor=#d4e8ff;strokeColor=#5a90c4;';
+
+          mxGeometry = {
+            x: String(Math.round(position.x)),
+            y: String(Math.round(position.y)),
+            width: String(Math.round(size.width)),
+            height: String(Math.round(size.height)),
+          };
+
+          xmlCells += `<mxCell id="${id}" value="${escapedLabel}" style="${style}" vertex="1" parent="${parent}">
+            <mxGeometry x="${mxGeometry.x}" y="${mxGeometry.y}" width="${mxGeometry.width}" height="${mxGeometry.height}" as="geometry" />
+          </mxCell>`;
+        }
+      });
+
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2024-01-01T00:00:00.000Z" agent="5.0" version="21.0.0" type="device">
+  <diagram id="graph" name="Page-1">
+    <mxGraphModel dx="1224" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="${width}" pageHeight="${height}" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        ${xmlCells}
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>`;
+
+      const blob = new Blob([xml], { type: 'application/xml' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${state.dsl.name || 'logic-diagram'}.drawio`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      message.success('导出DrawIO成功');
+    } catch (error: any) {
+      message.error(error.message || '导出失败');
+    }
+  }, [graph, state.dsl.name]);
 
   // 处理运行逻辑
   const handleRunLogic = useCallback(async (values: any, model: any) => {
@@ -136,6 +225,11 @@ const LogicEditorContainer: React.FC = () => {
     {
       key: 'import',
       label: '导入Json配置',
+    },
+    {
+      key: 'export',
+      label: '导出为DrawIO',
+      icon: <DownloadOutlined />,
     }
   ];
 
